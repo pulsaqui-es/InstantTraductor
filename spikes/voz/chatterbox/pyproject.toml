@@ -1,0 +1,36 @@
+[project]
+name = "voz-spike-chatterbox"
+version = "0.0.0"
+description = "Spike S1 (hito 0): Chatterbox Multilingual (finetune es-es) en RTX 5070 con Windows nativo"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "chatterbox-tts==0.1.7",
+    # chatterbox-tts fija torch==2.6.0 (sin sm_120): se fuerza PyTorch 2.11 con CUDA 13.0 (ver override).
+    "torch==2.11.0",
+    "torchaudio==2.11.0",
+    "scipy",
+    "soundfile",
+    "filelock",
+    "nvidia-ml-py",
+    "huggingface-hub",
+]
+
+[tool.uv]
+# Proyecto de scripts: no se construye ni se instala como paquete.
+package = false
+override-dependencies = [
+    # Sustituye los pines torch/torchaudio==2.6.0 de chatterbox-tts (no soportan la RTX 5070, sm_120).
+    "torch==2.11.0",
+    "torchaudio==2.11.0",
+    # gradio es una dependencia dura de chatterbox-tts, pero este spike no usa la interfaz: se descarta.
+    "gradio ; sys_platform == 'never'",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchaudio = { index = "pytorch-cu130" }
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
