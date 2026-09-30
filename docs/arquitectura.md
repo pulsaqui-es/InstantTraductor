@@ -12,7 +12,8 @@ Núcleo: proceso raíz, Python 3.12 + uv (su árbol entero queda excluido de la 
  ├─ ASR (hilo, en el proceso) ── Nemotron Streaming EN (sherpa-onnx, CPU) → eventos parcial/final
  ├─ Planificador ── unidades de traducción (cláusulas confirmadas) + control del retraso
  ├─ Cliente MT ──── HTTP local ──► [hijo] llama-server + Hy-MT2-1.8B (GPU)
- ├─ Cliente TTS ─── HTTP local ──► [hijo] servicio de voz, entorno propio (GPU) → PCM
+ ├─ Cliente TTS ─── HTTP local ──► [hijo] servicio de voz (Qwen3-TTS o Chatterbox es-es), entorno propio (GPU) → PCM
+ ├─ Registro de hablantes (spec 003) ── embedding (CPU) + referencias limpias (separador en 2.º plano)
  └─ Reproducción (hilo) ── cola de PCM → 48 kHz → dispositivo por defecto
                            (Windows lo mezcla con el original, que suena sin cambios)
 ```
@@ -41,13 +42,15 @@ Las etapas se comunican mediante contratos (`typing.Protocol` + `@dataclass(froz
 
 **EVS** (desde que se dice algo hasta que se oye en español): p50 ≤ 3 s y p95 ≤ 5 s. Se mide en cada spec y se ajusta con datos. Desde japonés o chino se esperan de 3 a 5 s, por el orden de las palabras.
 
-## VRAM (12 GB)
+## VRAM (12 GB, de los que ~8 GB son útiles)
+Windows, los monitores y las apps abiertas ya ocupan unos 3,2 GB. Presupuesto de la app:
 - ASR en CPU: 0 GB.
 - Hy-MT2-1.8B Q8: ~2,5 GB.
-- Voz con clonación: ~3,5 GB.
+- Voz con clonación (Qwen3-TTS-0.6B o Chatterbox es-es): 2–3,5 GB.
 - Contextos CUDA: ~1 GB.
+- Separador de diálogo bajo demanda (spec 003): ~0,5–1 GB.
 
-En total, unos 7 GB, con margen para el vídeo y el navegador.
+En total, de 5,5 a 8 GB. Un juego ocupando la GPU no dejaría sitio: haría falta un perfil ligero en CPU (pendiente de decidir).
 
 ## Estructura prevista del repositorio
 

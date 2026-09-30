@@ -13,6 +13,7 @@ Cada decisión relevante de arquitectura o tecnología queda en un fichero `NNNN
 | [0005](0005-captura-y-reproduccion.md) | Captura y reproducción de audio | Propuesta | 2026-09-30 |
 | [0006](0006-reconocimiento-de-voz.md) | Reconocimiento de voz (ASR) y segmentación | Propuesta | 2026-09-30 |
 | [0007](0007-traduccion.md) | Traducción automática (MT) | Propuesta | 2026-09-30 |
+| [0008](0008-voz-y-clonacion.md) | Síntesis de voz (TTS), clonación y aislamiento de voz | Propuesta | 2026-09-30 |
 
 ## Plantilla
 
