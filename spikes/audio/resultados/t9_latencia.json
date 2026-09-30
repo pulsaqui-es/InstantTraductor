@@ -1,0 +1,270 @@
+{
+  "entorno": {
+    "formato_mezcla_dispositivo": {
+      "frecuencia": 48000,
+      "canales": 8,
+      "bits": 32,
+      "formato": 65534
+    },
+    "volumen_maestro_pct": 78.0,
+    "windows": "Windows-11-10.0.26200-SP0 build 26200 (25H2 UBR 9457)",
+    "python": "3.12.14",
+    "miniaudio": "1.71",
+    "numpy": "2.5.3",
+    "pycaw": "20260927",
+    "comtypes": "1.4.17",
+    "psutil": "7.2.2",
+    "cffi": "2.1.1",
+    "dispositivo_por_defecto": {
+      "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+      "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+    },
+    "dispositivos_activos": [
+      {
+        "nombre": "Realtek Digital Output (Realtek(R) Audio)",
+        "id": "{0.0.0.00000000}.{bb2b6dd2-08c7-4168-8846-db8b3c9dd285}"
+      },
+      {
+        "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+        "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+      }
+    ],
+    "pid": 250244,
+    "cadena_propia": "python.exe(250244) <- python.exe(567100) <- uv.exe(485476) <- bash.exe(227332) <- bash.exe(677948) <- bash.exe(225436) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)"
+  },
+  "configs": {
+    "10x2": {
+      "pruebas": [
+        {
+          "i": 0,
+          "t_envio_ns": 381678990366200,
+          "t_fuente_ns": 381678998402900,
+          "orden_a_fuente_ms": 8.0367,
+          "latencia_exclude_ms": 83.6,
+          "latencia_endpoint_ms": 49.4
+        },
+        {
+          "i": 1,
+          "t_envio_ns": 381681698097600,
+          "t_fuente_ns": 381681698777100,
+          "orden_a_fuente_ms": 0.6795,
+          "latencia_exclude_ms": 82.2,
+          "latencia_endpoint_ms": 49.6
+        },
+        {
+          "i": 2,
+          "t_envio_ns": 381684860809400,
+          "t_fuente_ns": 381684868792800,
+          "orden_a_fuente_ms": 7.9834,
+          "latencia_exclude_ms": 82.3,
+          "latencia_endpoint_ms": 49.5
+        },
+        {
+          "i": 3,
+          "t_envio_ns": 381687801088100,
+          "t_fuente_ns": 381687809070200,
+          "orden_a_fuente_ms": 7.9821,
+          "latencia_exclude_ms": 82.2,
+          "latencia_endpoint_ms": 49.4
+        },
+        {
+          "i": 4,
+          "t_envio_ns": 381690170195300,
+          "t_fuente_ns": 381690179281900,
+          "orden_a_fuente_ms": 9.0866,
+          "latencia_exclude_ms": 81.7,
+          "latencia_endpoint_ms": 49.3
+        },
+        {
+          "i": 5,
+          "t_envio_ns": 381692971990600,
+          "t_fuente_ns": 381692979649100,
+          "orden_a_fuente_ms": 7.6585,
+          "latencia_exclude_ms": 81.5,
+          "latencia_endpoint_ms": 49.2
+        },
+        {
+          "i": 6,
+          "t_envio_ns": 381696024189300,
+          "t_fuente_ns": 381696029125000,
+          "orden_a_fuente_ms": 4.9357,
+          "latencia_exclude_ms": 82.0,
+          "latencia_endpoint_ms": 50.0
+        },
+        {
+          "i": 7,
+          "t_envio_ns": 381698882449400,
+          "t_fuente_ns": 381698889427700,
+          "orden_a_fuente_ms": 6.9783,
+          "latencia_exclude_ms": 81.4,
+          "latencia_endpoint_ms": 49.9
+        },
+        {
+          "i": 8,
+          "t_envio_ns": 381701632404000,
+          "t_fuente_ns": 381701639606300,
+          "orden_a_fuente_ms": 7.2023,
+          "latencia_exclude_ms": 81.7,
+          "latencia_endpoint_ms": 49.9
+        },
+        {
+          "i": 9,
+          "t_envio_ns": 381704609875900,
+          "t_fuente_ns": 381704620996700,
+          "orden_a_fuente_ms": 11.1208,
+          "latencia_exclude_ms": 80.5,
+          "latencia_endpoint_ms": 48.7
+        }
+      ],
+      "estadisticas": {
+        "exclude": {
+          "n": 10,
+          "min_ms": 80.5,
+          "mediana_ms": 81.8,
+          "media_ms": 81.9,
+          "p95_ms": 83.0,
+          "max_ms": 83.6,
+          "desv_ms": 0.8
+        },
+        "endpoint": {
+          "n": 10,
+          "min_ms": 48.7,
+          "mediana_ms": 49.4,
+          "media_ms": 49.5,
+          "p95_ms": 50.0,
+          "max_ms": 50.0,
+          "desv_ms": 0.4
+        },
+        "exclude_menos_endpoint": {
+          "n": 10,
+          "min_ms": 31.5,
+          "mediana_ms": 32.3,
+          "media_ms": 32.4,
+          "p95_ms": 33.6,
+          "max_ms": 34.2,
+          "desv_ms": 0.7
+        }
+      }
+    },
+    "20x3": {
+      "pruebas": [
+        {
+          "i": 0,
+          "t_envio_ns": 381708106397000,
+          "t_fuente_ns": 381708120176500,
+          "orden_a_fuente_ms": 13.7795,
+          "latencia_exclude_ms": 125.7,
+          "latencia_endpoint_ms": 89.8
+        },
+        {
+          "i": 1,
+          "t_envio_ns": 381711076809700,
+          "t_fuente_ns": 381711080352000,
+          "orden_a_fuente_ms": 3.5423,
+          "latencia_exclude_ms": 125.2,
+          "latencia_endpoint_ms": 89.9
+        },
+        {
+          "i": 2,
+          "t_envio_ns": 381713924277500,
+          "t_fuente_ns": 381713940576500,
+          "orden_a_fuente_ms": 16.299,
+          "latencia_exclude_ms": 124.4,
+          "latencia_endpoint_ms": 90.0
+        },
+        {
+          "i": 3,
+          "t_envio_ns": 381716770581600,
+          "t_fuente_ns": 381716780748200,
+          "orden_a_fuente_ms": 10.1666,
+          "latencia_exclude_ms": 124.5,
+          "latencia_endpoint_ms": 89.9
+        },
+        {
+          "i": 4,
+          "t_envio_ns": 381719228996900,
+          "t_fuente_ns": 381719241444900,
+          "orden_a_fuente_ms": 12.448,
+          "latencia_exclude_ms": 124.1,
+          "latencia_endpoint_ms": 89.9
+        },
+        {
+          "i": 5,
+          "t_envio_ns": 381722317044700,
+          "t_fuente_ns": 381722321758600,
+          "orden_a_fuente_ms": 4.7139,
+          "latencia_exclude_ms": 124.0,
+          "latencia_endpoint_ms": 89.4
+        },
+        {
+          "i": 6,
+          "t_envio_ns": 381725166960900,
+          "t_fuente_ns": 381725181856800,
+          "orden_a_fuente_ms": 14.8959,
+          "latencia_exclude_ms": 123.9,
+          "latencia_endpoint_ms": 89.6
+        },
+        {
+          "i": 7,
+          "t_envio_ns": 381727524087400,
+          "t_fuente_ns": 381727542758000,
+          "orden_a_fuente_ms": 18.6706,
+          "latencia_exclude_ms": 122.2,
+          "latencia_endpoint_ms": 89.2
+        },
+        {
+          "i": 8,
+          "t_envio_ns": 381729986615700,
+          "t_fuente_ns": 381730002085500,
+          "orden_a_fuente_ms": 15.4698,
+          "latencia_exclude_ms": 123.5,
+          "latencia_endpoint_ms": 89.6
+        },
+        {
+          "i": 9,
+          "t_envio_ns": 381732810457100,
+          "t_fuente_ns": 381732822623600,
+          "orden_a_fuente_ms": 12.1665,
+          "latencia_exclude_ms": 123.2,
+          "latencia_endpoint_ms": 89.3
+        }
+      ],
+      "estadisticas": {
+        "exclude": {
+          "n": 10,
+          "min_ms": 122.2,
+          "mediana_ms": 124.0,
+          "media_ms": 124.1,
+          "p95_ms": 125.5,
+          "max_ms": 125.7,
+          "desv_ms": 0.9
+        },
+        "endpoint": {
+          "n": 10,
+          "min_ms": 89.2,
+          "mediana_ms": 89.7,
+          "media_ms": 89.7,
+          "p95_ms": 90.0,
+          "max_ms": 90.0,
+          "desv_ms": 0.3
+        },
+        "exclude_menos_endpoint": {
+          "n": 10,
+          "min_ms": 33.0,
+          "mediana_ms": 34.4,
+          "media_ms": 34.4,
+          "p95_ms": 35.6,
+          "max_ms": 35.9,
+          "desv_ms": 0.7
+        }
+      }
+    }
+  },
+  "cadena_externo": "pythonw.exe(204628) <- pythonw.exe(118692) <- <muerto o PID reutilizado>(605328)",
+  "externo_cuelga_de_este_proceso": false,
+  "reloj": {
+    "desfase_mediano_ms": 0.06,
+    "desfase_abs_max_ms": 0.082,
+    "rtt_mediano_ms": 0.295
+  }
+}

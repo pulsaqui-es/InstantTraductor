@@ -1,0 +1,320 @@
+{
+  "entorno": {
+    "formato_mezcla_dispositivo": {
+      "frecuencia": 48000,
+      "canales": 8,
+      "bits": 32,
+      "formato": 65534
+    },
+    "volumen_maestro_pct": 78.0,
+    "windows": "Windows-11-10.0.26200-SP0 build 26200 (25H2 UBR 9457)",
+    "python": "3.12.14",
+    "miniaudio": "1.71",
+    "numpy": "2.5.3",
+    "pycaw": "20260927",
+    "comtypes": "1.4.17",
+    "psutil": "7.2.2",
+    "cffi": "2.1.1",
+    "dispositivo_por_defecto": {
+      "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+      "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+    },
+    "dispositivos_activos": [
+      {
+        "nombre": "Realtek Digital Output (Realtek(R) Audio)",
+        "id": "{0.0.0.00000000}.{bb2b6dd2-08c7-4168-8846-db8b3c9dd285}"
+      },
+      {
+        "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+        "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+      }
+    ],
+    "pid": 90200,
+    "cadena_propia": "python.exe(90200) <- python.exe(282768) <- uv.exe(264476) <- bash.exe(421496) <- bash.exe(621336) <- bash.exe(671596) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)"
+  },
+  "base_python": "C:\\Users\\Usuario\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe",
+  "parte_a": {
+    "cadena": "python.exe(90200) <- python.exe(282768) <- uv.exe(264476) <- bash.exe(421496) <- bash.exe(621336) <- bash.exe(671596) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220)",
+    "control_endpoint": {
+      "detectado": true,
+      "ratio_db": 136.5,
+      "amp_dbfs": -11.4
+    },
+    "filas": [
+      {
+        "nivel": 0,
+        "objetivo": "python.exe(90200)",
+        "modo": "include",
+        "detectado": true,
+        "ratio_db": 134.8,
+        "amp_dbfs": -11.4
+      },
+      {
+        "nivel": 0,
+        "objetivo": "python.exe(90200)",
+        "modo": "exclude",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      {
+        "nivel": 1,
+        "objetivo": "python.exe(282768)",
+        "modo": "include",
+        "detectado": true,
+        "ratio_db": 134.0,
+        "amp_dbfs": -11.4
+      },
+      {
+        "nivel": 1,
+        "objetivo": "python.exe(282768)",
+        "modo": "exclude",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      {
+        "nivel": 2,
+        "objetivo": "uv.exe(264476)",
+        "modo": "include",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      {
+        "nivel": 2,
+        "objetivo": "uv.exe(264476)",
+        "modo": "exclude",
+        "detectado": true,
+        "ratio_db": 134.0,
+        "amp_dbfs": -11.4
+      },
+      {
+        "nivel": 3,
+        "objetivo": "bash.exe(421496)",
+        "modo": "include",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      {
+        "nivel": 3,
+        "objetivo": "bash.exe(421496)",
+        "modo": "exclude",
+        "detectado": true,
+        "ratio_db": 134.0,
+        "amp_dbfs": -11.4
+      },
+      {
+        "nivel": 4,
+        "objetivo": "bash.exe(621336)",
+        "modo": "include",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      {
+        "nivel": 5,
+        "objetivo": "bash.exe(671596)",
+        "modo": "include",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      {
+        "nivel": 6,
+        "objetivo": "claude.exe(53368)",
+        "modo": "include",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      {
+        "nivel": 7,
+        "objetivo": "Code.exe(283472)",
+        "modo": "include",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      {
+        "nivel": 8,
+        "objetivo": "Code.exe(713364)",
+        "modo": "include",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      {
+        "nivel": 9,
+        "objetivo": "explorer.exe(705220)",
+        "modo": "include",
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      }
+    ]
+  },
+  "parte_b": [
+    {
+      "escenario": "directo_previo",
+      "pid_emisor": 359964,
+      "cadena": "python.exe(359964) <- python.exe(90200) <- python.exe(282768) <- uv.exe(264476) <- bash.exe(421496) <- bash.exe(621336) <- bash.exe(671596) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+      "niveles_hasta_mi_pid": 1,
+      "cuelga_de_mi": true,
+      "exclude": {
+        "detectado": false,
+        "ratio_db": 5.5,
+        "amp_dbfs": -159.2
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 124.9,
+        "amp_dbfs": -13.9
+      },
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 124.9,
+        "amp_dbfs": -13.9
+      },
+      "incl_lanzador": {
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      "excl_lanzador": {
+        "detectado": true,
+        "ratio_db": 125.1,
+        "amp_dbfs": -13.9
+      }
+    },
+    {
+      "escenario": "lanzador_previo",
+      "pid_emisor": 116560,
+      "cadena": "python.exe(116560) <- python.exe(46772) <- python.exe(90200) <- python.exe(282768) <- uv.exe(264476) <- bash.exe(421496) <- bash.exe(621336) <- bash.exe(671596) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+      "niveles_hasta_mi_pid": 2,
+      "cuelga_de_mi": true,
+      "exclude": {
+        "detectado": true,
+        "ratio_db": 127.6,
+        "amp_dbfs": -16.0
+      },
+      "include": {
+        "detectado": false,
+        "ratio_db": 10.7,
+        "amp_dbfs": -154.5
+      },
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 126.3,
+        "amp_dbfs": -15.8
+      },
+      "incl_lanzador": {
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      "excl_lanzador": {
+        "detectado": true,
+        "ratio_db": 126.3,
+        "amp_dbfs": -16.0
+      }
+    },
+    {
+      "escenario": "directo_posterior",
+      "pid_emisor": 262816,
+      "cadena": "python.exe(262816) <- python.exe(90200) <- python.exe(282768) <- uv.exe(264476) <- bash.exe(421496) <- bash.exe(621336) <- bash.exe(671596) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+      "niveles_hasta_mi_pid": 1,
+      "cuelga_de_mi": true,
+      "exclude": {
+        "detectado": false,
+        "ratio_db": 9.1,
+        "amp_dbfs": -157.1
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 131.5,
+        "amp_dbfs": -11.2
+      },
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 131.2,
+        "amp_dbfs": -11.0
+      },
+      "incl_lanzador": {
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      "excl_lanzador": {
+        "detectado": true,
+        "ratio_db": 131.6,
+        "amp_dbfs": -11.2
+      }
+    },
+    {
+      "escenario": "lanzador_posterior",
+      "pid_emisor": 719376,
+      "cadena": "python.exe(719376) <- python.exe(389560) <- python.exe(90200) <- python.exe(282768) <- uv.exe(264476) <- bash.exe(421496) <- bash.exe(621336) <- bash.exe(671596) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+      "niveles_hasta_mi_pid": 2,
+      "cuelga_de_mi": true,
+      "exclude": {
+        "detectado": true,
+        "ratio_db": 134.9,
+        "amp_dbfs": -10.6
+      },
+      "include": {
+        "detectado": false,
+        "ratio_db": 10.8,
+        "amp_dbfs": -160.9
+      },
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 134.4,
+        "amp_dbfs": -10.5
+      },
+      "incl_lanzador": {
+        "detectado": true,
+        "ratio_db": 134.3,
+        "amp_dbfs": -10.6
+      },
+      "excl_lanzador": {
+        "detectado": false,
+        "ratio_db": 8.4,
+        "amp_dbfs": -159.2
+      }
+    },
+    {
+      "escenario": "directo_nieto",
+      "pid_emisor": 65084,
+      "cadena": "python.exe(65084) <- python.exe(613032) <- python.exe(90200) <- python.exe(282768) <- uv.exe(264476) <- bash.exe(421496) <- bash.exe(621336) <- bash.exe(671596) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+      "niveles_hasta_mi_pid": 2,
+      "cuelga_de_mi": true,
+      "exclude": {
+        "detectado": true,
+        "ratio_db": 138.0,
+        "amp_dbfs": -10.4
+      },
+      "include": {
+        "detectado": false,
+        "ratio_db": 7.5,
+        "amp_dbfs": -164.1
+      },
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 138.1,
+        "amp_dbfs": -10.2
+      },
+      "incl_lanzador": {
+        "detectado": false,
+        "ratio_db": 0.0,
+        "amp_dbfs": -180.0
+      },
+      "excl_lanzador": {
+        "detectado": true,
+        "ratio_db": 137.7,
+        "amp_dbfs": -10.4
+      }
+    }
+  ]
+}

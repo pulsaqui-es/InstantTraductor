@@ -1,0 +1,315 @@
+{
+  "entorno": {
+    "formato_mezcla_dispositivo": {
+      "frecuencia": 48000,
+      "canales": 8,
+      "bits": 32,
+      "formato": 65534
+    },
+    "volumen_maestro_pct": 78.0,
+    "windows": "Windows-11-10.0.26200-SP0 build 26200 (25H2 UBR 9457)",
+    "python": "3.12.14",
+    "miniaudio": "1.71",
+    "numpy": "2.5.3",
+    "pycaw": "20260927",
+    "comtypes": "1.4.17",
+    "psutil": "7.2.2",
+    "cffi": "2.1.1",
+    "dispositivo_por_defecto": {
+      "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+      "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+    },
+    "dispositivos_activos": [
+      {
+        "nombre": "Realtek Digital Output (Realtek(R) Audio)",
+        "id": "{0.0.0.00000000}.{bb2b6dd2-08c7-4168-8846-db8b3c9dd285}"
+      },
+      {
+        "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+        "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+      }
+    ],
+    "pid": 22820,
+    "cadena_propia": "python.exe(22820) <- python.exe(8232) <- uv.exe(312172) <- bash.exe(704424) <- bash.exe(153164) <- bash.exe(35204) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)"
+  },
+  "dispositivos_miniaudio": [
+    {
+      "nombre": "Realtek Digital Output (Realtek(R) Audio)",
+      "formatos": [
+        {
+          "format": "32-bit IEEE Floating Point",
+          "samplerate": 48000,
+          "channels": 2
+        },
+        {
+          "format": "16-bit Signed Integer",
+          "samplerate": 48000,
+          "channels": 2
+        }
+      ]
+    },
+    {
+      "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+      "formatos": [
+        {
+          "format": "32-bit IEEE Floating Point",
+          "samplerate": 48000,
+          "channels": 8
+        },
+        {
+          "format": "16-bit Signed Integer",
+          "samplerate": 48000,
+          "channels": 8
+        }
+      ]
+    }
+  ],
+  "apertura": {
+    "ms": 20.6,
+    "backend": "WASAPI",
+    "tono": {
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 128.7,
+        "amp_dbfs": -13.0
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 126.4,
+        "amp_dbfs": -13.1
+      }
+    }
+  },
+  "cadencia_20x3_reposo": {
+    "callbacks": 250,
+    "frames_por_callback": [
+      960
+    ],
+    "intervalo_med_ms": 20.0,
+    "intervalo_p50_ms": 20.02,
+    "intervalo_p99_ms": 20.59,
+    "intervalo_max_ms": 20.72,
+    "mayores_de_1_5_periodos": 0,
+    "mayores_de_periodos_x_periodo": 0
+  },
+  "cadencia_20x3_gil": {
+    "callbacks": 250,
+    "frames_por_callback": [
+      960
+    ],
+    "intervalo_med_ms": 19.92,
+    "intervalo_p50_ms": 20.15,
+    "intervalo_p99_ms": 37.66,
+    "intervalo_max_ms": 44.01,
+    "mayores_de_1_5_periodos": 10,
+    "mayores_de_periodos_x_periodo": 0
+  },
+  "cadencias": {
+    "10x2": {
+      "callbacks": 400,
+      "frames_por_callback": [
+        480
+      ],
+      "intervalo_med_ms": 10.0,
+      "intervalo_p50_ms": 10.0,
+      "intervalo_p99_ms": 11.13,
+      "intervalo_max_ms": 11.22,
+      "mayores_de_1_5_periodos": 0,
+      "mayores_de_periodos_x_periodo": 0
+    },
+    "10x3": {
+      "callbacks": 400,
+      "frames_por_callback": [
+        480
+      ],
+      "intervalo_med_ms": 10.0,
+      "intervalo_p50_ms": 10.0,
+      "intervalo_p99_ms": 11.11,
+      "intervalo_max_ms": 11.21,
+      "mayores_de_1_5_periodos": 0,
+      "mayores_de_periodos_x_periodo": 0
+    },
+    "30x3": {
+      "callbacks": 133,
+      "frames_por_callback": [
+        1440
+      ],
+      "intervalo_med_ms": 30.01,
+      "intervalo_p50_ms": 29.99,
+      "intervalo_p99_ms": 30.68,
+      "intervalo_max_ms": 30.74,
+      "mayores_de_1_5_periodos": 0,
+      "mayores_de_periodos_x_periodo": 0
+    }
+  },
+  "cadencias_gil": {
+    "10x2": {
+      "callbacks": 395,
+      "frames_por_callback": [
+        480
+      ],
+      "intervalo_med_ms": 10.12,
+      "intervalo_p50_ms": 10.44,
+      "intervalo_p99_ms": 22.02,
+      "intervalo_max_ms": 30.86,
+      "mayores_de_1_5_periodos": 62,
+      "mayores_de_periodos_x_periodo": 14
+    },
+    "30x3": {
+      "callbacks": 134,
+      "frames_por_callback": [
+        1440
+      ],
+      "intervalo_med_ms": 30.0,
+      "intervalo_p50_ms": 30.03,
+      "intervalo_p99_ms": 48.29,
+      "intervalo_max_ms": 48.77,
+      "mayores_de_1_5_periodos": 3,
+      "mayores_de_periodos_x_periodo": 0
+    }
+  },
+  "glitches": {
+    "10x2_gil_libre": {
+      "tonos_medidos": 3,
+      "huecos_en_el_tono": 0,
+      "ms_en_hueco": 0.0
+    },
+    "10x2_gil_ocupado": {
+      "tonos_medidos": 3,
+      "huecos_en_el_tono": 30,
+      "ms_en_hueco": 324.5
+    },
+    "20x3_gil_libre": {
+      "tonos_medidos": 3,
+      "huecos_en_el_tono": 0,
+      "ms_en_hueco": 0.0
+    },
+    "20x3_gil_ocupado": {
+      "tonos_medidos": 3,
+      "huecos_en_el_tono": 3,
+      "ms_en_hueco": 1.0
+    }
+  },
+  "formatos": [
+    {
+      "sample_rate": 48000,
+      "canales": 1,
+      "abre": true,
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 129.4,
+        "amp_dbfs": -10.2
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 129.0,
+        "amp_dbfs": -10.4
+      }
+    },
+    {
+      "sample_rate": 48000,
+      "canales": 2,
+      "abre": true,
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 128.6,
+        "amp_dbfs": -12.9
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 128.3,
+        "amp_dbfs": -13.0
+      }
+    },
+    {
+      "sample_rate": 44100,
+      "canales": 1,
+      "abre": true,
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 126.9,
+        "amp_dbfs": -10.3
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 128.6,
+        "amp_dbfs": -10.4
+      }
+    },
+    {
+      "sample_rate": 44100,
+      "canales": 2,
+      "abre": true,
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 129.0,
+        "amp_dbfs": -12.9
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 127.8,
+        "amp_dbfs": -13.0
+      }
+    },
+    {
+      "sample_rate": 24000,
+      "canales": 1,
+      "abre": true,
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 130.2,
+        "amp_dbfs": -10.3
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 129.1,
+        "amp_dbfs": -10.4
+      }
+    },
+    {
+      "sample_rate": 24000,
+      "canales": 2,
+      "abre": true,
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 127.3,
+        "amp_dbfs": -12.9
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 127.5,
+        "amp_dbfs": -13.0
+      }
+    },
+    {
+      "sample_rate": 22050,
+      "canales": 1,
+      "abre": true,
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 127.2,
+        "amp_dbfs": -10.2
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 127.3,
+        "amp_dbfs": -10.4
+      }
+    },
+    {
+      "sample_rate": 22050,
+      "canales": 2,
+      "abre": true,
+      "endpoint": {
+        "detectado": true,
+        "ratio_db": 128.1,
+        "amp_dbfs": -12.9
+      },
+      "include": {
+        "detectado": true,
+        "ratio_db": 127.5,
+        "amp_dbfs": -13.0
+      }
+    }
+  ]
+}
