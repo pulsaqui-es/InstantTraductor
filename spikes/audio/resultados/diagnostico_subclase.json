@@ -1,0 +1,33 @@
+{
+  "versiones": {
+    "pyminiaudio": "1.71",
+    "miniaudio_c": "0.11.25",
+    "windows": "Windows-11-10.0.26200-SP0 build 26200 (25H2 UBR 9457)"
+  },
+  "subclase": {
+    "endpoint": {
+      "ok": true,
+      "paquetes": 97,
+      "tono_ratio_db": 127.3
+    },
+    "exclude": {
+      "ok": false,
+      "error": "('ma_device_init fallo: MA_INVALID_ARGS (-2) [modo=exclude, pid=247752]', -2)"
+    },
+    "include": {
+      "ok": false,
+      "error": "('ma_device_init fallo: MA_INVALID_ARGS (-2) [modo=include, pid=247752]', -2)"
+    }
+  },
+  "get_device_virtual": "COMError 0x80070057",
+  "ctypes": {
+    "exclude": {
+      "ok": true,
+      "ms": 0.6
+    },
+    "include": {
+      "ok": true,
+      "ms": 0.2
+    }
+  }
+}

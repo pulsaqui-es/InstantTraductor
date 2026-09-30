@@ -1,0 +1,82 @@
+{
+  "entorno": {
+    "formato_mezcla_dispositivo": {
+      "frecuencia": 48000,
+      "canales": 8,
+      "bits": 32,
+      "formato": 65534
+    },
+    "volumen_maestro_pct": 78.0,
+    "windows": "Windows-11-10.0.26200-SP0 build 26200 (25H2 UBR 9457)",
+    "python": "3.12.14",
+    "miniaudio": "1.71",
+    "numpy": "2.5.3",
+    "pycaw": "20260927",
+    "comtypes": "1.4.17",
+    "psutil": "7.2.2",
+    "cffi": "2.1.1",
+    "dispositivo_por_defecto": {
+      "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+      "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+    },
+    "dispositivos_activos": [
+      {
+        "nombre": "Realtek Digital Output (Realtek(R) Audio)",
+        "id": "{0.0.0.00000000}.{bb2b6dd2-08c7-4168-8846-db8b3c9dd285}"
+      },
+      {
+        "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+        "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+      }
+    ],
+    "pid": 270252,
+    "cadena_propia": "python.exe(270252) <- python.exe(403596) <- uv.exe(542612) <- bash.exe(148640) <- bash.exe(141388) <- bash.exe(467288) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)"
+  },
+  "cpu_pct_un_nucleo_en_reposo": 0.8,
+  "gil": {
+    "100ms_libre": {
+      "tonos_medidos": 3,
+      "paquetes_por_s": 100.0,
+      "intervalo_p99_ms": 11.0,
+      "intervalo_max_ms": 11.8,
+      "frames_por_s": 16007.0,
+      "discontinuidades": 0,
+      "huecos_en_el_tono": 0,
+      "ms_en_hueco": 0.0,
+      "error": null
+    },
+    "100ms_ocupado": {
+      "tonos_medidos": 3,
+      "paquetes_por_s": 99.7,
+      "intervalo_p99_ms": 20.5,
+      "intervalo_max_ms": 22.0,
+      "frames_por_s": 15958.0,
+      "discontinuidades": 0,
+      "huecos_en_el_tono": 0,
+      "ms_en_hueco": 0.0,
+      "error": null
+    },
+    "30ms_libre": {
+      "tonos_medidos": 3,
+      "paquetes_por_s": 100.1,
+      "intervalo_p99_ms": 10.9,
+      "intervalo_max_ms": 11.0,
+      "frames_por_s": 16020.0,
+      "discontinuidades": 0,
+      "huecos_en_el_tono": 0,
+      "ms_en_hueco": 0.0,
+      "error": null
+    },
+    "30ms_ocupado": {
+      "tonos_medidos": 3,
+      "paquetes_por_s": 100.2,
+      "intervalo_p99_ms": 21.4,
+      "intervalo_max_ms": 24.8,
+      "frames_por_s": 16036.0,
+      "discontinuidades": 0,
+      "huecos_en_el_tono": 0,
+      "ms_en_hueco": 0.0,
+      "error": null
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "1_A_suena": {
+    "exclude": {
+      "detectado": false,
+      "ratio_db": 0.0
+    },
+    "include": {
+      "detectado": true,
+      "ratio_db": 134.8
+    }
+  },
+  "2_estado_tras_morir_A": [
+    {
+      "exclude": {
+        "paquetes_ultimo_s": 100,
+        "error": null
+      },
+      "include": {
+        "paquetes_ultimo_s": 100,
+        "error": null
+      }
+    },
+    {
+      "exclude": {
+        "paquetes_ultimo_s": 100,
+        "error": null
+      },
+      "include": {
+        "paquetes_ultimo_s": 100,
+        "error": null
+      }
+    },
+    {
+      "exclude": {
+        "paquetes_ultimo_s": 100,
+        "error": null
+      },
+      "include": {
+        "paquetes_ultimo_s": 100,
+        "error": null
+      }
+    }
+  ],
+  "3_B_suena": {
+    "exclude": {
+      "detectado": true,
+      "ratio_db": 132.9
+    },
+    "include": {
+      "detectado": false,
+      "ratio_db": 0.0
+    }
+  },
+  "conclusion": {
+    "captura_sigue_viva_tras_morir_el_objetivo": true,
+    "exclude_del_pid_muerto_excluye_al_pid_nuevo": false
+  }
+}

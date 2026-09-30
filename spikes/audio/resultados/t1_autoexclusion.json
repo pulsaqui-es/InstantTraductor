@@ -1,0 +1,1320 @@
+{
+  "entorno": {
+    "formato_mezcla_dispositivo": {
+      "frecuencia": 48000,
+      "canales": 8,
+      "bits": 32,
+      "formato": 65534
+    },
+    "volumen_maestro_pct": 78.0,
+    "windows": "Windows-11-10.0.26200-SP0 build 26200 (25H2 UBR 9457)",
+    "python": "3.12.14",
+    "miniaudio": "1.71",
+    "numpy": "2.5.3",
+    "pycaw": "20260927",
+    "comtypes": "1.4.17",
+    "psutil": "7.2.2",
+    "cffi": "2.1.1",
+    "dispositivo_por_defecto": {
+      "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+      "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+    },
+    "dispositivos_activos": [
+      {
+        "nombre": "Realtek Digital Output (Realtek(R) Audio)",
+        "id": "{0.0.0.00000000}.{bb2b6dd2-08c7-4168-8846-db8b3c9dd285}"
+      },
+      {
+        "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+        "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+      }
+    ],
+    "pid": 187148,
+    "cadena_propia": "python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)"
+  },
+  "nivel_fondo_dbfs": {
+    "exclude": -180.0,
+    "include": -127.8,
+    "endpoint": -127.5
+  },
+  "filas": [
+    {
+      "ronda": 1,
+      "escenario": "propio_nuevo",
+      "descripcion": "este proceso; PlaybackDevice creado tras iniciar la captura",
+      "frecuencia": 1234.0,
+      "profundidad_esperada": 0,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 160,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 136.7,
+          "amp_dbfs": -11.5,
+          "ratio_base_db": 10.3,
+          "detectado": true,
+          "paquetes": 190,
+          "rms_dbfs": -20.1
+        },
+        "endpoint": {
+          "ratio_db": 135.1,
+          "amp_dbfs": -11.3,
+          "ratio_base_db": 11.2,
+          "detectado": true,
+          "paquetes": 223,
+          "rms_dbfs": -20.7
+        }
+      },
+      "emisores": [
+        {
+          "pid": 187148,
+          "cadena": "python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 0
+        }
+      ],
+      "t_ini_ns": 381476815176200
+    },
+    {
+      "ronda": 1,
+      "escenario": "propio_previo",
+      "descripcion": "este proceso; PlaybackDevice abierto (con ceros) antes de la captura",
+      "frecuencia": 1321.0,
+      "profundidad_esperada": 0,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 151,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 134.7,
+          "amp_dbfs": -17.8,
+          "ratio_base_db": 6.5,
+          "detectado": true,
+          "paquetes": 179,
+          "rms_dbfs": -26.6
+        },
+        "endpoint": {
+          "ratio_db": 135.3,
+          "amp_dbfs": -17.8,
+          "ratio_base_db": 6.5,
+          "detectado": true,
+          "paquetes": 211,
+          "rms_dbfs": -27.2
+        }
+      },
+      "emisores": [
+        {
+          "pid": 187148,
+          "cadena": "python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 0
+        }
+      ],
+      "t_ini_ns": 381480254059900
+    },
+    {
+      "ronda": 1,
+      "escenario": "hijo_directo_previo",
+      "descripcion": "hijo directo creado y con el dispositivo abierto ANTES de la captura",
+      "frecuencia": 777.0,
+      "profundidad_esperada": 1,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 151,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 123.6,
+          "amp_dbfs": -17.5,
+          "ratio_base_db": 10.6,
+          "detectado": true,
+          "paquetes": 182,
+          "rms_dbfs": -26.3
+        },
+        "endpoint": {
+          "ratio_db": 124.9,
+          "amp_dbfs": -17.4,
+          "ratio_base_db": 9.8,
+          "detectado": true,
+          "paquetes": 215,
+          "rms_dbfs": -26.9
+        }
+      },
+      "emisores": [
+        {
+          "pid": 462092,
+          "cadena": "python.exe(462092) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 1
+        }
+      ],
+      "t_ini_ns": 381483554749300,
+      "respuesta": {
+        "ok": true,
+        "pid": 462092,
+        "etiqueta": "hijo_directo_previo",
+        "f": 777.0,
+        "temporal": false,
+        "t_recv_ns": 381483554800800,
+        "t_primer_bloque_ns": 381483569577300,
+        "t_ultimo_bloque_ns": 381484149622700
+      }
+    },
+    {
+      "ronda": 1,
+      "escenario": "hijo_directo_posterior",
+      "descripcion": "hijo directo creado DESPUES de iniciar la captura",
+      "frecuencia": 1111.0,
+      "profundidad_esperada": 1,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 159,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 134.4,
+          "amp_dbfs": -11.2,
+          "ratio_base_db": 12.8,
+          "detectado": true,
+          "paquetes": 187,
+          "rms_dbfs": -19.8
+        },
+        "endpoint": {
+          "ratio_db": 132.3,
+          "amp_dbfs": -11.0,
+          "ratio_base_db": 12.2,
+          "detectado": true,
+          "paquetes": 221,
+          "rms_dbfs": -20.5
+        }
+      },
+      "emisores": [
+        {
+          "pid": 580500,
+          "cadena": "python.exe(580500) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 1
+        }
+      ],
+      "t_ini_ns": 381486918601700,
+      "respuesta": {
+        "ok": true,
+        "pid": 580500,
+        "etiqueta": "hijo_directo_posterior",
+        "f": 1111.0,
+        "temporal": true,
+        "t_recv_ns": 381486918656500,
+        "t_primer_bloque_ns": 381486960241300,
+        "t_ultimo_bloque_ns": 381487539912900
+      }
+    },
+    {
+      "ronda": 1,
+      "escenario": "hijo_redirector",
+      "descripcion": "hijo lanzado con sys.executable (redirector del venv): suena a 2 niveles",
+      "frecuencia": 1222.0,
+      "profundidad_esperada": 2,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 135.8,
+          "amp_dbfs": -10.6,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 161,
+          "rms_dbfs": -18.5
+        },
+        "include": {
+          "ratio_db": 9.2,
+          "amp_dbfs": -158.4,
+          "ratio_base_db": 10.3,
+          "detectado": false,
+          "paquetes": 192,
+          "rms_dbfs": -135.2
+        },
+        "endpoint": {
+          "ratio_db": 134.4,
+          "amp_dbfs": -10.5,
+          "ratio_base_db": 10.5,
+          "detectado": true,
+          "paquetes": 226,
+          "rms_dbfs": -19.9
+        }
+      },
+      "emisores": [
+        {
+          "pid": 668460,
+          "cadena": "python.exe(668460) <- python.exe(657540) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 2
+        }
+      ],
+      "t_ini_ns": 381490335596300,
+      "respuesta": {
+        "ok": true,
+        "pid": 668460,
+        "etiqueta": "hijo_redirector",
+        "f": 1222.0,
+        "temporal": true,
+        "t_recv_ns": 381490335657900,
+        "t_primer_bloque_ns": 381490379872600,
+        "t_ultimo_bloque_ns": 381490960201800
+      }
+    },
+    {
+      "ronda": 1,
+      "escenario": "nieto_directo",
+      "descripcion": "nieto (hijo directo del hijo directo), sin redirectores",
+      "frecuencia": 1357.0,
+      "profundidad_esperada": 2,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 135.9,
+          "amp_dbfs": -10.4,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 160,
+          "rms_dbfs": -18.3
+        },
+        "include": {
+          "ratio_db": 11.5,
+          "amp_dbfs": -156.9,
+          "ratio_base_db": 9.6,
+          "detectado": false,
+          "paquetes": 194,
+          "rms_dbfs": -135.2
+        },
+        "endpoint": {
+          "ratio_db": 135.0,
+          "amp_dbfs": -10.2,
+          "ratio_base_db": 10.1,
+          "detectado": true,
+          "paquetes": 230,
+          "rms_dbfs": -19.8
+        }
+      },
+      "emisores": [
+        {
+          "pid": 362024,
+          "cadena": "python.exe(362024) <- python.exe(416360) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 2
+        }
+      ],
+      "t_ini_ns": 381493978074600,
+      "respuesta": {
+        "ok": true,
+        "pid": 362024,
+        "etiqueta": "nieto_directo",
+        "f": 1357.0,
+        "temporal": true,
+        "t_recv_ns": 381493978133100,
+        "t_primer_bloque_ns": 381494020545000,
+        "t_ultimo_bloque_ns": 381494600426300
+      }
+    },
+    {
+      "ronda": 1,
+      "escenario": "nieto_redirector",
+      "descripcion": "nieto lanzado con sys.executable desde un hijo con redirector",
+      "frecuencia": 1471.0,
+      "profundidad_esperada": 4,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 137.6,
+          "amp_dbfs": -14.7,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 162,
+          "rms_dbfs": -22.7
+        },
+        "include": {
+          "ratio_db": 9.4,
+          "amp_dbfs": -161.3,
+          "ratio_base_db": 10.8,
+          "detectado": false,
+          "paquetes": 193,
+          "rms_dbfs": -135.2
+        },
+        "endpoint": {
+          "ratio_db": 135.4,
+          "amp_dbfs": -14.5,
+          "ratio_base_db": 10.1,
+          "detectado": true,
+          "paquetes": 225,
+          "rms_dbfs": -24.0
+        }
+      },
+      "emisores": [
+        {
+          "pid": 298236,
+          "cadena": "python.exe(298236) <- python.exe(508480) <- python.exe(486376) <- python.exe(223392) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 4
+        }
+      ],
+      "t_ini_ns": 381497733277900,
+      "respuesta": {
+        "ok": true,
+        "pid": 298236,
+        "etiqueta": "nieto_redirector",
+        "f": 1471.0,
+        "temporal": true,
+        "t_recv_ns": 381497733333300,
+        "t_primer_bloque_ns": 381497780524500,
+        "t_ultimo_bloque_ns": 381498361702800
+      }
+    },
+    {
+      "ronda": 1,
+      "escenario": "ffplay_hijo_directo",
+      "descripcion": "ffplay lanzado con Popen directo (hijo directo, sin python)",
+      "frecuencia": 1579.0,
+      "profundidad_esperada": 1,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 314,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 121.7,
+          "amp_dbfs": -24.3,
+          "ratio_base_db": 9.0,
+          "detectado": true,
+          "paquetes": 357,
+          "rms_dbfs": -36.0
+        },
+        "endpoint": {
+          "ratio_db": 120.0,
+          "amp_dbfs": -24.3,
+          "ratio_base_db": 8.4,
+          "detectado": true,
+          "paquetes": 394,
+          "rms_dbfs": -36.3
+        }
+      },
+      "emisores": [
+        {
+          "pid": 297036,
+          "cadena": "ffplay.exe(297036) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 1
+        }
+      ],
+      "t_ini_ns": 381501198402200
+    },
+    {
+      "ronda": 1,
+      "escenario": "ffplay_via_cmd",
+      "descripcion": "ffplay lanzado con `cmd /c ffplay` (cmd.exe vivo de intermedio)",
+      "frecuencia": 1888.0,
+      "profundidad_esperada": 2,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 134.5,
+          "amp_dbfs": -27.0,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 313,
+          "rms_dbfs": -38.1
+        },
+        "include": {
+          "ratio_db": 8.2,
+          "amp_dbfs": -162.2,
+          "ratio_base_db": 5.4,
+          "detectado": false,
+          "paquetes": 361,
+          "rms_dbfs": -135.2
+        },
+        "endpoint": {
+          "ratio_db": 132.4,
+          "amp_dbfs": -27.0,
+          "ratio_base_db": 4.9,
+          "detectado": true,
+          "paquetes": 395,
+          "rms_dbfs": -39.0
+        }
+      },
+      "emisores": [
+        {
+          "pid": 88156,
+          "cadena": "ffplay.exe(88156) <- cmd.exe(533212) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 2
+        }
+      ],
+      "t_ini_ns": 381506644015500
+    },
+    {
+      "ronda": 1,
+      "escenario": "externo_ffplay_cmd",
+      "descripcion": "ffplay lanzado con `cmd /c start` (su cmd.exe muere)",
+      "frecuencia": 1999.0,
+      "profundidad_esperada": null,
+      "esperado_segun_adr": {
+        "exclude": true,
+        "include": false,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 120.4,
+          "amp_dbfs": -26.0,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 317,
+          "rms_dbfs": -37.1
+        },
+        "include": {
+          "ratio_db": 6.0,
+          "amp_dbfs": -163.3,
+          "ratio_base_db": 5.8,
+          "detectado": false,
+          "paquetes": 364,
+          "rms_dbfs": -135.3
+        },
+        "endpoint": {
+          "ratio_db": 121.1,
+          "amp_dbfs": -25.9,
+          "ratio_base_db": 6.2,
+          "detectado": true,
+          "paquetes": 397,
+          "rms_dbfs": -38.0
+        }
+      },
+      "emisores": [
+        {
+          "pid": 379940,
+          "cadena": "ffplay.exe(379940) <- <muerto o PID reutilizado>(186948)",
+          "cuelga_de_este_proceso": false,
+          "nivel": null
+        }
+      ],
+      "t_ini_ns": 381512194806900
+    },
+    {
+      "ronda": 1,
+      "escenario": "externo_python_cmd",
+      "descripcion": "trabajador Python lanzado con `cmd /c start` (pythonw)",
+      "frecuencia": 1663.0,
+      "profundidad_esperada": null,
+      "esperado_segun_adr": {
+        "exclude": true,
+        "include": false,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 138.9,
+          "amp_dbfs": -16.0,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 156,
+          "rms_dbfs": -23.8
+        },
+        "include": {
+          "ratio_db": 10.0,
+          "amp_dbfs": -160.1,
+          "ratio_base_db": 7.6,
+          "detectado": false,
+          "paquetes": 188,
+          "rms_dbfs": -135.1
+        },
+        "endpoint": {
+          "ratio_db": 138.5,
+          "amp_dbfs": -15.8,
+          "ratio_base_db": 7.0,
+          "detectado": true,
+          "paquetes": 222,
+          "rms_dbfs": -25.2
+        }
+      },
+      "emisores": [
+        {
+          "pid": 715172,
+          "cadena": "pythonw.exe(715172) <- pythonw.exe(673704) <- <muerto o PID reutilizado>(157316)",
+          "cuelga_de_este_proceso": false,
+          "nivel": null
+        }
+      ],
+      "t_ini_ns": 381518276447200,
+      "respuesta": {
+        "ok": true,
+        "pid": 715172,
+        "etiqueta": "externo_python_cmd",
+        "f": 1663.0,
+        "temporal": true,
+        "t_recv_ns": 381518276492400,
+        "t_primer_bloque_ns": 381518322029500,
+        "t_ultimo_bloque_ns": 381518902266900
+      }
+    },
+    {
+      "ronda": 1,
+      "escenario": "externo_ffplay_wmi",
+      "descripcion": "ffplay lanzado con Win32_Process.Create (padre WmiPrvSE)",
+      "frecuencia": 1777.0,
+      "profundidad_esperada": null,
+      "esperado_segun_adr": {
+        "exclude": true,
+        "include": false,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 120.7,
+          "amp_dbfs": -25.1,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 344,
+          "rms_dbfs": -36.6
+        },
+        "include": {
+          "ratio_db": 11.1,
+          "amp_dbfs": -160.1,
+          "ratio_base_db": 9.0,
+          "detectado": false,
+          "paquetes": 420,
+          "rms_dbfs": -135.1
+        },
+        "endpoint": {
+          "ratio_db": 120.9,
+          "amp_dbfs": -25.1,
+          "ratio_base_db": 9.8,
+          "detectado": true,
+          "paquetes": 426,
+          "rms_dbfs": -37.5
+        }
+      },
+      "emisores": [
+        {
+          "pid": 548536,
+          "cadena": "ffplay.exe(548536) <- WmiPrvSE.exe(5724) <- svchost.exe(1700) <- services.exe(1472) <- wininit.exe(1392) <- <muerto o PID reutilizado>(1252)",
+          "cuelga_de_este_proceso": false,
+          "nivel": null
+        }
+      ],
+      "t_ini_ns": 381521719700800
+    },
+    {
+      "ronda": 2,
+      "escenario": "propio_nuevo",
+      "descripcion": "este proceso; PlaybackDevice creado tras iniciar la captura",
+      "frecuencia": 1234.0,
+      "profundidad_esperada": 0,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 159,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 136.0,
+          "amp_dbfs": -11.5,
+          "ratio_base_db": 10.3,
+          "detectado": true,
+          "paquetes": 190,
+          "rms_dbfs": -20.1
+        },
+        "endpoint": {
+          "ratio_db": 135.1,
+          "amp_dbfs": -11.3,
+          "ratio_base_db": 11.2,
+          "detectado": true,
+          "paquetes": 225,
+          "rms_dbfs": -20.8
+        }
+      },
+      "emisores": [
+        {
+          "pid": 187148,
+          "cadena": "python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 0
+        }
+      ],
+      "t_ini_ns": 381527908094300
+    },
+    {
+      "ronda": 2,
+      "escenario": "propio_previo",
+      "descripcion": "este proceso; PlaybackDevice abierto (con ceros) antes de la captura",
+      "frecuencia": 1321.0,
+      "profundidad_esperada": 0,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 150,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 134.7,
+          "amp_dbfs": -17.8,
+          "ratio_base_db": 6.5,
+          "detectado": true,
+          "paquetes": 179,
+          "rms_dbfs": -26.6
+        },
+        "endpoint": {
+          "ratio_db": 135.7,
+          "amp_dbfs": -17.8,
+          "ratio_base_db": 6.5,
+          "detectado": true,
+          "paquetes": 211,
+          "rms_dbfs": -27.2
+        }
+      },
+      "emisores": [
+        {
+          "pid": 187148,
+          "cadena": "python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 0
+        }
+      ],
+      "t_ini_ns": 381531379527200
+    },
+    {
+      "ronda": 2,
+      "escenario": "hijo_directo_previo",
+      "descripcion": "hijo directo creado y con el dispositivo abierto ANTES de la captura",
+      "frecuencia": 777.0,
+      "profundidad_esperada": 1,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 152,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 124.9,
+          "amp_dbfs": -17.5,
+          "ratio_base_db": 10.6,
+          "detectado": true,
+          "paquetes": 181,
+          "rms_dbfs": -26.2
+        },
+        "endpoint": {
+          "ratio_db": 124.2,
+          "amp_dbfs": -17.5,
+          "ratio_base_db": 9.8,
+          "detectado": true,
+          "paquetes": 213,
+          "rms_dbfs": -26.9
+        }
+      },
+      "emisores": [
+        {
+          "pid": 462092,
+          "cadena": "python.exe(462092) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 1
+        }
+      ],
+      "t_ini_ns": 381534684062700,
+      "respuesta": {
+        "ok": true,
+        "pid": 462092,
+        "etiqueta": "hijo_directo_previo",
+        "f": 777.0,
+        "temporal": false,
+        "t_recv_ns": 381534684100400,
+        "t_primer_bloque_ns": 381534693335900,
+        "t_ultimo_bloque_ns": 381535273684500
+      }
+    },
+    {
+      "ronda": 2,
+      "escenario": "hijo_directo_posterior",
+      "descripcion": "hijo directo creado DESPUES de iniciar la captura",
+      "frecuencia": 1111.0,
+      "profundidad_esperada": 1,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 160,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 132.2,
+          "amp_dbfs": -11.2,
+          "ratio_base_db": 12.8,
+          "detectado": true,
+          "paquetes": 189,
+          "rms_dbfs": -19.9
+        },
+        "endpoint": {
+          "ratio_db": 133.6,
+          "amp_dbfs": -11.0,
+          "ratio_base_db": 12.2,
+          "detectado": true,
+          "paquetes": 223,
+          "rms_dbfs": -20.5
+        }
+      },
+      "emisores": [
+        {
+          "pid": 580500,
+          "cadena": "python.exe(580500) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 1
+        }
+      ],
+      "t_ini_ns": 381538026777600,
+      "respuesta": {
+        "ok": true,
+        "pid": 580500,
+        "etiqueta": "hijo_directo_posterior",
+        "f": 1111.0,
+        "temporal": true,
+        "t_recv_ns": 381538026840900,
+        "t_primer_bloque_ns": 381538063756400,
+        "t_ultimo_bloque_ns": 381538644330000
+      }
+    },
+    {
+      "ronda": 2,
+      "escenario": "hijo_redirector",
+      "descripcion": "hijo lanzado con sys.executable (redirector del venv): suena a 2 niveles",
+      "frecuencia": 1222.0,
+      "profundidad_esperada": 2,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 134.4,
+          "amp_dbfs": -10.6,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 161,
+          "rms_dbfs": -18.5
+        },
+        "include": {
+          "ratio_db": 12.1,
+          "amp_dbfs": -157.4,
+          "ratio_base_db": 10.3,
+          "detectado": false,
+          "paquetes": 192,
+          "rms_dbfs": -135.1
+        },
+        "endpoint": {
+          "ratio_db": 134.2,
+          "amp_dbfs": -10.5,
+          "ratio_base_db": 10.5,
+          "detectado": true,
+          "paquetes": 226,
+          "rms_dbfs": -19.9
+        }
+      },
+      "emisores": [
+        {
+          "pid": 668460,
+          "cadena": "python.exe(668460) <- python.exe(657540) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 2
+        }
+      ],
+      "t_ini_ns": 381541472335500,
+      "respuesta": {
+        "ok": true,
+        "pid": 668460,
+        "etiqueta": "hijo_redirector",
+        "f": 1222.0,
+        "temporal": true,
+        "t_recv_ns": 381541472387000,
+        "t_primer_bloque_ns": 381541513756700,
+        "t_ultimo_bloque_ns": 381542094371000
+      }
+    },
+    {
+      "ronda": 2,
+      "escenario": "nieto_directo",
+      "descripcion": "nieto (hijo directo del hijo directo), sin redirectores",
+      "frecuencia": 1357.0,
+      "profundidad_esperada": 2,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 135.1,
+          "amp_dbfs": -10.3,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 159,
+          "rms_dbfs": -18.3
+        },
+        "include": {
+          "ratio_db": 13.1,
+          "amp_dbfs": -157.2,
+          "ratio_base_db": 9.6,
+          "detectado": false,
+          "paquetes": 190,
+          "rms_dbfs": -135.1
+        },
+        "endpoint": {
+          "ratio_db": 135.1,
+          "amp_dbfs": -10.2,
+          "ratio_base_db": 10.1,
+          "detectado": true,
+          "paquetes": 223,
+          "rms_dbfs": -19.6
+        }
+      },
+      "emisores": [
+        {
+          "pid": 362024,
+          "cadena": "python.exe(362024) <- python.exe(416360) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 2
+        }
+      ],
+      "t_ini_ns": 381544938406200,
+      "respuesta": {
+        "ok": true,
+        "pid": 362024,
+        "etiqueta": "nieto_directo",
+        "f": 1357.0,
+        "temporal": true,
+        "t_recv_ns": 381544938489800,
+        "t_primer_bloque_ns": 381544974384500,
+        "t_ultimo_bloque_ns": 381545554785900
+      }
+    },
+    {
+      "ronda": 2,
+      "escenario": "nieto_redirector",
+      "descripcion": "nieto lanzado con sys.executable desde un hijo con redirector",
+      "frecuencia": 1471.0,
+      "profundidad_esperada": 4,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 136.3,
+          "amp_dbfs": -14.8,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 164,
+          "rms_dbfs": -22.7
+        },
+        "include": {
+          "ratio_db": 10.4,
+          "amp_dbfs": -159.2,
+          "ratio_base_db": 10.8,
+          "detectado": false,
+          "paquetes": 244,
+          "rms_dbfs": -135.2
+        },
+        "endpoint": {
+          "ratio_db": 137.5,
+          "amp_dbfs": -14.6,
+          "ratio_base_db": 10.1,
+          "detectado": true,
+          "paquetes": 244,
+          "rms_dbfs": -24.3
+        }
+      },
+      "emisores": [
+        {
+          "pid": 298236,
+          "cadena": "python.exe(298236) <- python.exe(508480) <- python.exe(486376) <- python.exe(223392) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 4
+        }
+      ],
+      "t_ini_ns": 381548375845500,
+      "respuesta": {
+        "ok": true,
+        "pid": 298236,
+        "etiqueta": "nieto_redirector",
+        "f": 1471.0,
+        "temporal": true,
+        "t_recv_ns": 381548375894600,
+        "t_primer_bloque_ns": 381548414600500,
+        "t_ultimo_bloque_ns": 381548995478100
+      }
+    },
+    {
+      "ronda": 2,
+      "escenario": "ffplay_hijo_directo",
+      "descripcion": "ffplay lanzado con Popen directo (hijo directo, sin python)",
+      "frecuencia": 1579.0,
+      "profundidad_esperada": 1,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 0.0,
+          "amp_dbfs": -180.0,
+          "ratio_base_db": 0.0,
+          "detectado": false,
+          "paquetes": 321,
+          "rms_dbfs": -180.0
+        },
+        "include": {
+          "ratio_db": 121.5,
+          "amp_dbfs": -24.3,
+          "ratio_base_db": 9.0,
+          "detectado": true,
+          "paquetes": 367,
+          "rms_dbfs": -36.1
+        },
+        "endpoint": {
+          "ratio_db": 120.9,
+          "amp_dbfs": -24.2,
+          "ratio_base_db": 8.4,
+          "detectado": true,
+          "paquetes": 401,
+          "rms_dbfs": -36.4
+        }
+      },
+      "emisores": [
+        {
+          "pid": 324824,
+          "cadena": "ffplay.exe(324824) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 1
+        }
+      ],
+      "t_ini_ns": 381552984827900
+    },
+    {
+      "ronda": 2,
+      "escenario": "ffplay_via_cmd",
+      "descripcion": "ffplay lanzado con `cmd /c ffplay` (cmd.exe vivo de intermedio)",
+      "frecuencia": 1888.0,
+      "profundidad_esperada": 2,
+      "esperado_segun_adr": {
+        "exclude": false,
+        "include": true,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 134.2,
+          "amp_dbfs": -27.0,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 312,
+          "rms_dbfs": -38.0
+        },
+        "include": {
+          "ratio_db": 9.0,
+          "amp_dbfs": -160.9,
+          "ratio_base_db": 5.4,
+          "detectado": false,
+          "paquetes": 362,
+          "rms_dbfs": -135.1
+        },
+        "endpoint": {
+          "ratio_db": 131.9,
+          "amp_dbfs": -27.0,
+          "ratio_base_db": 4.9,
+          "detectado": true,
+          "paquetes": 395,
+          "rms_dbfs": -39.0
+        }
+      },
+      "emisores": [
+        {
+          "pid": 471264,
+          "cadena": "ffplay.exe(471264) <- cmd.exe(450524) <- python.exe(187148) <- python.exe(245632) <- uv.exe(628416) <- bash.exe(351572) <- bash.exe(83500) <- bash.exe(563248) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)",
+          "cuelga_de_este_proceso": true,
+          "nivel": 2
+        }
+      ],
+      "t_ini_ns": 381558558499300
+    },
+    {
+      "ronda": 2,
+      "escenario": "externo_ffplay_cmd",
+      "descripcion": "ffplay lanzado con `cmd /c start` (su cmd.exe muere)",
+      "frecuencia": 1999.0,
+      "profundidad_esperada": null,
+      "esperado_segun_adr": {
+        "exclude": true,
+        "include": false,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 118.7,
+          "amp_dbfs": -26.0,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 316,
+          "rms_dbfs": -37.1
+        },
+        "include": {
+          "ratio_db": 7.3,
+          "amp_dbfs": -164.2,
+          "ratio_base_db": 5.8,
+          "detectado": false,
+          "paquetes": 367,
+          "rms_dbfs": -135.1
+        },
+        "endpoint": {
+          "ratio_db": 118.4,
+          "amp_dbfs": -25.9,
+          "ratio_base_db": 6.2,
+          "detectado": true,
+          "paquetes": 397,
+          "rms_dbfs": -38.0
+        }
+      },
+      "emisores": [
+        {
+          "pid": 129256,
+          "cadena": "ffplay.exe(129256) <- <muerto o PID reutilizado>(17496)",
+          "cuelga_de_este_proceso": false,
+          "nivel": null
+        }
+      ],
+      "t_ini_ns": 381564076063200
+    },
+    {
+      "ronda": 2,
+      "escenario": "externo_python_cmd",
+      "descripcion": "trabajador Python lanzado con `cmd /c start` (pythonw)",
+      "frecuencia": 1663.0,
+      "profundidad_esperada": null,
+      "esperado_segun_adr": {
+        "exclude": true,
+        "include": false,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 139.1,
+          "amp_dbfs": -16.0,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 156,
+          "rms_dbfs": -23.8
+        },
+        "include": {
+          "ratio_db": 8.6,
+          "amp_dbfs": -162.0,
+          "ratio_base_db": 7.6,
+          "detectado": false,
+          "paquetes": 185,
+          "rms_dbfs": -135.0
+        },
+        "endpoint": {
+          "ratio_db": 138.6,
+          "amp_dbfs": -15.8,
+          "ratio_base_db": 7.0,
+          "detectado": true,
+          "paquetes": 217,
+          "rms_dbfs": -25.1
+        }
+      },
+      "emisores": [
+        {
+          "pid": 236396,
+          "cadena": "pythonw.exe(236396) <- pythonw.exe(712096) <- <muerto o PID reutilizado>(595792)",
+          "cuelga_de_este_proceso": false,
+          "nivel": null
+        }
+      ],
+      "t_ini_ns": 381570311797800,
+      "respuesta": {
+        "ok": true,
+        "pid": 236396,
+        "etiqueta": "externo_python_cmd",
+        "f": 1663.0,
+        "temporal": true,
+        "t_recv_ns": 381570311850900,
+        "t_primer_bloque_ns": 381570356645000,
+        "t_ultimo_bloque_ns": 381570936412300
+      }
+    },
+    {
+      "ronda": 2,
+      "escenario": "externo_ffplay_wmi",
+      "descripcion": "ffplay lanzado con Win32_Process.Create (padre WmiPrvSE)",
+      "frecuencia": 1777.0,
+      "profundidad_esperada": null,
+      "esperado_segun_adr": {
+        "exclude": true,
+        "include": false,
+        "endpoint": true
+      },
+      "mediciones": {
+        "exclude": {
+          "ratio_db": 120.8,
+          "amp_dbfs": -25.1,
+          "ratio_base_db": 0.0,
+          "detectado": true,
+          "paquetes": 347,
+          "rms_dbfs": -36.7
+        },
+        "include": {
+          "ratio_db": 9.0,
+          "amp_dbfs": -161.7,
+          "ratio_base_db": 9.0,
+          "detectado": false,
+          "paquetes": 397,
+          "rms_dbfs": -135.1
+        },
+        "endpoint": {
+          "ratio_db": 121.0,
+          "amp_dbfs": -25.0,
+          "ratio_base_db": 9.8,
+          "detectado": true,
+          "paquetes": 428,
+          "rms_dbfs": -37.5
+        }
+      },
+      "emisores": [
+        {
+          "pid": 426956,
+          "cadena": "ffplay.exe(426956) <- WmiPrvSE.exe(5724) <- svchost.exe(1700) <- services.exe(1472) <- wininit.exe(1392) <- <muerto o PID reutilizado>(1252)",
+          "cuelga_de_este_proceso": false,
+          "nivel": null
+        }
+      ],
+      "t_ini_ns": 381573675186500
+    }
+  ],
+  "umbral_ratio_db": 15.0,
+  "umbral_sobre_base_db": 10.0,
+  "log_trabajadores": [
+    "{\"evento\": \"inicio\", \"argv\": [\"--rol\", \"directo_previo\", \"--log\", \"C:\\\\Users\\\\Usuario\\\\AppData\\\\Local\\\\Temp\\\\s4_t1_w1h5sjog\\\\trabajadores.jsonl\"], \"rol\": \"directo_previo\", \"pid\": 462092, \"ppid\": 187148, \"t_ns\": 381474025122500}",
+    "{\"evento\": \"notificacion\", \"tipo\": \"started\", \"t_evento_ns\": 381474064356600, \"rol\": \"directo_previo\", \"pid\": 462092, \"ppid\": 187148, \"t_ns\": 381474064444800}",
+    "{\"evento\": \"abrir\", \"periodo_ms\": 20, \"periodos\": 3, \"canales\": 2, \"rol\": \"directo_previo\", \"pid\": 462092, \"ppid\": 187148, \"t_ns\": 381474064551400}",
+    "{\"evento\": \"inicio\", \"argv\": [\"--rol\", \"directo_posterior\", \"--log\", \"C:\\\\Users\\\\Usuario\\\\AppData\\\\Local\\\\Temp\\\\s4_t1_w1h5sjog\\\\trabajadores.jsonl\"], \"rol\": \"directo_posterior\", \"pid\": 580500, \"ppid\": 187148, \"t_ns\": 381476280093400}",
+    "{\"evento\": \"inicio\", \"argv\": [\"--rol\", \"redirector\", \"--log\", \"C:\\\\Users\\\\Usuario\\\\AppData\\\\Local\\\\Temp\\\\s4_t1_w1h5sjog\\\\trabajadores.jsonl\"], \"rol\": \"redirector\", \"pid\": 668460, \"ppid\": 657540, \"t_ns\": 381476465344400}",
+    "{\"evento\": \"inicio\", \"argv\": [\"--rol\", \"padre_nieto_directo\", \"--log\", \"C:\\\\Users\\\\Usuario\\\\AppData\\\\Local\\\\Temp\\\\s4_t1_w1h5sjog\\\\trabajadores.jsonl\"], \"rol\": \"padre_nieto_directo\", \"pid\": 416360, \"ppid\": 187148, \"t_ns\": 381476637239400}",
+    "{\"evento\": \"inicio\", \"argv\": [\"--rol\", \"padre_nieto_redirector\", \"--log\", \"C:\\\\Users\\\\Usuario\\\\AppData\\\\Local\\\\Temp\\\\s4_t1_w1h5sjog\\\\trabajadores.jsonl\"], \"rol\": \"padre_nieto_redirector\", \"pid\": 486376, \"ppid\": 223392, \"t_ns\": 381476814674000}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 462092, \"etiqueta\": \"hijo_directo_previo\", \"f\": 777.0, \"temporal\": false, \"t_recv_ns\": 381483554800800, \"t_primer_bloque_ns\": 381483569577300, \"t_ultimo_bloque_ns\": 381484149622700, \"rol\": \"directo_previo\", \"ppid\": 187148, \"t_ns\": 381484449993800}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 580500, \"etiqueta\": \"hijo_directo_posterior\", \"f\": 1111.0, \"temporal\": true, \"t_recv_ns\": 381486918656500, \"t_primer_bloque_ns\": 381486960241300, \"t_ultimo_bloque_ns\": 381487539912900, \"rol\": \"directo_posterior\", \"ppid\": 187148, \"t_ns\": 381487882052600}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 668460, \"etiqueta\": \"hijo_redirector\", \"f\": 1222.0, \"temporal\": true, \"t_recv_ns\": 381490335657900, \"t_primer_bloque_ns\": 381490379872600, \"t_ultimo_bloque_ns\": 381490960201800, \"rol\": \"redirector\", \"ppid\": 657540, \"t_ns\": 381491322383800}",
+    "{\"evento\": \"inicio\", \"argv\": [\"--rol\", \"nieto\", \"--log\", \"C:\\\\Users\\\\Usuario\\\\AppData\\\\Local\\\\Temp\\\\s4_t1_w1h5sjog\\\\trabajadores.jsonl\"], \"rol\": \"nieto\", \"pid\": 362024, \"ppid\": 416360, \"t_ns\": 381493977633300}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 362024, \"etiqueta\": \"nieto_directo\", \"f\": 1357.0, \"temporal\": true, \"t_recv_ns\": 381493978133100, \"t_primer_bloque_ns\": 381494020545000, \"t_ultimo_bloque_ns\": 381494600426300, \"rol\": \"nieto\", \"ppid\": 416360, \"t_ns\": 381494962241800}",
+    "{\"evento\": \"inicio\", \"argv\": [\"--rol\", \"nieto\", \"--log\", \"C:\\\\Users\\\\Usuario\\\\AppData\\\\Local\\\\Temp\\\\s4_t1_w1h5sjog\\\\trabajadores.jsonl\"], \"rol\": \"nieto\", \"pid\": 298236, \"ppid\": 508480, \"t_ns\": 381497732731300}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 298236, \"etiqueta\": \"nieto_redirector\", \"f\": 1471.0, \"temporal\": true, \"t_recv_ns\": 381497733333300, \"t_primer_bloque_ns\": 381497780524500, \"t_ultimo_bloque_ns\": 381498361702800, \"rol\": \"nieto\", \"ppid\": 508480, \"t_ns\": 381498723649700}",
+    "{\"evento\": \"inicio\", \"argv\": [\"--rol\", \"externo\", \"--udp\", \"61043\", \"--log\", \"C:\\\\Users\\\\Usuario\\\\AppData\\\\Local\\\\Temp\\\\s4_t1_w1h5sjog\\\\trabajadores.jsonl\"], \"rol\": \"externo\", \"pid\": 715172, \"ppid\": 673704, \"t_ns\": 381517946216200}",
+    "{\"evento\": \"listo_udp\", \"puerto\": 61043, \"rol\": \"externo\", \"pid\": 715172, \"ppid\": 673704, \"t_ns\": 381517947306200}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 715172, \"etiqueta\": \"externo_python_cmd\", \"f\": 1663.0, \"temporal\": true, \"t_recv_ns\": 381518276492400, \"t_primer_bloque_ns\": 381518322029500, \"t_ultimo_bloque_ns\": 381518902266900, \"rol\": \"externo\", \"ppid\": 673704, \"t_ns\": 381519264326800}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 462092, \"etiqueta\": \"hijo_directo_previo\", \"f\": 777.0, \"temporal\": false, \"t_recv_ns\": 381534684100400, \"t_primer_bloque_ns\": 381534693335900, \"t_ultimo_bloque_ns\": 381535273684500, \"rol\": \"directo_previo\", \"ppid\": 187148, \"t_ns\": 381535574356900}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 580500, \"etiqueta\": \"hijo_directo_posterior\", \"f\": 1111.0, \"temporal\": true, \"t_recv_ns\": 381538026840900, \"t_primer_bloque_ns\": 381538063756400, \"t_ultimo_bloque_ns\": 381538644330000, \"rol\": \"directo_posterior\", \"ppid\": 187148, \"t_ns\": 381539005925200}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 668460, \"etiqueta\": \"hijo_redirector\", \"f\": 1222.0, \"temporal\": true, \"t_recv_ns\": 381541472387000, \"t_primer_bloque_ns\": 381541513756700, \"t_ultimo_bloque_ns\": 381542094371000, \"rol\": \"redirector\", \"ppid\": 657540, \"t_ns\": 381542456180400}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 362024, \"etiqueta\": \"nieto_directo\", \"f\": 1357.0, \"temporal\": true, \"t_recv_ns\": 381544938489800, \"t_primer_bloque_ns\": 381544974384500, \"t_ultimo_bloque_ns\": 381545554785900, \"rol\": \"nieto\", \"ppid\": 416360, \"t_ns\": 381545916249200}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 298236, \"etiqueta\": \"nieto_redirector\", \"f\": 1471.0, \"temporal\": true, \"t_recv_ns\": 381548375894600, \"t_primer_bloque_ns\": 381548414600500, \"t_ultimo_bloque_ns\": 381548995478100, \"rol\": \"nieto\", \"ppid\": 508480, \"t_ns\": 381549357425900}",
+    "{\"evento\": \"inicio\", \"argv\": [\"--rol\", \"externo\", \"--udp\", \"58829\", \"--log\", \"C:\\\\Users\\\\Usuario\\\\AppData\\\\Local\\\\Temp\\\\s4_t1_w1h5sjog\\\\trabajadores.jsonl\"], \"rol\": \"externo\", \"pid\": 236396, \"ppid\": 712096, \"t_ns\": 381569981263400}",
+    "{\"evento\": \"listo_udp\", \"puerto\": 58829, \"rol\": \"externo\", \"pid\": 236396, \"ppid\": 712096, \"t_ns\": 381569982314400}",
+    "{\"evento\": \"tono\", \"ok\": true, \"pid\": 236396, \"etiqueta\": \"externo_python_cmd\", \"f\": 1663.0, \"temporal\": true, \"t_recv_ns\": 381570311850900, \"t_primer_bloque_ns\": 381570356645000, \"t_ultimo_bloque_ns\": 381570936412300, \"rol\": \"externo\", \"ppid\": 712096, \"t_ns\": 381571298103100}",
+    "{\"evento\": \"notificacion\", \"tipo\": \"stopped\", \"t_evento_ns\": 381579677183600, \"rol\": \"directo_previo\", \"pid\": 462092, \"ppid\": 187148, \"t_ns\": 381579677291200}"
+  ]
+}
