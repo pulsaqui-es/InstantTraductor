@@ -20,12 +20,19 @@ Motivo: un intérprete que llega tarde no sirve.
 ### III. Motores intercambiables tras contratos
 - Las etapas (captura, VAD, ASR, traducción, voz y reproducción) DEBEN comunicarse solo mediante contratos: `typing.Protocol` y `@dataclass(frozen=True)` en `src/instanttraductor/contracts/`.
 - Cada motor DEBE ser un adaptador que cumple un contrato y declara sus capacidades. Cambiar de motor NO DEBE obligar a tocar otras etapas.
-- Los contratos DEBEN congelarse con un tag (`contratos-NNN-vX`) antes de repartir trabajo en paralelo. Cambiar un contrato congelado exige un ADR y la aprobación del humano.
+- Los contratos DEBEN congelarse con un tag (`contratos-NNN-vX`) antes de repartir trabajo en paralelo. Cambiar un contrato congelado exige un ADR y, si afecta a la arquitectura aprobada, la aprobación del humano.
 
 Motivo: los modelos cambian cada pocos meses; los contratos son la frontera estable.
 
 ### IV. Especificación primero
-- NO DEBE escribirse código de producto sin una spec aprobada por el humano (H1) ni sin plan, contratos y tareas aprobados (H2).
+- NO DEBE escribirse código de producto sin una spec aprobada (H1) ni sin plan, contratos y tareas aprobados (H2).
+- El orquestador aprueba H1 y H2 cuando la spec o el plan siguen la hoja de ruta y los ADR vigentes (aprobación delegada, ADR-0009). Cada aprobación delegada DEBE quedar en la bitácora con un resumen.
+- El orquestador DEBE consultar al humano antes de aprobar si:
+  - cambia el alcance de la hoja de ruta;
+  - hay que crear o sustituir un ADR de arquitectura;
+  - se tocan los principios;
+  - aparece cualquier coste;
+  - hace falta su criterio personal (por ejemplo, elegir la voz escuchándola).
 - Toda decisión de arquitectura o tecnología DEBE quedar en un ADR. Los ADR no se borran: se sustituyen.
 - La spec describe el qué y el porqué; el plan, el cómo.
 
@@ -62,7 +69,7 @@ Motivo: foco en el objetivo principal, y puerta abierta a portar a otros sistema
 
 ## Flujo de trabajo y calidad
 
-- **Ciclo de una feature:** `/speckit-specify` → `/speckit-clarify` → H1 → `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` → H2 → implementación por olas (skill `orquestar-ola`) → `/speckit-converge` → revisión → merge a main.
+- **Ciclo de una feature:** `/speckit-specify` → `/speckit-clarify` → H1 → `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` → H2 → implementación por olas (skill `orquestar-ola`) → `/speckit-converge` → revisión → merge a main. H1 y H2 siguen las reglas de aprobación del Principio IV.
 - **Cierre de cada ola:** suite de tests en verde, `ruff` sin errores y revisión del agente `revisor`. Los hallazgos graves se corrigen antes de seguir.
 - **Línea temporal:** se mantiene con fechas absolutas (bitácora, CHANGELOG, ADR y hoja de ruta) mediante la skill `registrar-hito`. Versionado SemVer y tags `vX.Y.Z`.
 
@@ -76,4 +83,4 @@ Motivo: foco en el objetivo principal, y puerta abierta a portar a otros sistema
   - PATCH para aclaraciones.
 - **Cumplimiento:** cada plan pasa el «Constitution Check». El revisor y el orquestador comprueban la constitución al integrar. Toda excepción se justifica por escrito en el plan de la feature.
 
-**Version**: 1.0.0 | **Ratified**: 2026-09-30 | **Last Amended**: 2026-09-30
+**Version**: 1.1.0 | **Ratified**: 2026-09-30 | **Last Amended**: 2026-10-01

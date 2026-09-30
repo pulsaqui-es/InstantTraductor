@@ -14,6 +14,7 @@ Cada decisión relevante de arquitectura o tecnología queda en un fichero `NNNN
 | [0006](0006-reconocimiento-de-voz.md) | Reconocimiento de voz (ASR) y segmentación | Aceptada | 2026-09-30 |
 | [0007](0007-traduccion.md) | Traducción automática (MT) | Aceptada | 2026-09-30 |
 | [0008](0008-voz-y-clonacion.md) | Síntesis de voz (TTS), clonación y aislamiento de voz | Aceptada | 2026-09-30 |
+| [0009](0009-aprobaciones-delegadas.md) | Aprobaciones delegadas en el orquestador | Aceptada | 2026-10-01 |
 
 ## Plantilla
 

@@ -2,6 +2,17 @@
 
 Registro cronológico del proyecto, con lo más reciente arriba. El formato y las reglas están en la skill `registrar-hito`.
 
+## 2026-10-01 — Spec 001 aprobada y aprobaciones delegadas
+- **Hecho:**
+  - Spec `001-espina-dorsal` escrita y clarificada con dos preguntas de producto:
+    - con retraso excesivo, primero se acelera, luego se resume y como último recurso se descarta;
+    - las frases largas se traducen por partes.
+  - Cuatro spikes en marcha (voz, traducción, ASR y captura de audio).
+- **Decidido:**
+  - El humano aprueba la spec 001 (H1).
+  - A partir de ahora, el orquestador aprueba specs y planes que sigan la hoja de ruta y consulta solo lo importante (ADR-0009, constitución 1.1.0).
+- **Siguiente:** `/speckit-plan` de la 001 con los resultados de los spikes.
+
 ## 2026-09-30 — Aprobación de los cimientos y arranque de la spec 001
 - **Hecho:** los obreros heredan el modo de permisos de la sesión del humano (antes `acceptEdits`).
 - **Decidido:**
