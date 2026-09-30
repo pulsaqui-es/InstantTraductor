@@ -5,6 +5,9 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado
 
 ## [Sin publicar]
 
+### Cambiado
+- Constitución 1.1.0: el orquestador aprueba las specs y los planes que siguen la hoja de ruta y consulta al humano solo lo importante (ADR-0009).
+
 ### Añadido
 - Estructura de desarrollo guiado por especificaciones con GitHub Spec Kit 1.0.13 (ADR-0001).
 - Infraestructura de trabajo en paralelo: agentes `obrero`, `revisor` e `investigador` y skills `orquestar-ola` y `registrar-hito` (ADR-0002).

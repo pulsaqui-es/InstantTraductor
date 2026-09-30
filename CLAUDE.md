@@ -10,7 +10,7 @@ Traductor simultáneo para Windows: captura lo que suena en el PC y lo reproduce
 - Principios completos en `.specify/memory/constitution.md`. Decisiones en `docs/adr/`.
 
 ## Roles
-- **Humano:** decide lo importante. Aprueba specs, planes, ADR y cambios de principios o contratos.
+- **Humano:** decide lo importante: alcance, arquitectura (ADR), principios, costes y lo que requiere su criterio personal (por ejemplo, elegir la voz). Las specs y los planes que siguen la hoja de ruta los aprueba el orquestador (ADR-0009).
 - **Orquestador** (sesión principal, Opus): arquitecto. Escribe specs, planes y ADR; reparte, integra y revisa.
 - **Obreros** (`.claude/agents/obrero.md`, Sonnet): implementan briefs en worktrees aislados. De apoyo: `revisor` e `investigador`.
 - Autonomía concedida: instalar herramientas de desarrollo, ramas, commits, push, PR y merge a main. Se consulta antes cualquier acción destructiva o irreversible y cualquier cambio en el proceso de trabajo.
@@ -22,8 +22,9 @@ Traductor simultáneo para Windows: captura lo que suena en el PC y lo reproduce
 - Nombres de feature y de rama en ASCII: `001-nombre-corto`.
 
 ## Flujo SDD (Spec Kit 1.0.13, versión fijada)
-1. Rama `NNN-nombre-corto` desde main → `/speckit-specify` → `/speckit-clarify` → **H1: el humano aprueba la spec**.
-2. `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` → **H2: el humano aprueba plan, contratos, tareas y ADR nuevos**.
+1. Rama `NNN-nombre-corto` desde main → `/speckit-specify` → `/speckit-clarify` (preguntas al humano solo de producto) → **H1: aprobación de la spec**.
+2. `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` → **H2: aprobación de plan, contratos y tareas**.
+- H1 y H2 los aprueba el orquestador si siguen la hoja de ruta y los ADR vigentes; resumen en la bitácora y aviso en el chat. Se consulta al humano si cambia el alcance, hay que crear o sustituir un ADR de arquitectura, se tocan principios, hay costes o hace falta su criterio (ADR-0009).
 3. Setup y Foundational en secuencia → contratos congelados (tag `contratos-NNN-vX`) → historias por olas con la skill `orquestar-ola`.
 4. `/speckit-converge` hasta «Converged» → revisión → merge a main → skill `registrar-hito`.
 - Solo el orquestador ejecuta `/speckit-*` (la numeración de features no es atómica) y escribe `tasks.md`.
@@ -45,6 +46,7 @@ Traductor simultáneo para Windows: captura lo que suena en el PC y lo reproduce
 ## Git
 - Commits en español con prefijo (`feat`, `fix`, `docs`, `chore`, `test`, `refactor`). Commits de tareas: `T011: ...`.
 - Nunca force-push a main ni reescribir historia publicada.
+- Los documentos globales (`CLAUDE.md`, constitución, `docs/adr/`, `docs/bitacora.md`, `CHANGELOG.md`, `docs/hoja-de-ruta.md`) se editan solo en main. Las ramas de feature los traen con `git merge main`, así no hay conflictos al integrar.
 
 ## Línea temporal
 - Fechas absolutas (`AAAA-MM-DD`). Bitácora en `docs/bitacora.md`, `CHANGELOG.md`, ADR en `docs/adr/` y hoja de ruta en `docs/hoja-de-ruta.md`. Se mantienen con la skill `registrar-hito`.
