@@ -1,0 +1,17 @@
+# Texto normalizado a LF en todo el repo (evita diffs fantasma entre worktrees)
+* text=auto eol=lf
+
+# Scripts nativos de Windows con CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binarios
+*.wav binary
+*.flac binary
+*.mp3 binary
+*.ogg binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.onnx binary
