@@ -1,6 +1,6 @@
 # ADR-0008: Síntesis de voz (TTS), clonación y aislamiento de voz
 
-- Estado: Propuesta
+- Estado: Aceptada (aprobada por el humano el 2026-09-30)
 - Fecha: 2026-09-30
 - Decide: orquestador (con visto bueno del humano); **la elección final del motor la hace el humano escuchando**
 

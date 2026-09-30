@@ -1,6 +1,6 @@
 # ADR-0007: Traducción automática (MT)
 
-- Estado: Propuesta
+- Estado: Aceptada (aprobada por el humano el 2026-09-30)
 - Fecha: 2026-09-30
 - Decide: orquestador (con visto bueno del humano)
 

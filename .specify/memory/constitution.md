@@ -1,7 +1,5 @@
 # InstantTraductor Constitution
 
-> Estado: **propuesta**, pendiente de aprobación del humano. Esta línea se quita al aprobarla.
-
 ## Core Principles
 
 ### I. Local y sin costes (NO NEGOCIABLE)

@@ -1,6 +1,6 @@
 # ADR-0006: Reconocimiento de voz (ASR) y segmentación
 
-- Estado: Propuesta
+- Estado: Aceptada (aprobada por el humano el 2026-09-30)
 - Fecha: 2026-09-30
 - Decide: orquestador (con visto bueno del humano)
 

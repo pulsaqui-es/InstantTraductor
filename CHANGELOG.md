@@ -9,4 +9,4 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado
 - Estructura de desarrollo guiado por especificaciones con GitHub Spec Kit 1.0.13 (ADR-0001).
 - Infraestructura de trabajo en paralelo: agentes `obrero`, `revisor` e `investigador` y skills `orquestar-ola` y `registrar-hito` (ADR-0002).
 - Restricciones de producto: 100 % local, uso personal y audio original sin cambios (ADR-0003).
-- Investigación inicial (6 informes en `docs/investigacion/`), arquitectura propuesta (ADR 0004–0008), constitución 1.0.0 y hoja de ruta, pendientes de aprobación.
+- Investigación inicial (6 informes en `docs/investigacion/`), arquitectura (ADR 0004–0008), constitución 1.0.0 y hoja de ruta, aprobadas el 2026-09-30.

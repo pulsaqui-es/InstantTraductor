@@ -2,6 +2,15 @@
 
 Registro cronológico del proyecto, con lo más reciente arriba. El formato y las reglas están en la skill `registrar-hito`.
 
+## 2026-09-30 — Aprobación de los cimientos y arranque de la spec 001
+- **Hecho:** los obreros heredan el modo de permisos de la sesión del humano (antes `acceptEdits`).
+- **Decidido:**
+  - El humano aprueba sin cambios la constitución 1.0.0, los ADR 0004–0008 y la hoja de ruta.
+  - Consigna: todo sin costes (100 % local, sin servicios de pago).
+- **Siguiente:**
+  - Rama `001-espina-dorsal` con `/speckit-specify` y `/speckit-clarify` → H1.
+  - En paralelo, cuatro pruebas técnicas (spikes) de voz, traducción, ASR y captura de audio, para basar el plan en mediciones reales.
+
 ## 2026-09-30 — Arranque del proyecto
 - **Hecho:**
   - Repositorio inicializado y enlazado con GitHub.

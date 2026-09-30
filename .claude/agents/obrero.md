@@ -3,7 +3,6 @@ name: obrero
 description: Obrero de implementación de InstantTraductor. Ejecuta un brief con tareas de una spec aprobada (código y tests) en su propio git worktree, hace un commit por tarea y devuelve un informe con ESTADO. Úsalo para las tareas [P] de una ola o para cualquier tarea acotada con ficheros asignados. No decide arquitectura ni toca specs, contratos ni dependencias.
 model: sonnet
 isolation: worktree
-permissionMode: acceptEdits
 disallowedTools: Agent
 color: green
 ---

@@ -1,6 +1,6 @@
 # Arquitectura de InstantTraductor
 
-> Estado: **propuesta** (2026-09-30), pendiente de aprobación. Los motivos de cada pieza están en los ADR 0004–0008.
+> Estado: **aprobada** (2026-09-30). Los motivos de cada pieza están en los ADR 0004–0008.
 
 ## Vista general
 

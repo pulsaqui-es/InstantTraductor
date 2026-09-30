@@ -9,11 +9,11 @@ Cada decisión relevante de arquitectura o tecnología queda en un fichero `NNNN
 | [0001](0001-sdd-con-spec-kit.md) | Desarrollo guiado por especificaciones con GitHub Spec Kit | Aceptada | 2026-09-30 |
 | [0002](0002-orquestador-y-obreros.md) | Orquestador y obreros en paralelo con worktrees | Aceptada | 2026-09-30 |
 | [0003](0003-restricciones-de-producto.md) | Restricciones de producto: local, gratis y de uso personal | Aceptada | 2026-09-30 |
-| [0004](0004-procesos-y-stack.md) | Arquitectura de procesos y stack base | Propuesta | 2026-09-30 |
-| [0005](0005-captura-y-reproduccion.md) | Captura y reproducción de audio | Propuesta | 2026-09-30 |
-| [0006](0006-reconocimiento-de-voz.md) | Reconocimiento de voz (ASR) y segmentación | Propuesta | 2026-09-30 |
-| [0007](0007-traduccion.md) | Traducción automática (MT) | Propuesta | 2026-09-30 |
-| [0008](0008-voz-y-clonacion.md) | Síntesis de voz (TTS), clonación y aislamiento de voz | Propuesta | 2026-09-30 |
+| [0004](0004-procesos-y-stack.md) | Arquitectura de procesos y stack base | Aceptada | 2026-09-30 |
+| [0005](0005-captura-y-reproduccion.md) | Captura y reproducción de audio | Aceptada | 2026-09-30 |
+| [0006](0006-reconocimiento-de-voz.md) | Reconocimiento de voz (ASR) y segmentación | Aceptada | 2026-09-30 |
+| [0007](0007-traduccion.md) | Traducción automática (MT) | Aceptada | 2026-09-30 |
+| [0008](0008-voz-y-clonacion.md) | Síntesis de voz (TTS), clonación y aislamiento de voz | Aceptada | 2026-09-30 |
 
 ## Plantilla
 
