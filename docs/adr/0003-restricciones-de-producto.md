@@ -14,6 +14,8 @@ Al arrancar el proyecto hacía falta fijar qué se puede pagar, qué licencias v
 4. **Contenido principal:** series, películas y juegos (música, efectos, varios personajes).
 5. **La versión 1 incluye** voz parecida a la del hablante (clonación) y detección automática del idioma de origen. No incluye subtítulos.
 6. **Plataforma:** Windows 11 primero, sin cerrar la puerta a Mac y Linux.
+7. **Sin traducir mientras se juega en el mismo PC** (decidido el 2026-09-30). La v1 usa solo el perfil de calidad, con la GPU disponible. Un perfil ligero en CPU queda para después de la v1.
+8. **Arranque desde la línea de comandos** hasta la spec 005 (app de escritorio).
 
 ## Alternativas consideradas
 Motores en la nube: gpt-realtime-translate (~2 $/h), Gemini Live Translate (~2,2 $/h), Azure Live Interpreter (2,5 $/h) y cascadas del tipo Soniox (~0,85 $/h). Mejor calidad y retardo, sobre todo en japonés y chino, pero con coste por hora. Descartados por la decisión 1.

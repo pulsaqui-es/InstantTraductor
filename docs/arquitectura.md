@@ -50,7 +50,7 @@ Windows, los monitores y las apps abiertas ya ocupan unos 3,2 GB. Presupuesto de
 - Contextos CUDA: ~1 GB.
 - Separador de diálogo bajo demanda (spec 003): ~0,5–1 GB.
 
-En total, de 5,5 a 8 GB. Un juego ocupando la GPU no dejaría sitio: haría falta un perfil ligero en CPU (pendiente de decidir).
+En total, de 5,5 a 8 GB. La v1 no contempla traducir mientras se juega en el mismo PC (ADR-0003). Un perfil ligero en CPU queda para después.
 
 ## Estructura prevista del repositorio
 

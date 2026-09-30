@@ -13,4 +13,5 @@ Registro cronológico del proyecto, con lo más reciente arriba. El formato y la
   - Orquestador y obreros en Sonnet (ADR-0002).
   - App 100 % local y de uso personal, con el audio original sin cambios. Contenido principal: series, películas y juegos. La v1 incluye clonación de voz y detección de idioma (ADR-0003).
 - **Propuesto:** ADR-0004 a 0008, la constitución 1.0.0 y la hoja de ruta.
-- **Siguiente:** que el humano apruebe la arquitectura, la constitución y la hoja de ruta; después, la spec `001-espina-dorsal`.
+- **Decidido también:** en la v1 no se traduce mientras se juega (solo el perfil de calidad) y se arranca con un comando hasta la spec 005 (ADR-0003).
+- **Siguiente:** el humano revisa la propuesta y aprueba o pide cambios; después, la spec `001-espina-dorsal`.
