@@ -6,6 +6,10 @@
 *.cmd text eol=crlf
 *.ps1 text eol=crlf
 
+# Ficheros gestionados por Spec Kit: se guardan tal cual (sus manifiestos verifican hashes SHA-256)
+.specify/** -text
+.claude/skills/speckit-*/** -text
+
 # Binarios
 *.wav binary
 *.flac binary
