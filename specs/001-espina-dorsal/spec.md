@@ -8,6 +8,13 @@
 
 **Input**: User description: "Espina dorsal del intérprete simultáneo. El usuario arranca InstantTraductor con un comando mientras ve una serie o película en inglés en su PC con Windows 11. La app escucha todo lo que suena en el PC salvo su propia voz, reconoce el habla en inglés, la traduce al español de España y la pronuncia con una voz fija en castellano por los mismos auriculares, mezclada con el audio original, que no se modifica nunca. Objetivo de retardo: p50 ≤ 3 s y p95 ≤ 5 s. Incluye modo en directo, modo archivo, métricas de retardo, control básico del retraso, protección contra realimentación, comando de preparación y elección de voz. Fuera de alcance: clonación (003), japonés/chino y detección de idioma (004), interfaz gráfica (005), robustez con música y comparativa de motores (002)."
 
+## Clarifications
+
+### Session 2026-09-30
+
+- Q: Cuando la voz en español va demasiado retrasada incluso hablando más rápido, ¿qué se prefiere? → A: Resumir. La traducción se acorta a lo esencial para recuperar el ritmo; descartar frases queda solo como último recurso.
+- Q: Con frases largas, ¿empezar antes traduciendo por partes o esperar a la frase entera? → A: Por partes. Las frases cortas se traducen enteras; las largas, por fragmentos con sentido en cuanto están listos.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Oír en español lo que suena en el PC (Priority: P1)
@@ -25,7 +32,7 @@ La persona usuaria abre una terminal, lanza InstantTraductor en modo directo y p
 3. **Given** el modo directo en marcha, **When** suena la propia voz en español de la app, **Then** esa voz nunca se vuelve a captar ni a traducir.
 4. **Given** el modo directo en marcha, **When** la persona usuaria pide detenerlo, **Then** la app termina en 2 segundos o menos, no deja ningún proceso suyo en marcha y muestra el resumen de la sesión.
 5. **Given** el modo directo en marcha, **When** se desconectan los auriculares o cambia el dispositivo de salida predeterminado, **Then** la voz en español pasa a sonar por el nuevo dispositivo sin reiniciar la app.
-6. **Given** la voz en español acumula retraso, **When** el retraso supera el primer umbral, **Then** la voz habla más rápido (hasta 1,25×); y **When** aun así supera el segundo umbral, **Then** se descartan las frases pendientes más antiguas que aún no han empezado a sonar, avisándolo en la terminal.
+6. **Given** la voz en español acumula retraso, **When** el retraso supera el primer umbral, **Then** la voz habla más rápido (hasta 1,25×); **When** aun así supera el segundo umbral, **Then** las traducciones siguientes se resumen a lo esencial hasta recuperar el ritmo; y **When** incluso así supera el tercer umbral, **Then** se descartan las frases pendientes más antiguas que aún no han empezado a sonar, avisándolo en la terminal.
 7. **Given** el modo directo en marcha, **When** la persona usuaria cambia el volumen de la voz en español, **Then** solo cambia la voz en español y el original sigue igual.
 
 ---
@@ -90,8 +97,8 @@ La primera vez, la persona usuaria ejecuta un comando de preparación. Este desc
 
 **Reconocimiento, traducción y voz**
 
-- **FR-004**: La app MUST reconocer el habla en inglés y dividirla en frases o cláusulas completas para traducirlas.
-- **FR-005**: La app MUST empezar a traducir sin esperar más del máximo configurado de habla continua sin traducir (6 s por defecto).
+- **FR-004**: La app MUST reconocer el habla en inglés y dividirla en unidades de traducción. Las frases cortas se traducen enteras; las largas, por fragmentos con sentido propio (cláusulas) en cuanto cada fragmento está completo.
+- **FR-005**: La app MUST empezar a traducir sin esperar más del máximo configurado de habla continua sin traducir (6 s por defecto), aunque el fragmento no haya terminado.
 - **FR-006**: La app MUST traducir al español de España (vocabulario y formas peninsulares, incluido "vosotros"), teniendo en cuenta las frases anteriores para mantener la coherencia (nombres, género, tratamiento).
 - **FR-007**: La app MUST pronunciar cada traducción con la voz castellana elegida, por el dispositivo de salida predeterminado y mezclada con el original.
 - **FR-008**: La app MUST pronunciar las traducciones en el mismo orden en que se dijeron los originales, y MUST NOT repetir ni volver a traducir una frase que ya ha sonado.
@@ -102,50 +109,52 @@ La primera vez, la persona usuaria ejecuta un comando de preparación. Este desc
 
 - **FR-011**: La app MUST medir continuamente el retraso de la voz en español respecto al original.
 - **FR-012**: Si el retraso supera el primer umbral (3 s por defecto), la app MUST acelerar la voz de forma gradual hasta un máximo de 1,25×.
-- **FR-013**: Si con la velocidad máxima el retraso supera el segundo umbral (8 s por defecto), la app MUST descartar las frases pendientes más antiguas que aún no han empezado a sonar, MUST avisarlo en la terminal y MUST contarlo en el resumen de la sesión.
+- **FR-013**: Si con la velocidad máxima el retraso supera el segundo umbral (5 s por defecto), la app MUST resumir las traducciones siguientes a su sentido esencial (más cortas y sin perder la información clave) hasta que el retraso vuelva por debajo del primer umbral. Cada frase resumida MUST contarse en el resumen de la sesión.
+- **FR-014**: Solo si, aun resumiendo, el retraso supera el tercer umbral (8 s por defecto), la app MUST descartar las frases pendientes más antiguas que aún no han empezado a sonar, MUST avisarlo en la terminal y MUST contarlo en el resumen de la sesión.
 
 **Modo directo**
 
-- **FR-014**: La persona usuaria MUST poder arrancar el modo directo con un comando y detenerlo con una orden de teclado. La app MUST terminar en ≤ 2 s sin dejar procesos suyos en marcha.
-- **FR-015**: Durante el modo directo, la app MUST mostrar en la terminal su estado (escuchando, traduciendo, hablando), el retraso actual y los avisos. Opcionalmente MAY mostrar el texto original y la traducción de cada frase.
-- **FR-016**: Si cambia el dispositivo de salida predeterminado, la app MUST seguir hablando por el nuevo dispositivo sin reiniciarse, y la captura MUST continuar.
-- **FR-017**: Si un componente interno falla, la app MUST avisar, intentar recuperarlo una vez y, si no lo consigue, detenerse de forma limpia sin procesos huérfanos.
+- **FR-015**: La persona usuaria MUST poder arrancar el modo directo con un comando y detenerlo con una orden de teclado. La app MUST terminar en ≤ 2 s sin dejar procesos suyos en marcha.
+- **FR-016**: Durante el modo directo, la app MUST mostrar en la terminal su estado (escuchando, traduciendo, hablando), el retraso actual y los avisos. Opcionalmente MAY mostrar el texto original y la traducción de cada frase.
+- **FR-017**: Si cambia el dispositivo de salida predeterminado, la app MUST seguir hablando por el nuevo dispositivo sin reiniciarse, y la captura MUST continuar.
+- **FR-018**: Si un componente interno falla, la app MUST avisar, intentar recuperarlo una vez y, si no lo consigue, detenerse de forma limpia sin procesos huérfanos.
 
 **Modo archivo**
 
-- **FR-018**: La app MUST aceptar ficheros de audio o vídeo habituales (al menos WAV, MP3, MP4 y MKV) con habla en inglés.
-- **FR-019**: El modo archivo MUST generar cinco salidas:
+- **FR-019**: La app MUST aceptar ficheros de audio o vídeo habituales (al menos WAV, MP3, MP4 y MKV) con habla en inglés.
+- **FR-020**: El modo archivo MUST generar cinco salidas:
   - la pista de voz en español alineada en el tiempo como sonaría en directo;
   - la mezcla del original con esa voz;
   - la transcripción con tiempos;
   - la traducción con tiempos;
   - el informe de métricas.
-- **FR-020**: El modo archivo MUST NOT usar dispositivos de audio y MUST reproducir el comportamiento temporal del modo directo, para que sus métricas sean comparables.
-- **FR-021**: Ante un fichero dañado o no admitido, la app MUST terminar con un mensaje claro y MUST NOT dejar salidas a medias.
+- **FR-021**: El modo archivo MUST NOT usar dispositivos de audio y MUST reproducir el comportamiento temporal del modo directo, para que sus métricas sean comparables.
+- **FR-022**: Ante un fichero dañado o no admitido, la app MUST terminar con un mensaje claro y MUST NOT dejar salidas a medias.
 
 **Métricas**
 
-- **FR-022**: Para cada frase, la app MUST registrar el tiempo de cada etapa (captación, reconocimiento, traducción, síntesis de voz, reproducción) y el retardo de frase.
-- **FR-023**: Al terminar cada sesión (directo o archivo), la app MUST mostrar y guardar un resumen con:
+- **FR-023**: Para cada frase, la app MUST registrar el tiempo de cada etapa (captación, reconocimiento, traducción, síntesis de voz, reproducción) y el retardo de frase.
+- **FR-024**: Al terminar cada sesión (directo o archivo), la app MUST mostrar y guardar un resumen con:
   - el número de frases;
   - el retardo de frase (p50 y p95);
   - el tiempo por etapa (p50 y p95);
   - las aceleraciones aplicadas;
+  - las frases resumidas;
   - las frases descartadas.
 
 **Preparación, voces y ajustes**
 
-- **FR-024**: Un comando de preparación MUST descargar e instalar en local todo lo necesario, sin coste ni cuentas, y MUST comprobar antes los requisitos (espacio en disco, tarjeta gráfica). Repetirlo MUST NOT volver a descargar lo que ya está.
-- **FR-025**: La preparación MUST mostrar cada componente instalado con su versión y su licencia.
-- **FR-026**: Tras la preparación, la app MUST funcionar sin conexión a internet.
-- **FR-027**: La app MUST ofrecer al menos 3 voces castellanas, masculinas y femeninas. La persona usuaria MUST poder escuchar una muestra de cada una y elegir. La elección MUST recordarse entre sesiones.
-- **FR-028**: Los ajustes (voz, volumen de la voz, umbrales de retraso, velocidad máxima y máximo de habla sin traducir) MUST persistir entre sesiones y MUST tener valores por defecto sensatos.
-- **FR-029**: La app MUST NOT guardar el audio captado salvo que la persona usuaria lo pida expresamente. MUST guardar un registro de diagnóstico de la sesión sin audio.
+- **FR-025**: Un comando de preparación MUST descargar e instalar en local todo lo necesario, sin coste ni cuentas, y MUST comprobar antes los requisitos (espacio en disco, tarjeta gráfica). Repetirlo MUST NOT volver a descargar lo que ya está.
+- **FR-026**: La preparación MUST mostrar cada componente instalado con su versión y su licencia.
+- **FR-027**: Tras la preparación, la app MUST funcionar sin conexión a internet.
+- **FR-028**: La app MUST ofrecer al menos 3 voces castellanas, masculinas y femeninas. La persona usuaria MUST poder escuchar una muestra de cada una y elegir. La elección MUST recordarse entre sesiones.
+- **FR-029**: Los ajustes (voz, volumen de la voz, umbrales de retraso, velocidad máxima y máximo de habla sin traducir) MUST persistir entre sesiones y MUST tener valores por defecto sensatos.
+- **FR-030**: La app MUST NOT guardar el audio captado salvo que la persona usuaria lo pida expresamente. MUST guardar un registro de diagnóstico de la sesión sin audio.
 
 ### Key Entities
 
 - **Sesión**: una ejecución en modo directo o archivo. Tiene inicio y fin, los ajustes usados y el resumen de métricas.
-- **Frase**: la unidad que se traduce. Guarda el texto original, su inicio y fin en el audio, la traducción, su estado (pendiente, sonando, pronunciada o descartada), la velocidad aplicada y los tiempos de cada etapa.
+- **Frase**: la unidad que se traduce, sea una frase corta entera o un fragmento con sentido de una frase larga. Guarda el texto original, su inicio y fin en el audio, la traducción (y si se resumió), su estado (pendiente, sonando, pronunciada o descartada), la velocidad aplicada y los tiempos de cada etapa.
 - **Voz**: una voz castellana disponible, con nombre, muestra de escucha, origen y licencia.
 - **Componente**: cada pieza descargada en la preparación, con nombre, versión, licencia y estado de verificación.
 - **Informe de métricas**: el resumen de una sesión más el detalle por frase.
@@ -153,7 +162,7 @@ La primera vez, la persona usuaria ejecuta un comando de preparación. Este desc
 ## Success Criteria *(mandatory)*
 
 Definiciones usadas en esta spec:
-- **Retardo de frase:** el tiempo que pasa desde que termina de decirse una frase en el original hasta que empieza a oírse su traducción.
+- **Retardo de frase:** el tiempo que pasa desde que termina de decirse en el original una frase (o un fragmento, si es una frase larga) hasta que empieza a oírse su traducción.
 - **p50:** la mediana; la mitad de las frases va igual o más rápida.
 - **p95:** el valor que cumple el 95 % de las frases.
 
@@ -181,4 +190,4 @@ Definiciones usadas en esta spec:
 - No se traduce mientras se juega en el mismo PC (ADR-0003).
 - La interfaz de esta spec es la terminal. La app de escritorio llega en la spec 005.
 - Se usan auriculares. Con altavoces también funciona, porque se capta el sonido del sistema y no el de un micrófono.
-- Los umbrales por defecto (3 s y 8 s de retraso, 1,25× de velocidad máxima, 6 s de habla sin traducir) son un punto de partida que se ajustará con las métricas.
+- Los umbrales por defecto (3 s para acelerar, 5 s para resumir, 8 s para descartar, 1,25× de velocidad máxima y 6 s de habla sin traducir) son un punto de partida que se ajustará con las métricas.
