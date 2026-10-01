@@ -782,3 +782,9 @@ def test_parse_cuda_version_reads_the_nvidia_smi_header() -> None:
 
     assert installer.parse_cuda_version(header) == (13, 1)
     assert installer.parse_cuda_version("sin versión") is None
+
+
+def test_parse_cuda_version_reads_the_umd_header_of_recent_drivers() -> None:
+    header = "| NVIDIA-SMI 616.64     KMD Version: 616.64        CUDA UMD Version: 13.4     |"
+
+    assert installer.parse_cuda_version(header) == (13, 4)

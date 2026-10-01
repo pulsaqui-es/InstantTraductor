@@ -97,7 +97,9 @@ VOICE_ENV_PROJECT: Final = Path(__file__).resolve().parents[3] / "engines" / "tt
 
 _HASH_BLOCK: Final = 8 * 1024 * 1024
 _SUBPROCESS_TIMEOUT_S: Final = 3600
-_CUDA_VERSION_RE: Final = re.compile(r"CUDA Version:\s*(\d+)\.(\d+)")
+_CUDA_VERSION_RE: Final = re.compile(
+    r"CUDA(?: UMD)? Version:\s*(\d+)\.(\d+)"
+)  # «UMD»: drivers recientes (616.64)
 
 
 class ComponentState(StrEnum):
@@ -241,7 +243,7 @@ class Downloader(Protocol):
 
 
 def parse_cuda_version(nvidia_smi_output: str) -> tuple[int, int] | None:
-    """Extrae «CUDA Version: 13.1» de la cabecera de ``nvidia-smi``."""
+    """Extrae «CUDA Version: 13.1» (o «CUDA UMD Version: 13.4») de la cabecera de ``nvidia-smi``."""
     match = _CUDA_VERSION_RE.search(nvidia_smi_output)
     return (int(match.group(1)), int(match.group(2))) if match else None
 
