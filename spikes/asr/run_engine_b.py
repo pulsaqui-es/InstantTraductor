@@ -27,10 +27,10 @@ import traceback
 
 import numpy as np
 
-from asrspike import paths, realtime, sysinfo
+from asrspike import events_io, paths, realtime, sysinfo
 from asrspike.analysis import analyze
 from asrspike.data import SAMPLE_RATE, StreamPlan, cut_plan
-from asrspike.gpumem import GpuProcMemSampler
+from asrspike.gpumem import GpuProcMemSampler, gpu_top_processes
 
 
 def parse_variant(text: str) -> dict:
@@ -60,6 +60,7 @@ def run_variant(model, sampler: GpuProcMemSampler, v: dict, args, common: dict) 
 
     mark = len(sampler.samples)
     gpu_before_run = sysinfo.gpu_query()
+    neighbours = gpu_top_processes()  # qué más usa la GPU justo antes de medir
     tracker = sysinfo.LoadTracker()
     tracker.start(sample_gpu=True)
     run = realtime.feed(plan.samples, pipe, args.device_chunk_ms, paced=paced)
@@ -104,7 +105,7 @@ def run_variant(model, sampler: GpuProcMemSampler, v: dict, args, common: dict) 
         "label": v["label"],
         "when": dt.datetime.now().astimezone().isoformat(timespec="seconds"),
         "engine": "B",
-        "stream": {"name": plan.name, "description": plan.description, "duration_s": plan.duration},
+        "stream": {"name": plan.name, "description": plan.description, "duration_s": plan.duration, "limit": args.limit},
         "config": {**pipe.config, "device_chunk_ms": args.device_chunk_ms, "mode": v["mode"], "compute_type": "float16"},
         "run": run,
         "load": load,
@@ -115,6 +116,7 @@ def run_variant(model, sampler: GpuProcMemSampler, v: dict, args, common: dict) 
             "gpu_total_used_before_run_mb": gpu_before_run.get("memory_used_mb"),
             "gpu_total_used_after_run_mb": gpu_after_run.get("memory_used_mb"),
             "gpu_total_used_peak_during_run_mb": load.get("gpu_mem_used_mb_max"),
+            "gpu_neighbours_before_run": neighbours,
         },
     }
     print_summary(out, paced)
@@ -123,6 +125,8 @@ def run_variant(model, sampler: GpuProcMemSampler, v: dict, args, common: dict) 
         dest = paths.RESULTS_DIR / f"{v['label']}.json"
         dest.write_text(json.dumps(out, indent=1, ensure_ascii=False, default=float), encoding="utf-8")
         print(f"-> {dest}", flush=True)
+        if args.save_events:
+            print(f"-> {events_io.save_events(v['label'], pipe.events)}", flush=True)
     return out
 
 
@@ -143,17 +147,22 @@ def print_summary(out: dict, paced: bool) -> None:
     print(f"CPU propia: {load['own_cores_avg']} núcleos = {load['own_cpu_pct_of_machine']} % del equipo | "
           f"GPU util media {load.get('gpu_util_pct_mean')} % (máx. {load.get('gpu_util_pct_max')} %) | RAM {run['ram_rss_mb']} MB")
     print("  mayor consumo ajeno:", ", ".join(f"{p['name']} {p['cores_avg']}" for p in load["others_top"][:6]))
+    print("  GPU, otros procesos antes de medir:", ", ".join(f"{p['name']} {p['dedicated_mb']} MB" for p in vram["gpu_neighbours_before_run"][:5]))
     w = result["wer"]
     print(f"WER normalizado {100 * w['wer']:.2f} % (S {w['sub']} D {w['del']} I {w['ins']} de {w['ref_words']} palabras) "
-          f"| segmentos {result['n_segments']} (cortes forzados {result['n_forced_cuts']})")
-    if paced:
-        for key, name in (
-            ("first_text_latency_s", "primer texto del segmento"),
-            ("final_latency_s", "final (desde el fin real del habla)"),
-            ("forced_cut_lag_s", "corte forzado -> texto"),
-        ):
-            p = result[key]
-            print(f"  latencia {name}: p50 {p['p50']:.3f} s  p95 {p['p95']:.3f} s  (n={p['n']})")
+          f"| segmentos {result['n_segments']} (cortes forzados {result['n_forced_cuts']}; descartados {result['n_discarded']})")
+
+    def fmt(p: dict | None) -> str:
+        return "-" if not p or not p.get("n") else f"p50 {p['p50']:.3f} s  p95 {p['p95']:.3f} s  (n={p['n']})"
+
+    print(f"  latencias{' (algorítmicas: modo rápido, sin cómputo)' if not paced else ''}:")
+    print(f"    primer texto del segmento {fmt(result['first_text_latency_s'])}")
+    print(f"    final (desde fin real)    {fmt(result['final_latency_s'])}")
+    print(f"    corte forzado -> texto    {fmt(result['forced_cut_lag_s'])}")
+    bd = result["latency_breakdown"]
+    print(f"    desglose del final: decisión {fmt(bd['vad_delay_s'])} ; después de decidir {fmt(bd['post_decision_s'])}")
+    if result["utterance"]:
+        print(f"    por enunciado: primer texto {fmt(result['utterance']['first_text_latency_s'])} ; final {fmt(result['utterance']['final_latency_s'])}")
     pu = result["punctuation"]
     print(f"  puntuación: {pu['commas_per_100_words']:.1f} comas y {pu['terminal_marks_per_100_words']:.1f} marcas finales por 100 palabras; "
           f"finales que acaban en . ? ! = {pu['finals_ending_with_terminal_pct']:.0f} %; empiezan en mayúscula = {pu['finals_starting_uppercase_pct']:.0f} %",
@@ -174,6 +183,7 @@ def main() -> None:
     ap.add_argument("--preroll-ms", type=float, default=300.0)
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--no-save", action="store_true")
+    ap.add_argument("--save-events", action="store_true", help="guarda los eventos crudos (results/events/)")
     ap.add_argument("--lock-timeout-min", type=float, default=30.0)
     args = ap.parse_args()
 

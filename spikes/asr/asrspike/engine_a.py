@@ -168,8 +168,14 @@ class NemotronPipeline:
             self._last_text = text
             self._emit("partial", text=text, t_start=self._seg_start)
 
-    def _finish_stream(self, *, t_end: float | None, forced: bool = False, reason: str = "") -> None:
-        """Vacía el stream (relleno + input_finished), emite ``final`` y ``endpoint``."""
+    def _finish_stream(
+        self, *, t_end: float | None, decided_at: float | None, forced: bool = False, reason: str = ""
+    ) -> None:
+        """Vacía el stream (relleno + input_finished), emite ``final`` y ``endpoint``.
+
+        ``decided_at`` es el instante (reloj de audio) en el que se decidió cerrar el tramo
+        (fin de turno del VAD, corte forzado o fin del audio); sirve para desglosar la latencia.
+        """
         c0 = time.perf_counter()
         if self.tail_pad:
             self.stream.accept_waveform(SAMPLE_RATE, np.zeros(self.tail_pad, dtype=np.float32))
@@ -183,7 +189,10 @@ class NemotronPipeline:
         self.flush_ms.append(dt * 1000)
         self._rev += 1
         if text:
-            self._emit("final", text=text, t_start=self._seg_start, t_end=t_end, forced=forced, reason=reason, flush_ms=dt * 1000)
+            self._emit(
+                "final", text=text, t_start=self._seg_start, t_end=t_end, decided_at=decided_at, forced=forced,
+                reason=reason, flush_ms=dt * 1000,
+            )
         else:
             self._emit("discard", text="", t_start=self._seg_start, t_end=t_end, reason=reason or "sin texto")
         self._emit("endpoint", text="", t_start=self._seg_start, t_end=t_end, reason=reason)
@@ -230,9 +239,9 @@ class NemotronPipeline:
             self.gate_frames += 1
         for ev in evs:
             if ev.kind in ("end", "cancel") and self.stream is not None:
-                self._decode_and_poll()
                 if ev.kind == "end":
-                    self._finish_stream(t_end=ev.speech_end, reason="vad")
+                    self._decode_and_poll()
+                    self._finish_stream(t_end=ev.speech_end, decided_at=ev.decided_at, reason="vad")
                 else:
                     self.stream = None
                     self._emit("discard", text="", t_start=self._seg_start, t_end=ev.speech_end, reason="cancel")
@@ -240,9 +249,8 @@ class NemotronPipeline:
         if self.stream is not None and self.max_segment_s and (t_frame_start + FRAME_S - self._seg_start) >= self.max_segment_s:
             self._decode_and_poll()
             t_cut = t_frame_start + FRAME_S
-            self._finish_stream(t_end=t_cut, forced=True, reason="max_segment")
+            self._finish_stream(t_end=t_cut, decided_at=t_cut, forced=True, reason="max_segment")
             self._open_stream(t_cut)
-            self.vad_forced_open = True
         self._preroll.append(frame)
 
     def _check_endpoint(self) -> None:
@@ -251,7 +259,10 @@ class NemotronPipeline:
             t_now = self.audio_pos
             if text:
                 self._rev += 1
-                self._emit("final", text=text, t_start=self._seg_start, t_end=None, forced=False, reason="endpoint", flush_ms=0.0)
+                self._emit(
+                    "final", text=text, t_start=self._seg_start, t_end=None, decided_at=t_now, forced=False,
+                    reason="endpoint", flush_ms=0.0,
+                )
                 self._emit("endpoint", text="", t_start=self._seg_start, t_end=None, reason="endpoint")
             self.rec.reset(self.stream)
             self._seg += 1
@@ -269,12 +280,11 @@ class NemotronPipeline:
             for ev in self.vad.flush():
                 if ev.kind == "end" and self.stream is not None:
                     self._decode_and_poll()
-                    self._finish_stream(t_end=ev.speech_end, reason="flush")
+                    self._finish_stream(t_end=ev.speech_end, decided_at=self.audio_pos, reason="flush")
             if self.stream is not None:
                 self._decode_and_poll()
-                self._finish_stream(t_end=None, reason="flush")
+                self._finish_stream(t_end=None, decided_at=self.audio_pos, reason="flush")
         else:
             self._decode_and_poll()
-            if self.stream is not None:
-                text = self.rec.get_result_all(self.stream).text.strip()
-                self._finish_stream(t_end=None, reason="flush") if text else None
+            if self.stream is not None and self.rec.get_result_all(self.stream).text.strip():
+                self._finish_stream(t_end=None, decided_at=self.audio_pos, reason="flush")

@@ -170,7 +170,7 @@ class WhisperPipeline:
             self._probs.append(prob)
         for ev in evs:
             if ev.kind == "end" and self._open:
-                self._close_segment(speech_end=ev.speech_end, reason="vad")
+                self._close_segment(speech_end=ev.speech_end, reason="vad", decided_at=ev.decided_at)
             elif ev.kind == "cancel" and self._open:
                 self._open = False
                 self._frames, self._probs = [], []
@@ -187,11 +187,14 @@ class WhisperPipeline:
         head, tail = self._frames[: cut + 1], self._frames[cut + 1 :]
         tail_probs = self._probs[cut + 1 :]
         t_cut = self._seg_start + len(head) * FRAME_S
-        self._submit(np.concatenate(head), t_start=self._seg_start, t_end=t_cut, forced=True, reason="max_segment")
+        now = self._frame_idx * FRAME_S  # fin de la trama actual (instante de la decisión)
+        self._submit(
+            np.concatenate(head), t_start=self._seg_start, t_end=t_cut, decided_at=now, forced=True, reason="max_segment"
+        )
         self._frames, self._probs = tail, tail_probs
         self._seg_start = t_cut
 
-    def _close_segment(self, *, speech_end: float | None, reason: str) -> None:
+    def _close_segment(self, *, speech_end: float | None, reason: str, decided_at: float) -> None:
         """Cierra el segmento abierto: recorta el silencio final (queda un relleno corto)."""
         end_t = (speech_end if speech_end is not None else self._seg_start + len(self._frames) * FRAME_S)
         keep = int(np.ceil((end_t - self._seg_start) / FRAME_S)) + self.end_pad_frames
@@ -199,9 +202,11 @@ class WhisperPipeline:
         audio = np.concatenate(self._frames[:keep])
         self._open = False
         self._frames, self._probs = [], []
-        self._submit(audio, t_start=self._seg_start, t_end=end_t, forced=False, reason=reason)
+        self._submit(audio, t_start=self._seg_start, t_end=end_t, decided_at=decided_at, forced=False, reason=reason)
 
-    def _submit(self, audio: np.ndarray, *, t_start: float, t_end: float, forced: bool, reason: str) -> None:
+    def _submit(
+        self, audio: np.ndarray, *, t_start: float, t_end: float, decided_at: float, forced: bool, reason: str
+    ) -> None:
         self._seg += 1
         self._queue.put(
             {
@@ -209,6 +214,7 @@ class WhisperPipeline:
                 "audio": audio,
                 "t_start": t_start,
                 "t_end": t_end,
+                "decided_at": decided_at,
                 "forced": forced,
                 "reason": reason,
                 "queued_at": time.perf_counter(),
@@ -222,9 +228,9 @@ class WhisperPipeline:
             self._pending = np.zeros(0, dtype=np.float32)
         for ev in self.vad.flush():
             if ev.kind == "end" and self._open:
-                self._close_segment(speech_end=ev.speech_end, reason="flush")
+                self._close_segment(speech_end=ev.speech_end, reason="flush", decided_at=self.audio_pos)
         if self._open:
-            self._close_segment(speech_end=None, reason="flush")
+            self._close_segment(speech_end=None, reason="flush", decided_at=self.audio_pos)
         self._queue.join()
 
     # ------------------------------------------------------------------ hilo de inferencia
@@ -263,6 +269,7 @@ class WhisperPipeline:
                     text=text,
                     t_start=item["t_start"],
                     t_end=item["t_end"],
+                    decided_at=item["decided_at"],
                     forced=item["forced"],
                     reason=item["reason"],
                     infer_ms=infer_ms,

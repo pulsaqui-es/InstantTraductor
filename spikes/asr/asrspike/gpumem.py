@@ -24,6 +24,44 @@ while ($true) {{
 """
 
 
+_TOP_SCRIPT = r"""
+$s = (Get-Counter "\GPU Process Memory(*)\Dedicated Usage" -ErrorAction SilentlyContinue).CounterSamples
+foreach ($x in $s) {
+  if ($x.CookedValue -gt 0) {
+    $pid_ = $x.InstanceName -replace '^pid_(\d+)_.*', '$1'
+    [Console]::Out.WriteLine(("{0};{1}" -f $pid_, [int64]($x.CookedValue / 1MB)))
+  }
+}
+"""
+
+
+def gpu_top_processes(n: int = 6) -> list[dict]:
+    """Procesos con más memoria dedicada de GPU en este momento (qué más usa la tarjeta)."""
+    import psutil
+
+    try:
+        raw = subprocess.run(
+            ["powershell", "-NoProfile", "-NonInteractive", "-Command", _TOP_SCRIPT],
+            capture_output=True, text=True, timeout=30, check=False,
+        ).stdout
+    except (OSError, subprocess.SubprocessError):
+        return []
+    by_pid: dict[int, int] = {}
+    for line in raw.splitlines():
+        if ";" in line:
+            pid_s, mb_s = line.strip().split(";", 1)
+            if pid_s.isdigit() and mb_s.isdigit():
+                by_pid[int(pid_s)] = by_pid.get(int(pid_s), 0) + int(mb_s)
+    rows = []
+    for pid, mb in sorted(by_pid.items(), key=lambda kv: kv[1], reverse=True)[:n]:
+        try:
+            name = psutil.Process(pid).name()
+        except psutil.Error:
+            name = "?"
+        rows.append({"pid": pid, "name": name, "dedicated_mb": mb})
+    return rows
+
+
 class GpuProcMemSampler:
     """Muestrea la memoria dedicada de GPU del proceso (MB) en un hilo."""
 
