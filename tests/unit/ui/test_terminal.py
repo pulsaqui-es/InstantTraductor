@@ -12,6 +12,7 @@ import re
 import threading
 from collections import deque
 from collections.abc import Callable, Mapping
+from dataclasses import dataclass, field
 from typing import Any
 
 import pytest
@@ -581,6 +582,29 @@ class TestSummary:
         text = summary_text(report)
         assert "Resumen de la sesión" in text
         assert "0" in text
+
+    def test_a_dataclass_report_works_like_a_dictionary(self) -> None:
+        @dataclass
+        class Delay:
+            p50: float = 2.41
+            p95: float = 4.62
+            max: float = 7.9
+
+        @dataclass
+        class Summary:
+            utterances: int = 5
+            dropped: int = 1
+            sentence_delay_s: Delay = field(default_factory=Delay)
+
+        @dataclass
+        class Report:
+            duration_s: float = 90.0
+            summary: Summary = field(default_factory=Summary)
+
+        text = summary_text(Report())  # type: ignore[arg-type]
+        assert "1 min 30 s" in text
+        assert "2,4 s" in text
+        assert "1 frase descartada" in text
 
     def test_an_empty_report_does_not_crash(self) -> None:
         assert "Resumen de la sesión" in summary_text({})

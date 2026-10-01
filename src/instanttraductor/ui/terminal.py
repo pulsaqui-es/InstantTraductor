@@ -19,7 +19,7 @@ from __future__ import annotations
 import logging
 import threading
 from collections.abc import Callable, Mapping
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, is_dataclass
 from typing import Any, Final, Literal
 
 from rich.console import Console, Group, RenderableType
@@ -301,10 +301,12 @@ class TerminalUI:
     def show_summary(self, report: Mapping[str, Any]) -> None:
         """Para el estado en vivo y muestra el resumen de la sesión a partir del informe.
 
-        `report` es el informe de `contracts/informe.md` (`summary`, `diagnostics`...). Tolera un informe
-        incompleto: lo que falta sale como un guion.
+        `report` es el informe de `contracts/informe.md` (`summary`, `diagnostics`...), como diccionario o
+        como dataclass con esos campos. Tolera un informe incompleto: lo que falta sale como un guion.
         """
         self.stop()
+        if is_dataclass(report) and not isinstance(report, type):
+            report = asdict(report)
         summary = _section(report, "summary")
         diagnostics = _section(report, "diagnostics")
         delay = _section(summary, "sentence_delay_s")
