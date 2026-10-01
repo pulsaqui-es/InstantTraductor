@@ -13,16 +13,17 @@ from collections.abc import Callable
 
 
 class SessionClock:
-    """Reloj de sesión real: segundos desde que se construye, medidos con `time.monotonic()`.
+    """Reloj de sesión real: segundos desde que se construye, medidos con `time.perf_counter()`.
 
     El reloj de sesión y el de audio comparten origen: el instante en que arranca la captura
     (data-model.md). Por eso la sesión lo construye **al arrancar la captura**, después de arrancar los
-    motores. Como `time.monotonic()` no retrocede, `now()` es no decreciente y nunca es negativo.
+    motores. Como `time.perf_counter()` es monótono y no retrocede, `now()` es no decreciente y
+    nunca es negativo. En Windows tiene 100 ns de resolución, frente a 15,6 ms de `time.monotonic()`.
 
     `time_source` solo se sustituye en los tests, para controlar el tiempo.
     """
 
-    def __init__(self, time_source: Callable[[], float] = time.monotonic) -> None:
+    def __init__(self, time_source: Callable[[], float] = time.perf_counter) -> None:
         self._time_source = time_source
         self._origin = time_source()
 
