@@ -5,14 +5,14 @@
 ## Vista general
 
 ```text
-Núcleo: proceso raíz, Python 3.12 + uv (su árbol entero queda excluido de la captura)
- ├─ Captura (hilo) ── WASAPI process loopback EXCLUDE(árbol raíz)
- │                     → 16 kHz mono float32 → relleno de silencio + normalización → búfer
+Núcleo: proceso raíz, Python 3.12 + uv. Capta Y reproduce, y es el PID excluido de la captura (ADR-0010)
+ ├─ Captura (hilo) ── process loopback EXCLUDE(PID del núcleo), código propio con ctypes/comtypes
+ │                     → 16 kHz mono float32 → AGC → búfer (vigilante + autotest de eco)
  ├─ VAD y segmentación (hilo) ── Silero VAD → voz / fin de turno
- ├─ ASR (hilo, en el proceso) ── Nemotron Streaming EN (sherpa-onnx, CPU) → eventos parcial/final
- ├─ Planificador ── unidades de traducción (cláusulas confirmadas) + control del retraso
- ├─ Cliente MT ──── HTTP local ──► [hijo] llama-server + Hy-MT2-1.8B (GPU)
- ├─ Cliente TTS ─── HTTP local ──► [hijo] servicio de voz (Qwen3-TTS o Chatterbox es-es), entorno propio (GPU) → PCM
+ ├─ ASR (hilo, en el proceso) ── Nemotron Streaming EN 560 ms (sherpa-onnx, CPU) → eventos parcial/final
+ ├─ Planificador ── unidades de traducción (pausas del VAD, comas, máx. 6 s) + control del retraso
+ ├─ Cliente MT ──── HTTP local ──► [hijo] llama-server + Hy-MT2-7B Q4 (GPU; reserva 1.8B si falta VRAM)
+ ├─ Cliente TTS ─── HTTP local ──► [hijo] servicio de voz Qwen3-TTS-0.6B, entorno propio (GPU) → PCM
  ├─ Registro de hablantes (spec 003) ── embedding (CPU) + referencias limpias (separador en 2.º plano)
  └─ Reproducción (hilo) ── cola de PCM → 48 kHz → dispositivo por defecto
                            (Windows lo mezcla con el original, que suena sin cambios)
@@ -42,15 +42,14 @@ Las etapas se comunican mediante contratos (`typing.Protocol` + `@dataclass(froz
 
 **EVS** (desde que se dice algo hasta que se oye en español): p50 ≤ 3 s y p95 ≤ 5 s. Se mide en cada spec y se ajusta con datos. Desde japonés o chino se esperan de 3 a 5 s, por el orden de las palabras.
 
-## VRAM (12 GB, de los que ~8 GB son útiles)
-Windows, los monitores y las apps abiertas ya ocupan unos 3,2 GB. Presupuesto de la app:
+## VRAM (12 GB; medido el 2026-10-01)
+Windows y las apps ocupan entre 1,6 y 3,2 GB según lo que haya abierto. Presupuesto de la app:
 - ASR en CPU: 0 GB.
-- Hy-MT2-1.8B Q8: ~2,5 GB.
-- Voz con clonación (Qwen3-TTS-0.6B o Chatterbox es-es): 2–3,5 GB.
-- Contextos CUDA: ~1 GB.
+- Hy-MT2-7B Q4_K_M: 5,2 GB (reserva 1.8B Q8: 2,3 GB).
+- Qwen3-TTS-0.6B: 3,3 GB.
 - Separador de diálogo bajo demanda (spec 003): ~0,5–1 GB.
 
-En total, de 5,5 a 8 GB. La v1 no contempla traducir mientras se juega en el mismo PC (ADR-0003). Un perfil ligero en CPU queda para después.
+En total, unos 8,5 GB, o 5,6 con la reserva. Al arrancar se comprueba la VRAM libre: si no hay margen para el 7B, se usa el 1.8B (ADR-0011). La v1 no contempla traducir mientras se juega en el mismo PC (ADR-0003).
 
 ## Estructura prevista del repositorio
 
