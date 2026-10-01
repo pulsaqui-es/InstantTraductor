@@ -34,7 +34,7 @@ Fechas en hora de Madrid.
 ## §9 Calidad (SC-004)
 - `tests/fixtures/calidad/generate_quality_set.py` sintetiza en inglés 50 frases del corpus de S2: 4,3 min, voz clonada de LibriSpeech.
 - Pasadas por `archivo`, salen 64 unidades (las frases largas, por partes), todas pronunciadas, con retardo p50 de 1,2 s y p95 de 3,7 s.
-- Salidas en `%LOCALAPPDATA%\InstantTraductor\calidadrases_en_es\`.
+- Salidas en `%LOCALAPPDATA%\InstantTraductor\calidad\frases_en_es\`.
 - **Primera lectura del orquestador** (no sustituye al juicio humano):
   - la mayoría son correctas y naturales;
   - fallo recurrente: el plural de cortesía latinoamericano («¿A ustedes…?», «tomen», «síganme», «¿Están listos?») aunque el prompt pide «vosotros»;
