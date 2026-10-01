@@ -482,6 +482,10 @@ if sys.platform == "win32":
             self.done.set()
             return 0
 
+    # Manejadores de activaciones que se pasaron de tiempo: Windows podría llamar a `ActivateCompleted` más
+    # tarde y el objeto COM tiene que seguir vivo. Solo crece en ese fallo.
+    _late_handlers: list[_ActivationHandler] = []
+
     @functools.cache
     def _win_api() -> SimpleNamespace:
         """Funciones de `Mmdevapi` y `kernel32` con sus prototipos (se cargan al primer uso)."""
@@ -536,6 +540,7 @@ if sys.platform == "win32":
         if hr < 0:
             raise EngineError(f"ActivateAudioInterfaceAsync falló: {hresult_name(hr)}", engine=ENGINE_NAME)
         if not handler.done.wait(timeout_s):
+            _late_handlers.append(handler)  # Windows aún puede llamarlo: que no se libere (fuga mínima)
             raise EngineError("La activación de la captura no terminó a tiempo.", engine=ENGINE_NAME)
         activation_hr, unknown = operation.GetActivateResult()
         if activation_hr < 0:
@@ -844,14 +849,15 @@ class ProcessLoopbackSource:
             finally:
                 self._opened.set()
             while not self._stop_event.is_set():
-                stream = self._stream
-                if stream is not None:
-                    stream.wait(_WAIT_STEP_S)
-                else:
-                    self._stop_event.wait(_WAIT_STEP_S)
                 try:
+                    stream = self._stream
+                    if stream is not None:
+                        stream.wait(_WAIT_STEP_S)
+                    else:
+                        self._stop_event.wait(_WAIT_STEP_S)
                     self._pump_once()
                 except Exception:
+                    # Un fallo inesperado no debe matar la captura: se anota y se sigue en el paso siguiente.
                     logger.exception("Error inesperado en el hilo de captura")
                     self._stop_event.wait(_WAIT_STEP_S)
         finally:

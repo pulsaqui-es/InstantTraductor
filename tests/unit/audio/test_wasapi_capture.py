@@ -705,6 +705,26 @@ class TestWithAThread:
         finally:
             source.stop()
 
+    def test_an_unexpected_error_in_the_loop_does_not_kill_the_capture(self) -> None:
+        clock = SessionClock()
+        calls = []
+
+        class Flaky(LiveFakeStream):
+            def wait(self, timeout_s: float) -> bool:
+                calls.append(timeout_s)
+                if len(calls) == 3:
+                    raise RuntimeError("fallo inesperado (simulado)")
+                return super().wait(timeout_s)
+
+        source = ProcessLoopbackSource(clock, stream_factory=lambda pid, exclude, now: Flaky(clock))
+        source.start()
+        try:
+            chunks = [source.read(1.0) for _ in range(20)]
+        finally:
+            source.stop()
+        assert all(c is not None for c in chunks)
+        assert len(calls) > 3  # el hilo siguió esperando y leyendo después del fallo
+
     def test_start_fails_with_an_engine_error_when_the_device_cannot_be_opened(self) -> None:
         def broken(pid: int, exclude: bool, now: Callable[[], float]) -> FakeStream:
             raise OSError("sin dispositivo (simulado)")
@@ -900,6 +920,15 @@ class TestActivationWithoutADevice:
             source.start()
         assert source.exhausted
         assert (seen["pid"], seen["mode"]) == (4321, 0)
+
+    def test_a_late_activation_is_an_error_and_its_handler_stays_alive(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setattr(wasapi_capture, "_win_api", lambda: SimpleNamespace(activate=lambda *args: 0))
+        before = len(wasapi_capture._late_handlers)
+        with pytest.raises(EngineError, match="no terminó a tiempo"):
+            wasapi_capture._activate_process_client(4321, True, 0.05)  # Windows acepta pero nunca avisa
+        assert len(wasapi_capture._late_handlers) == before + 1
 
     def test_a_windows_without_process_loopback_is_not_recoverable(
         self, monkeypatch: pytest.MonkeyPatch
