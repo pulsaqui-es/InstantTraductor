@@ -480,7 +480,7 @@ def test_app_paths_use_instanttraductor_home_when_defined(
     assert paths.bin == tmp_path / "bin"
     assert paths.voices == tmp_path / "voices"
     assert paths.logs == tmp_path / "logs"
-    assert paths.informes == tmp_path / "informes"
+    assert paths.reports == tmp_path / "informes"
 
 
 def test_app_paths_default_home_is_localappdata(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:

@@ -253,7 +253,7 @@ class AppPaths:
         return self.home / "logs"
 
     @property
-    def informes(self) -> Path:
+    def reports(self) -> Path:
         return self.home / "informes"
 
 

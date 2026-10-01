@@ -86,7 +86,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
     - `max_habla_sin_traducir_s` 2–15;
     - `frases_de_contexto` 0–8;
   - `load_settings()` y `save_settings()` en `%APPDATA%\InstantTraductor\ajustes.toml`. Un valor fuera de rango produce `logging.warning` y se usa el valor por defecto;
-  - `AppPaths`: `home` = `%LOCALAPPDATA%\InstantTraductor` o `INSTANTTRADUCTOR_HOME`, con `models`, `bin`, `voices`, `logs` e `informes`;
+  - `AppPaths`: `home` = `%LOCALAPPDATA%\InstantTraductor` o `INSTANTTRADUCTOR_HOME`, con las propiedades `models`, `bin`, `voices`, `logs` y `reports` (carpeta `informes`);
   - `ffmpeg_path()`: `AppPaths.bin/ffmpeg/bin/ffmpeg.exe` si existe; si no, el de PATH; si no, `None`;
   - tests en `tests/unit/test_config.py`.
 - [ ] T008 [P] Plataforma y procesos hijos (depends on T003):
@@ -317,7 +317,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - **Reapertura de la captura:** se repite el autotest (ADR-0010).
   - **Fallos:** un componente que falla se reinicia una vez; si vuelve a fallar, parada limpia.
   - **Parada en ≤ 2 s:** `sink.stop()` y `stop_all()`.
-  - **Al terminar:** si `save_audio`, el audio captado en `informes`; el informe, con `mt_model`.
+  - **Al terminar:** si `save_audio`, el audio captado en `AppPaths.reports`; el informe, con `mt_model`.
 - [ ] T032 [US1] Línea de comandos en `src/instanttraductor/cli.py` (depends on T031, T017, T009):
   - `main()` con argparse; subcomando `directo` (`--voz`, `--volumen`, `--mostrar-texto`, `--informe`);
   - código 3 si `is_installed()` falla para algún componente obligatorio;
