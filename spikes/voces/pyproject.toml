@@ -1,0 +1,18 @@
+[project]
+name = "voces-spike-herramientas"
+version = "0.0.0"
+description = "Spike T040 (2.ª vuelta): voces femeninas castellanas (diseñadas y de estudio). Herramientas CPU sin torch: ASR con faster-whisper, F0, indicio de acento, corpus."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy",
+    "scipy",
+    "soundfile",
+    "filelock",
+    "faster-whisper==1.2.1",
+    "pyarrow",
+    "huggingface-hub",
+]
+
+[tool.uv]
+# Proyecto de scripts: no se construye ni se instala como paquete.
+package = false
