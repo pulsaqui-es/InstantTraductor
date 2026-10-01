@@ -204,18 +204,18 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - tests en `tests/unit/ui/test_terminal.py` (renderizado a texto y un lector de teclas falso).
 
 **Ola 1, obrero B: escucha**
-- [ ] T018 [P] [US1] VAD en `src/instanttraductor/vad/silero.py`: `SileroVad`, que implementa `Vad`. Se porta `spikes/asr/asrspike/vad.py` (depends on T014).
+- [X] T018 [P] [US1] VAD en `src/instanttraductor/vad/silero.py`: `SileroVad`, que implementa `Vad`. Se porta `spikes/asr/asrspike/vad.py` (depends on T014).
   - `.onnx` de `component_dir("silero-vad")`, ejecutado con `onnxruntime` en CPU;
   - `threshold` 0,5, salida 0,35, `min_silence_ms` 500 y `speech_pad_ms` 150;
   - probabilidad inyectable para los tests;
   - tests en `tests/unit/vad/test_silero.py` y `tests/integration/test_silero_model.py` (marcador `model`, `VadContract`).
-- [ ] T019 [P] [US1] ASR en `src/instanttraductor/asr/sherpa_streaming.py`: `NemotronStreamingAsr`, que implementa `AsrEngine`. Se porta `spikes/asr/asrspike/engine_a.py` (depends on T014).
+- [X] T019 [P] [US1] ASR en `src/instanttraductor/asr/sherpa_streaming.py`: `NemotronStreamingAsr`, que implementa `AsrEngine`. Se porta `spikes/asr/asrspike/engine_a.py` (depends on T014).
   - `OnlineRecognizer` con el modelo de `component_dir("nemotron-en")`, trozo de 560 ms, 2 hilos y `blank_penalty=1.0`;
   - un stream nuevo por tramo; `flush()` emite FINAL si había texto;
   - PARTIAL con `revision` creciente y `stable_len` hasta la última palabra completa; tiempos en el reloj de audio; `emitted_at` del `Clock`;
   - `AsrCapabilities(native_streaming=True, partials=True, punctuation=True, word_timestamps=False, languages={"en"}, device="cpu", est_vram_mb=0)`;
   - tests en `tests/unit/asr/test_sherpa_streaming.py` (*recognizer* falso) y `tests/integration/test_nemotron_model.py` (marcador `model`: `AsrEngineContract` y WER < 10 % en `dialogo_en_2min.wav`).
-- [ ] T020 [P] [US1] Segmentador en `src/instanttraductor/pipeline/segmenter.py`: `PauseClauseSegmenter`, que implementa `Segmenter` según research.md R6 (depends on T014).
+- [X] T020 [P] [US1] Segmentador en `src/instanttraductor/pipeline/segmenter.py`: `PauseClauseSegmenter`, que implementa `Segmenter` según research.md R6 (depends on T014).
   - Cierra la unidad con `SPEECH_END` + FINAL.
   - Con habla larga, corta en una coma o conjunción estable si el fragmento tiene ≥ 6 palabras.
   - Corte forzado a los 6 s en la última palabra completa estable.
@@ -223,13 +223,13 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - Tests en `tests/unit/pipeline/test_segmenter.py` y subclase de `SegmenterContract`.
 
 **Ola 1, obrero C: traducción**
-- [ ] T021 [P] [US1] Servidor de traducción y elección de modelo (depends on T014):
+- [X] T021 [P] [US1] Servidor de traducción y elección de modelo (depends on T014):
   - `src/instanttraductor/mt/llama_server.py`: `LlamaServerProcess(model_path)` sobre `platform.children.ManagedChild`, que lanza `llama-server.exe` de `component_dir("llama-cpp")`. Puerto libre en 127.0.0.1; `-m`, `-ngl 99`, `--cache-ram 0`, `-c 4096`; listo con `GET /health` (≤ 30 s). Se porta `spikes/traduccion/llama_server.py`;
   - `src/instanttraductor/mt/selection.py`:
     - `free_vram_mb()` con nvidia-smi;
     - `choose_mt_model(free_mb)`: el 7B si la VRAM libre tras cargar la voz es ≥ 5 200 + 1 024 MiB; si no, el 1.8B si es ≥ 2 300 + 1 024 MiB; si no, `EngineError(recoverable=False)` (ADR-0011);
   - tests en `tests/unit/mt/test_llama_server.py` y `tests/unit/mt/test_selection.py`.
-- [ ] T022 [P] [US1] Traductor en `src/instanttraductor/mt/hymt2.py`: `HyMt2Translator(base_url, model_kind)`, que implementa `Translator`. `supports_concise` vale `True` solo con el 7B. Se porta `spikes/traduccion/prompts.py` y `client.py` (depends on T014).
+- [X] T022 [P] [US1] Traductor en `src/instanttraductor/mt/hymt2.py`: `HyMt2Translator(base_url, model_kind)`, que implementa `Translator`. `supports_concise` vale `True` solo con el 7B. Se porta `spikes/traduccion/prompts.py` y `client.py` (depends on T014).
   - ***Prompt*:**
     - contexto como turnos de chat;
     - los 12 ejemplos fijos en castellano de S2;
