@@ -306,7 +306,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - tests en `tests/unit/metrics/test_report.py`, con un JSON de referencia.
 
 **Integración (orquestador)**
-- [X] T031 [US1] Sesión en directo en `src/instanttraductor/pipeline/session.py`: `LiveSession` (depends on T015–T030).
+- [X] T031 [US1] Sesión en directo en `src/instanttraductor/pipeline/live.py` (pipeline en `session.py`, motores en `engines.py`): `LiveSession` (depends on T015–T030).
   - **Arranque, ≤ 60 s:**
     1. servicio de voz;
     2. `choose_mt_model` y `llama-server`;
@@ -405,7 +405,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - **Tests:** `tests/unit/setup/test_voices.py` (ids ASCII únicos, al menos 1 de cada género, licencia, `ref_text` no vacío, instalación idempotente con `home` temporal).
 
 **Integración (orquestador)**
-- [ ] T043 [US3] Subcomandos en `src/instanttraductor/cli.py` (depends on T037, T041, T042):
+- [X] T043 [US3] Subcomandos en `src/instanttraductor/cli.py` (depends on T037, T041, T042):
   - `preparar [--comprobar]`, que además genera las muestras de las voces;
   - `voces [--escuchar [ID]] [--elegir ID]`, con `DeviceSink`;
   - `diagnostico`.
