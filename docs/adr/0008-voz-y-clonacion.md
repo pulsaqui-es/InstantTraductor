@@ -55,6 +55,30 @@
   - latencia real en sm_120 sin comprobar.
 - Licencias anotadas: Qwen3-TTS Apache 2.0, faster-qwen3-tts MIT, Chatterbox MIT (añade una marca de agua PerTh), Bandit v2 CC BY-SA, HT-Demucs MIT y XTTS-v2 CPML (no comercial). El audio clonado es solo para consumo privado: no se distribuye.
 
+## Resolución del hito 0 (2026-10-01)
+Spike S1 (`spikes/voz/README.md`), medido en la RTX 5070 con Windows nativo.
+
+**Qwen3-TTS-0.6B Base + faster-qwen3-tts 0.5.3:**
+- Las CUDA graphs funcionan en sm_120.
+- Primer audio p95 de 182 ms con `chunk_size` 4 (de 122 a 270 ms según el *chunk*).
+- RTF de 0,37.
+- VRAM de 3,3 GB.
+
+**Chatterbox es-ES:**
+- Primer audio p95 de 748 ms.
+- RTF en *streaming* de 1,12: no aguanta el tiempo real sin optimizarlo.
+
+**Ninguno tiene parámetro de velocidad**, así que se acelera con *time-stretch* del PCM: factor exacto, 3–4 ms de CPU por segundo de audio.
+
+**Decisión del humano tras escuchar las muestras:**
+- motor **Qwen3-TTS-0.6B** (modo ICL con `ref_text`; `x_vector_only` de rescate);
+- **voz por defecto femenina** y castellana;
+- la referencia masculina de LibriVox («Trafalgar», lector Tux, dominio público) suena a España y queda como una de las voces;
+- se buscarán al menos dos referencias femeninas castellanas de dominio público.
+
+**Riesgo abierto:** la contención con la traducción en la misma GPU. Con carga ajena al 100 %, el p95 del primer audio sube a ~2 s.
+
 ## Referencias
 - `docs/investigacion/2026-09-30-aislamiento-y-clonacion.md`
+- `spikes/voz/README.md` (S1, 2026-10-01)
 - `docs/investigacion/2026-09-30-traduccion-y-voz.md`

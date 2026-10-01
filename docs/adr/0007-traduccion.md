@@ -1,6 +1,6 @@
 # ADR-0007: Traducción automática (MT)
 
-- Estado: Aceptada (aprobada por el humano el 2026-09-30)
+- Estado: Aceptada (aprobada por el humano el 2026-09-30); sustituida en parte por ADR-0011 (2026-10-01)
 - Fecha: 2026-09-30
 - Decide: orquestador (con visto bueno del humano)
 

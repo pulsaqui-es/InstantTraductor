@@ -2,6 +2,19 @@
 
 Registro cronológico del proyecto, con lo más reciente arriba. El formato y las reglas están en la skill `registrar-hito`.
 
+## 2026-10-01 — Spikes cerrados: voz, traducción y ASR decididos
+- **Hecho:** spikes S1, S2 y S3 integrados en `001-espina-dorsal`; medición del 7B por el orquestador.
+  - **Voz:** Qwen3-TTS, primer audio p95 de 0,18 s, RTF 0,37, 3,3 GB. Chatterbox: 0,75 s y no aguanta el tiempo real.
+  - **Traducción:**
+    - 7B: p50/p95 de 211/347 ms con caché, 5,2 GB y sí resume.
+    - 1.8B: 145/218 ms y 2,3 GB, pero no resume y tiene ~20 % de errores de sentido.
+  - **ASR:** Nemotron en CPU, final p50/p95 de 0,67/0,78 s y WER del 5 %, sin VRAM. Casi no pone puntos: la segmentación irá por pausas y comas.
+- **Decidido (humano):**
+  - voz Qwen3-TTS con voz femenina castellana por defecto (ADR-0008, resolución);
+  - traducción con el 7B y la reserva 1.8B, más un glosario de España (ADR-0011);
+  - corrección de la captura (ADR-0010).
+- **Siguiente:** completar research.md y plan, aprobar H2 (delegado) y `/speckit-tasks`.
+
 ## 2026-10-01 — Spikes: captura resuelta; cuota agotada y medidas de eficiencia
 - **Hecho:**
   - Spike S4 (captura y reproducción) integrado en `001-espina-dorsal`. La subclase de pyminiaudio no sirve, pero la captura propia con ctypes/comtypes sí funciona.
