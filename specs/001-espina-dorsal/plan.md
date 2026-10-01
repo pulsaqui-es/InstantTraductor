@@ -145,8 +145,10 @@ src/instanttraductor/
 │   ├── echo_monitor.py           # monitor de eco: correlación voz reproducida / captura (R14)
 │   ├── wasapi_playback.py        # DeviceSink (dispositivo por defecto, sigue cambios)
 │   ├── file_source.py            # FileSource (ffmpeg → 16 kHz mono, a ritmo real)
-│   ├── file_sink.py              # TimelineSink (pista alineada + mezcla)
-│   ├── dsp.py                    # remuestreo, AGC, time-stretch TDHS
+│   ├── file_sink.py              # TimelineSink (pista alineada)
+│   ├── file_outputs.py           # mezclas (wav/mkv), SRT y JSON, escritura atómica
+│   ├── agc.py                    # AGC y aviso de «sin audio del origen»
+│   ├── dsp.py                    # remuestreo y time-stretch TDHS
 │   └── selftest.py               # comprobación anti-realimentación al arrancar
 ├── vad/
 │   └── silero.py                 # SileroVad (ONNX Runtime, CPU)
@@ -160,6 +162,7 @@ src/instanttraductor/
 │   └── session.py                # une etapas (hilos y colas), ciclo de vida y parada limpia
 ├── mt/
 │   ├── llama_server.py           # proceso hijo llama-server: arranque, salud y parada
+│   ├── selection.py              # elección 7B / 1.8B según la VRAM libre (ADR-0011)
 │   ├── hymt2.py                  # HyMt2Translator: prompt de S2 (contexto, ejemplos, glosario), modo resumen y filtros
 │   └── glossary_es.toml          # glosario base de léxico de España (datos)
 ├── tts/
