@@ -282,12 +282,12 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - tests en `tests/unit/audio/test_dsp.py`: duración dentro del 2 %, sin NaN y continuidad entre trozos.
 
 **Ola 2, obrero F: planificador, retraso y métricas**
-- [ ] T028 [P] [US1] Política de retraso en `src/instanttraductor/pipeline/delay.py`: `ThresholdDelayController`, que implementa `DelayController` (depends on T014).
+- [X] T028 [P] [US1] Política de retraso en `src/instanttraductor/pipeline/delay.py`: `ThresholdDelayController`, que implementa `DelayController` (depends on T014).
   - `speed` lineal de 1,0 (con lag = `accelerate_after_s`) a `max_speed` (con lag = `concise_after_s`);
   - CONCISE cuando lag > `concise_after_s` a velocidad máxima, con histéresis hasta lag < `accelerate_after_s`, **solo si `allow_concise`**;
   - `drop_oldest_pending` si lag > `drop_after_s`;
   - tests en `tests/unit/pipeline/test_delay.py` (incluido `allow_concise=False`) y `DelayControllerContract`.
-- [ ] T029 [US1] Planificador en `src/instanttraductor/pipeline/scheduler.py`: `Scheduler` (depends on T028).
+- [X] T029 [US1] Planificador en `src/instanttraductor/pipeline/scheduler.py`: `Scheduler` (depends on T028).
   - Estados de «Frase» de `data-model.md` en FIFO.
   - **`lag` = `clock.now() − t_end` de la frase pendiente más antigua que aún no ha empezado a sonar (0 si no hay)**. Se muestrea cada 0,5 s para las métricas.
   - **Peticiones:**
@@ -296,7 +296,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - **Resultados:** una traducción `rejected` pasa a `Outcome.REJECTED`; los descartes, con `sink.cancel_pending()`.
   - **Tiempos:** `StageTimings`, incluido `captured_at`, con los eventos.
   - Tests en `tests/unit/pipeline/test_scheduler.py` con dobles y `ManualClock`.
-- [ ] T030 [P] [US1] Métricas e informe en `src/instanttraductor/metrics/` (depends on T014):
+- [X] T030 [P] [US1] Métricas e informe en `src/instanttraductor/metrics/` (depends on T014):
   - `recorder.py`: `MetricsRecorder`, que guarda los `UtteranceRecord`, la serie de `lag` y los `diagnostics` de `contracts/informe.md`:
     - `startup_s`;
     - `rss_mb_min5` y `rss_mb_end`, y `rss_children_mb_*` (psutil, de los PID hijos);

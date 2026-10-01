@@ -314,7 +314,9 @@ def test_a_failure_is_reported_once_with_the_server_and_the_reason(make_server) 
     time.sleep(0.5)  # una sola notificación por fallo
     assert len(failures) == 1
     assert failures[0][0] is server
-    assert "terminó" in failures[0][1]
+    # Al matar el proceso, el hilo de salud puede ver antes que terminó o que /health ya no responde:
+    # los dos motivos describen el mismo fallo.
+    assert "terminó" in failures[0][1] or "salud" in failures[0][1]
 
 
 def test_stopping_on_purpose_is_not_a_failure(make_server) -> None:
