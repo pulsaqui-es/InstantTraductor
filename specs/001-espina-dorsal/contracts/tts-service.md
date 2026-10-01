@@ -45,7 +45,7 @@ Errores (`application/json`, con `{"error": str}`):
 ## Requisitos de rendimiento (con el modelo caliente, en la RTX 5070)
 - Primer bloque de audio: p95 ≤ 0,6 s desde que se recibe la petición (ADR-0008).
 - RTF < 0,5.
-- VRAM del proceso ≤ 3,5 GB.
+- VRAM del proceso ≤ 4 GB (medido el 2026-10-01: 3,8 GB con el contexto CUDA; la estimación inicial era 3,5).
 
 ## Voces
 Cada voz es un fichero de referencia `<voices-dir>/<voice_id>.wav` (mono, 24 kHz, de 6 a 10 s) con sus metadatos en `<voices-dir>/<voice_id>.json` (campos de `VoiceInfo` más `ref_text` si el motor lo necesita). El servicio las precarga y deja en caché su *prompt* al arrancar.

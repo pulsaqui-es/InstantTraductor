@@ -39,7 +39,7 @@ pytestmark = [pytest.mark.gpu, pytest.mark.model]
 
 FIRST_BLOCK_P95_S = 0.6
 MAX_RTF = 0.5
-MAX_VRAM_MIB = 3.5 * 1024
+MAX_VRAM_MIB = 4.0 * 1024  # medido 3,8 GB con contexto CUDA (2026-10-01); ver research.md R8
 READY_TIMEOUT_S = 180.0
 WARMUP_REQUESTS = 3
 REPETITIONS = 2

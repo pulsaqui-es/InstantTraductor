@@ -255,7 +255,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - tests en `tests/unit/audio/test_echo_monitor.py` y `tests/integration/test_selftest_device.py` (marcador `device`).
 
 **Ola 2, obrero E: voz**
-- [ ] T025 [P] [US1] Servicio de voz: código en `engines/tts-qwen3/src/tts_service/`. **No toca el `pyproject.toml` ni el `uv.lock` del motor (T010).** Se porta `spikes/voz/qwen3/bench_qwen3.py` y `spikes/voz/common/vozbench.py` (depends on T014).
+- [X] T025 [P] [US1] Servicio de voz: código en `engines/tts-qwen3/src/tts_service/`. **No toca el `pyproject.toml` ni el `uv.lock` del motor (T010).** Se porta `spikes/voz/qwen3/bench_qwen3.py` y `spikes/voz/common/vozbench.py` (depends on T014).
   - **`engine.py`:**
     - carga Qwen3-TTS-12Hz-0.6B-Base, `warmup()` y CUDA graphs;
     - voces de `--voices-dir` (`<id>.wav` + `<id>.json` con `ref_text`), con el *prompt* ICL en caché y `x_vector_only` de rescate;
@@ -264,7 +264,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - **Tests:**
     - `engines/tts-qwen3/tests/test_server.py` con un motor falso, sin GPU;
     - `engines/tts-qwen3/tests/test_engine_gpu.py` (marcadores `gpu` y `model`): primer audio p95 ≤ 0,6 s y VRAM ≤ 3,5 GB.
-- [ ] T026 [P] [US1] Cliente del servicio de voz en `src/instanttraductor/tts/` (depends on T014):
+- [X] T026 [P] [US1] Cliente del servicio de voz en `src/instanttraductor/tts/` (depends on T014):
   - `service_process.py`: `TtsServiceProcess` sobre `ManagedChild`:
     - lanza `uv run --frozen --offline --project engines/tts-qwen3 tts-service --host 127.0.0.1 --port 0 --voices-dir <AppPaths.voices> --models-dir <AppPaths.models>` con `HF_HUB_OFFLINE=1` y `TRANSFORMERS_OFFLINE=1` (FR-027);
     - está listo con la línea `ready` (≤ 120 s);
@@ -276,7 +276,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
     - `supports_speed=False`;
     - `list_voices()`;
   - tests en `tests/unit/tts/test_http_client.py` (`httpx.MockTransport` + `SynthesizerContract`) y `tests/unit/tts/test_service_process.py`.
-- [ ] T027 [P] [US1] DSP en `src/instanttraductor/audio/dsp.py` (depends on T014):
+- [X] T027 [P] [US1] DSP en `src/instanttraductor/audio/dsp.py` (depends on T014):
   - `StreamResampler(src_rate, dst_rate)` con soxr y estado entre trozos;
   - `StreamTimeStretch(speed)` con TDHS (`audiostretchy`), entre 1,0 y 1,5, cambiable entre unidades. Se porta `spikes/voz/velocidad_postproceso.py`;
   - tests en `tests/unit/audio/test_dsp.py`: duración dentro del 2 %, sin NaN y continuidad entre trozos.

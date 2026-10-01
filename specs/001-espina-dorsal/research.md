@@ -126,6 +126,7 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
   - Primer audio p50/p95 de 179/182 ms (`chunk_size` 4); RTF 0,37; 3,3 GB de VRAM.
   - Carga de 6,1 s + 0,84 s de grafos; en frío, sin calentar, 1,42 s.
   - El humano la eligió al escuchar las muestras.
+- **Medición del servicio integrado (2026-10-01, GPU libre):** primer audio p50/p95 de 222/283 ms, RTF 0,45 y VRAM de 3,8 GB con el contexto CUDA (el límite del contrato pasa a 4 GB). Con la GPU compartida (otro proceso al 88 %) el RTF sube a 0,67. Mejora para la spec 002: bajar la VRAM (`max_seq_len`, grafos capturados).
 - **Alternativas:**
   - Chatterbox es-ES: primer audio de 748 ms y RTF en *streaming* de 1,12; solo cumpliría con menos pasos CFM y pérdida de calidad.
   - XTTS-v2 o Piper como último recurso.
