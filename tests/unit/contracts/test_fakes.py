@@ -10,10 +10,10 @@ from __future__ import annotations
 import threading
 import time
 from dataclasses import dataclass
+from pathlib import Path
 
 import numpy as np
 import pytest
-import soundfile as sf
 
 from instanttraductor.contracts import (
     CAPTURE_RATE,
@@ -117,6 +117,13 @@ class TestAssertImplements:
 # --------------------------------------------------------------------------------------------------
 
 
+def _write_wav(path: Path, samples: np.ndarray, rate: int) -> None:
+    """Escribe un WAV PCM de 16 bits. `soundfile` se importa aquí: si falla, no oculta los demás tests."""
+    import soundfile as sf
+
+    sf.write(path, samples, rate, subtype="PCM_16")
+
+
 def _drain(source: FakeAudioSource) -> list:
     source.start()
     chunks = []
@@ -197,29 +204,29 @@ class TestFakeAudioSource:
         with pytest.raises(ValueError, match="mono"):
             FakeAudioSource(np.zeros((2, 320), dtype=np.float32))
 
-    def test_reads_a_wav_file(self, tmp_path) -> None:
+    def test_reads_a_wav_file(self, tmp_path: Path) -> None:
         path = tmp_path / "tono.wav"
         audio = tone(0.5, 1000.0)
-        sf.write(path, audio, CAPTURE_RATE, subtype="PCM_16")
+        _write_wav(path, audio, CAPTURE_RATE)
         chunks = _drain(FakeAudioSource(path))
         decoded = np.concatenate([c.samples for c in chunks])
         assert len(decoded) == len(audio)
         np.testing.assert_allclose(decoded, audio, atol=1 / 32768)
 
-    def test_accepts_the_wav_path_as_text(self, tmp_path) -> None:
+    def test_accepts_the_wav_path_as_text(self, tmp_path: Path) -> None:
         path = tmp_path / "tono.wav"
-        sf.write(path, tone(0.1), CAPTURE_RATE, subtype="PCM_16")
+        _write_wav(path, tone(0.1), CAPTURE_RATE)
         assert len(_drain(FakeAudioSource(str(path)))) == 5
 
-    def test_rejects_a_wav_with_another_sample_rate(self, tmp_path) -> None:
+    def test_rejects_a_wav_with_another_sample_rate(self, tmp_path: Path) -> None:
         path = tmp_path / "tono_48k.wav"
-        sf.write(path, tone(0.1, rate=48_000), 48_000, subtype="PCM_16")
+        _write_wav(path, tone(0.1, rate=48_000), 48_000)
         with pytest.raises(ValueError, match="16000"):
             FakeAudioSource(path)
 
-    def test_rejects_a_stereo_wav(self, tmp_path) -> None:
+    def test_rejects_a_stereo_wav(self, tmp_path: Path) -> None:
         path = tmp_path / "estereo.wav"
-        sf.write(path, np.zeros((1600, 2), dtype=np.float32), CAPTURE_RATE, subtype="PCM_16")
+        _write_wav(path, np.zeros((1600, 2), dtype=np.float32), CAPTURE_RATE)
         with pytest.raises(ValueError, match="mono"):
             FakeAudioSource(path)
 
