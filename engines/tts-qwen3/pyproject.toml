@@ -1,0 +1,57 @@
+[project]
+name = "tts-qwen3"
+version = "0.1.0"
+description = "Servicio local de voz de InstantTraductor: Qwen3-TTS-0.6B con API HTTP (contracts/tts-service.md)."
+requires-python = "==3.12.*"
+dependencies = [
+    "faster-qwen3-tts==0.5.3",
+    # La compatibilidad de qwen-tts-hf rompe con transformers 5.18 (spike S1): se fija la 5.15.1.
+    "transformers==5.15.1",
+    # PyTorch con CUDA 13.0, que incluye sm_120 (RTX 5070).
+    "torch==2.11.0",
+    "torchaudio==2.11.0",
+    "numpy",
+    "scipy",
+    "soundfile",
+    "nvidia-ml-py",
+    "huggingface-hub",
+    "fastapi",
+    "uvicorn",
+]
+
+[project.scripts]
+tts-service = "tts_service.server:main"
+
+[dependency-groups]
+dev = ["pytest>=8.4", "ruff>=0.13", "httpx>=0.28"]
+
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "tts_service"
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchaudio = { index = "pytorch-cu130" }
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -m 'not gpu and not model'"
+markers = [
+    "gpu: necesita la GPU NVIDIA (solo el orquestador)",
+    "model: necesita el modelo Qwen3-TTS descargado (solo el orquestador)",
+]
