@@ -288,11 +288,13 @@ class MetricsRecorder:
         with self._lock:
             return tuple(self._memory)
 
-    def diagnostics(self, *, end_t: float | None = None) -> dict[str, Any]:
+    def diagnostics(self, *, end_t: float | None = None, drop_after_s: float | None = None) -> dict[str, Any]:
         """El bloque `diagnostics` de `contracts/informe.md`, con sus claves en ese orden.
 
         `end_t`: duración de la sesión, donde acaba una racha de retraso que sigue abierta (ver el módulo).
-        Segundos con 3 decimales y memoria en MiB enteros; lo que no se midió, `None`.
+        `drop_after_s`: umbral de descarte para la racha, si no es el del constructor (el informe pasa el de
+        los ajustes que él mismo recoge). Segundos con 3 decimales y memoria en MiB enteros; lo que no se
+        midió, `None`.
         """
         with self._lock:
             series = tuple(self._lag_series)
@@ -302,7 +304,10 @@ class MetricsRecorder:
         reference = next((m for m in memory if m.t >= MEMORY_REFERENCE_S - _TIME_TOLERANCE_S), None)
         last = memory[-1] if memory else None
         streak = longest_streak_above(
-            series, self._drop_after_s, end_t=end_t, interval_s=self._lag_interval_s
+            series,
+            self._drop_after_s if drop_after_s is None else drop_after_s,
+            end_t=end_t,
+            interval_s=self._lag_interval_s,
         )
         return {
             "startup_s": None if startup_s is None or not math.isfinite(startup_s) else round(startup_s, 3),

@@ -21,7 +21,8 @@ Criterios
   o acelerado (velocidad por encima de 1,000 una vez redondeada).
 - **Ajustes:** solo los siete del contrato (`voz`, `volumen_voz`, los tres umbrales, `velocidad_max` y
   `max_habla_sin_traducir_s`), con las claves en español del TOML.
-- El bloque `diagnostics` es el del `MetricsRecorder` (`diagnostics(end_t=duration_s)`).
+- El bloque `diagnostics` es el del `MetricsRecorder`, con la racha de retraso medida contra el
+  `umbral_descartar_s` de los ajustes que recoge el propio informe.
 
 El Markdown usa coma decimal, como la interfaz. Cuando no hay frases dice «no se detectó habla» (modo
 archivo con un fichero sin voz, o directo en silencio).
@@ -212,7 +213,7 @@ def build_report(
         "settings": {TOML_KEYS[name]: _setting_value(getattr(settings, name)) for name in _SETTINGS_FIELDS},
         "components": [_component_entry(component) for component in components],
         "summary": _summary(records),
-        "diagnostics": recorder.diagnostics(end_t=duration),
+        "diagnostics": recorder.diagnostics(end_t=duration, drop_after_s=settings.drop_after_s),
         "utterances": [_utterance_entry(record) for record in records],
     }
 

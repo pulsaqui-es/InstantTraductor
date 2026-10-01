@@ -267,6 +267,14 @@ class TestSchema:
         assert list(report["diagnostics"]) == DIAGNOSTICS_KEYS
         assert report["diagnostics"] == recorder.diagnostics(end_t=600.0)
 
+    def test_the_lag_streak_uses_the_drop_threshold_of_the_settings_in_the_report(self) -> None:
+        recorder = MetricsRecorder(drop_after_s=5.0)  # distinto del umbral de los ajustes (8,0)
+        for t, lag in ((0.0, 1.0), (0.5, 6.0), (1.0, 7.0), (1.5, 9.0), (2.0, 1.0)):
+            recorder.add_lag_sample(t, lag)
+        diagnostics = build(recorder, settings=Settings(voice="es-f-01", drop_after_s=8.0))["diagnostics"]
+        assert diagnostics["lag_over_drop_max_streak_s"] == 0.5  # solo la muestra de 9,0 supera 8,0
+        assert recorder.diagnostics()["lag_over_drop_max_streak_s"] == 1.5  # con 5,0 serían 1,5 s
+
     def test_the_mode_and_the_input_file(self) -> None:
         live = build()
         assert (live["mode"], live["input_file"]) == ("directo", None)
