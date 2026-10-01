@@ -132,10 +132,10 @@ FEWSHOT_ES_ES: Final[tuple[tuple[str, str], ...]] = (
 # ---------------------------------------------------------------------------
 # Modo CONCISE: tope de palabras
 # ---------------------------------------------------------------------------
-#: El resumen debe quedar en el 70 % de lo que saldría normalmente...
-CONCISE_RATIO: Final = Fraction(7, 10)
-#: ...y en español salen ~1,15 palabras por cada palabra del original.
-SPANISH_EXPANSION: Final = Fraction(115, 100)
+#: Tope del resumen: el 60 % de las palabras del original (configuración medida en el spike S2: −33 %)...
+CONCISE_RATIO: Final = Fraction(3, 5)
+#: ...sin factor de expansión: en S2 el español salió con 0,995 palabras por palabra inglesa.
+SPANISH_EXPANSION: Final = Fraction(1)
 
 _WORD = re.compile(r"[\w'’]+")
 
@@ -146,7 +146,7 @@ def count_words(text: str) -> int:
 
 
 def concise_word_budget(source: str) -> int:
-    """Tope N de palabras del modo CONCISE: ``ceil(0,7 × 1,15 × palabras del original)`` (mínimo 1)."""
+    """Tope N de palabras del modo CONCISE: ``ceil(0,6 × palabras del original)`` (mínimo 1)."""
     return max(1, ceil(CONCISE_RATIO * SPANISH_EXPANSION * count_words(source)))
 
 

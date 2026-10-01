@@ -236,7 +236,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
     - cada turno envuelto en la instrucción de traducir;
     - glosario (el del usuario + el base filtrado por la frase) con la plantilla *Terminology* en chino;
     - `cache_prompt: true`.
-  - **CONCISE:** plantilla *Style* «telegraphic Spanish… at most N words», con N = ceil(0,7 × 1,15 × las palabras del original).
+  - **CONCISE:** plantilla *Style* «telegraphic Spanish… at most N words», con N = ceil(0,6 × las palabras del original) (lo medido en S2).
   - **Filtros:** vacía, sin caracteres latinos, longitud > 3× la del original o eco del *prompt* → `rejected=True`.
   - **Glosario base** `src/instanttraductor/mt/glossary_es.toml`, con ≥ 150 pares inglés → español de España: juice→zumo, fridge→nevera, parking lot→aparcamiento, computer→ordenador, cell phone→móvil, car→coche, popcorn→palomitas, okay→vale…
   - **Tests:**

@@ -93,7 +93,7 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
     - cada turno envuelto en la instrucción de traducir;
     - glosario con la plantilla *Terminology* en chino;
     - glosario base de léxico de España incorporado (unos 150 pares), filtrado por frase.
-  - **Modo resumen (FR-013, solo con el 7B):** plantilla *Style* «telegraphic Spanish… at most N words», con N = 0,7 × las palabras que saldrían normalmente.
+  - **Modo resumen (FR-013, solo con el 7B):** plantilla *Style* «telegraphic Spanish… at most N words», con N = ceil(0,6 × las palabras del original), que es la configuración medida en S2 (−33 %).
   - **Filtros de salida:** traducción vacía, idioma distinto del español, longitud anómala (más de 3 veces el original) y eco del *prompt*. Si saltan, `rejected=True` y la frase no se pronuncia.
 - **Motivo (medido):**
   - **7B:** p50/p95 de 211/347 ms con caché (sin caché, 344/497 ms); primer token 43/83 ms; 5,2 GB de VRAM; arranque de 2,1 s; glosario 10/10.

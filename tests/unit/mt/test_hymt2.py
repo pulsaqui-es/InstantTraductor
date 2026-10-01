@@ -428,9 +428,9 @@ def test_concise_mode_does_not_send_the_glossary() -> None:
 # ---------------------------------------------------------------------------
 @pytest.mark.parametrize(
     ("n_words", "budget"),
-    [(1, 1), (2, 2), (3, 3), (5, 5), (9, 8), (10, 9), (20, 17), (100, 81), (200, 161)],
+    [(1, 1), (2, 2), (3, 2), (5, 3), (9, 6), (10, 6), (20, 12), (100, 60), (200, 120)],
 )
-def test_the_concise_budget_is_ceil_of_0_7_times_1_15_times_the_words(n_words: int, budget: int) -> None:
+def test_the_concise_budget_is_ceil_of_0_6_times_the_words(n_words: int, budget: int) -> None:
     assert concise_word_budget(" ".join(["word"] * n_words)) == budget
 
 
@@ -441,12 +441,12 @@ def test_the_concise_budget_has_a_floor_of_one_word() -> None:
 
 def test_concise_mode_is_a_single_style_message_with_the_word_budget() -> None:
     translator, server = make_translator()
-    text = "I think we should leave before it gets dark"  # 9 palabras -> N = 8
+    text = "I think we should leave before it gets dark"  # 9 palabras -> N = 6
 
     result = translator.translate(make_request(1, text, TranslationMode.CONCISE))
 
     assert result.mode is TranslationMode.CONCISE
-    assert server.messages == [{"role": "user", "content": CONCISE_PREFIX + "8 words]:\n\n" + text}]
+    assert server.messages == [{"role": "user", "content": CONCISE_PREFIX + "6 words]:\n\n" + text}]
     assert server.bodies[0]["cache_prompt"] is True
 
 
