@@ -2,6 +2,21 @@
 
 Registro cronológico del proyecto, con lo más reciente arriba. El formato y las reglas están en la skill `registrar-hito`.
 
+## 2026-10-01 — Implementación de la 001: olas 1 y 2 y voz por defecto
+- **Hecho:**
+  - **Fase base:** contratos sellados con `contratos-001-v1`.
+  - **Ola 1:** captura propia, AGC e interfaz; VAD, ASR y segmentador; traducción 7B/1.8B con glosario de España.
+  - **Ola 2:** voz Qwen3-TTS (servicio, cliente y DSP); retraso, planificador y métricas.
+  - **Integración:** `Pipeline` y su E2E con dobles (6 tests); `LiveSession` y la CLI `directo` escritas.
+  - **Validado con modelos reales en el PC:** Silero, Nemotron (WER < 10 %), Hy-MT2 7B/1.8B y la captura con el dispositivo (autoexclusión).
+  - Más de 1600 tests en verde.
+- **Decidido (humano):**
+  - voces: las 4 finalistas valen; **Lucía** por defecto (ADR-0008, catálogo);
+  - catálogo de voces de distintas edades en la spec 003 (hoja de ruta).
+- **Pendiente:**
+  - obrero D (reproducción, autotest y eco) y la primera prueba en directo;
+  - repetir el RTF de la voz con la GPU libre: dio 0,67 mientras otro proceso usaba la tarjeta.
+
 ## 2026-10-01 — Plan de la 001 aprobado (H2, delegado) y comienza la implementación
 - **Hecho:**
   - `/speckit-tasks`: 48 tareas, TDD, en olas de como máximo 3 obreros.
