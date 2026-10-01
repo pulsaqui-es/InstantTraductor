@@ -184,7 +184,7 @@ COMPONENTS: Final[tuple[Component, ...]] = (
         name="Hy-MT2-7B Q4_K_M (traducción)",
         version="Q4_K_M",
         kind="modelo",
-        license="Apache-2.0",  # según su ficha de HF; T013 comprueba el LICENSE al fijar el GGUF
+        license="Apache-2.0",  # LICENSE.txt estándar, sin restricciones territoriales (verificado 2026-10-01)
         install_dir="models/hy-mt2-7b-q4",
         source_url="https://huggingface.co/tencent/Hy-MT2-7B-GGUF/resolve/main",
         files=(
@@ -219,9 +219,28 @@ COMPONENTS: Final[tuple[Component, ...]] = (
         license="NVIDIA Open Model License",
         install_dir="models/nemotron-en",
         hf_repo_id="csukuangfj2/sherpa-onnx-nemotron-speech-streaming-en-0.6b-560ms-int8-2026-04-25",
-        hf_revision=None,  # T013 rellena hashes y revisión
+        hf_revision="52056fdc070914a48dcd68b31b44d6a6f5b85902",
         allow_patterns=("tokens.txt", "encoder.int8.onnx", "decoder.int8.onnx", "joiner.int8.onnx"),
-        files=(),  # T013 rellena hashes y revisión
+        files=(
+            ComponentFile(
+                "tokens.txt", "dc0b4584ab2e4ddbf888425c076c61b736e7356a015250db7d307e6f1a8188ff", 8_952
+            ),
+            ComponentFile(
+                "encoder.int8.onnx",
+                "7d932213491ad355c6e5576705dc3494731a52af87d7a1b954559340147909d8",
+                652_916_849,
+            ),
+            ComponentFile(
+                "decoder.int8.onnx",
+                "0be9702c2f427a2b6bb241d298e0d3836a558de1f5b9fd3018f1cce6e2b3fa98",
+                7_257_753,
+            ),
+            ComponentFile(
+                "joiner.int8.onnx",
+                "a35eac38a22ebceb04d230ed7afe0d68f446ba6914a036b97f14fece95967e23",
+                1_735_862,
+            ),
+        ),
     ),
     Component(
         component_id="silero-vad",
@@ -233,7 +252,16 @@ COMPONENTS: Final[tuple[Component, ...]] = (
         # Metadatos de PyPI de la versión fijada: de ahí sale el wheel, del que se extrae
         # silero_vad/data/silero_vad.onnx (y el LICENSE), como hace spikes/asr/fetch_assets.py.
         source_url="https://pypi.org/pypi/silero-vad/6.2.3/json",
-        files=(),  # T013 rellena hashes y revisión
+        files=(
+            ComponentFile(
+                "silero_vad.onnx",
+                "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3",
+                2_327_524,
+            ),
+            ComponentFile(
+                "LICENSE", "2e63e9a38b6e8fc0c7bc37ce174caca1862870856c6daf5697cfb785e925520b", 1_075
+            ),
+        ),
     ),
     Component(
         component_id="qwen3-tts",
@@ -244,9 +272,65 @@ COMPONENTS: Final[tuple[Component, ...]] = (
         # El servicio de voz busca el modelo en <models>/qwen3-tts-12hz-0.6b-base (nombre de los spikes).
         install_dir="models/qwen3-tts-12hz-0.6b-base",
         hf_repo_id="Qwen/Qwen3-TTS-12Hz-0.6B-Base",
-        hf_revision=None,  # T013 rellena hashes y revisión
+        hf_revision="5d83992436eae1d760afd27aff78a71d676296fc",
         allow_patterns=None,  # el spike descargó el repositorio entero
-        files=(),  # T013 rellena hashes y revisión
+        files=(
+            ComponentFile(
+                ".gitattributes", "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361", 1_519
+            ),
+            ComponentFile(
+                "README.md", "181187b6057906bd960bc7f938d0b7a16652509776a0d52c4885b4ae5ccda0ea", 3_640
+            ),
+            ComponentFile(
+                "config.json", "2e714c787c8edb98b05432685cddb634add2de4d4e645f653d68251ef72ba011", 4_494
+            ),
+            ComponentFile(
+                "generation_config.json",
+                "f1b90b4513f3b34c62851049e2492d7b4c5940daf1276f89c82b8ef04127f3aa",
+                245,
+            ),
+            ComponentFile(
+                "merges.txt", "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3", 1_671_839
+            ),
+            ComponentFile(
+                "model.safetensors",
+                "180b3b10eb1c9f1b4db7806d5475bae3071c0243c299d49926bab1da3b6946f6",
+                1_829_344_272,
+            ),
+            ComponentFile(
+                "preprocessor_config.json",
+                "efdde1022ea9d76928bf7a9cd53139138f5ba2e466e837f08f6105ab1af1c119",
+                127,
+            ),
+            ComponentFile(
+                "speech_tokenizer/config.json",
+                "ee65bb901c876664ab8707c487157aa1a6ee57c65969b28fb5ec9dc211e68167",
+                2_336,
+            ),
+            ComponentFile(
+                "speech_tokenizer/configuration.json",
+                "6bc26d64eb5024b4d1dab5a52371958b429256d6c9d59787f1f5294a54e0cebd",
+                76,
+            ),
+            ComponentFile(
+                "speech_tokenizer/model.safetensors",
+                "836b7b357f5ea43e889936a3709af68dfe3751881acefe4ecf0dbd30ba571258",
+                682_293_092,
+            ),
+            ComponentFile(
+                "speech_tokenizer/preprocessor_config.json",
+                "fcb3805e597e786d4067706e602f6688524640f8d3396790e2e09b5942fcbdfb",
+                234,
+            ),
+            ComponentFile(
+                "tokenizer_config.json",
+                "dc3c31c3bdaedd5016382bb3cbe07323026775ad51f5a4fb564505992ae4a670",
+                7_344,
+            ),
+            ComponentFile(
+                "vocab.json", "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910", 2_776_833
+            ),
+        ),
     ),
     Component(
         component_id="ffmpeg",

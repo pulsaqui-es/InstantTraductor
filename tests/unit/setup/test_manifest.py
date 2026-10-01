@@ -144,9 +144,11 @@ def test_values_taken_from_the_spikes_are_kept() -> None:
         ),
     }
 
+    direct_download = {"llama-cpp", "hy-mt2-7b-q4", "hy-mt2-1.8b-q8"}
     found = {
         file.rel_path: (component.file_url(file), file.size_bytes, file.sha256)
         for component in COMPONENTS
+        if component.component_id in direct_download
         for file in component.files
     }
 
@@ -176,11 +178,20 @@ def test_pending_hugging_face_components_declare_their_repo_and_patterns() -> No
     assert get_component("silero-vad").version == "6.2.3"
 
 
-def test_components_without_files_are_marked_for_t013() -> None:
+def test_t013_filled_hashes_and_revisions() -> None:
+    """T013 (2026-10-01) fijó ficheros, hashes y revisiones a partir de las descargas de los spikes."""
+    for component_id in ("nemotron-en", "silero-vad", "qwen3-tts"):
+        assert get_component(component_id).files, component_id
+    for component_id in ("nemotron-en", "qwen3-tts"):
+        assert re.fullmatch(r"[0-9a-f]{40}", get_component(component_id).hf_revision or ""), component_id
+
+
+def test_only_optional_components_remain_without_files() -> None:
     pending = [component for component in COMPONENTS if not component.files]
     source = Path(manifest.__file__).read_text(encoding="utf-8")
 
-    assert {component.component_id for component in pending} >= {"nemotron-en", "silero-vad", "qwen3-tts"}
+    assert {component.component_id for component in pending} == {"ffmpeg"}
+    assert all(component.optional for component in pending)
     assert source.count(PENDING_MARKER) >= len(pending)
     for component in pending:
         assert not is_installed(component.component_id), component.component_id

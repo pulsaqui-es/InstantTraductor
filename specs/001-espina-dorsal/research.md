@@ -225,4 +225,4 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
 | tomli-w | MIT | |
 | Voces de referencia (LibriVox) | Dominio público | Lector y minuto anotados en el JSON de la voz |
 | audiostretchy / stretch (TDHS) | BSD-3 (por verificar al fijar la versión) | |
-| Hy-MT2-7B | Apache-2.0 | Según su ficha de HF; se comprobará el `LICENSE` al fijar el GGUF (T013) |
+| Hy-MT2-7B | Apache-2.0 | `LICENSE.txt` estándar, verificado el 2026-10-01 (T013) |
