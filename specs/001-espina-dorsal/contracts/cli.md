@@ -44,7 +44,7 @@ Deja el equipo listo (US3).
 | `--comprobar` | Solo verifica (no descarga) y lista el estado |
 
 Comportamiento:
-1. Comprueba los requisitos: Windows build ≥ 20348, GPU NVIDIA con driver compatible con CUDA ≥ 12.8, espacio libre ≥ lo necesario + 2 GB, y ffmpeg (si falta, lo instala en local).
+1. Comprueba los requisitos: Windows build ≥ 20348, GPU NVIDIA con driver compatible con CUDA ≥ 13.0 (los binarios son cu130), espacio libre ≥ lo necesario + 2 GB, y ffmpeg (si falta, lo instala en local).
 2. Descarga lo que falte o esté corrupto (verificación sha256), con progreso.
 3. Prepara el entorno del servicio de voz.
 4. Genera las muestras de las voces.

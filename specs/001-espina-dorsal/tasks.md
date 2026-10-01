@@ -387,7 +387,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - las 5 voces del catálogo (Lucía, Clara, Voz humana 1, Voz humana 2 y Tux) están empaquetadas en `src/instanttraductor/setup/voices/`.
 
 **Ola 3, obrero H: preparación y voces**
-- [ ] T041 [P] [US3] Instalador en `src/instanttraductor/setup/installer.py` (depends on T014).
+- [X] T041 [P] [US3] Instalador en `src/instanttraductor/setup/installer.py` (depends on T014).
   - **Comprobaciones** (si falla alguna, código 6): `windows_build()` ≥ 20348, GPU NVIDIA y driver (nvidia-smi), espacio libre ≥ lo que falta + 2 GB y `ffmpeg_path()` (si falta, gyan.dev *essentials* a `AppPaths.bin`).
   - **Descargas idempotentes por componente:**
     - `snapshot_download(repo_id, revision, allow_patterns)` para HF;
@@ -397,7 +397,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - **Entorno de la voz:** `uv sync --frozen --project engines/tts-qwen3`.
   - **Salida:** tabla `rich` con nombre, versión, licencia, tamaño y estado. `--comprobar` solo verifica.
   - **Tests:** `tests/unit/setup/test_installer.py` (descargador falso; la 2.ª ejecución no descarga nada).
-- [ ] T042 [US3] Voces en `src/instanttraductor/setup/voices.py` (depends on T041).
+- [X] T042 [US3] Voces en `src/instanttraductor/setup/voices.py` (depends on T041).
   - **Catálogo:** las voces **empaquetadas** en `src/instanttraductor/setup/voices/` (WAV + JSON con `voice_id`, `name`, `gender`, `source`, `license` y `ref_text`), leídas con `importlib.resources`. Sin descargas.
   - **Instalación:** `install_voices()` las copia a `AppPaths.voices` de forma idempotente, verificando el sha256.
   - **Manifiesto:** entradas `kind="voz"` en `src/instanttraductor/setup/manifest.py` con una fuente de tipo paquete (amplía `Component` para recursos empaquetados sin URL).
