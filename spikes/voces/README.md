@@ -69,7 +69,7 @@ o a las frases del motor de producción está en el apartado 5.
 ### 1.3 Camino A2: VoxCPM2 sí da distinción, pero a ratos con voz de hombre
 
 `openbmb/VoxCPM2` (Apache-2.0, 30 idiomas con español, descripción de voz entre paréntesis delante del texto) es un segundo modelo abierto de diseño de voz. Entorno propio (`spikes/voces/voxcpm`: `torch` 2.11.0+cu130 del mismo índice,
-`transformers` 4.57.6, y `override-dependencies` para no instalar `gradio`, `funasr`, `modelscope`, `datasets`, `spaces`, `matplotlib` ni `torchcodec`, que solo hacen falta para su interfaz y su ASR chino); modelo en `models\voxcpm2`.
+`transformers` 4.57.6, y `override-dependencies` para no instalar `gradio`, `funasr`, `modelscope`, `datasets`, `spaces`, `matplotlib` ni `torchcodec`, que solo hacen falta para su interfaz y su ASR chino); modelo en `models\voxcpm2`. No comparte entorno con Qwen3 (`transformers` 4.57.6 frente a la 5.15.1 que fija `engines/tts-qwen3`): es una herramienta de autoría aparte, no una pieza del servicio de voz.
 Carga en 19-27 s, **VRAM de torch 4,9 GiB en reposo y 5,5 GiB de pico** (5 064 y 5 586 MiB; NVML +6,2 GB), salida a 48 kHz (se baja a 24 kHz); es lento (RTF ≈ 2,7 sin `torch.compile` y con la CPU ocupada), pero solo es herramienta de autoría.
 `generate()` de la 2.0.3 publicada en PyPI no admite `seed=` (se fija con `torch.manual_seed`).
 
