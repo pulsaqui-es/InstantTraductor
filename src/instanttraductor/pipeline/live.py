@@ -234,6 +234,7 @@ class WasapiDevices:
 
         temp_clock = SessionClock()
         temp_sink = DeviceSink(temp_clock)
+        temp_sink.start(lambda event: None)  # sus eventos no van al planificador
         try:
             result = run_echo_selftest(
                 temp_sink, lambda include: ProcessLoopbackSource(temp_clock, include=include)
@@ -249,7 +250,8 @@ class WasapiDevices:
     def echo_monitor(self, threshold: float, warnings: Warnings) -> Any:
         from instanttraductor.audio.echo_monitor import EchoMonitor
 
-        return EchoMonitor(threshold=threshold, on_echo=lambda: warnings.add("Eco: se oye la propia voz."))
+        # El aviso a la persona lo da el pipeline al ver crecer `echo_events`; aquí solo se registra.
+        return EchoMonitor(threshold=threshold, on_echo=logger.warning)
 
     def sink(self, clock: Clock, warnings: Warnings, echo: Any) -> AudioSink:
         from instanttraductor.audio.wasapi_playback import DeviceSink

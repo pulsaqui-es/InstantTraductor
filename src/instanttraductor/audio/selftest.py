@@ -29,6 +29,7 @@ su hilo y debe volver enseguida).
 
 from __future__ import annotations
 
+import itertools
 import logging
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
@@ -65,11 +66,15 @@ __all__ = [
     "pulse_correlation",
     "run_echo_selftest",
     "tone_ratio_db",
+    "tone_ratio_series",
 ]
 
 Samples = npt.NDArray[np.float32]
 
 SELFTEST_UNIT_ID: Final = -1  # reservado: el planificador ignora los eventos de unidades que no conoce
+# Cada pasada usa una unidad negativa nueva (-1, -2, ...): un sink ignora los trozos de una unidad ya
+# terminada, así que repetir la misma en el mismo sink dejaría mudo el segundo tono.
+_selftest_unit_ids = itertools.count(SELFTEST_UNIT_ID, -1)
 TONE_HZ: Final = 1234.0
 TONE_S: Final = 0.3
 TONE_DBFS: Final = -30.0
@@ -89,6 +94,11 @@ _REF_BAND: Final = (0.55, 1.8)  # zona del espectro de las referencias, relativa
 _REF_EXCLUDE: Final = 0.08  # banda alrededor del tono que no se usa de referencia
 _CONTEXT_BINS: Final = 10  # bins de silencio a cada lado del pulso de la plantilla (0,2 s)
 _EPS: Final = 1e-9
+_ALIGN_TOLERANCE_S: Final = 0.1  # error de alineación tolerado entre las dos capturas, a cada lado del tono
+_BACKGROUND_GAP_S: Final = 0.35  # el fondo de la EXCLUDE se mide a esta distancia del tono, como mínimo
+_OVER_BACKGROUND_DB: Final = (
+    6.0  # el tono debe destacar sobre el propio fondo de la EXCLUDE en esa frecuencia
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -133,23 +143,23 @@ def make_tone(
     return tone.astype(np.float32)
 
 
-def tone_ratio_db(
+def tone_ratio_series(
     samples: Samples,
     rate: int,
     freq_hz: float = TONE_HZ,
     *,
     window_s: float = _WINDOW_S,
     step_s: float = _STEP_S,
-) -> float:
-    """Mayor relación (dB) entre la amplitud del seno a `freq_hz` y la mediana de 40 frecuencias vecinas.
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    """Relación (dB), ventana a ventana, entre el seno a `freq_hz` y la mediana de 40 frecuencias vecinas.
 
-    Una ventana deslizante de `window_s` con ventana de Hann. Con silencio digital (o con menos audio que
-    una ventana) da 0 dB. Es la detección del spike S4: robusta a que suene otra cosa, porque compara con el
-    fondo.
+    Ventanas deslizantes de `window_s` con ventana de Hann, cada `step_s`. Devuelve las relaciones y el centro
+    de cada ventana (segundos desde el inicio de `samples`). Con menos audio que una ventana, vacías.
     """
     size, step = round(window_s * rate), max(1, round(step_s * rate))
     if len(samples) < size:
-        return 0.0
+        empty = np.zeros(0, dtype=np.float64)
+        return empty, empty
     refs = np.linspace(_REF_BAND[0] * freq_hz, min(_REF_BAND[1] * freq_hz, 0.45 * rate), _REF_COUNT)
     refs = refs[np.abs(refs - freq_hz) > _REF_EXCLUDE * freq_hz]
     window = np.hanning(size)
@@ -158,7 +168,26 @@ def tone_ratio_db(
     amplitude = 2.0 * np.abs((frames * window) @ phase.T) / window.sum()  # (ventanas, 1 + referencias)
     tone = np.maximum(amplitude[:, 0], _EPS)
     background = np.maximum(np.median(amplitude[:, 1:], axis=1), _EPS)
-    return float(np.max(20.0 * np.log10(tone / background)))
+    centres = (np.arange(len(frames)) * step + size / 2) / rate
+    return 20.0 * np.log10(tone / background), centres
+
+
+def tone_ratio_db(
+    samples: Samples,
+    rate: int,
+    freq_hz: float = TONE_HZ,
+    *,
+    window_s: float = _WINDOW_S,
+    step_s: float = _STEP_S,
+) -> float:
+    """Mayor relación (dB) de `tone_ratio_series`: cuánto llega a destacar el tono. Con silencio, 0 dB.
+
+    Es la detección del spike S4. Sirve para la captura INCLUDE, que solo lleva el audio propio; en la
+    EXCLUDE suena el resto del PC y el máximo de toda la captura puede salir alto por azar (una nota musical
+    cerca de `freq_hz`), así que allí se mira solo el tramo en que sonó el tono (`_evaluate`).
+    """
+    ratios, _ = tone_ratio_series(samples, rate, freq_hz, window_s=window_s, step_s=step_s)
+    return float(np.max(ratios)) if ratios.size else 0.0
 
 
 def pulse_correlation(samples: Samples, rate: int) -> float:
@@ -250,7 +279,7 @@ def run_echo_selftest(sink: AudioSink, make_source: Callable[[bool], AudioSource
     """Comprueba que la voz propia no llega a la captura EXCLUDE (con la INCLUDE como control positivo).
 
     - `sink`: por donde suena el tono; ya arrancado (`sink.start`). Se usa la unidad reservada
-      `SELFTEST_UNIT_ID`.
+      una unidad negativa nueva en cada pasada (la primera, `SELFTEST_UNIT_ID`).
     - `make_source(include)`: crea una fuente nueva y sin arrancar: la de la app si `include` es False
       (EXCLUDE) y la temporal de control si es True (INCLUDE), ambas sobre el mismo proceso.
 
@@ -271,7 +300,7 @@ def run_echo_selftest(sink: AudioSink, make_source: Callable[[bool], AudioSource
         include = _Capture("INCLUDE", include_source)
         try:
             _listen([exclude, include], SETTLE_S)
-            sink.enqueue(SpeechPiece(unit_id=SELFTEST_UNIT_ID, samples=make_tone(), is_last=True))
+            sink.enqueue(SpeechPiece(unit_id=next(_selftest_unit_ids), samples=make_tone(), is_last=True))
             wait_s = min(max(sink.pending_seconds(), TONE_S), MAX_QUEUE_WAIT_S)  # hasta que acaba el tono
             _listen([exclude, include], wait_s + TAIL_S)
         except _NoAudio as exc:
@@ -292,11 +321,17 @@ def run_echo_selftest(sink: AudioSink, make_source: Callable[[bool], AudioSource
 
 def _evaluate(exclude: _Capture, include: _Capture) -> SelftestResult:
     exclude_audio, include_audio = exclude.audio(), include.audio()
-    exclude_db = tone_ratio_db(exclude_audio, CAPTURE_RATE)
     include_db = tone_ratio_db(include_audio, CAPTURE_RATE)
+    exclude_db, exclude_background_db = _exclude_ratio_at_tone(exclude, include, include_db)
     measures = {"include_ratio_db": include_db, "exclude_ratio_db": exclude_db}
-    logger.info("Autotest: el tono destaca %.1f dB en INCLUDE y %.1f dB en EXCLUDE", include_db, exclude_db)
-    if exclude_db >= PRESENT_DB:
+    logger.info(
+        "Autotest: el tono destaca %.1f dB en INCLUDE y %.1f dB en EXCLUDE (fondo de la EXCLUDE: %.1f dB)",
+        include_db,
+        exclude_db,
+        exclude_background_db,
+    )
+    leaked = exclude_db >= PRESENT_DB and exclude_db - max(exclude_background_db, 0.0) >= _OVER_BACKGROUND_DB
+    if leaked:
         return _failure(
             f"El tono propio ({TONE_HZ:.0f} Hz) reaparece en la captura que debería excluirlo (destaca "
             f"{exclude_db:.0f} dB sobre el fondo): hay realimentación y la voz en español "
@@ -320,3 +355,46 @@ def _evaluate(exclude: _Capture, include: _Capture) -> SelftestResult:
         threshold,
     )
     return SelftestResult(True, "", threshold, **measures)
+
+
+def _exclude_ratio_at_tone(exclude: _Capture, include: _Capture, include_db: float) -> tuple[float, float]:
+    """Cuánto destaca el tono en la EXCLUDE **mientras sonaba**, y lo que da esa medida lejos del tono.
+
+    La INCLUDE solo lleva el audio propio: su máximo marca cuándo sonó el tono. Ese instante se pasa a la
+    EXCLUDE con las horas de llegada de las dos capturas (`arrival_time`; si no hay, se toma el mismo
+    instante de audio, porque las dos arrancan casi a la vez). Se devuelve la mediana de las ventanas
+    centradas en el tono (± `_ALIGN_TOLERANCE_S`) y la mediana del resto, el fondo. Si la INCLUDE no oyó
+    el tono, no hay instante: se mide toda la EXCLUDE (el autotest falla igualmente por el control).
+    """
+    exclude_audio = exclude.audio()
+    ratios, centres = tone_ratio_series(exclude_audio, CAPTURE_RATE)
+    if not ratios.size:
+        return 0.0, 0.0
+    include_ratios, include_centres = tone_ratio_series(include.audio(), CAPTURE_RATE)
+    if include_db < PRESENT_DB or not include_ratios.size:
+        return float(np.max(ratios)), float(np.median(ratios))
+    tone_t = include.chunks[0].t_start + float(include_centres[int(np.argmax(include_ratios))])
+    target = _to_exclude_time(tone_t, include, exclude)
+    centres = centres + exclude.chunks[0].t_start
+    near = np.abs(centres - target) <= _ALIGN_TOLERANCE_S
+    far = np.abs(centres - target) >= _BACKGROUND_GAP_S
+    if not near.any():
+        return float(np.max(ratios)), float(np.median(ratios))
+    background = float(np.median(ratios[far])) if far.any() else 0.0
+    return float(np.median(ratios[near])), background
+
+
+def _to_exclude_time(t_include: float, include: _Capture, exclude: _Capture) -> float:
+    """Instante de audio de la EXCLUDE que llegó a la vez que `t_include` de la INCLUDE."""
+    include_arrival = getattr(include.source, "arrival_time", None)
+    exclude_arrival = getattr(exclude.source, "arrival_time", None)
+    if not (callable(include_arrival) and callable(exclude_arrival)):
+        return t_include
+    at = include_arrival(t_include)
+    ends = [chunk.t_end for chunk in exclude.chunks]
+    arrivals = [exclude_arrival(t) for t in ends]
+    pairs = [(a, t) for a, t in zip(arrivals, ends, strict=True) if a is not None]
+    if at is None or len(pairs) < 2:
+        return t_include
+    known_arrivals, known_ends = zip(*pairs, strict=True)
+    return float(np.interp(at, known_arrivals, known_ends))

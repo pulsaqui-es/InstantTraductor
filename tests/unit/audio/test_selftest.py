@@ -144,11 +144,26 @@ class TestHealthy:
         assert result.include_ratio_db >= PRESENT_DB + 30  # sin otro audio, el tono destaca decenas de dB
         assert result.exclude_ratio_db < PRESENT_DB
 
+    def test_a_note_at_the_tone_frequency_in_other_audio_is_not_feedback(self) -> None:
+        """Lo que suena en el PC (la EXCLUDE) puede tener una nota cerca de 1234 Hz: si no coincide con el
+        tono propio en el tiempo, no es realimentación (pasaba con música de fondo en el PC real)."""
+        exclude = with_tone(noise(CAPTURE_S, 0.05, seed=1), at_s=1.2, amplitude_gain=3.0)
+        result = Setup(exclude=exclude, include=with_tone(silence(), at_s=0.6)).run()
+        assert tone_ratio_db(exclude, CAPTURE_RATE) >= PRESENT_DB  # el máximo de toda la captura engañaba
+        assert result.ok, result.reason
+
+    def test_each_run_uses_a_new_reserved_unit(self) -> None:
+        first, second = healthy(), healthy()
+        first.run()
+        second.run()
+        (a,), (b,) = first.sink.pieces, second.sink.pieces
+        assert a.unit_id < 0 and b.unit_id < 0 and a.unit_id != b.unit_id
+
     def test_the_tone_goes_through_the_sink_as_the_reserved_unit(self) -> None:
         setup = healthy()
         setup.run()
         (piece,) = setup.sink.pieces
-        assert piece.unit_id == SELFTEST_UNIT_ID == -1
+        assert piece.unit_id <= SELFTEST_UNIT_ID == -1  # reservadas: negativas
         assert piece.is_last
         assert piece.samples.dtype == np.float32 and piece.samples.ndim == 1
         assert len(piece.samples) == round(TONE_S * PLAYBACK_RATE)  # 0,3 s a la frecuencia del sink

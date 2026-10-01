@@ -19,6 +19,7 @@ import subprocess
 import sys
 from collections.abc import Callable, Iterator
 
+import numpy as np
 import pytest
 
 from instanttraductor.audio.echo_monitor import MAX_THRESHOLD, MIN_THRESHOLD, EchoMonitor
@@ -42,6 +43,32 @@ def other_process() -> Iterator[subprocess.Popen[bytes]]:
     yield process
     process.kill()
     process.wait()
+
+
+QUIET_DBFS = -50.0  # más alto que esto, el PC no está en silencio
+
+
+@pytest.fixture
+def quiet_pc() -> None:
+    """Salta el test si suena otra cosa en el PC.
+
+    El monitor de eco solo detecta ecos más fuertes que el audio original (docstring de `echo_monitor`):
+    con la voz a -30 dBFS y, por ejemplo, música a -22 dBFS, no oír el eco es lo esperado.
+    """
+    clock = SessionClock()
+    source = ProcessLoopbackSource(clock)
+    source.start()
+    pieces = []
+    try:
+        while sum(len(p) for p in pieces) < 16000:
+            chunk = source.read(0.5)
+            if chunk is not None:
+                pieces.append(chunk.samples)
+    finally:
+        source.stop()
+    level = 20 * np.log10(float(np.sqrt(np.mean(np.concatenate(pieces) ** 2))) + 1e-12)
+    if level > QUIET_DBFS:
+        pytest.skip(f"Suena audio en el PC ({level:.0f} dBFS): este test necesita el PC en silencio.")
 
 
 def source_factory(clock: SessionClock, exclude_pid: int | None = None) -> Callable[[bool], AudioSource]:
@@ -131,7 +158,7 @@ def play_and_monitor(clock: SessionClock, source: ProcessLoopbackSource, monitor
 
 
 def test_the_echo_monitor_hears_our_own_voice_when_the_exclusion_fails(
-    other_process: subprocess.Popen[bytes],
+    quiet_pc: None, other_process: subprocess.Popen[bytes]
 ) -> None:
     clock = SessionClock()
     warnings: list[str] = []

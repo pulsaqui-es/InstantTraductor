@@ -244,12 +244,12 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
     - `tests/integration/test_hymt2_model.py` (marcadores `gpu` y `model`): con el corpus de `spikes/traduccion/corpus.py`, 0 salidas que no son traducción y CONCISE del 7B con ≥ 20 % menos palabras.
 
 **Ola 2, obrero D: reproducción, autotest y eco**
-- [ ] T023 [P] [US1] Reproducción en `src/instanttraductor/audio/wasapi_playback.py`: `DeviceSink`, que implementa `AudioSink`. Se porta `spikes/audio/reproduccion.py` y el gancho de `notificationCallback` (depends on T014).
+- [X] T023 [P] [US1] Reproducción en `src/instanttraductor/audio/wasapi_playback.py`: `DeviceSink`, que implementa `AudioSink`. Se porta `spikes/audio/reproduccion.py` y el gancho de `notificationCallback` (depends on T014).
   - `miniaudio.PlaybackDevice` sin `device_id`, 48 kHz, float32, estéreo, periodos de 20 ms × 3;
   - sigue `rerouted`; cuenta los `underruns`;
   - FIFO; eventos con el `Clock`; `set_volume` 0,0–2,0 solo sobre nuestra voz; `pending_seconds`; `stop()` corta en seco;
   - tests en `tests/unit/audio/test_wasapi_playback.py` (*backend* falso) y `tests/integration/test_playback_device.py` (marcador `device`, `AudioSinkContract`).
-- [ ] T024 [US1] Autotest y monitor de eco (depends on T015, T023):
+- [X] T024 [US1] Autotest y monitor de eco (depends on T015, T023):
   - `src/instanttraductor/audio/selftest.py`: `run_echo_selftest(sink, make_source) -> SelftestResult(ok, reason, correlation_threshold)`. Tono de 0,3 s a 1234 Hz y −30 dBFS: NO debe aparecer en EXCLUDE y SÍ en INCLUDE (detección de `spikes/audio/audio_spike/analisis.py`);
   - `src/instanttraductor/audio/echo_monitor.py`: `EchoMonitor` (R14). Correlación de envolventes (50 Hz) entre lo reproducido y lo captado, en una ventana de 2 s, con el umbral calibrado; contador `echo_events` y aviso;
   - tests en `tests/unit/audio/test_echo_monitor.py` y `tests/integration/test_selftest_device.py` (marcador `device`).
