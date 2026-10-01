@@ -8,8 +8,10 @@ from __future__ import annotations
 
 import json
 import threading
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from importlib import resources
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -29,6 +31,7 @@ from instanttraductor.mt.hymt2 import (
     build_normal_messages,
     concise_word_budget,
     count_words,
+    load_base_glossary,
     max_tokens_for,
     rejection_reason,
     select_glossary,
@@ -788,3 +791,141 @@ def test_the_fixed_examples_are_the_12_of_s2() -> None:
     assert len(hymt2.FEWSHOT_ES_ES) == 12
     assert hymt2.FEWSHOT_ES_ES[0] == S2_FIRST_SHOT
     assert hymt2.FEWSHOT_ES_ES[-1] == S2_LAST_SHOT
+
+
+# ---------------------------------------------------------------------------
+# Glosario base: glossary_es.toml
+# ---------------------------------------------------------------------------
+#: Pares que pide T022 como ejemplo.
+TASK_EXAMPLES = {
+    "juice": "zumo",
+    "fridge": "nevera",
+    "parking lot": "aparcamiento",
+    "computer": "ordenador",
+    "cell phone": "móvil",
+    "car": "coche",
+    "popcorn": "palomitas",
+    "okay": "vale",
+}
+#: Palabras de español de América que no pueden aparecer en ningún destino del glosario.
+LATIN_AMERICAN_WORDS = frozenset(
+    {"jugo", "carro", "celular", "estacionamiento", "departamento", "refrigerador", "durazno", "papa"}
+    | {"papas", "computadora", "ustedes", "popote", "playera", "tina", "cobija", "elevador", "mesero"}
+    | {"mesera", "banqueta", "vereda", "cajuela", "manejar", "lentes", "pastel", "boleto", "tarea"}
+    | {"frijoles", "camioneta"}
+)
+#: Frases de S2 que comprueban léxico de España, con los términos del glosario base que les corresponden.
+S2_LEXICON_SENTENCES = {
+    "Did you seriously finish the orange juice and put the empty carton back in the fridge?": {
+        "juice",
+        "fridge",
+    },
+    "Fine. I'll buy you another one tomorrow, okay?": {"okay"},
+    "And promise me you won't tell Mom I took her car last night.": {"car"},
+    "They found fibers under the victim's fingernails and a sneaker print by the window.": {"sneaker"},
+    "None of it matches anything in her apartment.": {"apartment"},
+    "Hold on, I can't find my cell phone.": {"cell phone"},
+    "Did you two enjoy the movie, or was the popcorn the best part?": {"popcorn"},
+    "Okay, everybody, grab your laptops and follow me. We're working in the parking lot today.": {
+        "okay",
+        "laptop",
+        "parking lot",
+    },
+    "Can you pull over at the next gas station? I need a sandwich and a bathroom.": {"gas station"},
+    "Deal. And grab the map out of the glove compartment.": {"glove compartment"},
+    "Dude, nobody uses maps anymore. We have GPS.": {"dude"},
+}
+
+
+@pytest.fixture
+def clean_glossary_caches() -> Iterator[None]:
+    """Vacía las cachés del glosario antes y después: un test que cambia el fichero no contamina a otros."""
+    hymt2.load_base_glossary.cache_clear()
+    hymt2._base_matchers.cache_clear()
+    yield
+    hymt2.load_base_glossary.cache_clear()
+    hymt2._base_matchers.cache_clear()
+
+
+def test_the_base_glossary_is_a_resource_of_the_package() -> None:
+    resource = resources.files("instanttraductor.mt").joinpath("glossary_es.toml")
+
+    assert resource.is_file()
+    assert hymt2.BASE_GLOSSARY_RESOURCE == "glossary_es.toml"
+
+
+def test_the_base_glossary_has_at_least_150_pairs() -> None:
+    assert len(load_base_glossary()) >= 150
+
+
+def test_the_base_glossary_has_the_pairs_of_the_task() -> None:
+    pairs = {entry.source: entry.target for entry in load_base_glossary()}
+
+    for source, target in TASK_EXAMPLES.items():
+        assert pairs[source] == target
+
+
+def test_base_glossary_entries_are_well_formed() -> None:
+    entries = load_base_glossary()
+    sources = [entry.source for entry in entries]
+
+    assert all(isinstance(entry, GlossaryEntry) for entry in entries)
+    assert len({source.casefold() for source in sources}) == len(sources), "orígenes repetidos"
+    assert all(source == source.strip().lower() and source for source in sources), "origen no en minúsculas"
+    assert all(entry.target == entry.target.strip() and entry.target for entry in entries)
+    # Sin artículo inicial: con artículo en los dos lados el modelo lo duplica (S2).
+    assert not [e for e in entries if e.target.split()[0] in {"el", "la", "los", "las", "un", "una"}]
+
+
+def test_no_base_term_contains_another_as_whole_words() -> None:
+    """Sin solapes: «bus» dentro de «bus ticket» mandaría las dos filas al mismo *prompt*."""
+    tokens = {entry.source: entry.source.split() for entry in load_base_glossary()}
+    overlaps = [
+        (small, big)
+        for small, small_tokens in tokens.items()
+        for big, big_tokens in tokens.items()
+        if small != big
+        and any(big_tokens[i : i + len(small_tokens)] == small_tokens for i in range(len(big_tokens)))
+    ]
+
+    assert overlaps == []
+
+
+def test_base_glossary_targets_have_no_latin_american_words() -> None:
+    bad = [e for e in load_base_glossary() if LATIN_AMERICAN_WORDS.intersection(e.target.lower().split())]
+
+    assert bad == []
+
+
+def test_the_base_glossary_is_loaded_once() -> None:
+    assert load_base_glossary() is load_base_glossary()
+
+
+@pytest.mark.parametrize(("sentence", "expected"), list(S2_LEXICON_SENTENCES.items()))
+def test_the_base_glossary_covers_the_spain_lexicon_checked_in_s2(sentence: str, expected: set[str]) -> None:
+    assert {entry.source for entry in select_glossary(sentence)} == expected
+
+
+def test_sentences_without_base_terms_get_nothing() -> None:
+    assert select_glossary("I think we should leave before it gets dark") == ()
+    assert select_glossary("") == ()
+
+
+def test_a_malformed_base_glossary_is_a_value_error(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, clean_glossary_caches: None
+) -> None:
+    monkeypatch.setattr(hymt2.resources, "files", lambda package: tmp_path)
+    for text in ("", "[otra]\nx = 'y'\n", "[terms]\n", "[terms]\njuice = 3\n", '[terms]\n"" = "zumo"\n'):
+        (tmp_path / "glossary_es.toml").write_text(text, encoding="utf-8")
+        hymt2.load_base_glossary.cache_clear()
+        with pytest.raises(ValueError, match="glossary_es.toml"):
+            load_base_glossary()
+
+
+def test_the_base_glossary_can_be_replaced_by_another_file(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, clean_glossary_caches: None
+) -> None:
+    (tmp_path / "glossary_es.toml").write_text('[terms]\n"Moon Base" = "Base Lunar"\n', encoding="utf-8")
+    monkeypatch.setattr(hymt2.resources, "files", lambda package: tmp_path)
+
+    assert select_glossary("Welcome to the moon base!") == (GlossaryEntry("Moon Base", "Base Lunar"),)
