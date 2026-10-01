@@ -2,6 +2,21 @@
 
 Registro cronológico del proyecto, con lo más reciente arriba. El formato y las reglas están en la skill `registrar-hito`.
 
+## 2026-10-01 — Plan de la 001 aprobado (H2, delegado) y comienza la implementación
+- **Hecho:**
+  - `/speckit-tasks`: 48 tareas, TDD, en olas de como máximo 3 obreros.
+  - `/speckit-analyze` (agente Sonnet): 2 críticos, 6 altos y 8 medios. **Todos corregidos** antes del tag de contratos, entre ellos:
+    - el entorno del motor de voz pasa al orquestador;
+    - las teclas se leen en `platform/`;
+    - la app arranca sin red;
+    - el traductor declara si sabe resumir;
+    - el informe mide el retraso sostenido y la memoria de los hijos;
+    - el manifiesto admite componentes de varios ficheros.
+  - ADR-0006: resolución con los datos de S3.
+  - Investigación de voces femeninas castellanas (T040) en marcha.
+- **Decidido (orquestador, por delegación, ADR-0009):** H2 aprobado. El plan sigue la hoja de ruta y los ADR vigentes, sin ADR de arquitectura nuevo.
+- **Siguiente:** Setup y Foundational (orquestador), tag `contratos-001-v1` y ola 1.
+
 ## 2026-10-01 — Spikes cerrados: voz, traducción y ASR decididos
 - **Hecho:** spikes S1, S2 y S3 integrados en `001-espina-dorsal`; medición del 7B por el orquestador.
   - **Voz:** Qwen3-TTS, primer audio p95 de 0,18 s, RTF 0,37, 3,3 GB. Chatterbox: 0,75 s y no aguanta el tiempo real.
