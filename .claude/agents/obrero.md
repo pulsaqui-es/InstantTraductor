@@ -28,6 +28,8 @@ Eres un obrero de InstantTraductor. Trabajas en un git worktree aislado a partir
 ## Verificación y commits
 - Ejecuta exactamente la «definición de hecho» del brief (tests y lint). Si falla y no lo puedes arreglar dentro de tus ficheros, termina con `BLOCKED` o `DONE_WITH_CONCERNS`, según el caso.
 - Un commit por tarea, en español: `T011: <resumen corto>`. Añade solo tus ficheros (`git add <rutas>`, nunca `git add -A`).
+- **Guarda el avance en cada hito del brief**, aunque la tarea no esté terminada (`T011 (en curso): ...`). Si te cortan (límite de uso, error), lo commiteado no se pierde.
+- Respeta el **alcance mínimo** y el **tiempo límite** del brief: si se acaba el tiempo, commitea y termina con `DONE_WITH_CONCERNS` explicando qué falta. No amplíes el alcance por tu cuenta.
 - Deja el worktree limpio: nada sin commitear al terminar.
 
 ## Informe final

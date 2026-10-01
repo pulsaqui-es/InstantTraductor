@@ -31,5 +31,9 @@ Definición de hecho:
 Restricciones: sin GPU, sin dispositivos de audio y sin descargar modelos <salvo: ...>
 Modelo: sonnet | opus (<motivo>)
 
+Alcance mínimo: <lo imprescindible para dar la tarea por hecha; lo demás es opcional>
+Tiempo límite: <p. ej. 60 min>. Si se alcanza, commitea lo que tengas y termina con DONE_WITH_CONCERNS explicando qué falta.
+Hitos (un commit por cada uno): <p. ej. 1) tests en rojo, 2) implementación en verde, 3) lint limpio>
+
 Devuelve el informe final con el formato de tu definición de agente.
 ```

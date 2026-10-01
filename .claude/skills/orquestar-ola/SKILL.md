@@ -17,7 +17,7 @@ Si falta alguna, no lances la ola.
 ## 1. Planificar la ola
 1. Lee `tasks.md`. Son candidatas las tareas `- [ ]` con las dependencias resueltas: la fase anterior completa y sus `depends on` hechos.
 2. Reparte por propiedad de ficheros. Dos tareas pueden ir a obreros distintos solo si sus conjuntos de ficheros son disjuntos, contando los tests y los `__init__.py`. Las tareas que comparten fichero van al mismo obrero, en orden.
-3. Tamaño: de 2 a 4 obreros por ola (la cuota del plan es limitada), cada uno con 1 a 3 tareas cohesionadas.
+3. Tamaño: **como máximo 3 obreros a la vez** (2 si son pruebas pesadas con la GPU), cada uno con 1 a 3 tareas cohesionadas. Cada brief lleva un **alcance mínimo y un tiempo límite** (decisión del humano, 2026-10-01: la cuota del plan se agota con olas grandes).
 4. Ficheros calientes (`pyproject.toml`, `uv.lock`, `conftest.py` raíz, `__init__.py` que reexportan, configuración común): son tuyos. Si una tarea los necesita, cámbialos tú antes de la ola y commitea.
 5. Tareas que necesitan GPU, modelos o dispositivos reales: el obrero escribe el código y los tests con dobles; los tests marcados `gpu`, `model` o `device` los ejecutas tú al integrar.
 

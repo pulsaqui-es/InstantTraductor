@@ -32,6 +32,12 @@ El humano quiere que, con esfuerzo medio o superior y tareas modulables, la sesi
 - Obliga a escribir contratos y briefs muy precisos: la calidad de la spec se amplifica, para bien y para mal.
 - Los permisos que necesitan los obreros van preconfigurados en `.claude/settings.json`, porque en Windows las aprobaciones dadas dentro de un worktree no se comparten.
 
+## Actualización 2026-10-01 (decisión del humano)
+Con cuatro obreros en paralelo haciendo pruebas largas se agotó el límite de 5 horas del plan Max x5 en unas 1,5 h. Tres obreros se cortaron con trabajo sin commitear. Medidas:
+- como máximo 3 obreros a la vez (2 en pruebas pesadas con GPU);
+- cada brief con alcance mínimo y tiempo límite;
+- commits en cada hito.
+
 ## Referencias
 - https://code.claude.com/docs/en/sub-agents
 - https://code.claude.com/docs/en/worktrees

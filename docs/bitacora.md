@@ -2,6 +2,21 @@
 
 Registro cronológico del proyecto, con lo más reciente arriba. El formato y las reglas están en la skill `registrar-hito`.
 
+## 2026-10-01 — Spikes: captura resuelta; cuota agotada y medidas de eficiencia
+- **Hecho:**
+  - Spike S4 (captura y reproducción) integrado en `001-espina-dorsal`. La subclase de pyminiaudio no sirve, pero la captura propia con ctypes/comtypes sí funciona.
+  - Windows solo excluye el PID objetivo y sus hijos directos.
+  - En silencio llegan paquetes.
+  - Latencia de captura: 82–124 ms.
+- **Incidente:** S1, S2 y S3 se cortaron por el límite de 5 horas del plan; se reanudaron a las 09:47 con la orden de cerrar rápido.
+- **Decidido (humano):**
+  - como máximo 3 obreros a la vez (2 en pruebas pesadas con GPU);
+  - briefs con alcance mínimo y tiempo límite;
+  - commits por hito (ADR-0002, actualización).
+- **Siguiente:**
+  - cerrar S1–S3 y completar `research.md`;
+  - consultar al humano la corrección del ADR-0005 (captura) y la elección de voz.
+
 ## 2026-10-01 — Spec 001 aprobada y aprobaciones delegadas
 - **Hecho:**
   - Spec `001-espina-dorsal` escrita y clarificada con dos preguntas de producto:
