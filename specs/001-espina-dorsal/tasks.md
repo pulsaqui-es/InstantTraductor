@@ -340,7 +340,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - salidas válidas a partir de `dialogo_en_2min.wav`;
   - un fichero dañado → código 5 y sin carpeta de salida;
   - `silencio_3s.wav` → pista en silencio e informe «no se detectó habla».
-- [ ] T039 [US2] Validación de quickstart §4 con los motores reales (orquestador; `gpu` y `model`) (depends on T037, T013). Resultados en `validacion.md`.
+- [X] T039 [US2] Validación de quickstart §4 con los motores reales (orquestador; `gpu` y `model`) (depends on T037, T013). Resultados en `validacion.md`.
 
 ### Implementation for User Story 2
 

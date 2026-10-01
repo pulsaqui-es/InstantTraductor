@@ -26,7 +26,20 @@ Fechas en hora de Madrid.
   - retardo de frase p50 de 1,4 s y p95 de 2,9 s; arranque en 16 s.
 - **Fichero inexistente:** código 5 y sin carpeta de salida.
 - **Fichero dañado y silencio:** cubiertos en el E2E con dobles (`test_file_mode_fakes.py`).
-- *Pendiente:* vídeo de 10 min.
+- **MKV de 10 min (SC-007, 2026-10-01 23:22)**, con el diálogo en bucle sobre imagen de prueba: **cumple.**
+  - genera las 9 salidas, sin abrir ningún dispositivo;
+  - 139 de 139 frases pronunciadas, 0 descartadas, 4 resumidas y 3 aceleradas;
+  - retardo de frase p50 de 1,5 s, p95 de 4,3 s y máximo de 5,4 s; retraso máximo de 5,1 s.
+
+## §9 Calidad (SC-004)
+- `tests/fixtures/calidad/generate_quality_set.py` sintetiza en inglés 50 frases del corpus de S2: 4,3 min, voz clonada de LibriSpeech.
+- Pasadas por `archivo`, salen 64 unidades (las frases largas, por partes), todas pronunciadas, con retardo p50 de 1,2 s y p95 de 3,7 s.
+- Salidas en `%LOCALAPPDATA%\InstantTraductor\calidadrases_en_es\`.
+- **Primera lectura del orquestador** (no sustituye al juicio humano):
+  - la mayoría son correctas y naturales;
+  - fallo recurrente: el plural de cortesía latinoamericano («¿A ustedes…?», «tomen», «síganme», «¿Están listos?») aunque el prompt pide «vosotros»;
+  - fallos sueltos: «Take five» → «Tómenselo con calma», «ship» → «barco», «Helm» sin traducir y un tiempo verbal roto al partir una frase («Y pon el cartón…»).
+- *Pendiente:* la revisión del humano.
 
 ## §5 Modo directo (SC-001, SC-006, SC-010)
 **Prueba de humo (2026-10-01 22:20).** El diálogo en inglés de 2 min sonaba con `ffplay` en otro proceso, mientras en el PC sonaba también música a unos -20 dBFS.
