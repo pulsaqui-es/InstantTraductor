@@ -30,7 +30,7 @@ Traductor simultáneo para Windows: captura lo que suena en el PC y lo reproduce
 - Solo el orquestador ejecuta `/speckit-*` (la numeración de features no es atómica) y escribe `tasks.md`.
 
 ## Trabajo en paralelo
-- Con esfuerzo medio o superior y tareas modulables: obreros en paralelo con la skill `orquestar-ola` (de 2 a 4 por ola).
+- Con esfuerzo medio o superior y tareas modulables: obreros en paralelo con la skill `orquestar-ola`. Como máximo 3 a la vez (2 en pruebas pesadas con GPU), cada uno con alcance mínimo, tiempo límite y commits por hito.
 - Solo el orquestador escribe `specs/**`, `.specify/**`, los contratos, `pyproject.toml`, `uv.lock`, `CLAUDE.md`, `.claude/**` y `docs/**`.
 - Los obreros parten del HEAD del orquestador (`worktree.baseRef: "head"`): hay que commitear antes de cada ola.
 - Cualquier mejora del proceso se propone al humano antes de aplicarla.
