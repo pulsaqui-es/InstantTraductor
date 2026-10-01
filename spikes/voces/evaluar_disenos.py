@@ -54,7 +54,8 @@ def puntuacion(ev: dict, ort: str) -> float:
     Con VoxCPM2 se exige además F0 mediana >= 170 Hz: en la sonda una toma salió con voz de hombre (118 Hz) aunque la descripción pedía una mujer.
     """
     wer_max = WER_MAX[ort] if MOTOR == "qwen" else 0.05
-    if not (DUR_MIN <= ev["duracion_s"] <= DUR_MAX) or ev["wer"] > wer_max:
+    dur_min = DUR_MIN if MOTOR == "qwen" else 6.0  # con VoxCPM2 se admite hasta el mínimo del contrato de voz (6 s); se prefieren las más cercanas a 9 s
+    if not (dur_min <= ev["duracion_s"] <= DUR_MAX) or ev["wer"] > wer_max:
         return -1e9
     if MOTOR == "voxcpm" and ev.get("f0_mediana_hz", 0.0) < 170.0:
         return -1e9

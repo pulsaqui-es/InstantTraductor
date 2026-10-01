@@ -25,11 +25,21 @@ import disenos as d  # noqa: E402
 
 vb = c.vb
 
+# Textos más largos: VoxCPM2 habla más deprisa que VoiceDesign (21-23 palabras daban 4,6-8,6 s) y la referencia debe durar 8-10 s.
+TEXTOS_LARGOS = {
+    "R1": "Cuando llegué a la estación, el tren ya se había marchado. Entonces me senté, respiré hondo y decidí esperar con calma al siguiente, mirando cómo caía la lluvia.",
+    "R2": "¡Qué maravilla de día! Hace un sol precioso y el cielo está despejado. ¿Por qué no salimos a dar un paseo antes de que empiece a hacer demasiado calor?",
+    "R3": "A veces pienso que lo mejor de la vida son las cosas sencillas: un café caliente, una conversación tranquila y nada de prisa por llegar a ningún sitio.",
+    "R4": "Mi abuela siempre decía que la paciencia es la mejor medicina, y con el tiempo he entendido por qué lo decía tan convencida y con tanta seguridad.",
+}
+
 ACENTOS = {
     "espana": ", native Castilian Spanish speaker from {lugar}, Spain",
     "distincion": ", native speaker from {lugar}, Spain, with a Castilian accent: she pronounces z and ce/ci as the interdental th sound /θ/ like English 'think', distinct from s, no seseo",
     # La sonda (`sondear_voxcpm.py`) dio Δ 12,0 dB solo con la descripción entera en español (inglés: 0,8 dB), así que esta es la que se usa.
     "distincion_es": "; hablante nativa de castellano de {lugar}, España, con acento peninsular: pronuncia la z y ce/ci con la zeta interdental /θ/, distinta de la s, sin seseo",
+    # Igual, pero insistiendo en que es una voz de mujer: en la 1.ª pasada 15 de 24 tomas salieron con F0 de hombre (108-152 Hz) aunque la descripción decía «Mujer».
+    "distincion_es_f": "; voz femenina aguda de mujer joven, no de hombre; hablante nativa de castellano de {lugar}, España, con acento peninsular: pronuncia la z y ce/ci con la zeta interdental /θ/, distinta de la s, sin seseo",
 }
 
 
@@ -38,6 +48,7 @@ def main() -> None:
     ap.add_argument("--takes", type=int, default=2)
     ap.add_argument("--acento", choices=sorted(ACENTOS), default="distincion_es")
     ap.add_argument("--ids", default="", help="subconjunto de es-f-dis-NN; vacío = todos")
+    ap.add_argument("--textos", choices=["normales", "largos"], default="normales", help="largos = TEXTOS_LARGOS (para referencias de 8-10 s)")
     ap.add_argument("--modelo", default=str(vb.models_dir() / "voxcpm2"))
     ap.add_argument("--semilla-base", type=int, default=4100)
     ap.add_argument("--cfg", type=float, default=2.0)
@@ -58,8 +69,8 @@ def main() -> None:
             model = VoxCPM.from_pretrained(args.modelo, load_denoiser=False, optimize=False, device="cuda")
             sr = int(getattr(model.tts_model, "sample_rate", 48000))
             for v in voces:
-                texto = d.REF_TEXTOS[v["ref"]]
-                if args.acento.endswith("_es"):
+                texto = (TEXTOS_LARGOS if args.textos == "largos" else d.REF_TEXTOS)[v["ref"]]
+                if args.acento.endswith("_es") or args.acento.endswith("_es_f"):
                     desc = "(" + v["es"].rstrip(".") + ACENTOS[args.acento].format(lugar=v["lugar"]) + ")"
                 else:
                     desc = "(" + v["en"].rstrip(".").replace("Female, ", "A ", 1) + ACENTOS[args.acento].format(lugar=v["lugar"]) + ")"
@@ -72,7 +83,7 @@ def main() -> None:
                     if sr != c.SR:
                         g = gcd(sr, c.SR)
                         a = resample_poly(a, c.SR // g, sr // g).astype(np.float32)
-                    fich = f"{v['id']}_{args.acento}_t{k + 1}.wav"
+                    fich = f"{v['id']}_{args.acento}{'_L' if args.textos == 'largos' else ''}_t{k + 1}.wav"
                     vb.write_wav(dst / fich, a, c.SR)
                     print(f"{fich}: {len(a) / c.SR:.1f} s en {time.perf_counter() - t1:.1f} s", flush=True)
                     nuevos.append({"fichero": fich, "id": v["id"], "variante": args.acento, "ortografia": "normal", "toma": k + 1, "semilla": seed,

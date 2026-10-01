@@ -24,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "voz" / "qwen3"))
 import common as c  # noqa: E402
 import disenos as d  # noqa: E402
+from sondear_acento import TEXTO_SONDA  # noqa: E402  (solo el texto; no importa torch)
 
 vb = c.vb
 import bench_qwen3 as bq  # noqa: E402  (preparar_prompt y una_peticion del spike S1; no ejecuta nada al importarse)
@@ -37,6 +38,8 @@ def main() -> None:
     ap.add_argument("--rehacer", action="store_true", help="vuelve a sintetizar aunque ya existan las 4 frases")
     ap.add_argument("--respell-th", action="store_true",
                     help="experimento: z/ce/ci de las frases reescritos con «th» antes de sintetizar (sale como <id>-rth); no es la entrada normal del motor")
+    ap.add_argument("--sonda", action="store_true",
+                    help="solo la frase de sonda de acento (densa en z/ce/ci y s, la de sondear_acento.py) -> <id>_sonda.wav; da más palabras para el indicio")
     ap.add_argument("--modo", choices=["icl", "xvec"], default="icl",
                     help="icl = referencia en contexto con su ref_text (producción); xvec = solo el embedding del hablante (rescate del ADR-0008); sale como <id>-xv")
     ap.add_argument("--modelo", default=str(vb.models_dir() / c.QWEN3_BASE_DIR))
@@ -45,7 +48,12 @@ def main() -> None:
     out = c.out_dir()
     sufijo = ("-xv" if args.modo == "xvec" else "") + ("-rth" if args.respell_th else "")
     ids = [x.strip() for x in args.ids.split(",") if x.strip()] or sorted(p.name[: -len("_ref.wav")] for p in out.glob("*_ref.wav"))
-    pendientes = [i for i in ids if args.rehacer or not all((out / f"{i}{sufijo}_frase{f['n']}.wav").exists() for f in c.FRASES)]
+    frases = [{"n": "sonda", "tipo": "sonda de acento", "texto": TEXTO_SONDA}] if args.sonda else c.FRASES
+
+    def fichero(cid: str, n) -> Path:
+        return out / (f"{cid}{sufijo}_sonda.wav" if n == "sonda" else f"{cid}{sufijo}_frase{n}.wav")
+
+    pendientes = [i for i in ids if args.rehacer or not all(fichero(i, f["n"]).exists() for f in frases)]
     print("candidatas:", ids, "| a sintetizar:", pendientes, flush=True)
     if not pendientes:
         return
@@ -71,16 +79,16 @@ def main() -> None:
                     bq.una_peticion(model, c.FRASES[0]["texto"], items, meta["ref_text"], args.chunk_size, args.modo, seed=100)
                     primera = False
                 regs = []
-                for f in c.FRASES:
-                    seed = args.semilla_base + f["n"]
+                for f in frases:
+                    seed = args.semilla_base + (99 if f["n"] == "sonda" else f["n"])
                     texto = d.respell_th(f["texto"]) if args.respell_th else f["texto"]
                     ttfa, total, wav, sr_out, ft, n = bq.una_peticion(model, texto, items, meta["ref_text"], args.chunk_size, args.modo, seed=seed)
                     dur = len(wav) / sr_out
-                    vb.write_wav(out / f"{cid}{sufijo}_frase{f['n']}.wav", wav, sr_out)
+                    vb.write_wav(fichero(cid, f["n"]), wav, sr_out)
                     regs.append({"frase": f["n"], "tipo": f["tipo"], "semilla": seed, "duracion_s": round(dur, 2), "primer_audio_s": round(ttfa, 3),
                                  "rtf": round(total / dur, 3)})
                     print(f"{cid}{sufijo} frase {f['n']} ({f['tipo']}): {dur:.1f} s | primer audio {ttfa * 1000:.0f} ms | RTF {total / dur:.2f}", flush=True)
-                c.guardar_json(out / f"{cid}{sufijo}_sintesis.json", {"id": cid + sufijo, "motor": "Qwen3-TTS-12Hz-0.6B-Base + faster-qwen3-tts 0.5.3 (%s, chunk_size=%d%s)" % (args.modo, args.chunk_size, ", texto con z/ce/ci reescritos «th»" if args.respell_th else ""),
+                c.guardar_json(out / f"{cid}{sufijo}_sintesis{'_sonda' if args.sonda else ''}.json", {"id": cid + sufijo, "motor": "Qwen3-TTS-12Hz-0.6B-Base + faster-qwen3-tts 0.5.3 (%s, chunk_size=%d%s)" % (args.modo, args.chunk_size, ", texto con z/ce/ci reescritos «th»" if args.respell_th else ""),
                                                              "ref_text": meta["ref_text"], "preparar_referencia_s": round(prep_s, 3), "frases": regs})
             print("VRAM pico (torch asignado):", round(torch.cuda.max_memory_allocated() / 2**20), "MiB | NVML pico:", round(sampler.peak_mib), "MiB", flush=True)
 

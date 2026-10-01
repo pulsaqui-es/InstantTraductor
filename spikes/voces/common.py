@@ -252,8 +252,28 @@ def juntar_tokens(lista: list[dict]) -> dict:
     return tot
 
 
+_UNIDADES = ["cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez", "once", "doce", "trece", "catorce",
+             "quince", "dieciseis", "diecisiete", "dieciocho", "diecinueve", "veinte"]
+_DECENAS = {3: "treinta", 4: "cuarenta", 5: "cincuenta", 6: "sesenta", 7: "setenta", 8: "ochenta", 9: "noventa"}
+
+
+def num_a_palabras(n: int) -> str:
+    """0-99 en palabras sin tildes (para comparar con el texto pedido)."""
+    if n <= 20:
+        return _UNIDADES[n]
+    if n < 30:
+        return "veinti" + _UNIDADES[n - 20]
+    d, u = divmod(n, 10)
+    return _DECENAS[d] + ("" if u == 0 else " y " + _UNIDADES[u])
+
+
+def normalizar_numeros(texto: str) -> str:
+    """Whisper escribe «doce y cinco» como «12 y 5»; se pasan a palabras para que no cuenten como errores del TTS."""
+    return re.sub(r"\d{1,2}", lambda m: num_a_palabras(int(m.group())), texto)
+
+
 def wer(ref: str, hyp: str) -> float:
-    return aw.wer(ref, hyp)
+    return aw.wer(ref, normalizar_numeros(hyp))
 
 
 def guardar_json(path: Path, obj) -> None:
