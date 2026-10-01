@@ -38,22 +38,22 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
 
 **Purpose**: Project initialization and basic structure. Lo hace el orquestador, en secuencia.
 
-- [ ] T001 Crear `pyproject.toml` del núcleo:
+- [X] T001 Crear `pyproject.toml` del núcleo:
   - proyecto uv, paquete `instanttraductor` con layout `src/`, `requires-python = "==3.12.*"` y `.python-version` con `3.12`;
   - script de consola `instanttraductor = "instanttraductor.cli:main"`;
   - dependencias fijadas según plan.md y research.md: `numpy`, `comtypes`, `miniaudio==1.71`, `pycaw`, `soxr`, `audiostretchy`, `onnxruntime>=1.30`, `sherpa-onnx==1.13.8`, `sherpa-onnx-core==1.13.8` (explícito, R5), `httpx`, `huggingface_hub`, `rich`, `tomli-w` y `psutil`;
   - grupo `dev` con `pytest`, `pytest-timeout`, `ruff`, `soundfile` y `pyarrow` (estos dos, para generar fixtures);
   - generar `uv.lock` con `uv lock` y comprobar `uv sync`.
-- [ ] T002 Configurar ruff y pytest en `pyproject.toml` (depends on T001):
+- [X] T002 Configurar ruff y pytest en `pyproject.toml` (depends on T001):
   - ruff: `line-length = 110`, `target-version = "py312"`, `select = ["E","F","W","I","B","UP","SIM"]`, `exclude = ["spikes", "engines"]`;
   - pytest: `testpaths = ["tests"]`, marcadores `gpu`, `model` y `device` con descripción, `addopts = "-q -m 'not gpu and not model and not device'"` y `timeout = 60`.
-- [ ] T003 Crear la estructura de paquetes (depends on T001):
+- [X] T003 Crear la estructura de paquetes (depends on T001):
   - `src/instanttraductor/__init__.py` con `__version__ = "0.1.0"`;
   - `src/instanttraductor/__main__.py`, que llama a `cli.main()` (esta tarea es la única dueña del fichero);
   - subpaquetes vacíos con `__init__.py`: `contracts`, `platform`, `audio`, `vad`, `asr`, `pipeline`, `mt`, `tts`, `metrics`, `setup` y `ui`;
   - **todos** los directorios de tests con `__init__.py`: `tests/`, `tests/fakes/`, `tests/fixtures/`, `tests/contract/`, `tests/integration/` y `tests/unit/{contracts,pipeline,audio,vad,asr,mt,tts,metrics,setup,ui,platform}/`;
   - `tests/conftest.py` raíz con un fixture `autouse` que fija `INSTANTTRADUCTOR_HOME` a un directorio temporal **salvo en los tests marcados `gpu`, `model` o `device`**, que usan los componentes reales.
-- [ ] T004 Fixtures de audio en `tests/fixtures/` (depends on T003):
+- [X] T004 Fixtures de audio en `tests/fixtures/` (depends on T003):
   - generador `tests/fixtures/generate_fixtures.py`, que produce:
     - `tono_1k_1s.wav`, `silencio_3s.wav` y `ruido_rosa_5s.wav`;
     - `dialogo_en_2min.wav`: concatenación de enunciados de `hf-internal-testing/librispeech_asr_dummy` (LibriSpeech, CC BY 4.0) con pausas de 0,8 s, y su transcripción en `dialogo_en_2min.txt`;
@@ -68,16 +68,16 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete. Esta fase termina con el tag `contratos-001-v1` (T014).
 
-- [ ] T005 Implementar los contratos en `src/instanttraductor/contracts/` (depends on T003):
+- [X] T005 Implementar los contratos en `src/instanttraductor/contracts/` (depends on T003):
   - módulos `clock.py`, `errors.py`, `audio.py`, `speech.py`, `units.py`, `translation.py`, `synthesis.py`, `scheduling.py`, `metrics.py` y `__init__.py`, que reexporta todo;
   - **exactamente** como en `specs/001-espina-dorsal/contracts/pipeline.md`, incluidos `Translator.supports_concise`, `DelayPolicy.allow_concise`, `StageTimings.captured_at` y `Outcome.REJECTED`;
   - implementar las propiedades `AudioChunk.duration`, `AudioChunk.t_end` y `StageTimings.sentence_delay` (None si falta `play_started_at`);
   - tests en `tests/unit/contracts/test_dataclasses.py`.
-- [ ] T006 [P] Relojes en `src/instanttraductor/pipeline/clock.py` (depends on T005):
+- [X] T006 [P] Relojes en `src/instanttraductor/pipeline/clock.py` (depends on T005):
   - `SessionClock`: origen al construirse, que la sesión hace **al arrancar la captura** (data-model); `time.monotonic()`, no decreciente;
   - `ManualClock`: `set(t)`, `advance(dt)`, seguro entre hilos y sin permitir retroceder;
   - tests en `tests/unit/pipeline/test_clock.py`.
-- [ ] T007 [P] Ajustes y rutas en `src/instanttraductor/config.py` (depends on T003):
+- [X] T007 [P] Ajustes y rutas en `src/instanttraductor/config.py` (depends on T003):
   - dataclass `Settings` con **atributos en inglés** (`voice`, `voice_volume`, `accelerate_after_s`, `concise_after_s`, `drop_after_s`, `max_speed`, `max_untranslated_s`, `context_utterances`, `glossary`, `show_text`, `save_audio`) y la correspondencia con las claves en español del TOML de `data-model.md`;
   - rangos:
     - `volumen_voz` 0,0–2,0;
@@ -89,7 +89,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - `AppPaths`: `home` = `%LOCALAPPDATA%\InstantTraductor` o `INSTANTTRADUCTOR_HOME`, con las propiedades `models`, `bin`, `voices`, `logs` y `reports` (carpeta `informes`);
   - `ffmpeg_path()`: `AppPaths.bin/ffmpeg/bin/ffmpeg.exe` si existe; si no, el de PATH; si no, `None`;
   - tests en `tests/unit/test_config.py`.
-- [ ] T008 [P] Plataforma y procesos hijos (depends on T003):
+- [X] T008 [P] Plataforma y procesos hijos (depends on T003):
   - `src/instanttraductor/platform/windows.py` (ctypes y msvcrt):
     - `create_kill_on_close_job()`, con `JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE`;
     - `launch_child(args, *, env=None, cwd=None) -> subprocess.Popen`: `CREATE_NO_WINDOW`, tuberías y asignación al job (singleton);
@@ -102,7 +102,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
     - `restart_once()`;
     - `stop_all(children, grace_s=1.0)` envía la parada ordenada a todos **en paralelo** y después cierra el job, todo en ≤ 2 s (R10);
   - tests en `tests/unit/platform/test_windows.py` (un `python -c "import time; time.sleep(60)"` hijo muere en ≤ 2 s al cerrar el job) y `tests/unit/platform/test_children.py` (hijos falsos que imprimen `ready` o no responden).
-- [ ] T009 [P] Manifiesto de componentes en `src/instanttraductor/setup/manifest.py` (depends on T007):
+- [X] T009 [P] Manifiesto de componentes en `src/instanttraductor/setup/manifest.py` (depends on T007):
   - dataclasses `ComponentFile(rel_path, sha256, size_bytes)` y `Component`:
     - `component_id` ASCII único, `name`, `version`, `kind` (`binario|modelo|entorno|voz`), `license` obligatoria;
     - `source`: URL fijada, o `hf_repo_id` + `hf_revision` (hash de commit) + `allow_patterns`;
@@ -119,30 +119,30 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - las URL vienen de `spikes/traduccion/download.py`, `spikes/asr/fetch_assets.py` y `spikes/voz/common/descargar_modelos.py`. Los `sha256` y las revisiones que falten los rellena T013;
   - `component_dir(component_id)` y `is_installed(component_id)` (existen todos los ficheros con su tamaño);
   - tests en `tests/unit/setup/test_manifest.py`: ids únicos, licencia no vacía, rutas bajo `home` y ningún «latest».
-- [ ] T010 [P] Entorno del servicio de voz (C1, del orquestador) (depends on T003):
+- [X] T010 [P] Entorno del servicio de voz (C1, del orquestador) (depends on T003):
   - `engines/tts-qwen3/pyproject.toml` y `engines/tts-qwen3/uv.lock`, partiendo de `spikes/voz/qwen3/pyproject.toml` y su `uv.lock`;
   - Python 3.12, `torch==2.11.0+cu130` (índice cu130), `transformers==5.15.1`, `faster-qwen3-tts==0.5.3`, `fastapi`, `uvicorn`, `numpy` y `soundfile`; grupo `dev` con `pytest` y `ruff`; script `tts-service = "tts_service.server:main"`;
   - configuración propia de pytest (marcadores `gpu` y `model`, excluidos por defecto) y de ruff;
   - `engines/tts-qwen3/src/tts_service/__init__.py` y `engines/tts-qwen3/tests/__init__.py` vacíos;
   - comprobar `uv sync --project engines/tts-qwen3`.
-- [ ] T011 Dobles de todos los contratos en `tests/fakes/` (depends on T005, T006):
+- [X] T011 Dobles de todos los contratos en `tests/fakes/` (depends on T005, T006):
   - `fake_audio.py`: `FakeAudioSource` (array o WAV, chunks contiguos de 20 ms, `exhausted`) y `FakeAudioSink` (registra los `SpeechPiece` y emite STARTED/FINISHED/CANCELLED con un `ManualClock`, duración = muestras/48 000);
   - `fake_speech.py`: `FakeVad` (por energía) y `FakeAsrEngine` (guion de eventos por tiempo);
   - `fake_translation.py`: `FakeTranslator(supports_concise=True)` (determinista: `"ES: " + texto`; en CONCISE recorta a la mitad de palabras; latencia configurable y `fail_times` para simular fallos);
   - `fake_synthesis.py`: `FakeSynthesizer` (tono de 50 ms por palabra a 24 kHz, en trozos de 100 ms, con `is_last` al final);
   - `fake_scheduling.py`: `ScriptedDelayController`.
-- [ ] T012 Suites de contrato reutilizables en `tests/contract/` (depends on T011):
+- [X] T012 Suites de contrato reutilizables en `tests/contract/` (depends on T011):
   - `test_audio_contract.py`, `test_speech_contract.py`, `test_units_contract.py`, `test_translation_contract.py`, `test_synthesis_contract.py` y `test_scheduling_contract.py`;
   - cada una define una clase base `XxxContract` con un fixture abstracto `make_impl` y los tests de la sección «Tests de contrato obligatorios» de `contracts/pipeline.md`;
   - una subclase `TestXxxFake` la concreta con el doble;
   - la suite del segmentador la concreta T020.
-- [ ] T013 Preparación manual de desarrollo (H6) en `scripts/dev_place_components.py`, del orquestador (depends on T009):
+- [X] T013 Preparación manual de desarrollo (H6) en `scripts/dev_place_components.py`, del orquestador (depends on T009):
   - copia o enlaza en `component_dir()` los componentes que los spikes ya descargaron (en `%LOCALAPPDATA%\InstantTraductor\models` y `\bin`, y en la caché de HF): llama.cpp b11146, los GGUF 7B y 1.8B, Nemotron, `silero_vad.onnx` y Qwen3-TTS;
   - **calcula los sha256 y tamaños de todos los ficheros**, y saca la `hf_revision` de la carpeta del *snapshot* de la caché de HF;
   - **escribe esos valores en `manifest.py`**;
   - comprueba el `LICENSE` del 7B;
   - coloca la voz masculina de S1, `%LOCALAPPDATA%\InstantTraductor\spikes\voz\ref\ref_es_es_24k.wav`, como `voices\es-m-tux.wav` + `es-m-tux.json` (`ref_text`, origen LibriVox «Trafalgar», lector Tux, dominio público).
-- [ ] T014 Cerrar Foundational (depends on T005–T013):
+- [X] T014 Cerrar Foundational (depends on T005–T013):
   - `uv run pytest` y `uv run ruff check .` en verde;
   - commit y **tag `contratos-001-v1`**, y push de la rama y del tag.
   - Desde aquí, cambiar `src/instanttraductor/contracts/**` exige un ADR (Principio III).
