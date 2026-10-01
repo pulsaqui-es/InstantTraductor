@@ -29,14 +29,21 @@ Enfoque técnico (ADR 0004–0008):
 
 **Language/Version**: Python 3.12 (núcleo, gestionado con uv). El servicio de voz usa su propio proyecto uv, con la versión de Python que exija el motor (ver research.md, R8).
 
-**Primary Dependencies**:
+**Primary Dependencies** (versiones en research.md):
 - Núcleo:
-  - audio y señal: `numpy`, `miniaudio` (pyminiaudio, versión fijada), `soxr`, `pycaw` + `comtypes`;
-  - reconocimiento: `onnxruntime` (CPU, para Silero VAD) y `sherpa-onnx`;
-  - comunicación y modelos: `httpx` (HTTP con streaming) y `huggingface_hub` (descargas con revisión fijada);
-  - interfaz y ajustes: `rich` (terminal) y `tomli-w` (ajustes).
-- Binarios externos: `llama-server` (llama.cpp con CUDA) y `ffmpeg` (decodificar y mezclar en el modo archivo).
-- Servicio de voz: el motor elegido en R8 + un servidor HTTP mínimo.
+  - captura: `comtypes` + ctypes (*process loopback* propio, R2);
+  - reproducción: `miniaudio` 1.71 (pyminiaudio);
+  - señal: `numpy`, `soxr`, `audiostretchy` (*time-stretch* TDHS), `pycaw`;
+  - reconocimiento: `onnxruntime` (Silero VAD con su `.onnx`), `sherpa-onnx` 1.13.8 + **`sherpa-onnx-core`** (declarado explícitamente);
+  - comunicación y modelos: `httpx`, `huggingface_hub`;
+  - interfaz y ajustes: `rich`, `tomli-w`.
+- Binarios externos:
+  - `llama-server` de llama.cpp **b11146** (CUDA 13.4, sm_120);
+  - `ffmpeg`.
+- Servicio de voz (`engines/tts-qwen3/`):
+  - motor: `faster-qwen3-tts` 0.5.3 + Qwen3-TTS-12Hz-0.6B-Base;
+  - `torch` 2.11.0+cu130 y `transformers` 5.15.1 (fijado);
+  - servidor: FastAPI + uvicorn.
 - Desarrollo: `pytest`, `pytest-timeout` y `ruff`.
 
 **Storage**: ficheros locales.
@@ -62,18 +69,21 @@ Presupuesto por etapa: captura + VAD ≤ 0,1 s · ASR ≤ 0,8 s · traducción �
 
 **Constraints**:
 - 100 % local y sin coste.
-- VRAM de la app ≤ 8 GB (unos 3,2 GB ya los ocupa el sistema).
+- VRAM de la app de unos 8,5 GB (traducción 7B 5,2 GB + voz 3,3 GB). Si al arrancar no cabe, reserva automática con el 1.8B (5,6 GB en total) (ADR-0011).
 - Sin internet tras la preparación.
 - El audio original nunca se modifica.
 - Sin procesos huérfanos, garantizado con un *Job Object* de Windows.
 
 **Scale/Scope**: una persona usuaria y una sesión a la vez. Sesiones de hasta 60 minutos estables (SC-005). Ficheros de hasta ~2 h en el modo archivo.
 
-**Resuelto con los spikes S1–S4** (ver research.md, R2, R5, R7 y R8):
-- viabilidad de la subclase de *process loopback* de pyminiaudio;
-- latencia y WER reales de Nemotron en esta CPU;
-- versión de llama.cpp compatible con sm_120 y *prompt* final de Hy-MT2, incluido el modo resumen;
-- motor de voz: Qwen3-TTS-0.6B o Chatterbox es-es, según la medición y la escucha del humano.
+**Resuelto con los spikes S1–S4** (research.md, R2–R9; ADR-0010, ADR-0011 y la resolución de ADR-0008), sin NEEDS CLARIFICATION pendientes:
+- **Captura:** propia con ctypes/comtypes, no con pyminiaudio.
+- **ASR:** Nemotron en CPU, final p50 de 0,67 s, segmentando por pausas y comas.
+- **Traducción:** 7B con llama.cpp b11146, *prompt* de S2 y modo resumen; p50 de 0,21 s.
+- **Voz:** Qwen3-TTS, primer audio p95 de 0,18 s.
+- **Velocidad:** *time-stretch* TDHS.
+
+Retardo de frase estimado sin colas: 0,67 + 0,21 + 0,18 + 0,06 ≈ **1,1 s p50**, frente al objetivo de ≤ 3 s.
 
 ## Constitution Check
 
@@ -84,7 +94,7 @@ Presupuesto por etapa: captura + VAD ≤ 0,1 s · ASR ≤ 0,8 s · traducción �
 | I. Local y sin costes | Todo se ejecuta en el PC. La red solo se usa en la preparación y sin cuentas. Licencias en research.md (R20) | ✅ |
 | II. Latencia medible | Presupuesto por etapa; tiempos por frase y etapa en el reloj de sesión (`StageTimings`); informe p50/p95 (FR-023, FR-024) | ✅ |
 | III. Motores tras contratos | Contratos en `src/instanttraductor/contracts/` y `specs/001-espina-dorsal/contracts/`; adaptadores intercambiables; tag `contratos-001-v1` antes de la primera ola | ✅ |
-| IV. Especificación primero | Spec aprobada por el humano (H1, 2026-10-01). Plan aprobado por delegación (H2, ADR-0009), porque no crea ni sustituye ADR de arquitectura. La elección final del motor de voz se consulta al humano (su oído) | ✅ |
+| IV. Especificación primero | Spec aprobada por el humano (H1, 2026-10-01). Los cambios de arquitectura que salieron de los spikes (ADR-0010 y ADR-0011) y la elección de voz los aprobó el humano. El plan y las tareas se aprueban por delegación (H2, ADR-0009) | ✅ |
 | V. Pruebas sin hardware | Dobles de todos los contratos, `ManualClock` y WAV de muestra. Tests `gpu`, `model` y `device` marcados | ✅ |
 | VI. Paralelismo seguro | Olas con ficheros disjuntos (ver «Plan de olas»). Ficheros calientes del orquestador. Obreros en worktrees | ✅ |
 | VII. Simplicidad y Windows primero | Lo específico de Windows, aislado en `audio/wasapi_*.py` y `platform/windows.py`. Sin UI gráfica ni funciones fuera de la spec. El original no se toca | ✅ |
@@ -131,11 +141,12 @@ src/instanttraductor/
 ├── platform/
 │   └── windows.py                # Job Object (matar hijos al salir), versión de Windows
 ├── audio/
-│   ├── wasapi_capture.py         # ProcessLoopbackSource (EXCLUDE del árbol propio)
+│   ├── wasapi_capture.py         # ProcessLoopbackSource: process loopback propio (ctypes/comtypes), EXCLUDE(PID propio)
+│   ├── echo_monitor.py           # monitor de eco: correlación voz reproducida / captura (R14)
 │   ├── wasapi_playback.py        # DeviceSink (dispositivo por defecto, sigue cambios)
 │   ├── file_source.py            # FileSource (ffmpeg → 16 kHz mono, a ritmo real)
 │   ├── file_sink.py              # TimelineSink (pista alineada + mezcla)
-│   ├── dsp.py                    # remuestreo, normalización/AGC, time-stretch
+│   ├── dsp.py                    # remuestreo, AGC, time-stretch TDHS
 │   └── selftest.py               # comprobación anti-realimentación al arrancar
 ├── vad/
 │   └── silero.py                 # SileroVad (ONNX Runtime, CPU)
@@ -149,7 +160,8 @@ src/instanttraductor/
 │   └── session.py                # une etapas (hilos y colas), ciclo de vida y parada limpia
 ├── mt/
 │   ├── llama_server.py           # proceso hijo llama-server: arranque, salud y parada
-│   └── hymt2.py                  # HyMt2Translator: prompt con contexto, glosario, estilo y resumen
+│   ├── hymt2.py                  # HyMt2Translator: prompt de S2 (contexto, ejemplos, glosario), modo resumen y filtros
+│   └── glossary_es.toml          # glosario base de léxico de España (datos)
 ├── tts/
 │   ├── service_process.py        # proceso hijo del servicio de voz: arranque, salud y parada
 │   └── http_client.py            # HttpSynthesizer (streaming de PCM)
@@ -163,7 +175,7 @@ src/instanttraductor/
 └── ui/
     └── terminal.py               # estado en vivo (rich), avisos y resumen
 
-engines/tts-<motor>/              # servicio de voz: proyecto uv propio (motor según R8)
+engines/tts-qwen3/                # servicio de voz Qwen3-TTS: proyecto uv propio (R8)
 ├── pyproject.toml
 └── src/tts_service/
     ├── server.py                 # API HTTP de contracts/tts-service.md
@@ -189,17 +201,19 @@ spikes/                           # pruebas de arranque S1–S4 (referencia; no 
 Tras `/speckit-tasks`, el reparto previsto es este:
 - **Fase 1: Setup** (orquestador, en secuencia): `pyproject.toml`, `uv.lock`, configuración de ruff y pytest, estructura de carpetas y `tests/fakes` vacíos.
 - **Fase 2: Foundational** (orquestador, o un obrero en secuencia): `contracts/**` + tests de contrato + dobles + `pipeline/clock.py` + `config.py`. **Tag `contratos-001-v1`.**
-- **Ola 1** (hasta 4 obreros, ficheros disjuntos):
-  1. captura, reproducción y *self-test* de audio: `audio/wasapi_*`, `audio/selftest.py`, `platform/`;
-  2. VAD, ASR y segmentador: `vad/`, `asr/`, `pipeline/segmenter.py`;
-  3. traducción: `mt/`;
-  4. voz: `engines/tts-<motor>/` y `tts/`.
-- **Ola 2**:
-  1. planificador y política de retraso: `pipeline/delay.py` y `pipeline/scheduler.py`;
-  2. métricas e informe: `metrics/`;
-  3. modo archivo: `audio/file_source.py` y `audio/file_sink.py`;
-  4. preparación y voces: `setup/`.
-- **Ola 3** (integración, en secuencia): `pipeline/session.py`, `cli.py`, `ui/terminal.py`. Después, tests de integración marcados y la validación de `quickstart.md`.
+Como máximo 3 obreros a la vez (ADR-0002, actualización del 2026-10-01). Los tests `gpu`, `model` y `device` los ejecuta el orquestador al integrar.
+- **Ola 1** (3 obreros, ficheros disjuntos):
+  1. audio: `audio/wasapi_capture.py`, `audio/wasapi_playback.py`, `audio/selftest.py`, `audio/echo_monitor.py` y `platform/`;
+  2. escucha: `vad/`, `asr/` y `pipeline/segmenter.py`;
+  3. traducción: `mt/`.
+- **Ola 2** (3 obreros):
+  1. voz: `engines/tts-qwen3/`, `tts/` y `audio/dsp.py`;
+  2. planificador, retraso y métricas: `pipeline/delay.py`, `pipeline/scheduler.py` y `metrics/`;
+  3. modo archivo: `audio/file_source.py` y `audio/file_sink.py`.
+- **Ola 3** (1 obrero + orquestador):
+  - preparación y voces (`setup/`, incluidas las referencias femeninas castellanas);
+  - en paralelo, el orquestador integra `pipeline/session.py`, `cli.py` y `ui/terminal.py`.
+- **Cierre:** tests de integración marcados y validación de `quickstart.md`, a cargo del orquestador.
 
 ## Complexity Tracking
 

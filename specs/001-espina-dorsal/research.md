@@ -27,7 +27,7 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
   - pyminiaudio para captar: no funciona.
   - *Sidecar* NAudio: innecesario. Queda como opción si hiciera falta aislar el audio del GIL.
   - Loopback del dispositivo completo: recaptura nuestra voz. Solo como diagnóstico.
-- **Pendiente en la ADR:** la corrección de ADR-0005 se consulta al humano (ADR-0009). Mientras tanto, rige esta decisión técnica.
+- **ADR:** aprobada por el humano como ADR-0010 (2026-10-01), que sustituye en parte a ADR-0005.
 
 ## R3. Silencio, reloj y niveles — spike S4
 - **Decisión:**
@@ -50,42 +50,95 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
 - **Riesgo:** no se ha medido con la carga real de ML. Si aparecen cortes, la E/S de audio pasa a un proceso hijo dedicado, que capta y reproduce, con PID objetivo = él mismo. El informe cuenta los *underruns*.
 
 ## R5. VAD y ASR — spike S3
-- **Decisión:** _pendiente del cierre de S3_. Hipótesis de partida (ADR-0006):
-  - Silero VAD 6.2 en CPU;
-  - Nemotron Speech Streaming EN 0.6B en sherpa-onnx, CPU int8;
-  - faster-whisper turbo FP16 como alternativa.
-- **Motivo:** _por completar con las cifras de S3_.
-- **Alternativas:** _por completar_.
+- **Decisión:**
+  - **VAD:** Silero VAD 6.2.3 con el `.onnx` ejecutado con `onnxruntime` en CPU. El paquete `silero-vad` no se usa porque arrastra torch. Parámetros iniciales: `threshold` 0,5, salida 0,35, `min_silence_ms` 500 y `speech_pad_ms` 150.
+  - **ASR:** NVIDIA Nemotron Speech Streaming EN 0.6B int8 sobre sherpa-onnx 1.13.8, en CPU:
+    - trozo de 560 ms, 2 hilos, `blank_penalty` 1;
+    - VAD + vaciado + **stream nuevo por tramo**, sin el *endpoint* nativo de sherpa;
+    - **`sherpa-onnx-core` declarado explícitamente** en el `pyproject`: uv lo pierde en Windows y entonces carga el `onnxruntime.dll` 1.17 de System32;
+    - `onnxruntime` (pip) y el ORT 1.28 de sherpa conviven en el mismo proceso.
+  - **Alternativa y referencia de calidad:** faster-whisper 1.2.1 + CTranslate2 4.8.2 con `large-v3-turbo` FP16 en GPU, que funciona en sm_120. Para ja/zh, en la spec 004.
+- **Motivo (medido en tiempo real, 594 s de LibriSpeech, en este PC):**
+  - **Nemotron 560 ms:** final p50/p95 de 0,67/0,78 s desde el fin del habla, WER 5,05 % (3,86 % en habla continua), RTF 0,15, 0,4 núcleos de CPU, 850 MB de RAM y 0 de VRAM; sin deriva en 10 min.
+  - **Parciales:** solo añaden texto (0 retractaciones en 2811 cambios). En el 15–21 % de los casos terminan a mitad de palabra, así que `stable_len` llega hasta la última palabra completa.
+  - **faster-whisper:** final 0,71/0,82 s y WER 5,82 % con cortes a 5 s (3,42 % con enunciados enteros), 2,3 GB de VRAM y sin parciales.
+- **Alternativas:**
+  - Nemotron con trozos de 160 ms: solo gana 0,34 s en el primer parcial, con más CPU y peor WER.
+  - *Endpoint* nativo de sherpa: WER 11,3 %.
+  - Whisper como principal: sin parciales y con más VRAM.
 
 ## R6. Segmentación en unidades de traducción
 - **Decisión:**
-  - **Frases cortas:** una unidad por oración, cuando el texto estable termina en `. ? !`.
-  - **Frases largas:** se corta en el límite de cláusula estable (`, ; :` y conjunciones *and, but, because, so, which, when, while, if*) cuando el fragmento tiene al menos 6 palabras.
-  - **Corte forzado:** en el último límite de palabra estable si se superan `max_habla_sin_traducir_s` (6 s).
-  - Solo se emite texto estable (`stable_len`); nada se retracta.
+  - **Fin de frase por pausa:** una unidad se cierra con el `SPEECH_END` del VAD (silencio ≥ 500 ms) y el FINAL del ASR. Nemotron casi nunca pone punto final (1 % de los finales), así que no se usa la puntuación para cerrar frases.
+  - **Frases largas:** si el habla sigue, se corta en una coma estable (Nemotron da unas 3,5 comas por cada 100 palabras con `blank_penalty` 1) o en una conjunción (*and, but, because, so, which, when, while, if*), siempre que el fragmento tenga al menos 6 palabras.
+  - **Corte forzado:** en la última palabra completa estable si se superan `max_habla_sin_traducir_s` (6 s).
+  - Solo se emite texto estable (hasta la última palabra completa); nada se retracta.
   - Sin tiempos por palabra, `t_end` se estima por la proporción de caracteres.
-- **Motivo:** clarificación 2 de la spec, y equilibrio entre retardo y naturalidad. El LLM traduce mejor fragmentos con sentido que trozos de N palabras.
+- **Motivo:**
+  - Clarificación 2 de la spec.
+  - Spike S3: puntuación final poco fiable y parciales que solo añaden texto.
+  - El LLM traduce mejor fragmentos con sentido que trozos de N palabras.
 - **Alternativas:**
   - *wait-k*: no encaja con un traductor que no se reentrena.
   - Retraducir parciales: lo prohíbe FR-008 (no repetir lo ya pronunciado).
 
-## R7. Traducción — spike S2
-- **Decisión:** _pendiente del cierre de S2_. Hipótesis de partida (ADR-0007):
-  - Hy-MT2-1.8B Q8_0 con `llama-server`;
-  - plantillas de contexto, glosario y estilo;
-  - modo resumen para FR-013.
-- **Motivo:** _por completar con las cifras de S2_ (latencia, versión de llama.cpp y *prompt* final).
-- **Alternativas:** _por completar_.
+## R7. Traducción — spike S2 y medición del 7B (ADR-0011)
+- **Decisión:**
+  - **Motor:**
+    - Hy-MT2-7B Q4_K_M en `llama-server` (llama.cpp **b11146**, release v0.5.0, zips `llama-b11146-bin-win-cuda-13.4-x64.zip` + `cudart-llama-bin-win-cuda-13.4-x64.zip`, sm_120 nativo), con `--cache-ram 0` y todas las capas en GPU;
+    - **reserva automática** a Hy-MT2-1.8B Q8_0 si al arrancar no hay VRAM libre para el 7B y la voz con un margen de 1 GB.
+  - **_Prompt_** (el de S2, `spikes/traduccion/prompts.py`):
+    - contexto como turnos de chat (4 frases previas);
+    - 12 ejemplos previos en castellano, fijos (la caché de *prompt* los reutiliza);
+    - cada turno envuelto en la instrucción de traducir;
+    - glosario con la plantilla *Terminology* en chino;
+    - glosario base de léxico de España incorporado (unos 150 pares), filtrado por frase.
+  - **Modo resumen (FR-013, solo con el 7B):** plantilla *Style* «telegraphic Spanish… at most N words», con N = 0,7 × las palabras que saldrían normalmente.
+  - **Filtros de salida:** traducción vacía, idioma distinto del español, longitud anómala (más de 3 veces el original) y eco del *prompt*. Si saltan, `rejected=True` y la frase no se pronuncia.
+- **Motivo (medido):**
+  - **7B:** p50/p95 de 211/347 ms con caché (sin caché, 344/497 ms); primer token 43/83 ms; 5,2 GB de VRAM; arranque de 2,1 s; glosario 10/10.
+  - **Modo resumen del 7B:** −32 % de palabras, conservando el sentido en 8 de 10 frases y en 246 ms.
+  - **1.8B:** 145/218 ms y 2,3 GB, pero no resume y tiene ~20 % de errores de sentido.
+  - En ninguno tiene efecto la cláusula de estilo; el glosario sí (léxico de España de 9/16 a 14/16).
+  - 0 muletillas en 4075 salidas.
+- **Alternativas:**
+  - Solo el 1.8B: ver ADR-0011.
+  - SalamandraTA, EuroLLM, Qwen3.5 y TranslateGemma: se comparan en la spec 002.
+- **Riesgos:**
+  - **RAM:** la de `llama-server` creció de 2,3 a 4,2 GB en una medición larga; se vigila en la prueba de estabilidad (SC-005).
+  - **Contención** de GPU con la voz.
 
-## R8. Voz — spike S1 y escucha del humano
-- **Decisión:** _pendiente del cierre de S1 y de la elección del humano_ entre Qwen3-TTS-0.6B y Chatterbox es-es (ADR-0008).
-- **Motivo:** _por completar_.
-- **Alternativas:** XTTS-v2, o Piper es_ES en CPU como último recurso.
+## R8. Voz — spike S1 y escucha del humano (ADR-0008, resolución)
+- **Decisión:**
+  - **Motor y versiones:**
+    - Qwen3-TTS-12Hz-0.6B-Base + faster-qwen3-tts 0.5.3 en un proyecto uv propio (`engines/tts-qwen3/`);
+    - torch 2.11.0+cu130 (con sm_120);
+    - **transformers fijado a 5.15.1**, porque la 5.18 rompe qwen-tts.
+  - **Ajustes:**
+    - `chunk_size` 4;
+    - modo ICL con `ref_text` de la referencia (guardado en el JSON de la voz) y `x_vector_only` de rescate;
+    - `warmup()` y captura de CUDA graphs al arrancar.
+  - **Voces:**
+    - por defecto, **una femenina castellana**;
+    - la masculina de LibriVox («Trafalgar» de Galdós, lector Tux, dominio público) suena a España según el humano;
+    - se buscarán ≥ 2 referencias femeninas castellanas de dominio público (LibriVox) y se validarán como en S1.
+- **Motivo (medido):**
+  - Primer audio p50/p95 de 179/182 ms (`chunk_size` 4); RTF 0,37; 3,3 GB de VRAM.
+  - Carga de 6,1 s + 0,84 s de grafos; en frío, sin calentar, 1,42 s.
+  - El humano la eligió al escuchar las muestras.
+- **Alternativas:**
+  - Chatterbox es-ES: primer audio de 748 ms y RTF en *streaming* de 1,12; solo cumpliría con menos pasos CFM y pérdida de calidad.
+  - XTTS-v2 o Piper como último recurso.
 
-## R9. Velocidad de habla (acelerar hasta 1,25×)
-- **Decisión:** si el motor elegido acepta la velocidad de forma nativa con buena calidad, se le pasa en `SynthesisRequest.speed`. Si no, el núcleo aplica *time-stretch* (WSOLA) por unidad antes de encolarla. _Se confirma con S1._
-- **Motivo:** la aceleración solo se usa cuando hay retraso; entonces importa más recuperar el ritmo que el primer audio.
-- **Alternativas:** Rubber Band (GPL, binario externo): más calidad, pero más dependencias.
+## R9. Velocidad de habla (acelerar hasta 1,25×) — spike S1
+- **Decisión:** *time-stretch* en el núcleo sobre el PCM en *streaming*, con **TDHS** (biblioteca C `stretch` vía `audiostretchy`, familia de Sonic). Se aplica por trozo antes de remuestrear a 48 kHz. `Synthesizer.supports_speed = False` para Qwen3-TTS.
+- **Motivo:**
+  - Ningún motor tiene parámetro de velocidad: el `instruct` de Qwen3 da entre 0,89× y 1,76×, sin control.
+  - El *time-stretch* da un factor exacto con 3–4 ms de CPU por segundo de audio y 28–46 ms de retardo algorítmico.
+  - No cambia el tiempo hasta el primer audio.
+- **Alternativas:**
+  - WSOLA (audiotsm, NumPy): válido, algo más de CPU.
+  - Rubber Band: GPL y binario externo.
 
 ## R10. Procesos hijos y ciclo de vida
 - **Decisión:**
@@ -160,4 +213,6 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
 | httpx | BSD-3 | |
 | huggingface_hub | Apache-2.0 | |
 | tomli-w | MIT | |
-| Voces de referencia | _según R8_ | |
+| Voces de referencia (LibriVox) | Dominio público | Lector y minuto anotados en el JSON de la voz |
+| audiostretchy / stretch (TDHS) | BSD-3 (por verificar al fijar la versión) | |
+| Hy-MT2-7B | Apache-2.0 | Misma familia que el 1.8B; se comprobará el `LICENSE` al fijar el GGUF |
