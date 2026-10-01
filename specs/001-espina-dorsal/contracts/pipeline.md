@@ -190,6 +190,7 @@ class TranslationResult:
 
 class Translator(Protocol):
     name: str
+    supports_concise: bool    # False en la reserva 1.8B: no sabe resumir (ADR-0011)
     def translate(self, request: TranslationRequest) -> TranslationResult: ...   # EngineError si falla
     def close(self) -> None: ...
 
@@ -240,11 +241,12 @@ class DelayPolicy:
     max_speed: float = 1.25
     concise_after_s: float = 5.0
     drop_after_s: float = 8.0
+    allow_concise: bool = True        # False si el traductor no lo soporta: se salta la fase de resumir
 
 @dataclass(frozen=True, slots=True)
 class DelayDecision:
     speed: float                      # 1.0–max_speed, gradual según el retraso
-    mode: TranslationMode             # CONCISE mientras el retraso no vuelva bajo accelerate_after_s
+    mode: TranslationMode             # CONCISE mientras el retraso no vuelva bajo accelerate_after_s (nunca si allow_concise=False)
     drop_oldest_pending: bool         # True solo si lag > drop_after_s a velocidad máxima
 
 class DelayController(Protocol):
@@ -255,6 +257,7 @@ class DelayController(Protocol):
 class Outcome(StrEnum):
     SPOKEN = "pronunciada"
     DROPPED = "descartada"
+    REJECTED = "rechazada"        # la traducción no pasó los filtros de salida (no se pronuncia)
     FAILED = "fallida"
 
 @dataclass(frozen=True, slots=True)
@@ -262,6 +265,7 @@ class StageTimings:
     t_start_audio: float
     t_end_audio: float
     unit_ready_at: float
+    captured_at: float | None = None      # reloj de sesión: llegada del chunk que contiene t_end_audio
     asr_final_at: float | None = None
     mt_started_at: float | None = None
     mt_finished_at: float | None = None

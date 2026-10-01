@@ -6,9 +6,9 @@ Entidades de la spec (Key Entities), con campos, reglas y estados. Los tipos exa
 
 - **Reloj de sesión** (`Clock.now()`): segundos desde que empieza la sesión, monotónico. Mide cuándo ocurre cada cosa: evento emitido, audio que empieza a sonar.
 - **Reloj de audio:** segundos del audio captado desde el inicio de la sesión, contados por muestras (`n / 16000`) y con los silencios rellenados. Sitúa el habla original (`t_start`, `t_end`).
-- Los dos relojes comparten origen: el inicio de la sesión. La captura añade decenas de milisegundos, que se desprecian. Por eso:
+- Los dos relojes comparten origen: **el instante en que arranca la captura**. El arranque de los motores (≤ 60 s) va antes y se mide aparte como `startup_s`. La captura añade unas decenas de milisegundos (la etapa `capture` del informe). Por eso:
   - **retardo de frase** = `play_started_at − t_end`;
-  - **retraso actual** (`lag`) = `now − t_end` de la frase más antigua que aún no ha terminado de sonar.
+  - **retraso actual** (`lag`) = `now − t_end` de la frase **pendiente más antigua que aún no ha empezado a sonar**, o 0 si no hay ninguna. Así no cuenta el tiempo durante el que suena una frase, que daría aceleraciones espurias.
 
 ## Sesión
 | Campo | Tipo | Regla |
@@ -36,7 +36,7 @@ Es una frase corta entera o un fragmento con sentido de una frase larga (spec, c
 | `speed` | número | 1,0 ≤ `speed` ≤ `max_speed` |
 | `state` | ver diagrama | |
 | `timings` | StageTimings | Ver abajo |
-| `outcome` | `pronunciada` \| `descartada` \| `fallida` | Al cerrarse |
+| `outcome` | `pronunciada` \| `descartada` \| `rechazada` \| `fallida` | Al cerrarse. `rechazada` = la traducción no pasó los filtros |
 
 ### Estados de una frase
 
@@ -63,6 +63,7 @@ PENDIENTE ──► TRADUCIENDO ──► SINTETIZANDO ──► EN_COLA ──�
 | **Derivados** | `sentence_delay = play_started_at − t_end_audio`; `asr_s = asr_final_at − t_end_audio`; `mt_s`; `tts_first_s = tts_first_audio_at − tts_started_at`; `queue_s = play_started_at − tts_first_audio_at` |
 
 ## Ajustes (persisten en `ajustes.toml`, FR-029)
+Las claves del TOML (las que ve el humano) van en español; los atributos en el código, en inglés (`voice`, `voice_volume`, `accelerate_after_s`...), con una tabla de correspondencia en `config.py`.
 | Clave | Por defecto | Rango |
 |---|---|---|
 | `voz` | la elegida en `voces` (hay una por defecto) | id del catálogo |
@@ -97,8 +98,8 @@ Hay al menos 3 voces castellanas y al menos una de cada género.
 | `component_id` | ASCII, único |
 | `name`, `version` | |
 | `kind` | `binario` \| `modelo` \| `entorno` \| `voz` |
-| `source_url` + `revision` | Fijados (sin «latest») |
-| `sha256`, `size_bytes` | Para verificar y comprobar el espacio antes de descargar |
+| `source_url` + `revision` | Fijados (sin «latest»). En los repos de Hugging Face: `repo_id` + `revision` (hash de commit) + `allow_patterns` |
+| `files` | Lista de `(ruta relativa, sha256, size_bytes)`. Un componente puede tener varios ficheros (Nemotron, Qwen3-TTS) |
 | `license` | Obligatoria |
 | `path` | Bajo `%LOCALAPPDATA%\InstantTraductor\` |
 | `status` | `ausente` → `descargado` → `verificado` \| `corrupto` (un corrupto se vuelve a descargar) |

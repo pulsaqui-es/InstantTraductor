@@ -131,6 +131,7 @@ src/instanttraductor/
 ├── contracts/                    # CONGELADOS tras la fase Foundational (tag contratos-001-v1)
 │   ├── __init__.py
 │   ├── clock.py                  # Clock, reloj de sesión
+│   ├── errors.py                 # EngineError
 │   ├── audio.py                  # AudioChunk, SpeechClip, AudioSource, AudioSink, PlaybackEvent
 │   ├── speech.py                 # VadEvent, Vad, AsrEvent, AsrCapabilities, AsrEngine
 │   ├── units.py                  # TranslationUnit, Segmenter
@@ -139,7 +140,8 @@ src/instanttraductor/
 │   ├── scheduling.py             # DelayPolicy, DelayDecision, DelayController
 │   └── metrics.py                # StageTimings, UtteranceRecord, SessionReport
 ├── platform/
-│   └── windows.py                # Job Object (matar hijos al salir), versión de Windows
+│   ├── windows.py                # Job Object, lanzar hijos, versión de Windows, teclas (msvcrt)
+│   └── children.py               # ManagedChild: listo, salud, un reinicio, parada en paralelo
 ├── audio/
 │   ├── wasapi_capture.py         # ProcessLoopbackSource: process loopback propio (ctypes/comtypes), EXCLUDE(PID propio)
 │   ├── echo_monitor.py           # monitor de eco: correlación voz reproducida / captura (R14)
@@ -191,6 +193,7 @@ tests/
 ├── unit/                         # por módulo
 └── integration/                  # marcados gpu, model o device (solo el orquestador)
 
+scripts/                          # utilidades del orquestador (colocar componentes, prueba de paradas)
 spikes/                           # pruebas de arranque S1–S4 (referencia; no es producto)
 ```
 
@@ -201,22 +204,14 @@ spikes/                           # pruebas de arranque S1–S4 (referencia; no 
 
 ## Plan de olas (paralelismo)
 
-Tras `/speckit-tasks`, el reparto previsto es este:
-- **Fase 1: Setup** (orquestador, en secuencia): `pyproject.toml`, `uv.lock`, configuración de ruff y pytest, estructura de carpetas y `tests/fakes` vacíos.
-- **Fase 2: Foundational** (orquestador, o un obrero en secuencia): `contracts/**` + tests de contrato + dobles + `pipeline/clock.py` + `config.py`. **Tag `contratos-001-v1`.**
-Como máximo 3 obreros a la vez (ADR-0002, actualización del 2026-10-01). Los tests `gpu`, `model` y `device` los ejecuta el orquestador al integrar.
-- **Ola 1** (3 obreros, ficheros disjuntos):
-  1. audio: `audio/wasapi_capture.py`, `audio/wasapi_playback.py`, `audio/selftest.py`, `audio/echo_monitor.py` y `platform/`;
-  2. escucha: `vad/`, `asr/` y `pipeline/segmenter.py`;
-  3. traducción: `mt/`.
-- **Ola 2** (3 obreros):
-  1. voz: `engines/tts-qwen3/`, `tts/` y `audio/dsp.py`;
-  2. planificador, retraso y métricas: `pipeline/delay.py`, `pipeline/scheduler.py` y `metrics/`;
-  3. modo archivo: `audio/file_source.py` y `audio/file_sink.py`.
-- **Ola 3** (1 obrero + orquestador):
-  - preparación y voces (`setup/`, incluidas las referencias femeninas castellanas);
-  - en paralelo, el orquestador integra `pipeline/session.py`, `cli.py` y `ui/terminal.py`.
-- **Cierre:** tests de integración marcados y validación de `quickstart.md`, a cargo del orquestador.
+El reparto exacto de tareas por olas y obreros está en [tasks.md](tasks.md), en la sección «Plan de olas», que es la única fuente. Resumen:
+- **Setup y Foundational:** el orquestador, en secuencia; termina con el tag `contratos-001-v1`.
+- **Ola 1:** captura + AGC + interfaz de terminal · escucha (VAD, ASR, segmentador) · traducción.
+- **Ola 2:** reproducción + autotest + eco · voz · planificador, retraso y métricas.
+- **Ola 3:** modo archivo · preparación y voces.
+- **Integración:** `session.py` y `cli.py`, el orquestador.
+
+Como máximo 3 obreros a la vez (ADR-0002, actualización del 2026-10-01).
 
 ## Complexity Tracking
 

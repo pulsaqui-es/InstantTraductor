@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-30
 
-**Status**: Draft
+**Status**: Approved (H1, humano, 2026-10-01)
 
 **Input**: User description: "Espina dorsal del intérprete simultáneo. El usuario arranca InstantTraductor con un comando mientras ve una serie o película en inglés en su PC con Windows 11. La app escucha todo lo que suena en el PC salvo su propia voz, reconoce el habla en inglés, la traduce al español de España y la pronuncia con una voz fija en castellano por los mismos auriculares, mezclada con el audio original, que no se modifica nunca. Objetivo de retardo: p50 ≤ 3 s y p95 ≤ 5 s. Incluye modo en directo, modo archivo, métricas de retardo, control básico del retraso, protección contra realimentación, comando de preparación y elección de voz. Fuera de alcance: clonación (003), japonés/chino y detección de idioma (004), interfaz gráfica (005), robustez con música y comparativa de motores (002)."
 

@@ -51,6 +51,7 @@ uv run instanttraductor archivo <un clip de vídeo MKV/MP4 en inglés de 10 min>
    - la terminal muestra el estado y el retraso.
 4. Pulsar `+` y `-`: solo cambia la voz en español.
 5. Ctrl+C. **Esperado:** para en ≤ 2 s y en el informe aparece p50 ≤ 3 s y p95 ≤ 5 s. `tasklist | findstr /i "llama tts-service"` no devuelve nada.
+6. **SC-006:** `uv run python scripts/stop_test.py --veces 20` arranca `directo` 20 veces, lo detiene con Ctrl+Break y mide el tiempo hasta que sale. **Esperado:** las 20 paradas en ≤ 2 s y ningún proceso hijo vivo tras ninguna.
 
 ## 6. Silencio (SC-003)
 `directo` durante 10 min sin reproducir nada con voz, solo ruido o nada. **Esperado:** 0 frases en el informe.
@@ -60,12 +61,15 @@ uv run instanttraductor archivo <un clip de vídeo MKV/MP4 en inglés de 10 min>
 
 ## 8. Estabilidad (SC-005)
 `directo` durante 60 min. **Esperado:**
-- sin cortes;
-- el retraso no pasa de 8 s más de 10 s seguidos;
-- `rss_mb_end ≤ 1,10 × rss_mb_min5`.
+- sin cortes (`underruns = 0`);
+- `diagnostics.lag_over_drop_max_streak_s ≤ 10`;
+- `rss_mb_end ≤ 1,10 × rss_mb_min5`, y lo mismo para `rss_children_mb_*`.
 
 ## 9. Calidad (SC-004)
 `archivo` sobre el conjunto de 50 frases de prueba y revisión humana de `traduccion.srt`. **Esperado:** ≥ 85 % de frases dadas por buenas.
 
 ## 10. Cambio de dispositivo (FR-017)
 Con `directo` en marcha, apagar o desenchufar el G733 y volver a conectarlo. **Esperado:** la voz sigue por el dispositivo predeterminado de cada momento y la captura no se detiene.
+
+## 11. Sin internet (FR-027)
+Con la preparación hecha, desactivar la red (modo avión o cable fuera) y lanzar `directo` y `archivo`. **Esperado:** funcionan igual y el registro no muestra ningún intento de descarga. El servicio de voz arranca con `uv run --frozen --offline` y `HF_HUB_OFFLINE=1`.

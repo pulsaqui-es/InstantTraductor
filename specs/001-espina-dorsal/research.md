@@ -144,9 +144,16 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
 - **Decisión:**
   - `llama-server` y el servicio de voz se lanzan con `subprocess.Popen`, sin consola.
   - Se asignan a un *Job Object* con `JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE` (ctypes, `platform/windows.py`).
-  - Arranque: se espera `/health` o la línea `ready`.
-  - Salud: cada 2 s; un reinicio como máximo por sesión.
-  - Parada: `POST /shutdown` y, a los 2 s, `terminate`.
+  - Una clase común, `ManagedChild` (`platform/children.py`), se encarga de:
+    - esperar a que esté listo: `/health` o la línea `ready`;
+    - comprobar la salud cada 2 s;
+    - reiniciarlo como máximo una vez por sesión.
+  - **Parada en ≤ 2 s en total:**
+    - `POST /shutdown` a todos los hijos **en paralelo**, con 1 s de gracia;
+    - después se cierra el *Job Object*, que mata lo que quede de inmediato.
+  - **Sin red tras la preparación (FR-027):**
+    - el servicio de voz se lanza con `uv run --frozen --offline --project engines/tts-qwen3`;
+    - se le pasan `HF_HUB_OFFLINE=1` y `TRANSFORMERS_OFFLINE=1`.
 - **Motivo:** FR-015 y FR-018 (sin procesos huérfanos aunque el núcleo muera).
 - **Alternativas:** `atexit` y señales: no cubren que el proceso muera de golpe.
 
@@ -161,8 +168,11 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
 
 ## R12. Preparación
 - **Decisión:**
-  - Manifiesto con URL, revisión fijada, sha256, tamaño y licencia de cada componente.
-  - Descargas con `huggingface_hub` (revisión fijada) o `httpx` (releases de GitHub), con comprobación de espacio previa.
+  - Manifiesto con URL, revisión fijada, licencia y **lista de ficheros** (ruta, sha256 y tamaño) de cada componente.
+  - **Hugging Face:** `snapshot_download(repo_id, revision=<hash de commit>, allow_patterns=…)` para los repos con varios ficheros (Qwen3-TTS).
+  - **GitHub:** `httpx` para las releases (llama.cpp, sherpa-onnx), con comprobación de espacio previa.
+  - Los hashes y las revisiones se calculan una vez a partir de las descargas verificadas de los spikes (T013).
+  - **Las voces también son componentes** (MP3 de origen con sha256), así que todo funciona sin red tras la preparación.
   - ffmpeg portable (gyan.dev *essentials*, GPL) si falta.
   - El entorno del servicio de voz se crea con `uv sync --project engines/tts-<motor>`.
 - **Motivo:** FR-025 a FR-027 y SC-008.
@@ -170,7 +180,7 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
 
 ## R13. Interfaz de terminal, ajustes y registro
 - **Decisión:**
-  - **Interfaz:** `rich` (Live) para el estado, y `msvcrt` para las teclas `+ - t q`.
+  - **Interfaz:** `rich` (Live) para el estado. Las teclas `+ - t q` se leen con `msvcrt` en `platform/windows.py` (`read_key_nonblocking()`) y se inyectan en la interfaz, para mantener el código de Windows aislado (Principio VII).
   - **Ajustes:** TOML (`tomllib` + `tomli-w`).
   - **Registro:** `logging` a fichero rotativo en `%LOCALAPPDATA%\InstantTraductor\logs\`, sin audio.
 - **Motivo:** dependencias mínimas y Windows nativo.
@@ -215,4 +225,4 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
 | tomli-w | MIT | |
 | Voces de referencia (LibriVox) | Dominio público | Lector y minuto anotados en el JSON de la voz |
 | audiostretchy / stretch (TDHS) | BSD-3 (por verificar al fijar la versión) | |
-| Hy-MT2-7B | Apache-2.0 | Misma familia que el 1.8B; se comprobará el `LICENSE` al fijar el GGUF |
+| Hy-MT2-7B | Apache-2.0 | Según su ficha de HF; se comprobará el `LICENSE` al fijar el GGUF (T013) |
