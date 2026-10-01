@@ -104,6 +104,8 @@ def _setup_logging() -> None:
     root.setLevel(logging.INFO)
     if not any(isinstance(h, RotatingFileHandler) for h in root.handlers):
         root.addHandler(handler)
+    # Las comprobaciones de salud de los hijos hacen una petición HTTP por segundo: solo los problemas.
+    logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 def _missing_components() -> list[str]:
