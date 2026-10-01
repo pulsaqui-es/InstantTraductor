@@ -18,8 +18,14 @@ Convenciones
 - Una entrada pendiente de fijar lleva ``files=()`` con el comentario ``# T013 rellena hashes y
   revisión``: ``scripts/dev_place_components.py`` (T013) calcula los ``sha256`` y los tamaños, y
   saca la ``hf_revision`` de la carpeta del *snapshot* de la caché de Hugging Face.
+  - ``package`` + ``package_dir``: recurso empaquetado en la propia app (sin URL ni red). ``package``
+    es el paquete de Python (p. ej. ``instanttraductor.setup``) y ``package_dir`` la carpeta de
+    recursos dentro de él (p. ej. ``voices``); se leen con ``importlib.resources`` y se copian a
+    ``component_dir(...)``. Es el origen de las voces.
 - Un componente sin ficheros declarados nunca cuenta como instalado (no hay nada que verificar).
-- Las voces (``kind="voz"``) las añade T042.
+- Las voces (``kind="voz"``) son una entrada por voz, con ``component_id="voz-<voice_id>"``. Comparten
+  carpeta (``voices``, que es ``AppPaths().voices``). El valor exacto ``"voz"`` importa:
+  ``session.report_components()`` las excluye del informe.
 """
 
 from __future__ import annotations
@@ -41,6 +47,10 @@ _HF_REPO_ID = re.compile(r"[A-Za-z0-9._-]+/[A-Za-z0-9._-]+")
 
 def _invalid(owner: str, field_name: str, reason: str) -> ValueError:
     return ValueError(f"{owner}: {field_name} no válido ({reason})")
+
+
+def _is_dotted(value: object) -> bool:
+    return isinstance(value, str) and all(part.isidentifier() for part in value.split("."))
 
 
 def _check_relative_path(value: object, owner: str, field_name: str) -> None:
@@ -84,6 +94,8 @@ class Component:
     hf_repo_id: str | None = None  # alternativa a source_url: repositorio de Hugging Face...
     hf_revision: str | None = None  # ...con hash de commit (None solo mientras T013 no lo fija)
     allow_patterns: tuple[str, ...] | None = None  # ...y patrones de ficheros (None = todo el repo)
+    package: str | None = None  # alternativa a las dos anteriores: paquete de Python con recursos...
+    package_dir: str | None = None  # ...y carpeta de recursos dentro de él (sin red)
     files: tuple[ComponentFile, ...] = ()  # vacío mientras T013 no calcula hashes y tamaños
     optional: bool = False  # True: la app funciona sin él (p. ej. ffmpeg, que puede estar en el PATH)
 
@@ -108,11 +120,23 @@ class Component:
             raise _invalid(owner, "files", "debe ser una tupla de ComponentFile")
         if len({file.rel_path for file in files}) != len(files):
             raise _invalid(owner, "files", "hay rutas repetidas")
-        if files and self.source_url is None and self.hf_repo_id is None:
+        if files and self.source_url is None and self.hf_repo_id is None and self.package is None:
             raise _invalid(owner, "source_url", "hay ficheros pero no se sabe de dónde bajarlos")
         object.__setattr__(self, "files", files)
 
+    def _check_package(self, owner: str) -> None:
+        if self.package is None:
+            if self.package_dir is not None:
+                raise _invalid(owner, "package_dir", "solo se usa con package")
+            return
+        if not _is_dotted(self.package):
+            raise _invalid(owner, "package", "debe ser un nombre de paquete de Python")
+        _check_relative_path(self.package_dir, owner, "package_dir")
+        if self.source_url is not None or self.hf_repo_id is not None:
+            raise _invalid(owner, "package", "no puede combinarse con source_url ni hf_repo_id")
+
     def _check_source(self, owner: str) -> None:
+        self._check_package(owner)
         if self.source_url is not None:
             if self.hf_repo_id is not None:
                 raise _invalid(owner, "hf_repo_id", "no puede combinarse con source_url")
@@ -145,7 +169,7 @@ class Component:
         if self.source_url is None:
             raise ValueError(
                 f"Componente «{self.component_id}»: no tiene source_url "
-                "(se baja de Hugging Face con snapshot_download o está pendiente de fijar)"
+                "(se baja de Hugging Face, viene empaquetado en la app o está pendiente de fijar)"
             )
         return f"{self.source_url.rstrip('/')}/{file.rel_path}"
 
@@ -344,7 +368,118 @@ COMPONENTS: Final[tuple[Component, ...]] = (
         files=(),  # T013 rellena hashes y revisión
         optional=True,  # puede estar ya en el PATH
     ),
-    # Voces (kind="voz"): las añade T042.
+    # Voces (kind="voz"): empaquetadas en src/instanttraductor/setup/voices/ (T042), sin descarga.
+    # sha256 y tamaños de los ficheros del paquete; tests/unit/setup/test_voices.py comprueba que coinciden.
+    Component(
+        component_id="voz-es-f-dvx-01",
+        name="Voz Lucía",
+        version="catálogo 1",
+        kind="voz",
+        license="Apache-2.0 (modelo VoxCPM2; audio sintético)",
+        install_dir="voices",  # = AppPaths().voices; todas las voces comparten carpeta
+        package="instanttraductor.setup",
+        package_dir="voices",
+        files=(
+            ComponentFile(
+                "es-f-dvx-01.wav",
+                "7f4fdeb1c936e7c443090b540087eb28618601d995b22e6934bcfb0b368bb04d",
+                453_164,
+            ),
+            ComponentFile(
+                "es-f-dvx-01.json",
+                "c8ee0620d0a298972a5e8a9fad4f071a3c5a7b8de93602c158b1ff47c00083e7",
+                794,
+            ),
+        ),
+    ),
+    Component(
+        component_id="voz-es-f-dvx-08",
+        name="Voz Clara",
+        version="catálogo 1",
+        kind="voz",
+        license="Apache-2.0 (modelo VoxCPM2; audio sintético)",
+        install_dir="voices",  # = AppPaths().voices; todas las voces comparten carpeta
+        package="instanttraductor.setup",
+        package_dir="voices",
+        files=(
+            ComponentFile(
+                "es-f-dvx-08.wav",
+                "95ef2047f54ed8e408c5ccf82b1c8c9b2922570f7a35b9e8a5d199e8c9164856",
+                376_364,
+            ),
+            ComponentFile(
+                "es-f-dvx-08.json",
+                "ceb8973f79dca009e9bb801e4168b62ce613d2f9075127177fc0b5f26ad69c74",
+                778,
+            ),
+        ),
+    ),
+    Component(
+        component_id="voz-es-f-est-01",
+        name="Voz humana 2 (VoxPopuli)",
+        version="catálogo 1",
+        kind="voz",
+        license="CC0 1.0 (VoxPopuli, Parlamento Europeo)",
+        install_dir="voices",  # = AppPaths().voices; todas las voces comparten carpeta
+        package="instanttraductor.setup",
+        package_dir="voices",
+        files=(
+            ComponentFile(
+                "es-f-est-01.wav",
+                "6de8b0a8f8094014754c6175d152b7fc9d5f5a0fcdb08c89044c6a2c9c1f7196",
+                439_722,
+            ),
+            ComponentFile(
+                "es-f-est-01.json",
+                "5b849fc2b8400b167d66167c6dba38cedaae496de909c688b92e84bbf89ce55b",
+                562,
+            ),
+        ),
+    ),
+    Component(
+        component_id="voz-es-f-est-04",
+        name="Voz humana 1 (VoxPopuli)",
+        version="catálogo 1",
+        kind="voz",
+        license="CC0 1.0 (VoxPopuli, Parlamento Europeo)",
+        install_dir="voices",  # = AppPaths().voices; todas las voces comparten carpeta
+        package="instanttraductor.setup",
+        package_dir="voices",
+        files=(
+            ComponentFile(
+                "es-f-est-04.wav",
+                "af6a8c2d6d4ebf900764776941d861aa62d7f43b615b4a23931542963ff37938",
+                480_048,
+            ),
+            ComponentFile(
+                "es-f-est-04.json",
+                "371401922a1700f86faf0bbc88cb67feadd6e1f4d625b838093107d51a08daf1",
+                574,
+            ),
+        ),
+    ),
+    Component(
+        component_id="voz-es-m-tux",
+        name="Voz Tux (LibriVox)",
+        version="catálogo 1",
+        kind="voz",
+        license="Dominio público",
+        install_dir="voices",  # = AppPaths().voices; todas las voces comparten carpeta
+        package="instanttraductor.setup",
+        package_dir="voices",
+        files=(
+            ComponentFile(
+                "es-m-tux.wav",
+                "f3cbcbf48452b4554c666805faca8065b19b7b77bd0f99fc76ce742bc32b2542",
+                329_324,
+            ),
+            ComponentFile(
+                "es-m-tux.json",
+                "1afe2e8494acee89757a0cb631c9d80fefbd1891a4a26d36fade55b21efec56e",
+                495,
+            ),
+        ),
+    ),
 )
 
 

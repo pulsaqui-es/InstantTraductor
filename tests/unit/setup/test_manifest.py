@@ -108,9 +108,12 @@ def test_download_urls_are_https() -> None:
 def test_components_with_files_have_a_source() -> None:
     for component in COMPONENTS:
         if component.files:
-            assert component.source_url is not None or component.hf_repo_id is not None, (
-                component.component_id
+            has_source = (
+                component.source_url is not None
+                or component.hf_repo_id is not None
+                or component.package is not None
             )
+            assert has_source, component.component_id
 
 
 def test_hugging_face_revisions_are_commit_hashes_when_present() -> None:
@@ -223,10 +226,14 @@ def test_component_dirs_follow_the_home_environment_variable(
     assert first.relative_to(tmp_path / "uno") == second.relative_to(tmp_path / "dos")
 
 
-def test_component_dirs_are_distinct() -> None:
-    directories = [component_dir(component.component_id) for component in COMPONENTS]
+def test_component_dirs_are_distinct_except_voices() -> None:
+    # Las voces (kind="voz") comparten carpeta: AppPaths().voices.
+    others = [component_dir(c.component_id) for c in COMPONENTS if c.kind != "voz"]
+    voices = {component_dir(c.component_id) for c in COMPONENTS if c.kind == "voz"}
 
-    assert len(directories) == len(set(directories))
+    assert len(others) == len(set(others))
+    assert voices == {AppPaths().voices}
+    assert AppPaths().voices not in others
 
 
 def test_binaries_live_under_bin_and_models_under_models() -> None:
@@ -438,3 +445,44 @@ def test_component_without_any_source_is_allowed_only_while_pending() -> None:
 
     with pytest.raises(ValueError, match="source_url"):
         make_component(source_url=None)  # con ficheros, pero sin de dónde bajarlos
+
+
+# --- recursos empaquetados (voces) ---
+
+
+def test_packaged_component_needs_package_dir_and_excludes_urls() -> None:
+    ok = make_component(source_url=None, package="instanttraductor.setup", package_dir="voices")
+
+    assert (ok.package, ok.package_dir) == ("instanttraductor.setup", "voices")
+    with pytest.raises(ValueError, match="source_url"):
+        ok.file_url(ok.files[0])
+
+
+@pytest.mark.parametrize(
+    ("overrides", "field_name"),
+    [
+        ({"source_url": None, "package": "instanttraductor.setup"}, "package_dir"),  # falta la carpeta
+        ({"source_url": None, "package": "instanttraductor.setup", "package_dir": "../x"}, "package_dir"),
+        ({"source_url": None, "package": "no es un paquete", "package_dir": "v"}, "package"),
+        ({"source_url": None, "package": "", "package_dir": "v"}, "package"),
+        ({"package": "instanttraductor.setup", "package_dir": "v"}, "package"),  # con source_url
+        ({"source_url": None, "package_dir": "voices"}, "package_dir"),  # carpeta sin paquete
+    ],
+)
+def test_component_rejects_invalid_packaged_sources(overrides: dict[str, object], field_name: str) -> None:
+    with pytest.raises(ValueError, match=field_name):
+        make_component(**overrides)
+
+
+def test_voice_components_are_packaged_and_share_the_voices_dir() -> None:
+    voices = [component for component in COMPONENTS if component.kind == "voz"]
+
+    assert len(voices) >= 3
+    for component in voices:
+        assert component.component_id.startswith("voz-")
+        assert component.install_dir == "voices"
+        assert (component.package, component.package_dir) == ("instanttraductor.setup", "voices")
+        assert component.source_url is None
+        assert component.hf_repo_id is None
+        assert not component.optional
+        assert len(component.files) == 2  # .wav y .json
