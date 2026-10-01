@@ -23,6 +23,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "voz" / "qwen3"))
 import common as c  # noqa: E402
+import disenos as d  # noqa: E402
 
 vb = c.vb
 import bench_qwen3 as bq  # noqa: E402  (preparar_prompt y una_peticion del spike S1; no ejecuta nada al importarse)
@@ -34,12 +35,17 @@ def main() -> None:
     ap.add_argument("--chunk-size", type=int, default=4)
     ap.add_argument("--semilla-base", type=int, default=4242)
     ap.add_argument("--rehacer", action="store_true", help="vuelve a sintetizar aunque ya existan las 4 frases")
+    ap.add_argument("--respell-th", action="store_true",
+                    help="experimento: z/ce/ci de las frases reescritos con «th» antes de sintetizar (sale como <id>-rth); no es la entrada normal del motor")
+    ap.add_argument("--modo", choices=["icl", "xvec"], default="icl",
+                    help="icl = referencia en contexto con su ref_text (producción); xvec = solo el embedding del hablante (rescate del ADR-0008); sale como <id>-xv")
     ap.add_argument("--modelo", default=str(vb.models_dir() / c.QWEN3_BASE_DIR))
     args = ap.parse_args()
 
     out = c.out_dir()
+    sufijo = ("-xv" if args.modo == "xvec" else "") + ("-rth" if args.respell_th else "")
     ids = [x.strip() for x in args.ids.split(",") if x.strip()] or sorted(p.name[: -len("_ref.wav")] for p in out.glob("*_ref.wav"))
-    pendientes = [i for i in ids if args.rehacer or not all((out / f"{i}_frase{f['n']}.wav").exists() for f in c.FRASES)]
+    pendientes = [i for i in ids if args.rehacer or not all((out / f"{i}{sufijo}_frase{f['n']}.wav").exists() for f in c.FRASES)]
     print("candidatas:", ids, "| a sintetizar:", pendientes, flush=True)
     if not pendientes:
         return
@@ -60,20 +66,21 @@ def main() -> None:
                 ref_wav = out / f"{cid}_ref.wav"
                 meta = c.leer_json(out / f"{cid}_ref.json")
                 audio, sr = vb.read_wav_mono(ref_wav)
-                items, prep_s = bq.preparar_prompt(model, ref_wav, audio, sr, meta["ref_text"], "icl")
+                items, prep_s = bq.preparar_prompt(model, ref_wav, audio, sr, meta["ref_text"], args.modo)
                 if primera:  # una petición de calentamiento sin guardar (los grafos ya están capturados por warmup)
-                    bq.una_peticion(model, c.FRASES[0]["texto"], items, meta["ref_text"], args.chunk_size, "icl", seed=100)
+                    bq.una_peticion(model, c.FRASES[0]["texto"], items, meta["ref_text"], args.chunk_size, args.modo, seed=100)
                     primera = False
                 regs = []
                 for f in c.FRASES:
                     seed = args.semilla_base + f["n"]
-                    ttfa, total, wav, sr_out, ft, n = bq.una_peticion(model, f["texto"], items, meta["ref_text"], args.chunk_size, "icl", seed=seed)
+                    texto = d.respell_th(f["texto"]) if args.respell_th else f["texto"]
+                    ttfa, total, wav, sr_out, ft, n = bq.una_peticion(model, texto, items, meta["ref_text"], args.chunk_size, args.modo, seed=seed)
                     dur = len(wav) / sr_out
-                    vb.write_wav(out / f"{cid}_frase{f['n']}.wav", wav, sr_out)
+                    vb.write_wav(out / f"{cid}{sufijo}_frase{f['n']}.wav", wav, sr_out)
                     regs.append({"frase": f["n"], "tipo": f["tipo"], "semilla": seed, "duracion_s": round(dur, 2), "primer_audio_s": round(ttfa, 3),
                                  "rtf": round(total / dur, 3)})
-                    print(f"{cid} frase {f['n']} ({f['tipo']}): {dur:.1f} s | primer audio {ttfa * 1000:.0f} ms | RTF {total / dur:.2f}", flush=True)
-                c.guardar_json(out / f"{cid}_sintesis.json", {"id": cid, "motor": "Qwen3-TTS-12Hz-0.6B-Base + faster-qwen3-tts 0.5.3 (ICL, chunk_size=%d)" % args.chunk_size,
+                    print(f"{cid}{sufijo} frase {f['n']} ({f['tipo']}): {dur:.1f} s | primer audio {ttfa * 1000:.0f} ms | RTF {total / dur:.2f}", flush=True)
+                c.guardar_json(out / f"{cid}{sufijo}_sintesis.json", {"id": cid + sufijo, "motor": "Qwen3-TTS-12Hz-0.6B-Base + faster-qwen3-tts 0.5.3 (%s, chunk_size=%d%s)" % (args.modo, args.chunk_size, ", texto con z/ce/ci reescritos «th»" if args.respell_th else ""),
                                                              "ref_text": meta["ref_text"], "preparar_referencia_s": round(prep_s, 3), "frases": regs})
             print("VRAM pico (torch asignado):", round(torch.cuda.max_memory_allocated() / 2**20), "MiB | NVML pico:", round(sampler.peak_mib), "MiB", flush=True)
 

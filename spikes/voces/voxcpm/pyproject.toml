@@ -1,0 +1,39 @@
+[project]
+name = "voces-spike-voxcpm"
+version = "0.0.0"
+description = "Spike T040 (2.ª vuelta), camino A2: diseño de voz con VoxCPM2 (Apache-2.0) como alternativa a Qwen3-TTS-VoiceDesign. Solo autoría de referencias; no es el motor de producción."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "voxcpm==2.0.3",
+    # Mismo PyTorch que el resto de entornos del proyecto (CUDA 13.0, con sm_120 para la RTX 5070).
+    "torch==2.11.0",
+    "torchaudio==2.11.0",
+    "numpy",
+    "scipy",
+    "soundfile",
+    "filelock",
+    "nvidia-ml-py",
+]
+
+[tool.uv]
+package = false
+# voxcpm declara dependencias de interfaz web, ASR chino y descarga de datasets que no hacen falta para generar audio
+# (se usa `load_denoiser=False`). Se anulan con un marcador falso, como en el spike S1 con gradio.
+override-dependencies = [
+    "gradio ; sys_platform == 'never'",
+    "funasr ; sys_platform == 'never'",
+    "modelscope ; sys_platform == 'never'",
+    "datasets ; sys_platform == 'never'",
+    "spaces ; sys_platform == 'never'",
+    "matplotlib ; sys_platform == 'never'",
+    "torchcodec ; sys_platform == 'never'",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchaudio = { index = "pytorch-cu130" }
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true

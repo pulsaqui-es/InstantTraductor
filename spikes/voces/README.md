@@ -5,7 +5,7 @@ Spike de investigación de la feature `001-espina-dorsal`. No es código de prod
 **Por qué:** el humano escuchó las 4 lectoras de LibriVox de la 1.ª vuelta (`docs/investigacion/2026-10-01-voces-castellanas.md`) y las rechazó:
 «tienen una voz terrible, no anima a escucharlas más de 10 segundos». Pide **voz femenina joven, suave, con buena entonación, en español de España**.
 
-> **Estado de este documento: hito 1 (viabilidad).** Las muestras, las medidas y la recomendación se añaden en los hitos 2 y 3.
+> **Estado de este documento: hito 2 (referencias generadas o extraídas).** Las muestras de las 4 frases, las medidas y la recomendación se añaden en el hito 3.
 
 ## 1. Camino A: voces diseñadas a partir de una descripción
 
@@ -58,3 +58,46 @@ indicio medido, **sin oír**: puede sonar a «th» inglesa y no a /θ/ castellan
 | Vasco, catalán y gallego (SLR76, SLR69, SLR77) | CC BY-SA 4.0 | Descartados: son grabaciones en esas lenguas, no en español |
 
 Los scripts de esta vuelta están en esta carpeta (ver «Estructura» al final); el audio está fuera del repo en `%LOCALAPPDATA%\InstantTraductor\spikes\voces-v2\`.
+
+## 3. Referencias generadas o extraídas (hito 2)
+
+Todas son WAV mono de 24 kHz, de 8 a 10 s, con RMS −20 dBFS (pico ≤ −1 dBFS) y fundidos de 30 ms, en `%LOCALAPPDATA%\InstantTraductor\spikes\voces-v2\<id>_ref.wav`
+con su `<id>_ref.json` (campos de `VoiceInfo` del contrato de voz más `ref_text`, duración y origen).
+
+- **Diseñadas (`es-f-dis-NN`, 8 voces):** `Qwen3-TTS-12Hz-1.7B-VoiceDesign` con una descripción en inglés (edad 22–30, timbre distinto en cada una, origen castellano pedido: Madrid, Valladolid, Toledo,
+  Salamanca, Burgos, Zaragoza, Segovia) y un texto castellano de 21–23 palabras. De 2 tomas por voz se escribe la que Whisper large-v3-turbo transcribe sin ninguna diferencia (WER 0) y cae en 7,8–10,6 s;
+  el `ref_text` es exactamente el texto generado. `es-f-dis-NNth` es la misma voz con la reescritura «th» del apartado 1.2 (solo se conserva una si cumple duración y WER ≤ 0,20; son experimentales y dos pasan de 10 s: `03th` 10,2 s y `04th` 10,6 s).
+- **De estudio (`es-f-est-NN`, 5 voces):** 4 hablantes de VoxPopuli `es` (CC0) y la hablante peninsular de SLR61. De VoxPopuli se cribaron las 14 hablantes con más material (4 segmentos de 12–28 s por hablante,
+  Whisper large-v3-turbo con tiempos por palabra, `distincion.py`, F0 y suelo de ruido). Δ(s−θ) entre 9,7 y 20,4 dB en 11 de las 14 (las otras tres: 0,7; −3,0 y 6,5 dB, descartadas). De ellas se eligieron 4 con
+  distinción medida (p < 0,05), SNR de 29 a 37 dB y F0 de 202 a 262 Hz, y de cada una un tramo de 9–10 s entre pausas reales; el `ref_text` es la transcripción de Whisper del propio recorte, que coincide con el
+  `raw_text` del corpus (96–100 % de las palabras alineadas). `es-f-est-05` une 4 mensajes del tiempo de la locutora 03397 de SLR61 (texto del TSV del corpus).
+- **Controles (`es-f-ctrl-*`):** las dos LibriVox de la 1.ª vuelta con mejor distinción medida (juanina y Mongope), **no son candidatas** (el humano ya las rechazó): sirven para comprobar si el acento de la
+  referencia pasa a lo que sintetiza el motor.
+
+| id | duración | F0 mediana | ref_text (exacto) | origen |
+|---|---|---|---|---|
+| `es-f-ctrl-juanina` |  s |  Hz | «Paquita bajó los ojos, y haciendo un esfuerzo consiguió ponerse colorada como un tomate. La madre arrugó el entrecejo.» | LibriVox (dominio público); ver docs/investigacion/2026-10-01-voces-castellanas.md |
+| `es-f-ctrl-mongope` |  s |  Hz | «Helena se posaba en su asiento solemne y fría, henchida de desdén, como una diosa llevada por el destino.» | LibriVox (dominio público); ver docs/investigacion/2026-10-01-voces-castellanas.md |
+| `es-f-dis-01` | 9.92 s | 238.1 Hz | «Cuando llegué a la estación, el tren ya se había marchado. Entonces me senté, respiré hondo y decidí esperar con calma al siguiente.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-01_en_normal_t1.wav`, semilla 3130 |
+| `es-f-dis-01th` | 9.43 s | 218.6 Hz | «Cuando llegué a la estación, el tren ya se había marchado. Entonces me senté, respiré hondo y decidí esperar con calma al siguiente.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-01_en_th_t2.wav`, semilla 2127 |
+| `es-f-dis-02` | 7.95 s | 386.1 Hz | «¡Qué maravilla de día! Hace un sol precioso y el cielo está despejado. ¿Por qué no salimos a dar un paseo?» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-02_en_normal_t2.wav`, semilla 3231 |
+| `es-f-dis-03` | 8.79 s | 215.4 Hz | «A veces pienso que lo mejor de la vida son las cosas sencillas: un café caliente, una conversación tranquila y nada de prisa.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-03_en_normal_t2.wav`, semilla 3331 |
+| `es-f-dis-03th` | 10.19 s | 187.8 Hz | «A veces pienso que lo mejor de la vida son las cosas sencillas: un café caliente, una conversación tranquila y nada de prisa.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-03_en_th_t1.wav`, semilla 2326 |
+| `es-f-dis-04` | 8.53 s | 305.9 Hz | «Mi abuela siempre decía que la paciencia es la mejor medicina, y con el tiempo he entendido por qué lo decía tan convencida.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-04_en_normal_t2.wav`, semilla 3431 |
+| `es-f-dis-04th` | 10.55 s | 182.0 Hz | «Mi abuela siempre decía que la paciencia es la mejor medicina, y con el tiempo he entendido por qué lo decía tan convencida.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-04_en_th_t1.wav`, semilla 2426 |
+| `es-f-dis-05th` | 8.4 s | 235.9 Hz | «Cuando llegué a la estación, el tren ya se había marchado. Entonces me senté, respiré hondo y decidí esperar con calma al siguiente.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-05_en_th_t1.wav`, semilla 2526 |
+| `es-f-dis-06` | 8.03 s | 212.2 Hz | «¡Qué maravilla de día! Hace un sol precioso y el cielo está despejado. ¿Por qué no salimos a dar un paseo?» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-06_en_normal_t2.wav`, semilla 3631 |
+| `es-f-dis-06th` | 9.04 s | 305.2 Hz | «¡Qué maravilla de día! Hace un sol precioso y el cielo está despejado. ¿Por qué no salimos a dar un paseo?» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-06_en_th_t2.wav`, semilla 2627 |
+| `es-f-dis-07` | 9.28 s | 281.7 Hz | «A veces pienso que lo mejor de la vida son las cosas sencillas: un café caliente, una conversación tranquila y nada de prisa.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-07_en_normal_t2.wav`, semilla 3731 |
+| `es-f-dis-07th` | 9.05 s | 265.0 Hz | «A veces pienso que lo mejor de la vida son las cosas sencillas: un café caliente, una conversación tranquila y nada de prisa.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-07_en_th_t2.wav`, semilla 2727 |
+| `es-f-dis-08` | 8.08 s | 270.8 Hz | «Mi abuela siempre decía que la paciencia es la mejor medicina, y con el tiempo he entendido por qué lo decía tan convencida.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-08_en_normal_t2.wav`, semilla 3831 |
+| `es-f-dis-08th` | 8.49 s | 197.9 Hz | «Mi abuela siempre decía que la paciencia es la mejor medicina, y con el tiempo he entendido por qué lo decía tan convencida.» | Qwen3-TTS-1.7B-VoiceDesign, toma `es-f-dis-08_en_th_t2.wav`, semilla 2827 |
+| `es-f-est-01` | 9.16 s | 201.0 Hz | «Fue este Parlamento el que lo aprobó y lo negoció con el Consejo, con una gran colaboración con la Comisión.» | voxpopuli: 20170405-0900-PLENARY-14-es_20170405-18:01:16_6 0.0-9.04 s; hablante 28390 |
+| `es-f-est-02` | 9.24 s | 221.7 Hz | «Gracias, presidenta. He apoyado este informe porque va a mejorar la calidad de los productos alimenticios y también va a contribuir al consumo informado y responsable.» | voxpopuli: 20110706-0900-PLENARY-6-es_20110706-14:02:19_0 2.58-11.6 s; hablante 96922 |
+| `es-f-est-03` | 9.24 s | 230.6 Hz | «una directiva que viene a reconocer nuevos derechos a aquellas mujeres que ejercen una actividad autónoma y a los cónyuges o parejas, de hecho, colaboradores.» | voxpopuli: 20100615-0900-PLENARY-14-es_20100615-21:30:17_25 4.28-13.3 s; hablante 103035 |
+| `es-f-est-04` | 10.0 s | 216.5 Hz | «Tengan ustedes la tranquilidad, que podemos decir alto y claro que en Copenhague la Unión Europea no ha sido el problema.» | voxpopuli: 20100120-0900-PLENARY-10-es_20100120-17:48:45_11 2.8-12.68 s; hablante 101146 |
+| `es-f-est-05` | 9.6 s | 236.2 Hz | «Hay dieciocho grados con sol. Hay once grados y llueve. Hay diecinueve grados y está nublado. Hay dieciseis grados y está nublado.» | slr61: mensajes esw_03397_01452159553, esw_03397_00254676062, esw_03397_01417960131, esw_0; hablante 03397 |
+
+Atribución de las de estudio: VoxPopuli (Wang et al., ACL 2021, https://aclanthology.org/2021.acl-long.80), datos CC0; el audio es de las sesiones plenarias del Parlamento Europeo
+(reutilización citando la fuente, aviso legal https://www.europarl.europa.eu/legal-notice/es/); SLR61: «Copyright 2018, 2019 Google, Inc.», CC BY-SA 4.0, https://openslr.org/61/ (Guevara-Rukoz et al., LREC 2020).
+**Una voz clonada es la voz de una persona real**: las de estudio son eurodiputadas identificables por el id de la sesión; no he valorado jurídicamente el uso (valoración mía, sin verificar).

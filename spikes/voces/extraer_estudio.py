@@ -36,7 +36,7 @@ ESTUDIO: list[dict] = [
     {"id": "es-f-est-03", "fuente": "voxpopuli", "speaker_id": "103035", "audio_id": "20100615-0900-PLENARY-14-es_20100615-21:30:17_25",
      "t0": 4.28, "t1": 13.3, "nombre": "Eurodiputada 103035 (VoxPopuli)"},
     {"id": "es-f-est-04", "fuente": "voxpopuli", "speaker_id": "101146", "audio_id": "20100120-0900-PLENARY-10-es_20100120-17:48:45_11",
-     "t0": 2.8, "t1": 12.68, "nombre": "Eurodiputada 101146 (VoxPopuli)"},
+     "t0": 2.8, "t1": 12.68, "margen_ini": 0.06, "margen_fin": 0.06, "nombre": "Eurodiputada 101146 (VoxPopuli)"},  # márgenes cortos: <= 10 s
     {"id": "es-f-est-05", "fuente": "slr61", "speaker_id": "03397",
      "mensajes": ["esw_03397_01452159553", "esw_03397_00254676062", "esw_03397_01417960131", "esw_03397_00285442820"], "pausa_s": 0.30,
      "nombre": "Locutora 03397 (SLR61, estudio 48 kHz)"},
@@ -65,8 +65,8 @@ def voxpopuli(e: dict) -> tuple[np.ndarray, str, dict]:
     seg = segs[e["audio_id"]]
     audio, sr = ee.cargar_audio({e["audio_id"]})[e["audio_id"]]
     # Recorta con un margen de silencio a cada lado (la pausa vecina es >= 0,15 s: se usa como máximo la mitad).
-    i0 = max(0, int((e["t0"] - 0.10) * sr))
-    i1 = min(len(audio), int((e["t1"] + 0.12) * sr))
+    i0 = max(0, int((e["t0"] - e.get("margen_ini", 0.10)) * sr))
+    i1 = min(len(audio), int((e["t1"] + e.get("margen_fin", 0.12)) * sr))
     corte = audio[i0:i1]
     meta = {"fuente_texto": seg["texto"], "audio_id": e["audio_id"], "tramo_s": [e["t0"], e["t1"]], "speaker_id": e["speaker_id"],
             "gender_corpus": seg["gender"], "licencia": VOXPOPULI_LIC, "sr_origen": sr}

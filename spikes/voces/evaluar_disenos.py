@@ -3,6 +3,7 @@
     uv run --project spikes/voces python spikes/voces/evaluar_disenos.py                     # tabla de todas las tomas
     uv run --project spikes/voces python spikes/voces/evaluar_disenos.py --auto              # elige una toma por voz y ortografía y escribe <id>_ref.wav/.json
     uv run --project spikes/voces python spikes/voces/evaluar_disenos.py --elegir es-f-dis-01=es-f-dis-01_en_normal_t2
+    uv run --project spikes/voces python spikes/voces/evaluar_disenos.py --motor voxcpm --auto   # tomas de disenar_voxcpm.py; salen como es-f-dvx-NN
 
 El `ref_text` de una referencia diseñada es el texto NORMAL con el que se generó (aunque a VoiceDesign se le enviara la reescritura con «th»).
 Una toma de ortografía normal solo se acepta si Whisper la transcribe sin diferencias de palabras (WER 0): un `ref_text` que no coincide con el
@@ -55,14 +56,18 @@ def puntuacion(ev: dict, ort: str) -> float:
     return base - abs(ev["duracion_s"] - DUR_IDEAL)
 
 
+MOTOR = "qwen"
+
+
 def escribir_ref(salida: str, e: dict, ev: dict, dis_dir: Path) -> None:
     a, sr = c.vb.read_wav_mono(dis_dir / e["fichero"])
     a = c.normalizar(c.recortar_silencios(a, sr), sr)
     c.vb.write_wav(c.out_dir() / f"{salida}_ref.wav", a, sr)
     voz = next(x for x in d.DISENOS if x["id"] == e["id"])
     ort = e.get("ortografia", "normal")
-    meta = {"voice_id": salida, "name": f"{voz['nombre']} (diseñada{', ortografía th' if ort == 'th' else ''})", "gender": "f",
-            "source": "Diseñada con Qwen3-TTS-12Hz-1.7B-VoiceDesign (Apache-2.0); descripción: " + e["instruct"]
+    modelo = "Qwen3-TTS-12Hz-1.7B-VoiceDesign" if MOTOR == "qwen" else "VoxCPM2 (openbmb/VoxCPM2)"
+    meta = {"voice_id": salida, "name": f"{voz['nombre']} (diseñada con {modelo.split(' ')[0].split('-')[0]}{', ortografía th' if ort == 'th' else ''})", "gender": "f",
+            "source": f"Diseñada con {modelo} (Apache-2.0); descripción: " + e["instruct"]
                       + (" | texto enviado al modelo con z/ce/ci reescritos como «th»: " + e["texto_enviado"] if ort == "th" else ""),
             "license": "Apache-2.0 (modelo); audio sintético sin voz humana de origen",
             "ref_text": e["texto"], "duracion_s": round(len(a) / sr, 2), "fichero_origen": e["fichero"], "semilla": e["semilla"], "ortografia": ort,
@@ -76,9 +81,13 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--elegir", default="", help="id_salida=fichero(sin .wav) separados por comas")
     ap.add_argument("--auto", action="store_true", help="una toma por voz y ortografía según la puntuación")
+    ap.add_argument("--motor", choices=["qwen", "voxcpm"], default="qwen", help="qwen = tomas de disenar.py; voxcpm = tomas de voxcpm/disenar_voxcpm.py")
     args = ap.parse_args()
+    global MOTOR
+    MOTOR = args.motor
+    prefijo = "es-f-dis" if args.motor == "qwen" else "es-f-dvx"
 
-    dis_dir = c.work_dir("dis")
+    dis_dir = c.work_dir("dis" if args.motor == "qwen" else "dis_vox")
     log = c.leer_json(dis_dir / "disenos_log.json")
     cache_path = dis_dir / "eval_cache.json"
     cache = c.leer_json(cache_path) if cache_path.exists() else {}
@@ -110,7 +119,7 @@ def main() -> None:
             if puntuacion(mejor[1], ort) < -1e8:
                 print(f"AVISO {vid} [{ort}]: ninguna toma cumple duración y WER; no se escribe referencia")
                 continue
-            escribir_ref(vid + ("th" if ort == "th" else ""), mejor[0], mejor[1], dis_dir)
+            escribir_ref(vid.replace("es-f-dis", prefijo) + ("th" if ort == "th" else ""), mejor[0], mejor[1], dis_dir)
     for par in [p for p in args.elegir.split(",") if p]:
         salida, stem = par.split("=")
         e, ev = next((e, ev) for e, ev in evs if Path(e["fichero"]).stem == stem)

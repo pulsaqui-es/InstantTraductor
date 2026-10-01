@@ -1,6 +1,7 @@
 """Mide en CPU el indicio de acento (Δ s−θ) de las tomas de `sondear_acento.py`, agrupadas por variante de descripción.
 
-    uv run --project spikes/voces python spikes/voces/evaluar_sonda.py
+    uv run --project spikes/voces python spikes/voces/evaluar_sonda.py            # carpeta _trabajo/sonda (Qwen3-VoiceDesign)
+    uv run --project spikes/voces python spikes/voces/evaluar_sonda.py sonda_vox  # carpeta _trabajo/sonda_vox (VoxCPM2)
 """
 
 from __future__ import annotations
@@ -13,7 +14,7 @@ import common as c  # noqa: E402
 
 
 def main() -> None:
-    dst = c.work_dir("sonda")
+    dst = c.work_dir(sys.argv[1] if len(sys.argv) > 1 else "sonda")
     log = c.leer_json(dst / "sonda_log.json")
     por_var: dict[str, list] = {}
     for e in log:
