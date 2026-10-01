@@ -29,6 +29,16 @@ try:
 except ImportError:  # pragma: no cover - solo fuera de Windows
     msvcrt = None  # type: ignore[assignment]
 
+__all__ = [
+    "JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE",
+    "KillOnCloseJob",
+    "close_job",
+    "create_kill_on_close_job",
+    "launch_child",
+    "read_key_nonblocking",
+    "windows_build",
+]
+
 logger = logging.getLogger(__name__)
 
 # Constantes de la API de Windows.
@@ -198,6 +208,8 @@ def launch_child(
 ) -> subprocess.Popen[str]:
     """Lanza un proceso hijo sin ventana y lo asigna al job único (``KILL_ON_JOB_CLOSE``).
 
+    - Va con ``CREATE_NO_WINDOW`` y en su propio grupo de procesos: un Ctrl+C en la terminal del
+      núcleo no le llega; lo para el núcleo (``stop_all``) o, si este muere, el job.
     - ``env``: variables que se **añaden o sustituyen** a las del proceso actual (no lo reemplazan).
     - ``cwd``: directorio de trabajo del hijo.
     - ``stdin`` va a ``DEVNULL``; ``stdout`` y ``stderr`` son tuberías de texto (UTF-8, los bytes
