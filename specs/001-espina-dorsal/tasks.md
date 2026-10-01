@@ -161,7 +161,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
 
 > Los tests unitarios y de contrato de cada componente van dentro de su tarea (primero en rojo). Aquí están las pruebas de extremo a extremo.
 
-- [ ] T033 [US1] E2E del directo con dobles en `tests/integration/test_pipeline_fakes.py`, sin marcadores (depends on T031):
+- [X] T033 [US1] E2E del directo con dobles en `tests/integration/test_pipeline_fakes.py`, sin marcadores (depends on T031):
   - `LiveSession` con `FakeAudioSource` (`dialogo_en_2min.wav`) y los dobles de VAD, ASR, traducción, voz y sink;
   - verifica:
     - orden FIFO, sin repeticiones (FR-008) y nada durante el silencio (FR-009);
@@ -306,7 +306,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - tests en `tests/unit/metrics/test_report.py`, con un JSON de referencia.
 
 **Integración (orquestador)**
-- [ ] T031 [US1] Sesión en directo en `src/instanttraductor/pipeline/session.py`: `LiveSession` (depends on T015–T030).
+- [X] T031 [US1] Sesión en directo en `src/instanttraductor/pipeline/session.py`: `LiveSession` (depends on T015–T030).
   - **Arranque, ≤ 60 s:**
     1. servicio de voz;
     2. `choose_mt_model` y `llama-server`;
@@ -318,7 +318,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - **Fallos:** un componente que falla se reinicia una vez; si vuelve a fallar, parada limpia.
   - **Parada en ≤ 2 s:** `sink.stop()` y `stop_all()`.
   - **Al terminar:** si `save_audio`, el audio captado en `AppPaths.reports`; el informe, con `mt_model`.
-- [ ] T032 [US1] Línea de comandos en `src/instanttraductor/cli.py` (depends on T031, T017, T009):
+- [X] T032 [US1] Línea de comandos en `src/instanttraductor/cli.py` (depends on T031, T017, T009):
   - `main()` con argparse; subcomando `directo` (`--voz`, `--volumen`, `--mostrar-texto`, `--informe`);
   - código 3 si `is_installed()` falla para algún componente obligatorio;
   - el resto de códigos de `contracts/cli.md`;
@@ -336,7 +336,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
 
 ### Tests for User Story 2
 
-- [ ] T038 [US2] E2E del modo archivo con dobles en `tests/integration/test_file_mode_fakes.py`, sin marcadores (depends on T037):
+- [X] T038 [US2] E2E del modo archivo con dobles en `tests/integration/test_file_mode_fakes.py`, sin marcadores (depends on T037):
   - salidas válidas a partir de `dialogo_en_2min.wav`;
   - un fichero dañado → código 5 y sin carpeta de salida;
   - `silencio_3s.wav` → pista en silencio e informe «no se detectó habla».
@@ -345,12 +345,12 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
 ### Implementation for User Story 2
 
 **Ola 3, obrero G: modo archivo**
-- [ ] T035 [P] [US2] Fuente de fichero en `src/instanttraductor/audio/file_source.py`: `FileSource`, que implementa `AudioSource` (depends on T014).
+- [X] T035 [P] [US2] Fuente de fichero en `src/instanttraductor/audio/file_source.py`: `FileSource`, que implementa `AudioSource` (depends on T014).
   - `ffmpeg` (`config.ffmpeg_path()`) con `-i <entrada> -ac 1 -ar 16000 -f f32le -` por tubería, **a ritmo real** con el `Clock`;
   - chunks contiguos de 20 ms y `exhausted`;
   - error → `InputFileError` (código 5);
   - tests en `tests/unit/audio/test_file_source.py` + `AudioSourceContract`.
-- [ ] T036 [P] [US2] Salidas del modo archivo (depends on T014):
+- [X] T036 [P] [US2] Salidas del modo archivo (depends on T014):
   - `src/instanttraductor/audio/file_sink.py`: `TimelineSink`, que implementa `AudioSink`. Coloca cada unidad en su instante del `Clock`, en FIFO y sin solapes;
   - `src/instanttraductor/audio/file_outputs.py`, con escritura atómica en una carpeta temporal:
     - `voz_es.wav`: 48 kHz, mono, float32, con la duración de la entrada;
@@ -360,8 +360,8 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - tests en `tests/unit/audio/test_file_sink.py` y `tests/unit/audio/test_file_outputs.py`.
 
 **Integración (orquestador)**
-- [ ] T037 [US2] Sesión de fichero (depends on T031, T032, T035, T036):
-  - `FileSession` en `src/instanttraductor/pipeline/session.py`: `FileSource` + `TimelineSink`, sin autotest ni monitor de eco;
+- [X] T037 [US2] Sesión de fichero (depends on T031, T032, T035, T036):
+  - `FileSession` en `src/instanttraductor/pipeline/file_session.py` (motores comunes en `pipeline/engines.py`): `FileSource` + `TimelineSink`, sin autotest ni monitor de eco;
   - subcomando `archivo ENTRADA [--salida DIR] [--voz ID]` en `src/instanttraductor/cli.py` (código 5 si la entrada no es válida).
 
 **Checkpoint**: las historias 1 y 2 funcionan cada una por su lado.

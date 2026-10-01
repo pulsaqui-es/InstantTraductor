@@ -46,8 +46,12 @@ def build_parser() -> argparse.ArgumentParser:
     directo.set_defaults(func=cmd_directo)
 
     archivo = sub.add_parser("archivo", help="traduce un fichero de audio o vídeo")
-    archivo.add_argument("resto", nargs=argparse.REMAINDER, help=argparse.SUPPRESS)
-    archivo.set_defaults(func=_not_yet_available)
+    archivo.add_argument("entrada", metavar="ENTRADA", type=Path, help="fichero de audio o vídeo en inglés")
+    archivo.add_argument(
+        "--salida", metavar="DIR", type=Path, help="carpeta de salida (por defecto <nombre>_es)"
+    )
+    archivo.add_argument("--voz", metavar="ID", help="voz de esta ejecución")
+    archivo.set_defaults(func=cmd_archivo)
 
     preparar = sub.add_parser("preparar", help="descarga y verifica los componentes")
     preparar.add_argument("--comprobar", action="store_true", help="solo verifica (no descarga nada)")
@@ -89,11 +93,6 @@ def _setup_logging() -> None:
     root.setLevel(logging.INFO)
     if not any(isinstance(h, RotatingFileHandler) for h in root.handlers):
         root.addHandler(handler)
-
-
-def _not_yet_available(args: argparse.Namespace) -> int:
-    print(f"El subcomando «{args.command}» todavía no está disponible en esta versión.")
-    return EXIT_USAGE
 
 
 def _missing_components() -> list[str]:
@@ -180,6 +179,72 @@ def cmd_directo(args: argparse.Namespace) -> int:
         console.print(str(fatal), style="red", markup=False)
         return fatal.exit_code
     return EXIT_OK
+
+
+def cmd_archivo(args: argparse.Namespace) -> int:
+    from rich.console import Console
+    from rich.progress import BarColumn, Progress, TextColumn, TimeRemainingColumn
+
+    from instanttraductor.config import load_settings
+
+    console = Console()
+    missing = _missing_components()
+    if missing:
+        console.print(
+            "Falta preparar el equipo (" + ", ".join(missing) + "). Ejecuta: instanttraductor preparar",
+            markup=False,
+        )
+        return EXIT_NOT_PREPARED
+    settings = load_settings()
+    if args.voz:
+        if not _voice_exists(args.voz):
+            console.print(
+                f"No existe la voz «{args.voz}». Mira las voces con: instanttraductor voces", markup=False
+            )
+            return EXIT_USAGE
+        settings = replace(settings, voice=args.voz)
+
+    from instanttraductor.pipeline.file_session import FileSession
+    from instanttraductor.pipeline.session import SessionError
+    from instanttraductor.ui.terminal import TerminalUI
+
+    session = FileSession(
+        settings,
+        args.entrada,
+        output_dir=args.salida,
+        on_progress=lambda text: console.print(text, style="cyan", markup=False),
+    )
+    try:
+        session.start()
+        total = session.duration_s
+        with Progress(
+            TextColumn("Traduciendo"),
+            BarColumn(),
+            TextColumn("{task.percentage:>3.0f} %"),
+            TimeRemainingColumn(),
+            console=console,
+        ) as progress:
+            task = progress.add_task("archivo", total=total)
+            session.run(on_tick=lambda t: progress.update(task, completed=min(t, total) if total else t))
+            progress.update(task, completed=total)
+        report = session.finish()
+    except SessionError as error:
+        session.abort()
+        console.print(str(error), style="red", markup=False)
+        return error.exit_code
+    except KeyboardInterrupt:
+        session.abort()
+        console.print("Cancelado: no se ha escrito ninguna salida.", markup=False)
+        return EXIT_OK
+    TerminalUI(lambda: None, console=console, poll_interval_s=None).show_summary(report)
+    console.print(f"Salidas en: {session.output_dir}", style="green", markup=False)
+    return EXIT_OK
+
+
+def _voice_exists(voice_id: str) -> bool:
+    from instanttraductor.setup.voices import list_voices
+
+    return any(voice.voice_id == voice_id for voice in list_voices())
 
 
 def cmd_preparar(args: argparse.Namespace) -> int:
