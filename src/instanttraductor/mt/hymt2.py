@@ -262,10 +262,25 @@ def build_messages(
 #: La salida no puede ser más larga que esto por el original (en caracteres).
 MAX_LENGTH_RATIO: Final = 3
 
-#: Letras latinas: ASCII, Latin-1 y Latin extendido (á, ñ, ü...).
-_LATIN_LETTER = re.compile(r"[A-Za-zÀ-ÖØ-öø-ɏ]")
-#: Escrituras que no son español: cirílico, árabe, hebreo, kana, CJK, hangul y signos de ancho completo.
-_FOREIGN_SCRIPT = re.compile("[Ѐ-ӿ֐-׿؀-ۿ　-ヿ㐀-䶿一-鿿가-힯＀-￯]")
+
+def _char_class(*ranges: tuple[int, int]) -> re.Pattern[str]:
+    """Clase de caracteres con rangos de puntos de código (así el fichero no lleva caracteres raros)."""
+    return re.compile("[" + "".join(f"{chr(first)}-{chr(last)}" for first, last in ranges) + "]")
+
+
+#: Letras latinas: ASCII, Latin-1 y Latin extendido A y B (á, ñ, ü...).
+_LATIN_LETTER = _char_class((0x41, 0x5A), (0x61, 0x7A), (0xC0, 0xD6), (0xD8, 0xF6), (0xF8, 0x24F))
+#: Escrituras que no son español: cirílico, hebreo, árabe, signos CJK, kana, ideogramas, hangul y ancho total.
+_FOREIGN_SCRIPT = _char_class(
+    (0x0400, 0x04FF),
+    (0x0590, 0x05FF),
+    (0x0600, 0x06FF),
+    (0x3000, 0x30FF),
+    (0x3400, 0x4DBF),
+    (0x4E00, 0x9FFF),
+    (0xAC00, 0xD7AF),
+    (0xFF00, 0xFFEF),
+)
 
 #: Frases de las plantillas del *prompt* (en inglés y traducidas) que no deben salir en una traducción.
 #: Si el propio original contiene alguna, no se puede distinguir un eco de una traducción fiel: no se filtra.
