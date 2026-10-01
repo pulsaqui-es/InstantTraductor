@@ -14,6 +14,7 @@ motores por ``Engines``: en el PC, ``WasapiDevices`` y ``RealEngines``; en los t
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import threading
 import time
@@ -27,7 +28,7 @@ from instanttraductor.config import AppPaths, Settings
 from instanttraductor.contracts import AudioSink, AudioSource, Clock
 from instanttraductor.metrics.report import build_report, write_report
 from instanttraductor.pipeline.clock import SessionClock
-from instanttraductor.pipeline.engines import Engines, RealEngines
+from instanttraductor.pipeline.engines import Engines, RealEngines, RecoveryLoop
 from instanttraductor.pipeline.segmenter import PauseClauseSegmenter
 from instanttraductor.pipeline.session import (
     EXIT_ERROR,
@@ -101,6 +102,8 @@ class LiveSession:
         t0 = time.perf_counter()
         settings = self.settings
         self._engines.start()  # lanza SessionError y deja los hijos parados si falla
+        sink: AudioSink | None = None
+        source: AudioSource | None = None
         try:
             self._progress("Comprobando que no se oye a sí mismo…")
             threshold = self._devices.selftest()
@@ -144,6 +147,13 @@ class LiveSession:
             if self._pipeline is not None:
                 self._pipeline.stop()
                 self._pipeline = None
+            for part in (
+                source,
+                sink,
+            ):  # si falla antes de existir el pipeline, el dispositivo quedaba abierto
+                if part is not None:
+                    with contextlib.suppress(Exception):
+                        part.stop()
             self._engines.stop()
             if isinstance(error, SessionError | KeyboardInterrupt):
                 raise
@@ -154,20 +164,24 @@ class LiveSession:
         """Espera a ``stop_event`` (Ctrl+C o tecla q) atendiendo los fallos de los procesos hijos."""
         pipeline = self._pipeline
         assert pipeline is not None
-        while not stop_event.wait(0.2):
-            if pipeline.stopped:
-                self._fatal = self._fatal or SessionError(
-                    "Error interno del pipeline: " + "; ".join(pipeline.errors), exit_code=EXIT_ERROR
-                )
-            if self._fatal is None:
-                reason = self._engines.recover(
-                    on_warning=pipeline.warnings.add,
-                    on_restart=pipeline.parts.recorder.count_component_restart,
-                )
-                if reason is not None:
-                    self._fatal = SessionError(reason, exit_code=EXIT_ERROR)
-            if self._fatal is not None:
-                return
+        recovery = RecoveryLoop(
+            self._engines,
+            on_warning=pipeline.warnings.add,
+            on_restart=pipeline.parts.recorder.count_component_restart,
+        )
+        recovery.start()
+        try:
+            while not stop_event.wait(0.2):
+                if pipeline.stopped:
+                    self._fatal = self._fatal or SessionError(
+                        "Error interno del pipeline: " + "; ".join(pipeline.errors), exit_code=EXIT_ERROR
+                    )
+                if self._fatal is None and recovery.fatal is not None:
+                    self._fatal = SessionError(recovery.fatal, exit_code=EXIT_ERROR)
+                if self._fatal is not None:
+                    return
+        finally:
+            recovery.stop()
 
     def set_volume(self, gain: float) -> None:
         if self._pipeline is not None:

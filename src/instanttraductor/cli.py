@@ -79,6 +79,10 @@ def main(argv: list[str] | None = None) -> int:
         return int(args.func(args))
     except KeyboardInterrupt:
         return EXIT_OK
+    except Exception as error:  # contracts/cli.md: código 1, con el detalle en el registro
+        logger.exception("Error inesperado en «%s»", args.command)
+        print(f"Error inesperado: {error}. El detalle está en el registro: {_log_path()}")
+        return EXIT_ERROR
 
 
 def _break_as_interrupt() -> None:
@@ -91,14 +95,18 @@ def _break_as_interrupt() -> None:
         signal.signal(sigbreak, signal.default_int_handler)
 
 
+def _log_path() -> Path:
+    from instanttraductor.config import AppPaths
+
+    return AppPaths().logs / "instanttraductor.log"
+
+
 def _setup_logging() -> None:
     from instanttraductor.config import AppPaths
 
     logs = AppPaths().logs
     logs.mkdir(parents=True, exist_ok=True)
-    handler = RotatingFileHandler(
-        logs / "instanttraductor.log", maxBytes=5_000_000, backupCount=3, encoding="utf-8"
-    )
+    handler = RotatingFileHandler(_log_path(), maxBytes=5_000_000, backupCount=3, encoding="utf-8")
     handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(threadName)s %(name)s: %(message)s"))
     root = logging.getLogger()
     root.setLevel(logging.INFO)
@@ -131,6 +139,11 @@ def cmd_directo(args: argparse.Namespace) -> int:
     saved = load_settings()
     settings = saved
     if args.voz:
+        if not _voice_exists(args.voz):
+            console.print(
+                f"No existe la voz «{args.voz}». Mira las voces con: instanttraductor voces", markup=False
+            )
+            return EXIT_USAGE
         settings = replace(settings, voice=args.voz)
     if args.volumen is not None:
         settings = replace(settings, voice_volume=args.volumen / 100)

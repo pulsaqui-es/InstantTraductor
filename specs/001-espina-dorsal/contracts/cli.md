@@ -10,7 +10,7 @@ Traduce en directo lo que suena en el PC (US1).
 | `--voz ID` | Usa esta voz en la sesión (sin cambiar el ajuste guardado) |
 | `--volumen N` | Volumen de la voz en español, 0–200 (%) |
 | `--mostrar-texto` | Muestra el original y la traducción de cada frase |
-| `--informe DIR` | Carpeta del informe (por defecto `%LOCALAPPDATA%\InstantTraductor\informes\`) |
+| `--informe DIR` | Carpeta de los informes; cada sesión va en su subcarpeta `AAAAMMDD-HHMMSS` (por defecto `%LOCALAPPDATA%\InstantTraductor\informes\`) |
 
 Comportamiento:
 1. Comprueba que la preparación está completa (si no, sale con código 3).
@@ -24,7 +24,7 @@ Traduce un fichero (US2). Formatos: los que admita ffmpeg; como mínimo WAV, MP3
 
 | Opción | Efecto |
 |---|---|
-| `--salida DIR` | Carpeta de salida (por defecto `<carpeta de ENTRADA>\<nombre>_es\`) |
+| `--salida DIR` | Carpeta de salida (por defecto `<carpeta de ENTRADA>\<nombre>_es\`). Se comprueba antes de procesar: si es un fichero o no se puede escribir, código 2 |
 | `--voz ID` | Voz de esta ejecución |
 
 Procesa a ritmo real, igual que en directo (FR-021), y escribe en la carpeta de salida (formatos en [informe.md](informe.md)):

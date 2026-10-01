@@ -235,3 +235,29 @@ def test_stop_is_fast_even_while_speaking() -> None:
     pipeline.stop()
     assert time.monotonic() - t0 < 2.0
     assert pipeline.stopped
+
+
+class BrokenTranslator(FakeTranslator):
+    """Falla con un error inesperado (no `EngineError`): el hilo de traducción muere."""
+
+    def translate(self, request):  # type: ignore[override]
+        raise ValueError("fallo inesperado")
+
+
+@pytest.mark.timeout(20)
+def test_a_dying_thread_still_lets_stop_close_every_part() -> None:
+    audio, script = dialogue(3)
+    pipeline, sink, _ = build(audio, script, translator=BrokenTranslator(supports_concise=True))
+    pipeline.parts.source.start()
+    pipeline.start()
+    for _ in range(2000):  # hasta que el hilo de traducción muere
+        if pipeline.stopped:
+            break
+        sink.advance(STEP_S)
+        time.sleep(0.002)
+    assert pipeline.stopped and any("fallo inesperado" in e for e in pipeline.errors)
+
+    pipeline.stop()  # FR-018: aunque `_stop` ya estaba puesto, para las piezas
+
+    assert sink._stopped and pipeline.parts.source._inner.exhausted  # type: ignore[attr-defined]
+    assert pipeline.parts.scheduler.open_count == 0

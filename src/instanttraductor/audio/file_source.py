@@ -233,6 +233,7 @@ class FileSource:
         self._first_ready = threading.Event()
         self._finished = False  # el productor ya no meterá más chunks
         self._error: Exception | None = None
+        self._failure: InputFileError | None = None  # fallo a mitad del fichero (tras el primer chunk)
         self._started = False
         self._thread: threading.Thread | None = None
         self._process: subprocess.Popen[bytes] | None = None
@@ -291,6 +292,11 @@ class FileSource:
         if self._error is not None:
             self.stop()
             raise self._error
+
+    @property
+    def failure(self) -> InputFileError | None:
+        """Si ffmpeg falló a mitad del fichero, el error (la fuente se agota igualmente). Si no, None."""
+        return self._failure
 
     def read(self, timeout: float) -> AudioChunk | None:
         """Siguiente chunk; espera hasta `timeout` s. None si no hay datos o la fuente ha terminado."""
@@ -375,6 +381,8 @@ class FileSource:
                 chunk = self._read_chunk(stream, position)
         except Exception as exc:  # un fallo del tubo no debe dejar al lector esperando para siempre
             logger.warning("Fallo leyendo el audio de %s: %s", self._path.name, exc)
+            if not self._stop_event.is_set():
+                self._failure = InputFileError(f"Fallo leyendo el audio de {self._path.name}: {exc}")
         finally:
             if process.poll() is None and self._stop_event.is_set():
                 with contextlib.suppress(OSError):
@@ -386,6 +394,10 @@ class FileSource:
                     code = None
                 if code not in (0, None):
                     logger.warning("ffmpeg terminó con código %s leyendo %s.", code, self._path.name)
+                    second = position / self.sample_rate
+                    self._failure = InputFileError(
+                        f"El fichero {self._path.name} está dañado a partir del segundo {second:.0f}."
+                    )
             with self._cond:
                 self._finished = True
                 self._cond.notify_all()

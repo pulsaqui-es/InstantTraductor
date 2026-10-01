@@ -199,3 +199,45 @@ def _load_listening(out: dict[str, Any]) -> None:
         out["recognizer"] = create_recognizer()
     except Exception as error:  # se relanza en el hilo principal
         out["error"] = error
+
+
+class RecoveryLoop:
+    """Atiende ``engines.recover()`` en un hilo propio mientras la sesión está en marcha.
+
+    Un reinicio espera a que el hijo vuelva a estar listo (decenas de segundos para la voz). Si se hiciera en
+    el bucle de la sesión, la orden de parar (tecla ``q``) no se atendería hasta acabar (FR-015).
+    """
+
+    def __init__(
+        self,
+        engines: Engines,
+        *,
+        on_warning: Callable[[str], None],
+        on_restart: Callable[[], None],
+        period_s: float = 0.2,
+    ) -> None:
+        self._engines = engines
+        self._on_warning = on_warning
+        self._on_restart = on_restart
+        self._period_s = period_s
+        self._stop = threading.Event()
+        self.fatal: str | None = None  # motivo, si un hijo no se pudo recuperar
+        self._thread = threading.Thread(target=self._run, name="recuperacion", daemon=True)
+
+    def start(self) -> None:
+        self._thread.start()
+
+    def stop(self) -> None:
+        """No espera a un reinicio en curso: la parada de los hijos lo corta."""
+        self._stop.set()
+
+    def _run(self) -> None:
+        while not self._stop.wait(self._period_s):
+            try:
+                reason = self._engines.recover(on_warning=self._on_warning, on_restart=self._on_restart)
+            except Exception as error:  # un fallo al reiniciar cuenta como no recuperado
+                logger.exception("Fallo al recuperar un componente")
+                reason = f"No se pudo recuperar un componente: {error}"
+            if reason is not None:
+                self.fatal = reason
+                return

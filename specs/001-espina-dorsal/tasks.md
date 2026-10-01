@@ -418,7 +418,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
 
 **Purpose**: calidad, documentación y cierre.
 
-- [ ] T045 [P] Actualizar `README.md` con la instalación y el uso en español, los requisitos y las licencias (depends on T043).
+- [X] T045 [P] Actualizar `README.md` con la instalación y el uso en español, los requisitos y las licencias (depends on T043).
 - [ ] T046 Conjunto de calidad para SC-004 (depends on T039):
   - `tests/fixtures/calidad/generate_quality_set.py` sintetiza en inglés 50 frases del corpus de S2 con Qwen3-TTS y una referencia inglesa de LibriVox de dominio público;
   - se pasa `archivo` y el humano revisa `traduccion.srt` (objetivo: ≥ 85 % buenas);

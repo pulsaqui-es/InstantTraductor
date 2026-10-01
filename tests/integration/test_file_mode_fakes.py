@@ -16,10 +16,11 @@ import numpy as np
 import pytest
 import soundfile as sf
 
+from instanttraductor.audio.file_source import FileSource, InputFileError
 from instanttraductor.config import AppPaths, Settings
 from instanttraductor.pipeline.clock import SessionClock
 from instanttraductor.pipeline.file_session import FileSession, default_output_dir
-from instanttraductor.pipeline.session import EXIT_BAD_INPUT, SessionError
+from instanttraductor.pipeline.session import EXIT_BAD_INPUT, EXIT_USAGE, SessionError
 from tests.fakes.fake_engines import FakeEngines
 from tests.fakes.fake_speech import scripted_utterance
 
@@ -166,3 +167,50 @@ def test_silence_gives_a_silent_track_and_a_report_without_speech(tmp_path: Path
     assert not np.any(voice)
     assert report["summary"]["utterances"] == 0
     assert "no se detectó habla" in (out / "informe.md").read_text(encoding="utf-8")
+
+
+def test_an_output_path_that_is_a_file_is_rejected_before_starting(tmp_path: Path) -> None:
+    taken = tmp_path / "salida.txt"
+    taken.write_text("ya existe", encoding="utf-8")
+    engines = FakeEngines()
+    session = FileSession(
+        Settings(),
+        SILENCE,
+        output_dir=taken,
+        paths=AppPaths(tmp_path),
+        engines=engines,
+        clock_factory=fast_clock,
+    )
+
+    with pytest.raises(SessionError) as raised:
+        session.start()
+
+    assert raised.value.exit_code == EXIT_USAGE
+    assert not engines.started
+
+
+@pytest.mark.timeout(60)
+def test_a_file_that_breaks_halfway_exits_with_code_5_and_leaves_no_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """FR-022: si ffmpeg falla a mitad del fichero, no se escriben salidas de la parte leída."""
+    broken = InputFileError("El fichero está dañado a partir del segundo 1.")
+    monkeypatch.setattr(FileSource, "failure", property(lambda source: broken if source.exhausted else None))
+    out = tmp_path / "salida"
+    session = FileSession(
+        Settings(),
+        SILENCE,
+        output_dir=out,
+        paths=AppPaths(tmp_path),
+        engines=FakeEngines(),
+        clock_factory=fast_clock,
+    )
+    session.start()
+    try:
+        with pytest.raises(SessionError) as raised:
+            session.run()
+    finally:
+        session.abort()
+
+    assert raised.value.exit_code == EXIT_BAD_INPUT
+    assert not out.exists()

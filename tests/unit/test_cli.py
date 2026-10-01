@@ -62,3 +62,20 @@ def test_voces_elegir_rejects_an_unknown_voice() -> None:
 def test_voces_escuchar_without_samples_asks_for_preparar(capsys: pytest.CaptureFixture[str]) -> None:
     assert cli.main(["voces", "--escuchar", "es-f-dvx-01"]) == cli.EXIT_NOT_PREPARED
     assert "preparar" in capsys.readouterr().out
+
+
+def test_an_unknown_voice_for_directo_is_a_usage_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(cli, "_missing_components", lambda: [])
+    assert cli.main(["directo", "--voz", "no-existe"]) == cli.EXIT_USAGE
+
+
+def test_an_unexpected_error_exits_with_code_1_and_a_message(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    def explode(args: object) -> int:
+        raise RuntimeError("algo raro")
+
+    monkeypatch.setattr(cli, "cmd_voces", explode)
+    assert cli.main(["voces"]) == cli.EXIT_ERROR
+    out = capsys.readouterr().out
+    assert "Error inesperado: algo raro" in out and "registro" in out

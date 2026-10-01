@@ -12,6 +12,7 @@ escriben al final en una carpeta temporal que se mueve a su sitio (FR-022).
 from __future__ import annotations
 
 import logging
+import os
 import threading
 import time
 from collections.abc import Callable
@@ -27,11 +28,12 @@ from instanttraductor.config import AppPaths, Settings
 from instanttraductor.contracts import Clock, EngineError
 from instanttraductor.metrics.report import build_report, report_to_json, report_to_markdown
 from instanttraductor.pipeline.clock import SessionClock
-from instanttraductor.pipeline.engines import Engines, RealEngines
+from instanttraductor.pipeline.engines import Engines, RealEngines, RecoveryLoop
 from instanttraductor.pipeline.segmenter import PauseClauseSegmenter
 from instanttraductor.pipeline.session import (
     EXIT_BAD_INPUT,
     EXIT_ERROR,
+    EXIT_USAGE,
     Pipeline,
     PipelineParts,
     SessionError,
@@ -94,6 +96,7 @@ class FileSession:
         """Valida la entrada (código 5) antes de arrancar los motores, que tardan decenas de segundos."""
         t0 = time.perf_counter()
         self._info = _probe(self.input_path)
+        _check_output_dir(self.output_dir)  # antes de procesar: no descubrirlo al final de una película
         self._engines.start()
         try:
             clock = self._clock_factory()
@@ -148,21 +151,30 @@ class FileSession:
         pipeline = self._pipeline
         assert pipeline is not None and self._sink is not None and self._source is not None
         wait = cancel if cancel is not None else threading.Event()
-        while not wait.wait(POLL_S):
-            if on_tick is not None:
-                on_tick(pipeline.parts.clock.now())
-            if pipeline.stopped:
-                raise SessionError(
-                    "Error interno del pipeline: " + "; ".join(pipeline.errors), exit_code=EXIT_ERROR
-                )
-            reason = self._engines.recover(
-                on_warning=pipeline.warnings.add, on_restart=pipeline.parts.recorder.count_component_restart
-            )
-            if reason is not None:
-                raise SessionError(reason, exit_code=EXIT_ERROR)
-            if self._source.exhausted and pipeline.drained() and self._sink.pending_seconds() == 0:
-                return True
-        return False
+        recovery = RecoveryLoop(
+            self._engines,
+            on_warning=pipeline.warnings.add,
+            on_restart=pipeline.parts.recorder.count_component_restart,
+        )
+        recovery.start()
+        try:
+            while not wait.wait(POLL_S):
+                if on_tick is not None:
+                    on_tick(pipeline.parts.clock.now())
+                if pipeline.stopped:
+                    errors = "; ".join(pipeline.errors)
+                    raise SessionError(f"Error interno del pipeline: {errors}", exit_code=EXIT_ERROR)
+                if recovery.fatal is not None:
+                    raise SessionError(recovery.fatal, exit_code=EXIT_ERROR)
+                if self._source.failure is not None:  # FR-022: nada de salidas de un fichero a medias
+                    raise SessionError(
+                        f"No se puede usar el fichero: {self._source.failure}", exit_code=EXIT_BAD_INPUT
+                    )
+                if self._source.exhausted and pipeline.drained() and self._sink.pending_seconds() == 0:
+                    return True
+            return False
+        finally:
+            recovery.stop()
 
     # --- final --------------------------------------------------------------------------
     def finish(self) -> dict[str, Any]:
@@ -221,3 +233,14 @@ def _probe(path: Path) -> InputInfo:
         raise SessionError(f"No se puede usar el fichero: {error}", exit_code=EXIT_BAD_INPUT) from error
     except EngineError as error:
         raise SessionError(str(error), exit_code=EXIT_ERROR) from error
+
+
+def _check_output_dir(path: Path) -> None:
+    """La carpeta de salida debe ser una carpeta (o no existir) y poder crearse o escribirse."""
+    if path.exists() and not path.is_dir():
+        raise SessionError(f"La salida «{path}» es un fichero, no una carpeta.", exit_code=EXIT_USAGE)
+    existing = path
+    while not existing.exists() and existing != existing.parent:
+        existing = existing.parent
+    if not os.access(existing, os.W_OK):
+        raise SessionError(f"No se puede escribir en «{existing}».", exit_code=EXIT_USAGE)

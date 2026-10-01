@@ -76,6 +76,7 @@ JOIN_TIMEOUT_S = 0.4
 
 #: Códigos de salida de contracts/cli.md que puede provocar una sesión.
 EXIT_ERROR = 1
+EXIT_USAGE = 2
 EXIT_SELFTEST = 4
 EXIT_BAD_INPUT = 5
 EXIT_REQUIREMENTS = 6
@@ -153,7 +154,8 @@ class Pipeline:
         self.warnings = warnings if warnings is not None else Warnings(parts.clock)
         self._echo_seen = 0
         self.errors: list[str] = []
-        self._stop = threading.Event()
+        self._stop = threading.Event()  # «hilos, parad»: lo pone stop() o un hilo que muere (_guard)
+        self._closed = False  # stop() ya paró las piezas (su idempotencia no depende de _stop)
         self._work = threading.Event()  # despierta al hilo de traducción
         self._synth_queue: Queue[SynthesisRequest] = Queue()
         self._threads: list[threading.Thread] = []
@@ -181,9 +183,14 @@ class Pipeline:
             thread.start()
 
     def stop(self) -> None:
-        """Parada rápida: corta lo que suena y descarta lo pendiente (idempotente)."""
-        if self._stop.is_set():
+        """Parada rápida: corta lo que suena y descarta lo pendiente (idempotente).
+
+        Para las piezas aunque un hilo ya haya puesto `_stop` al morir: si no, quedarían el sink sonando,
+        la fuente abierta y las frases abiertas sin registro (FR-018).
+        """
+        if self._closed:
             return
+        self._closed = True
         self._stop.set()
         self._work.set()
         self.parts.scheduler.stop()

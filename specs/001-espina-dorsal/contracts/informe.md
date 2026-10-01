@@ -70,7 +70,7 @@ Resumen legible del JSON:
 ## Salidas del modo archivo
 | Fichero | Formato |
 |---|---|
-| `voz_es.wav` | 48 kHz, mono, float32. Misma duración que la entrada. Cada frase empieza en su `play_started_at` |
+| `voz_es.wav` | 48 kHz, mono, float32. Misma duración que la entrada. Cada frase empieza en su `play_started_at`; lo que sonaría después del final de la entrada se recorta, aunque la frase cuenta como pronunciada en el informe y en `traduccion.srt` |
 | `mezcla.wav` | 48 kHz, estéreo, 16 bits. Original + voz en español al volumen de los ajustes, con limitador para evitar saturación |
 | `mezcla.mkv` | Solo si la entrada tiene vídeo: vídeo copiado sin recodificar, pista 1 = mezcla y pista 2 = original |
 | `transcripcion.srt` / `.json` | Una entrada por unidad: `t_start_audio → t_end_audio`, texto original |
