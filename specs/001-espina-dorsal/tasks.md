@@ -179,7 +179,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
 ### Implementation for User Story 1
 
 **Ola 1, obrero A: captura, AGC e interfaz**
-- [ ] T015 [P] [US1] Captura en `src/instanttraductor/audio/wasapi_capture.py`: `ProcessLoopbackSource`, que implementa `AudioSource`. Se porta `spikes/audio/audio_spike/loopback_ctypes.py`, `relleno.py` y `vigilante.py` (depends on T014).
+- [X] T015 [P] [US1] Captura en `src/instanttraductor/audio/wasapi_capture.py`: `ProcessLoopbackSource`, que implementa `AudioSource`. Se porta `spikes/audio/audio_spike/loopback_ctypes.py`, `relleno.py` y `vigilante.py` (depends on T014).
   - Modo PROCESS_LOOPBACK con `include=False` (EXCLUDE, por defecto) o `include=True` (control positivo del autotest), sobre `target_pid=os.getpid()`.
   - Formato: 16 kHz, mono, float32. `sys.coinit_flags = 0` antes de importar comtypes.
   - Chunks contiguos, con `captured_at` (hora de llegada en el reloj de sesión) disponible para las métricas.
@@ -189,13 +189,13 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
     - hay un error de WASAPI;
     - el PID objetivo ya no es el del proceso.
   - Tests: `tests/unit/audio/test_wasapi_capture.py` (relleno y vigilante simulados) y `tests/integration/test_capture_device.py` (marcador `device`: `AudioSourceContract` y un tono propio que no aparece).
-- [ ] T016 [P] [US1] AGC en `src/instanttraductor/audio/agc.py` (depends on T014):
+- [X] T016 [P] [US1] AGC en `src/instanttraductor/audio/agc.py` (depends on T014):
   - `AutoGain.process(chunk) -> AudioChunk`;
   - objetivo de −20 dBFS RMS en voz, ataque de 50 ms y relajación de 1 s, máximo +30 dB;
   - nunca amplifica el silencio digital;
   - `source_silent_for_s` para el aviso de «sin audio del origen» (> 10 s de ceros);
   - tests en `tests/unit/audio/test_agc.py`.
-- [ ] T017 [P] [US1] Interfaz en `src/instanttraductor/ui/terminal.py` (C2) (depends on T014):
+- [X] T017 [P] [US1] Interfaz en `src/instanttraductor/ui/terminal.py` (C2) (depends on T014):
   - `StatusSnapshot` (dataclass: `state` `listening|translating|speaking|stopped`, `lag_s`, `speed`, `mode`, `warnings`, `last_source`, `last_translation`);
   - `TerminalUI(key_reader: Callable[[], str | None])`. **No importa msvcrt**: recibe `platform.windows.read_key_nonblocking`;
   - `rich.live.Live` con `update(snapshot)` y `show_summary(report)`;
