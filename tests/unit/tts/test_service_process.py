@@ -606,3 +606,122 @@ def test_the_real_command_line_reaches_the_service_and_it_fails_fast_without_voi
     assert "error de arranque" in str(error.value)
     assert "voces" in str(error.value)
     assert "Traceback" not in str(error.value)  # un error esperado no lleva traza
+
+
+# ---------------------------------------------------------------------------
+# Las dos mitades juntas: este cliente contra el servidor de verdad (motor falso)
+# ---------------------------------------------------------------------------
+ENGINE_PYTHON = engine_project_dir() / ".venv" / "Scripts" / "python.exe"
+
+#: Lanza el servidor real de ``engines/tts-qwen3`` (``tts_service.server.main``) con un motor falso, sin GPU.
+REAL_SERVER_SCRIPT = r"""
+import sys
+from pathlib import Path
+
+import numpy as np
+
+from tts_service.engine import Voice
+from tts_service.server import main
+
+
+class Engine:
+    name = "fake-tts"
+    model_name = "fake"
+    sample_rate = 24000
+    supports_speed = False
+
+    def voices(self):
+        return (Voice("es-f-fake", "Voz de prueba", "f", "origen", "licencia", Path("x.wav"), "secreto"),)
+
+    def synthesize(self, text, voice_id, speed):
+        for index in range(3):
+            yield np.full(2400, 0.1 * (index + 1), dtype=np.float32)
+
+    def vram_mb(self):
+        return 7
+
+    def close(self):
+        pass
+
+
+raise SystemExit(main(sys.argv[1:], engine_factory=lambda config: Engine()))
+"""
+
+
+@pytest.mark.skipif(
+    not ENGINE_PYTHON.is_file(), reason="Necesita el entorno del motor: uv sync --project engines/tts-qwen3"
+)
+class TestAgainstTheRealServer:
+    """``TtsServiceProcess`` y ``HttpSynthesizer`` contra ``tts_service.server`` de verdad (T025 y T026)."""
+
+    @pytest.fixture
+    def service(self, tmp_path: Path) -> Iterator[TtsServiceProcess]:
+        real = TtsServiceProcess(
+            voices_dir=tmp_path / "voces",
+            models_dir=tmp_path / "modelos",
+            executable=[ENGINE_PYTHON, "-c", REAL_SERVER_SCRIPT],
+            ready_timeout_s=60.0,
+        )
+        started(real)
+        yield real
+        real.stop(grace_s=0.0)
+
+    def test_the_ready_line_of_the_real_server_is_understood(self, service: TtsServiceProcess) -> None:
+        assert service.info == TtsServiceInfo(
+            port=service.info.port, sample_rate=24_000, engine="fake-tts", supports_speed=False
+        )
+        assert http_get_ok(f"{service.base_url}/health")
+
+    def test_the_synthesizer_streams_the_audio_of_the_real_server(self, service: TtsServiceProcess) -> None:
+        synth = service.synthesizer()
+        try:
+            chunks = list(synth.synthesize(_request()))
+        finally:
+            synth.close()
+
+        audio = np.concatenate([chunk.samples for chunk in chunks])
+        expected = np.concatenate([np.full(2400, 0.1 * (index + 1), dtype=np.float32) for index in range(3)])
+        assert np.array_equal(audio, expected)
+        assert [chunk.is_last for chunk in chunks] == [False] * (len(chunks) - 1) + [True]
+        assert {chunk.sample_rate for chunk in chunks} == {24_000}
+
+    def test_the_voice_list_has_only_the_public_fields(self, service: TtsServiceProcess) -> None:
+        synth = service.synthesizer()
+        try:
+            (voice,) = synth.list_voices()
+        finally:
+            synth.close()
+
+        assert (voice.voice_id, voice.name, voice.gender) == ("es-f-fake", "Voz de prueba", "f")
+        assert (voice.source, voice.license) == ("origen", "licencia")
+
+    @pytest.mark.parametrize(
+        ("request_kwargs", "message"),
+        [
+            ({"voice": VoiceRef("no-existe")}, "voice_id desconocido"),
+            ({"text": "   "}, "vacío"),
+            ({"text": "a" * 1001}, "1000"),
+            ({"speed": 2.0}, "speed"),
+        ],
+    )
+    def test_a_rejected_request_is_a_non_recoverable_engine_error_with_the_server_message(
+        self, service: TtsServiceProcess, request_kwargs: dict, message: str
+    ) -> None:
+        fields = {"unit_id": 1, "text": "Hola", "voice": VoiceRef("es-f-fake"), **request_kwargs}
+        synth = service.synthesizer()
+        try:
+            with pytest.raises(EngineError) as error:
+                list(synth.synthesize(SynthesisRequest(**fields)))
+        finally:
+            synth.close()
+
+        assert error.value.recoverable is False
+        assert "400" in str(error.value) and message in str(error.value)
+
+    def test_stop_ends_the_real_server_in_an_orderly_way(self, service: TtsServiceProcess) -> None:
+        begun = time.monotonic()
+
+        service.stop()
+
+        assert service.child.returncode == 0  # salió él solo tras POST /shutdown, no lo mataron
+        assert time.monotonic() - begun <= 2.0

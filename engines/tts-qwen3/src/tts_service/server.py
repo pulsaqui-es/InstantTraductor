@@ -71,7 +71,6 @@ __all__ = [
 
 logger = logging.getLogger(__name__)
 
-Samples = npt.NDArray[np.float32]
 EngineFactory = Callable[[ServiceConfig], Engine]
 
 #: El servicio escucha solo en el bucle local.
