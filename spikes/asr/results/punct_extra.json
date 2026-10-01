@@ -1,0 +1,90 @@
+{
+ "sweep_a560_bp0_gapped_fast": {
+  "segmentos": 92,
+  "ms_por_llamada": {
+   "n": 92,
+   "p50": 10.752050031442195,
+   "p95": 13.397905000601895,
+   "mean": 11.14021196111065,
+   "min": 9.502700006123632,
+   "max": 15.770500001963228
+  },
+  "texto_normalizado_igual": "92/92",
+  "original": {
+   "comas/100 pal.": 2.4,
+   "marcas finales/100 pal.": 0.3,
+   "finales con . ? ! (%)": 0,
+   "palabras en mayúscula/100 pal.": 13.4,
+   "empiezan en mayúscula (%)": 100
+  },
+  "con_modelo_de_puntuacion": {
+   "comas/100 pal.": 4.5,
+   "marcas finales/100 pal.": 2.3,
+   "finales con . ? ! (%)": 18,
+   "palabras en mayúscula/100 pal.": 14.3,
+   "empiezan en mayúscula (%)": 100
+  },
+  "ejemplos": [
+   {
+    "original": "Mister Quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+    "restaurado": "Mister Quilter is the apostle of the middle classes, and we are glad to welcome his Gospel."
+   },
+   {
+    "original": "Nor is Mister Quilter's manner less interesting than his matter",
+    "restaurado": "Nor is Mister Quilter's manner less interesting than his matter"
+   },
+   {
+    "original": "She tells us that at this festive season of the year with Christmas and roast beef looming before us",
+    "restaurado": "She tells us that at this festive season of the year with Christmas and roast beef looming before us"
+   },
+   {
+    "original": "Similes drawn from eating and its results occur most readily to the mind",
+    "restaurado": "Similes drawn from eating and its results occur most readily to the mind."
+   }
+  ]
+ },
+ "sweep_a560_bp1_gapped_fast": {
+  "segmentos": 93,
+  "ms_por_llamada": {
+   "n": 93,
+   "p50": 10.844199976418167,
+   "p95": 13.00349998055026,
+   "mean": 11.035453762248238,
+   "min": 9.456600004341453,
+   "max": 14.680399966891855
+  },
+  "texto_normalizado_igual": "93/93",
+  "original": {
+   "comas/100 pal.": 3.5,
+   "marcas finales/100 pal.": 0.2,
+   "finales con . ? ! (%)": 1,
+   "palabras en mayúscula/100 pal.": 13.2,
+   "empiezan en mayúscula (%)": 100
+  },
+  "con_modelo_de_puntuacion": {
+   "comas/100 pal.": 4.8,
+   "marcas finales/100 pal.": 2.3,
+   "finales con . ? ! (%)": 19,
+   "palabras en mayúscula/100 pal.": 14.0,
+   "empiezan en mayúscula (%)": 100
+  },
+  "ejemplos": [
+   {
+    "original": "Mister Quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+    "restaurado": "Mister Quilter is the apostle of the middle classes, and we are glad to welcome his Gospel."
+   },
+   {
+    "original": "Nor is Mister Quilter's manner less interesting than his matter",
+    "restaurado": "Nor is Mister Quilter's manner less interesting than his matter"
+   },
+   {
+    "original": "She tells us that at this festive season of the year with Christmas and roast beef looming before us",
+    "restaurado": "She tells us that at this festive season of the year with Christmas and roast beef looming before us"
+   },
+   {
+    "original": "Similes drawn from eating and its results occur most readily to the mind",
+    "restaurado": "Similes drawn from eating and its results occur most readily to the mind."
+   }
+  ]
+ }
+}
