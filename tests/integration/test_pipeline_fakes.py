@@ -102,7 +102,9 @@ def build(audio, script, *, synthesizer=None, translator=None, settings=None):
     sink = FakeAudioSink(clock)
     translator = translator or FakeTranslator(supports_concise=True)
     warnings = Warnings(clock)
-    scheduler, recorder = make_scheduler_and_recorder(clock, sink, translator, settings, on_record=warnings.on_record)
+    scheduler, recorder = make_scheduler_and_recorder(
+        clock, sink, translator, settings, on_record=warnings.on_record
+    )
     parts = PipelineParts(
         clock=clock,
         source=PacedSource(FakeAudioSource(audio), clock),
@@ -196,7 +198,9 @@ def test_without_concise_support_it_never_summarizes() -> None:
     records = pipeline.parts.recorder.records
     assert all(r.mode is TranslationMode.NORMAL for r in records)
     assert all(req.mode is TranslationMode.NORMAL for req in translator.calls)
-    assert any(r.outcome is Outcome.DROPPED for r in records), "sin resumen, el retraso debe acabar descartando"
+    assert any(r.outcome is Outcome.DROPPED for r in records), (
+        "sin resumen, el retraso debe acabar descartando"
+    )
 
 
 def test_report_follows_the_contract_schema() -> None:
