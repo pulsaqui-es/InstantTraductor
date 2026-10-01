@@ -5,6 +5,7 @@ Son tests de procesos reales del sistema (sin hardware de audio ni GPU).
 
 from __future__ import annotations
 
+import contextlib
 import ctypes
 import os
 import re
@@ -62,6 +63,32 @@ def test_descendants_of_the_child_die_with_the_job() -> None:
 
     proc.wait(timeout=2.0)
     assert _wait_until_gone(grandchild_pid), "el nieto sigue vivo: quedaría un proceso huérfano"
+
+
+def test_children_die_when_the_core_process_is_killed_abruptly() -> None:
+    """Port de ``spikes/traduccion/check_orphans.py``: sin ``finally`` ni ``atexit``, no hay huérfanos."""
+    code = (
+        "import os, sys, time\n"
+        "from instanttraductor.platform import windows\n"
+        "child = windows.launch_child([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
+        "print(os.getpid(), child.pid, flush=True)\n"
+        "time.sleep(60)\n"
+    )
+    core = subprocess.Popen([sys.executable, "-c", code], stdout=subprocess.PIPE, text=True)
+    core_pid = core.pid
+    try:
+        assert core.stdout is not None
+        core_pid, child_pid = (int(value) for value in core.stdout.readline().split())
+        assert psutil.pid_exists(child_pid)
+
+        psutil.Process(core_pid).kill()  # TerminateProcess: el «núcleo» muere de golpe
+
+        assert _wait_until_gone(child_pid, timeout_s=5.0), "el hijo sobrevivió a la muerte del núcleo"
+    finally:
+        with contextlib.suppress(psutil.Error):
+            psutil.Process(core_pid).kill()
+        core.kill()  # el proceso intermedio del launcher del entorno virtual
+        core.wait()
 
 
 def test_all_children_share_one_job() -> None:
