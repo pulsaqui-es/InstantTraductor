@@ -6,7 +6,8 @@
 Por candidata y frase: ASR de Whisper large-v3-turbo (tiempos por palabra), WER contra el texto pedido, duración, palabras por segundo y F0
 (mediana, rango p10-p90 en semitonos, desviación en semitonos). Indicio de acento: `distincion.py` con las palabras de las 4 frases juntas
 (Δ s−θ en dB; positivo grande = distingue /θ/ de /s/; control peninsular del spike S1: 15,5 dB; seseo argentino: 1,8 dB).
-Una frase se marca ROTA si WER > 0,25, si dura menos de 0,6x o más de 1,8x lo esperado (2,4 palabras/s) o si tiene recortes.
+Los tokens de acento se miden sobre las palabras del texto pedido alineadas con las de Whisper (`acento`) y, aparte, sobre las que escribió
+Whisper (`acento_asr_literal`): la diferencia delata /θ/ que Whisper oye como /t/ o /d/. Una frase se marca ROTA si WER > 0,25, si dura menos de 0,6x o más de 1,8x lo esperado (2,4 palabras/s) o si tiene recortes.
 Escribe `<out>/medidas.json` y una copia en `spikes/voces/resultados/medidas.json`.
 """
 
@@ -25,12 +26,13 @@ PALABRAS_POR_S_ESPERADAS = 2.6
 
 
 def evaluar_wav(wav: Path, texto: str, cache: dict) -> dict:
-    clave = f"{wav.name}|{wav.stat().st_size}|{wav.stat().st_mtime_ns}"
+    clave = f"v2|{wav.name}|{wav.stat().st_size}|{wav.stat().st_mtime_ns}"
     if clave in cache:
         return cache[clave]
     a, sr = c.vb.read_wav_mono(wav)
     asr = c.transcribir(a, sr)
-    tokens = c.acento_tokens(a, sr, asr["chunks"])
+    tokens = c.acento_tokens(a, sr, asr["chunks"], texto)  # palabras del texto pedido, con los tiempos de lo que oyó Whisper
+    tokens_asr = c.acento_tokens(a, sr, asr["chunks"])  # palabras tal como las escribió Whisper
     n_pal = c.aw.normalize_text(texto)
     dur = len(a) / sr
     ev = {
@@ -43,6 +45,7 @@ def evaluar_wav(wav: Path, texto: str, cache: dict) -> dict:
         "pico_dbfs": round(float(20 * np.log10(np.max(np.abs(a)) + 1e-12)), 1),
         "recortes": int(np.sum(np.abs(a) >= 0.999)),
         "tokens": tokens,
+        "tokens_asr": tokens_asr,
         **c.f0_stats(a, sr),
     }
     esperada = len(n_pal) / PALABRAS_POR_S_ESPERADAS
@@ -72,6 +75,7 @@ def main() -> None:
         if len(frases) < len(c.FRASES):
             continue
         ac = c.acento_resumen(c.juntar_tokens([f["tokens"] for f in frases]))
+        ac_asr = c.acento_resumen(c.juntar_tokens([f["tokens_asr"] for f in frases]))
         ref_wav = out / f"{cid}_ref.wav"
         ref = {}
         if ref_wav.exists():
@@ -86,8 +90,9 @@ def main() -> None:
             "duracion_total_s": round(float(sum(f["duracion_s"] for f in frases)), 1),
             "palabras_por_s_medio": round(float(np.mean([f["palabras_por_s"] for f in frases])), 2),
             "acento": ac,
+            "acento_asr_literal": ac_asr,
             "frases_rotas": [f["n"] for f in frases if f["rota"]],
-            "frases": [{k: v for k, v in f.items() if k != "tokens"} for f in frases],
+            "frases": [{k: v for k, v in f.items() if k not in ("tokens", "tokens_asr")} for f in frases],
             "referencia": ref,
         }
         medidas[cid] = m

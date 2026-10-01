@@ -10,7 +10,9 @@ ambas relativas a la vocal más fuerte de la palabra. Referencias del spike S1: 
 
 from __future__ import annotations
 
+import difflib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -201,9 +203,31 @@ def transcribir(a: np.ndarray, sr: int, prompt: str | None = None) -> dict:
     return {"text": " ".join(t.strip() for t in texts).strip(), "chunks": chunks}
 
 
-def acento_tokens(a: np.ndarray, sr: int, chunks: list[dict]) -> dict:
-    """Tokens de /θ/ y /s/ medidos por `distincion.py` (para mezclar varios clips antes de resumir)."""
-    return dist.medir_tokens(a, sr, chunks)
+def alinear_objetivo(chunks: list[dict], texto: str) -> list[dict]:
+    """Pone a cada palabra del TEXTO PEDIDO los tiempos de la palabra que Whisper oyó en su lugar.
+
+    `distincion.py` clasifica las palabras por su grafía (ce, ci, z frente a s). Si Whisper oye /θ/ como /t/ o /d/ («Cecilia» → «Detilia»),
+    la palabra desaparece de la clase /θ/ y solo sobreviven las bien pronunciadas, lo que infla el indicio. Alineando con el texto pedido
+    (1 a 1 en los tramos que no coinciden) se mide lo que realmente suena en el instante de cada palabra pedida.
+    """
+    obj = re.findall(r"[\wáéíóúüñÁÉÍÓÚÜÑ]+", texto)
+    obj_n = [dist.norm_word(w) for w in obj]
+    asr_n = [dist.norm_word(ch["text"]) for ch in chunks]
+    sm = difflib.SequenceMatcher(a=asr_n, b=obj_n, autojunk=False)
+    out: list[dict] = []
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag == "equal" or (tag == "replace" and (i2 - i1) == (j2 - j1)):
+            for k in range(i2 - i1):
+                out.append({"text": obj[j1 + k], "timestamp": chunks[i1 + k].get("timestamp")})
+    return out
+
+
+def acento_tokens(a: np.ndarray, sr: int, chunks: list[dict], texto: str | None = None) -> dict:
+    """Tokens de /θ/ y /s/ medidos por `distincion.py` (para mezclar varios clips antes de resumir).
+
+    Con `texto` se miden las palabras del texto pedido alineadas con las que oyó Whisper (ver `alinear_objetivo`); sin él, las que escribió Whisper.
+    """
+    return dist.medir_tokens(a, sr, alinear_objetivo(chunks, texto) if texto else chunks)
 
 
 def acento_resumen(tokens: dict) -> dict:

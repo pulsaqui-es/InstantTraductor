@@ -2,6 +2,7 @@
 
     uv run --project spikes/voces python spikes/voces/tabla_readme.py            # tabla de candidatas (medidas de lo generado)
     uv run --project spikes/voces python spikes/voces/tabla_readme.py --refs     # tabla de referencias (ref_text, duración, origen)
+    uv run --project spikes/voces python spikes/voces/tabla_readme.py --cribado  # criba de hablantes femeninas de VoxPopuli
 """
 
 from __future__ import annotations
@@ -37,6 +38,19 @@ def licencia(ref: dict) -> str:
     return lic[:60]
 
 
+def tabla_cribado() -> None:
+    carp = c.work_dir("corpus", "voxpopuli")
+    cri = c.leer_json(carp / "cribado_hablantes.json")
+    elegidas = {e["speaker_id"] for e in __import__("extraer_estudio").ESTUDIO if e["fuente"] == "voxpopuli"}
+    print("| hablante | material criba | F0 mediana | rango F0 p10–p90 | suelo de ruido / SNR | palabras/s | Δ(s−θ) (n θ / n s, p) | elegida |")
+    print("|---|---|---|---|---|---|---|---|")
+    for k, v in sorted(cri.items(), key=lambda kv: -(kv[1]["acento"]["delta_s_menos_theta_db"] or -99)):
+        a = v["acento"]
+        p = a["p_mann_whitney"]
+        print(f"| {k} | {v['dur_total_s']:.0f} s | {v['f0_mediana_hz']:.0f} Hz | {v['f0_rango_st']:.1f} st | {v['suelo_ruido_db']:.0f} dB / {v['snr_aprox_db']:.0f} dB | {v['palabras_por_s']:.2f} | "
+              f"{a['delta_s_menos_theta_db']} dB ({a['n_theta']} / {a['n_s']}{'' if p is None else f', p={p:.3f}'}) | {'sí' if k in elegidas else ''} |")
+
+
 def tabla_refs() -> None:
     out = c.out_dir()
     print("| id | duración | F0 mediana | ref_text (exacto) | origen |")
@@ -54,6 +68,8 @@ def tabla_refs() -> None:
 def main() -> None:
     if "--refs" in sys.argv:
         return tabla_refs()
+    if "--cribado" in sys.argv:
+        return tabla_cribado()
     out = c.out_dir()
     med = c.leer_json(out / "medidas.json")
     filas = []

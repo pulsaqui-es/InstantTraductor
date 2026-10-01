@@ -3,7 +3,7 @@
 Mismas descripciones de timbre que `disenos.py` (Qwen3-VoiceDesign), con la cláusula de acento elegida con `sondear_voxcpm.py`. Entorno propio
 (`spikes/voces/voxcpm`), GPU bajo `gpu.lock`:
 
-    uv run --project spikes/voces/voxcpm python spikes/voces/voxcpm/disenar_voxcpm.py --takes 2 --acento distincion
+    uv run --project spikes/voces/voxcpm python spikes/voces/voxcpm/disenar_voxcpm.py --takes 3 --acento distincion_es
 
 Escribe `<out>/_trabajo/dis_vox/<id>_<acento>_t<k>.wav` (24 kHz) y `disenos_log.json`; la elección de la toma la hace `evaluar_disenos.py --carpeta dis_vox`.
 """
@@ -28,13 +28,15 @@ vb = c.vb
 ACENTOS = {
     "espana": ", native Castilian Spanish speaker from {lugar}, Spain",
     "distincion": ", native speaker from {lugar}, Spain, with a Castilian accent: she pronounces z and ce/ci as the interdental th sound /θ/ like English 'think', distinct from s, no seseo",
+    # La sonda (`sondear_voxcpm.py`) dio Δ 12,0 dB solo con la descripción entera en español (inglés: 0,8 dB), así que esta es la que se usa.
+    "distincion_es": "; hablante nativa de castellano de {lugar}, España, con acento peninsular: pronuncia la z y ce/ci con la zeta interdental /θ/, distinta de la s, sin seseo",
 }
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--takes", type=int, default=2)
-    ap.add_argument("--acento", choices=sorted(ACENTOS), default="distincion")
+    ap.add_argument("--acento", choices=sorted(ACENTOS), default="distincion_es")
     ap.add_argument("--ids", default="", help="subconjunto de es-f-dis-NN; vacío = todos")
     ap.add_argument("--modelo", default=str(vb.models_dir() / "voxcpm2"))
     ap.add_argument("--semilla-base", type=int, default=4100)
@@ -57,7 +59,10 @@ def main() -> None:
             sr = int(getattr(model.tts_model, "sample_rate", 48000))
             for v in voces:
                 texto = d.REF_TEXTOS[v["ref"]]
-                desc = "(" + v["en"].rstrip(".").replace("Female, ", "A ", 1) + ACENTOS[args.acento].format(lugar=v["lugar"]) + ")"
+                if args.acento.endswith("_es"):
+                    desc = "(" + v["es"].rstrip(".") + ACENTOS[args.acento].format(lugar=v["lugar"]) + ")"
+                else:
+                    desc = "(" + v["en"].rstrip(".").replace("Female, ", "A ", 1) + ACENTOS[args.acento].format(lugar=v["lugar"]) + ")"
                 for k in range(args.takes):
                     seed = args.semilla_base + 100 * int(v["id"][-2:]) + k
                     torch.manual_seed(seed)  # la versión 2.0.3 publicada en PyPI no admite `seed=` en generate()

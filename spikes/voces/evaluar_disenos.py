@@ -22,17 +22,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common as c  # noqa: E402
 import disenos as d  # noqa: E402
 
+MOTOR = "qwen"  # lo fija --motor
 DUR_MIN, DUR_MAX, DUR_IDEAL = 7.8, 10.6, 9.0
 WER_MAX = {"normal": 0.0, "th": 0.20}
 
 
 def evaluar_toma(wav: Path, texto: str, cache: dict) -> dict:
-    clave = f"{wav.name}|{wav.stat().st_size}"
+    clave = f"v2|{wav.name}|{wav.stat().st_size}"
     if clave in cache:
         return cache[clave]
     a, sr = c.vb.read_wav_mono(wav)
     asr = c.transcribir(a, sr)
-    tokens = c.acento_tokens(a, sr, asr["chunks"])
+    tokens = c.acento_tokens(a, sr, asr["chunks"], texto)  # palabras del texto normal con los tiempos de lo que oyó Whisper
     ev = {
         "fichero": wav.name,
         "duracion_s": round(len(a) / sr, 2),
@@ -48,15 +49,19 @@ def evaluar_toma(wav: Path, texto: str, cache: dict) -> dict:
 
 
 def puntuacion(ev: dict, ort: str) -> float:
-    """Mayor es mejor: dentro de rango de duración y de WER; luego acento (th) o expresividad (normal), y cercanía a 9 s."""
-    if not (DUR_MIN <= ev["duracion_s"] <= DUR_MAX) or ev["wer"] > WER_MAX[ort]:
+    """Mayor es mejor: dentro de rango de duración y de WER; luego acento (th o VoxCPM2) o expresividad (normal de Qwen), y cercanía a 9 s.
+
+    Con VoxCPM2 se exige además F0 mediana >= 170 Hz: en la sonda una toma salió con voz de hombre (118 Hz) aunque la descripción pedía una mujer.
+    """
+    wer_max = WER_MAX[ort] if MOTOR == "qwen" else 0.05
+    if not (DUR_MIN <= ev["duracion_s"] <= DUR_MAX) or ev["wer"] > wer_max:
+        return -1e9
+    if MOTOR == "voxcpm" and ev.get("f0_mediana_hz", 0.0) < 170.0:
         return -1e9
     ac = c.acento_resumen(ev["tokens"]).get("delta_s_menos_theta_db")
-    base = (ac if (ort == "th" and ac is not None) else 0.0) + 1.0 * ev.get("f0_rango_p10_p90_st", 0.0)
+    usa_delta = ort == "th" or MOTOR == "voxcpm"
+    base = (ac if (usa_delta and ac is not None) else 0.0) + 1.0 * ev.get("f0_rango_p10_p90_st", 0.0)
     return base - abs(ev["duracion_s"] - DUR_IDEAL)
-
-
-MOTOR = "qwen"
 
 
 def escribir_ref(salida: str, e: dict, ev: dict, dis_dir: Path) -> None:
