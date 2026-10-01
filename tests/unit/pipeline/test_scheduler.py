@@ -7,6 +7,7 @@ El sink es `FakeAudioSink`, que reproduce sobre el mismo reloj manual y emite ST
 
 from __future__ import annotations
 
+import random
 import threading
 import time
 from collections.abc import Callable, Sequence
@@ -1605,3 +1606,109 @@ class TestConstruction:
         assert scheduler.open_count == 0
         assert scheduler.stopped is False
         assert scheduler.lag_series() == ()
+
+
+# --------------------------------------------------------------------------------------------------
+# Secuencias aleatorias de llamadas
+# --------------------------------------------------------------------------------------------------
+
+#: Orden de los estados abiertos: una frase nunca vuelve a uno anterior.
+_STATE_RANK = {
+    UnitState.PENDING: 0,
+    UnitState.TRANSLATING: 1,
+    UnitState.SYNTHESIZING: 2,
+    UnitState.QUEUED: 3,
+    UnitState.PLAYING: 4,
+}
+
+
+def random_session(seed: int, steps: int = 300) -> Rig:
+    """Llama al planificador con operaciones al azar (también absurdas) y comprueba sus invariantes."""
+    rnd = random.Random(seed)
+    controller: DelayController
+    if rnd.random() < 0.5:
+        controller = ThresholdDelayController(DelayPolicy(allow_concise=rnd.random() < 0.5))
+    else:
+        controller = ScriptedDelayController(
+            lambda lag: DelayDecision(1.1, rnd.choice(list(TranslationMode)), lag > rnd.uniform(3.0, 9.0))
+        )
+    rig = Rig(controller, context_utterances=rnd.randint(0, 4))
+    scheduler = rig.scheduler
+    next_id = 1
+    best_rank: dict[int, int] = {}
+    heard: set[tuple[str, str | None]] = set()
+    operations = ["add", "add", "translate", "translate", "result", "result", "result", "rejected"]
+    operations += ["first_audio", "first_audio", "tts", "enqueue", "enqueue", "enqueue", "event", "failure"]
+    operations += ["tick", "tick", "advance", "advance", "advance", "advance", "cancel"]
+
+    def pick(*states: UnitState) -> int:
+        """Una frase en alguno de esos estados (casi siempre) o una cualquiera, incluso una que no existe."""
+        candidates = [n for n in range(1, next_id) if scheduler.state_of(n) in states]
+        if candidates and rnd.random() < 0.85:
+            return rnd.choice(candidates)
+        return rnd.choice([*range(1, next_id), next_id + 5])
+
+    for step in range(steps):
+        operation = "stop" if rnd.random() < 0.004 else rnd.choice(operations)
+        if operation == "add":
+            rig.add(next_id, t_end=rig.clock.now() - rnd.uniform(0.0, 2.0))
+            next_id += 1
+        elif operation == "translate":
+            request = scheduler.next_translation()
+            if request is not None:
+                assert set(request.context) <= heard  # el contexto solo sale de frases pronunciadas
+        elif operation == "result":
+            unit_id = pick(UnitState.TRANSLATING)
+            mode = rnd.choice(list(TranslationMode))
+            scheduler.on_translation(TranslationResult(unit_id, f"ES: {unit_id}", mode, 0.0, 0.1))
+        elif operation == "rejected":
+            scheduler.on_translation(rejected_result(pick(UnitState.TRANSLATING)))
+        elif operation == "first_audio":
+            scheduler.on_tts_first_audio(pick(UnitState.SYNTHESIZING))
+        elif operation == "tts":
+            rnd.choice([scheduler.on_tts_started, scheduler.on_tts_finished])(pick(UnitState.SYNTHESIZING))
+        elif operation == "enqueue":
+            unit_id = pick(UnitState.SYNTHESIZING, UnitState.QUEUED)
+            rig.sink.enqueue(SpeechPiece(unit_id, pcm(rnd.uniform(0.1, 3.0)), is_last=rnd.random() < 0.7))
+        elif operation == "event":
+            kind = rnd.choice(list(PlaybackEventKind))
+            scheduler.on_playback_event(PlaybackEvent(pick(*_STATE_RANK), kind, rig.clock.now()))
+        elif operation == "failure":
+            scheduler.on_failure(pick(*_STATE_RANK), "fallo")
+        elif operation == "tick":
+            scheduler.tick()
+        elif operation == "advance":
+            rig.fake_sink.advance(rnd.uniform(0.0, 1.5))
+        elif operation == "cancel":
+            rig.sink.cancel_pending()
+        else:
+            scheduler.stop()
+
+        where = f"semilla {seed}, paso {step} ({operation})"
+        closed_ids = [record.unit_id for record in rig.records]
+        assert len(closed_ids) == len(set(closed_ids)), f"registro repetido; {where}"
+        assert len(closed_ids) + scheduler.open_count == next_id - 1, where
+        assert scheduler.lag() >= 0.0, where
+        for known_id in range(1, next_id):
+            state = scheduler.state_of(known_id)
+            assert state is not None, where
+            assert (known_id in closed_ids) == (state not in _STATE_RANK), f"{known_id}: {state}; {where}"
+            assert scheduler.is_open(known_id) == (known_id not in closed_ids), where
+            if state in _STATE_RANK:
+                assert _STATE_RANK[state] >= best_rank.get(known_id, 0), f"{known_id} retrocede; {where}"
+                best_rank[known_id] = _STATE_RANK[state]
+        heard = {
+            (record.source_text, record.translated_text)
+            for record in rig.records
+            if record.outcome is Outcome.SPOKEN
+        }
+    scheduler.stop()
+    assert scheduler.open_count == 0
+    assert len(rig.records) == next_id - 1
+    return rig
+
+
+class TestRandomSequences:
+    def test_the_invariants_hold_under_random_call_sequences(self) -> None:
+        for seed in range(60):
+            random_session(seed)
