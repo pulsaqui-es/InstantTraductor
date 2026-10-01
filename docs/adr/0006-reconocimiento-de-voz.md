@@ -36,5 +36,26 @@ El ASR debe dar texto con la menor latencia posible y con puntuación para corta
 - Sin datos públicos de Nemotron con música de fondo: la spec 002 lo medirá y, si pierde, pasa al alternativo.
 - Licencias: Silero MIT, faster-whisper MIT, Whisper MIT y Nemotron con licencia abierta de NVIDIA (condiciones propias, anotadas).
 
+## Resolución con el spike S3 (2026-10-01)
+La decisión se mantiene. Medido en este PC (`spikes/asr/README.md`):
+
+**Nemotron 560 ms, en CPU** (int8, 2 hilos, `blank_penalty` 1):
+- texto final p50/p95 de 0,67/0,78 s desde el fin del habla;
+- WER del 5,05 %;
+- RTF de 0,15, 0,4 núcleos de CPU y 0 de VRAM;
+- los parciales solo añaden texto (0 retractaciones).
+
+**faster-whisper turbo FP16:**
+- funciona en sm_120;
+- texto final de 0,71/0,82 s y WER del 5,82 % con cortes a 5 s;
+- 2,3 GB de VRAM y sin parciales.
+
+**Matices para la implementación:**
+- Nemotron casi nunca pone punto final, así que la segmentación va por las pausas del VAD y las comas (research.md R6 de la spec 001).
+- El *endpoint* nativo de sherpa se descarta (WER del 11 %). Se usa VAD + vaciado + un stream nuevo por tramo.
+- En el `pyproject` hay que declarar `sherpa-onnx-core`.
+- El paquete `silero-vad` arrastra torch, así que se usa su `.onnx` directamente con onnxruntime.
+
 ## Referencias
 - `docs/investigacion/2026-09-30-asr.md`
+- `spikes/asr/README.md` (S3, 2026-10-01)
