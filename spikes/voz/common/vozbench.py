@@ -200,7 +200,9 @@ def write_wav(path: Path, audio: np.ndarray, sr: int) -> None:
     import soundfile as sf
 
     a = np.asarray(audio, dtype=np.float32).reshape(-1)
-    a = np.clip(a, -1.0, 1.0)
+    peak = float(np.max(np.abs(a))) if a.size else 0.0
+    if peak > 0.98:  # los motores pueden superar 1,0 (Chatterbox llega a 1,14): se baja la ganancia en vez de recortar
+        a = a * (0.98 / peak)
     path.parent.mkdir(parents=True, exist_ok=True)
     sf.write(str(path), a, sr, subtype="PCM_16")
 

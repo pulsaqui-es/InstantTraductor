@@ -1,0 +1,128 @@
+{
+  "candidato": "B: Chatterbox Multilingual es-ES (T3 es-es + S3Gen v3), PyTorch eager, fp32",
+  "fase": "velocidad",
+  "parametros_generacion": {
+    "cfg_weight": 0.5,
+    "exaggeration": 0.5,
+    "temperature": 0.8,
+    "repetition_penalty": 1.2,
+    "min_p": 0.05,
+    "top_p": 1.0,
+    "texto": "space"
+  },
+  "referencia": {
+    "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\ref\\ref_es_es_24k.wav"
+  },
+  "frases_medicion": [
+    "Vale, nos vemos luego en casa de Laura.",
+    "¿Vosotros sabéis dónde he dejado las llaves del coche?",
+    "No me lo puedo creer, otra vez se ha roto el ordenador.",
+    "Tranquilo, tío, que lo arreglamos mañana por la mañana.",
+    "Buenas noches, ¿qué tal todo?",
+    "El tren con destino a Barcelona saldrá de la vía cuatro en cinco minutos.",
+    "Me ha llamado mi madre al móvil y no he podido cogerlo.",
+    "Vamos a tener que darnos prisa si queremos llegar antes de que empiece la película.",
+    "Aquí tenéis la cuenta, y gracias por venir a nuestro restaurante.",
+    "¡Cuidado! Viene un coche por la derecha y no va a frenar.",
+    "Dicen que mañana lloverá en casi toda la península, aunque por la tarde saldrá el sol en el sur.",
+    "¿Sabes qué hora es? Llevamos esperando casi una hora en la puerta.",
+    "El presidente del gobierno anunció ayer que subirá el salario mínimo a partir del próximo año.",
+    "Nunca pensé que fuera a decirte esto, pero creo que has cometido un error enorme.",
+    "¿Puedes bajar el volumen, por favor?",
+    "Vale, de acuerdo, pero esta vez pagáis vosotros la cena.",
+    "En el capítulo anterior descubrimos que el protagonista llevaba años ocultando su verdadera identidad a toda su familia.",
+    "Los científicos han descubierto una nueva especie de pez en las profundidades del océano Atlántico, a más de tres mil metros.",
+    "Si me das un minuto, te explico con calma todo lo que ha pasado esta mañana en la oficina, porque no ha sido culpa mía.",
+    "Atención, pasajeros del vuelo con destino a Sevilla: la puerta de embarque ha cambiado, diríjanse a la puerta doce inmediatamente, por favor."
+  ],
+  "espera_candado_s": 1738.4,
+  "entorno": {
+    "python": "3.12.14",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "paquetes": {
+      "chatterbox-tts": "0.1.7",
+      "transformers": "5.2.0",
+      "torch": "2.11.0+cu130",
+      "torchaudio": "2.11.0+cu130",
+      "numpy": "1.26.4",
+      "librosa": "0.11.0",
+      "safetensors": "0.5.3",
+      "huggingface-hub": "1.33.0",
+      "resemble-perth": "1.0.1",
+      "s3tokenizer": "0.3.0",
+      "diffusers": "0.29.0",
+      "spacy-pkuseg": "1.0.1"
+    },
+    "torch": "2.11.0+cu130",
+    "cuda_build": "13.0",
+    "arch_list": [
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120"
+    ],
+    "sm_120": true,
+    "gpu": {
+      "nombre": "NVIDIA GeForce RTX 5070",
+      "vram_total_mib": 12199,
+      "cc": "12.0"
+    },
+    "driver_nvidia": "616.64"
+  },
+  "vram_linea_base_mib": {
+    "nvml": 2386.8,
+    "nvidia_smi": 2103.0,
+    "total": 12227
+  },
+  "carga_modelo_s": 6.07,
+  "carga_s3gen_claves_ausentes": [
+    "tokenizer._mel_filters",
+    "tokenizer.window"
+  ],
+  "carga_s3gen_claves_inesperadas": [],
+  "vram_tras_carga": {
+    "nvml_mib": 5051.0,
+    "torch_allocated_mib": 3074.7,
+    "torch_reserved_mib": 3094.0
+  },
+  "preparar_referencia_s": 1.512,
+  "velocidad_controles_indirectos": {
+    "base_cfg0.5_exag0.5": {
+      "cfg_weight": 0.5,
+      "exaggeration": 0.5,
+      "velocidad_efectiva_mediana": 1.0,
+      "velocidad_efectiva_min": 1.0,
+      "velocidad_efectiva_max": 1.0
+    },
+    "cfg1.0": {
+      "cfg_weight": 1.0,
+      "exaggeration": 0.5,
+      "velocidad_efectiva_mediana": 1.105,
+      "velocidad_efectiva_min": 0.957,
+      "velocidad_efectiva_max": 1.209
+    },
+    "cfg1.5": {
+      "cfg_weight": 1.5,
+      "exaggeration": 0.5,
+      "velocidad_efectiva_mediana": 1.124,
+      "velocidad_efectiva_min": 0.994,
+      "velocidad_efectiva_max": 1.282
+    },
+    "cfg2.5": {
+      "cfg_weight": 2.5,
+      "exaggeration": 0.5,
+      "velocidad_efectiva_mediana": 1.242,
+      "velocidad_efectiva_min": 1.129,
+      "velocidad_efectiva_max": 1.333
+    }
+  },
+  "vram_pico": {
+    "torch_max_allocated_mib": 3471.1,
+    "torch_max_reserved_mib": 3672.0,
+    "nvml_pico_total_mib": 5645.0,
+    "nvidia_smi_ahora_mib": 5361.0,
+    "nvml_pico_menos_linea_base_mib": 3258.2
+  }
+}

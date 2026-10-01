@@ -3,9 +3,9 @@
 Se ejecuta en el entorno ligero (sin torch):
 
     cd spikes/voz
-    uv run python prepare_reference.py bajar --ia abelsanchez_1904_librivox --fichero abelsanchez_03_unamuno_128kb.mp3
-    uv run python prepare_reference.py extracto --raw <mp3> --inicio 60 --fin 150 --out <wav>
-    uv run python prepare_reference.py referencia --raw <mp3> --inicio 183.2 --fin 191.4
+    uv run python prepare_reference.py referencia      # la referencia definitiva: lee referencia.json, descarga y recorta
+    uv run python prepare_reference.py bajar --ia <item_de_Internet_Archive> --fichero <mp3>
+    uv run python prepare_reference.py extracto --raw <mp3> --inicio 60 --fin 150 --out <wav>   # tramos para explorar
 
 Todo se escribe fuera del repo, en %LOCALAPPDATA%\\InstantTraductor\\spikes\\voz\\ref\\.
 """
@@ -91,10 +91,7 @@ def main() -> None:
     p.add_argument("--out", required=True)
 
     p = sub.add_parser("referencia")
-    p.add_argument("--raw", required=True)
-    p.add_argument("--inicio", type=float, required=True)
-    p.add_argument("--fin", type=float, required=True)
-    p.add_argument("--meta", default="{}", help="JSON con origen/lector/licencia/texto para guardar junto al WAV")
+    p.add_argument("--config", default=str(Path(__file__).with_name("referencia.json")), help="JSON con ia_id, fichero, inicio_s, fin_s y los datos de origen/licencia/texto")
 
     args = ap.parse_args()
     if args.cmd == "bajar":
@@ -104,22 +101,21 @@ def main() -> None:
         vb.write_wav(Path(args.out), a, TARGET_SR)
         print("extracto:", args.out, f"{len(a) / TARGET_SR:.1f} s")
     elif args.cmd == "referencia":
-        a = fundidos(normalizar(cargar_tramo(Path(args.raw), args.inicio, args.fin)))
+        cfg = json.loads(Path(args.config).read_text(encoding="utf-8"))
+        raw = bajar(cfg["ia_id"], cfg["fichero"])
+        a = fundidos(normalizar(cargar_tramo(raw, cfg["inicio_s"], cfg["fin_s"])))
         out = vb.ref_dir() / vb.REF_WAV
         vb.write_wav(out, a, TARGET_SR)
-        meta = json.loads(args.meta)
+        meta = dict(cfg)
         meta.update(
             {
-                "fichero_origen": Path(args.raw).name,
-                "inicio_s": args.inicio,
-                "fin_s": args.fin,
                 "duracion_s": round(len(a) / TARGET_SR, 3),
                 "formato": f"WAV PCM16 mono {TARGET_SR} Hz, RMS -20 dBFS, fundidos de 30 ms",
                 "sha256_wav": hashlib.sha256(out.read_bytes()).hexdigest(),
             }
         )
         (vb.ref_dir() / vb.REF_META).write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
-        print("referencia:", out, f"{meta['duracion_s']} s")
+        print("referencia:", out, f"{meta['duracion_s']} s | sha256 {meta['sha256_wav'][:16]}...")
 
 
 if __name__ == "__main__":

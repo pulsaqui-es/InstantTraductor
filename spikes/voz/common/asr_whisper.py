@@ -23,9 +23,13 @@ _pipe = None
 def get_pipe():
     global _pipe
     if _pipe is None:
+        import os
+
         import torch
         from transformers import pipeline
 
+        # Pocos hilos por defecto: otros obreros miden latencias en la misma máquina y la CPU es compartida.
+        torch.set_num_threads(int(os.environ.get("VOZ_ASR_HILOS", "4")))
         model_dir = str(vb.models_dir() / "whisper-small")
         _pipe = pipeline("automatic-speech-recognition", model=model_dir, device="cpu", dtype=torch.float32)
     return _pipe

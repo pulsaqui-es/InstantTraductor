@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import gc
 import json
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -68,7 +69,7 @@ def stream_request(m, texto, cfg, seed, gen_kw, ttfa_only=False):
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--fase", choices=["fria", "completa", "velocidad"], default="completa")
+    ap.add_argument("--fase", choices=["fria", "completa", "velocidad", "optim", "contencion"], default="completa")
     ap.add_argument("--repeticiones", type=int, default=2, help="repeticiones sobre las 20 frases en la configuración principal (p10)")
     ap.add_argument("--repeticiones-ttfa", type=int, default=3, help="repeticiones (solo hasta el primer chunk) en cada configuración")
     ap.add_argument("--cfg-principal", default="p10", choices=list(STREAM_CFGS))
@@ -76,6 +77,7 @@ def main() -> None:
     ap.add_argument("--cfg-weight", type=float, default=0.5)
     ap.add_argument("--exaggeration", type=float, default=0.5)
     ap.add_argument("--sin-muestras", action="store_true")
+    ap.add_argument("--variantes", default="", help="fase optim: nombres de variantes separados por comas (por defecto todas)")
     ap.add_argument("--ab-texto", action="store_true", help="genera las 6 muestras con las dos normalizaciones de texto (space/pip) en muestras/extra/ para compararlas con el ASR")
     ap.add_argument("--solo-muestras", action="store_true", help="solo cargar, calentar y generar las muestras (sin barridos)")
     ap.add_argument("--prefijo-muestras", default="B_chatterbox")
@@ -137,6 +139,81 @@ def main() -> None:
                 ttfa2, total2, wav2, n2, _ = stream_request(m, frases[3], cfg0, 2, gen_kw)
                 res["segunda_peticion"] = {"ttfa_s": round(ttfa2, 3), "total_s": round(total2, 3), "audio_s": round(len(wav2) / m.sr, 2)}
                 print(f"1ª petición (fría): TTFA {ttfa:.3f} s, total {total:.3f} s | 2ª: TTFA {ttfa2:.3f} s", flush=True)
+            elif args.fase == "optim":
+                # Optimizaciones baratas del camino del primer audio (sin tocar el modelo): TF32, menos pasos CFM y referencia
+                # más corta para el decodificador. Las dos últimas pueden afectar a la calidad: se generan muestras para oírlas.
+                for i in range(3):
+                    stream_request(m, frases[i], STREAM_CFGS["p5"], 100 + i, gen_kw)
+                variantes = [
+                    ("p5_base", dict(cfg="p5", tf32=False, cfm=None, prompt=None)),
+                    ("p5_tf32", dict(cfg="p5", tf32=True, cfm=None, prompt=None)),
+                    ("p5_tf32_cfm5", dict(cfg="p5", tf32=True, cfm=5, prompt=None)),
+                    ("p5_tf32_cfm5_ref3s", dict(cfg="p5", tf32=True, cfm=5, prompt=3.0)),
+                    ("p5_tf32_cfm3_ref3s", dict(cfg="p5", tf32=True, cfm=3, prompt=3.0)),
+                    ("p10_tf32_cfm5", dict(cfg="p10", tf32=True, cfm=5, prompt=None)),
+                    ("p10_tf32_cfm3", dict(cfg="p10", tf32=True, cfm=3, prompt=None)),
+                ]
+                if args.variantes:
+                    variantes = [x for x in variantes if x[0] in args.variantes.split(",")]
+                salida_opt = {}
+                for nombre, v in variantes:
+                    torch.set_float32_matmul_precision("high" if v["tf32"] else "highest")
+                    m.limit_decoder_prompt(v["prompt"])
+                    cfg = dict(STREAM_CFGS[v["cfg"]])
+                    if v["cfm"]:
+                        cfg["n_cfm_timesteps"] = v["cfm"]
+                    stream_request(m, frases[0], cfg, 99, gen_kw)  # recalienta tras cambiar la configuración
+                    tt = []
+                    for rep in range(3):
+                        for i, frase in enumerate(frases):
+                            ttfa, total, wav, n, times = stream_request(m, frase, cfg, 6000 + 10 * rep + i, gen_kw, ttfa_only=True)
+                            tt.append(ttfa)
+                    rr = []
+                    for i in range(0, 16, 2):
+                        ttfa, total, wav, n, times = stream_request(m, frases[i], cfg, 7000 + i, gen_kw)
+                        rr.append(total / (len(wav) / m.sr))
+                    salida_opt[nombre] = {**v, "ttfa_s": vb.summarize(tt), "rtf": vb.summarize(rr)}
+                    print(f"{nombre:22s}: TTFA p50 {vb.summarize(tt)['p50'] * 1000:.0f} ms, p95 {vb.summarize(tt)['p95'] * 1000:.0f} ms | RTF p50 {vb.summarize(rr)['p50']:.3f}", flush=True)
+                    if nombre in ("p5_tf32_cfm5", "p5_tf32_cfm5_ref3s", "p5_tf32_cfm3_ref3s"):
+                        for i, frase in enumerate(vb.SAMPLE_SENTENCES, start=1):
+                            ttfa, total, wav, n, times = stream_request(m, frase, cfg, 4242 + i, gen_kw)
+                            vb.write_wav(vb.samples_dir() / "extra" / f"B_chatterbox_{nombre}_{i:02d}.wav", wav, m.sr)
+                torch.set_float32_matmul_precision("highest")
+                m.limit_decoder_prompt(None)
+                res["optimizaciones"] = salida_opt
+            elif args.fase == "contencion":
+                # TTFA con otra carga compartiendo la GPU (proceso aparte que multiplica matrices fp16 con un ciclo de trabajo dado).
+                for i in range(3):
+                    stream_request(m, frases[i], STREAM_CFGS["p10"], 100 + i, gen_kw)
+                hog = Path(__file__).resolve().parents[1] / "common" / "carga_gpu.py"
+                resultados = {}
+                for duty in (0, 50, 100):
+                    proc = None
+                    if duty:
+                        proc = subprocess.Popen([sys.executable, str(hog), str(duty), "900"], stdout=subprocess.PIPE, text=True)
+                        assert proc.stdout.readline().strip() == "listo"
+                        time.sleep(1.0)
+                    try:
+                        for nombre in ("p5", "p10"):
+                            tt = []
+                            for rep in range(2):
+                                for i, frase in enumerate(frases):
+                                    ttfa, total, wav, n, times = stream_request(m, frase, STREAM_CFGS[nombre], 8000 + 10 * rep + i, gen_kw, ttfa_only=True)
+                                    tt.append(ttfa)
+                            resultados[f"carga{duty}_{nombre}"] = {"ciclo_carga_pct": duty, "config": nombre, "ttfa_s": vb.summarize(tt)}
+                            r = resultados[f"carga{duty}_{nombre}"]
+                            print(f"carga {duty:3d} %, {nombre}: TTFA p50 {r['ttfa_s']['p50'] * 1000:.0f} ms, p95 {r['ttfa_s']['p95'] * 1000:.0f} ms", flush=True)
+                        rr = []
+                        for i in range(0, 16, 2):
+                            ttfa, total, wav, n, times = stream_request(m, frases[i], STREAM_CFGS["p10"], 9000 + i, gen_kw)
+                            rr.append(total / (len(wav) / m.sr))
+                        resultados[f"carga{duty}_p10"]["rtf"] = vb.summarize(rr)
+                        print(f"carga {duty:3d} %, p10: RTF p50 {vb.summarize(rr)['p50']:.3f}", flush=True)
+                    finally:
+                        if proc:
+                            proc.kill()
+                            proc.wait()
+                res["contencion"] = resultados
             elif args.fase == "velocidad":
                 # ¿Se puede pedir 1,1x / 1,25x? Chatterbox no tiene parámetro de velocidad; solo hay controles indirectos
                 # (cfg_weight «ritmo» y exaggeration). Se mide su efecto real en la duración del audio (mismas semillas).
@@ -151,7 +228,12 @@ def main() -> None:
                     "exag0.8": dict(cfg_weight=0.5, exaggeration=0.8),
                     "exag0.8_cfg0.3": dict(cfg_weight=0.3, exaggeration=0.8),
                     "exag1.2_cfg0.3": dict(cfg_weight=0.3, exaggeration=1.2),
+                    "cfg1.0": dict(cfg_weight=1.0, exaggeration=0.5),
+                    "cfg1.5": dict(cfg_weight=1.5, exaggeration=0.5),
+                    "cfg2.5": dict(cfg_weight=2.5, exaggeration=0.5),
                 }
+                if args.variantes:
+                    variantes = {k: v for k, v in variantes.items() if k.startswith("base") or k in args.variantes.split(",")}
                 usadas = list(range(0, 20, 2))
                 semillas = [11, 12]
                 base_dur: dict = {}
@@ -164,6 +246,9 @@ def main() -> None:
                             durs.setdefault(i, []).append(len(wav) / m.sr)
                     if nombre.startswith("base"):
                         base_dur = {i: float(np.mean(v)) for i, v in durs.items()}
+                    # una muestra por variante para oír el efecto (y los artefactos con cfg_weight altos)
+                    wav = m.synthesize(vb.SAMPLE_SENTENCES[1], seed=4243, **kw)
+                    vb.write_wav(vb.samples_dir() / "velocidad" / f"B_chatterbox_{nombre}_02.wav", wav, m.sr)
                     ratios = [base_dur[i] / float(np.mean(v)) for i, v in durs.items()]  # >1 = más rápido que la base
                     salida_vel[nombre] = {**kw, "velocidad_efectiva_mediana": round(float(np.median(ratios)), 3), "velocidad_efectiva_min": round(min(ratios), 3), "velocidad_efectiva_max": round(max(ratios), 3)}
                     print(f"{nombre:18s}: velocidad efectiva mediana {np.median(ratios):.3f}x (min {min(ratios):.2f}, max {max(ratios):.2f})", flush=True)
@@ -207,6 +292,28 @@ def main() -> None:
                     res["stream_principal"] = {"config": {"nombre": args.cfg_principal, **cfg0}, "ttfa_s": vb.summarize(ttfas), "rtf": vb.summarize(rtfs), "xrt": vb.summarize(xrts)}
                     s = res["stream_principal"]
                     print(f"stream {args.cfg_principal}: TTFA p50 {s['ttfa_s']['p50'] * 1000:.0f} ms, p95 {s['ttfa_s']['p95'] * 1000:.0f} ms | RTF p50 {s['rtf']['p50']:.3f} p95 {s['rtf']['p95']:.3f} ({s['xrt']['p50']:.2f}x tiempo real)", flush=True)
+
+                    # -------------------------------------------------------- desglose de la latencia (con sincronizaciones: solo diagnóstico)
+                    desgloses = []
+                    for i in range(0, 20, 2):
+                        tr: dict = {}
+                        g = m.stream(frases[i], seed=5000 + i, trace=tr, **cfg0, **gen_kw)
+                        next(g)
+                        g.close()
+                        t0 = tr["t0"]
+                        tt = tr["t_tokens"]
+                        pasos = np.diff([tr["t_prefill_done"]] + tt)
+                        desgloses.append({"frase": i, "prefill_tokens": tr["prefill_tokens"], "prefill_ms": (tr["t_prefill_done"] - t0) * 1000, "ms_por_paso_T3": float(np.mean(pasos) * 1000), "pasos_hasta_primer_chunk": len(tt), "s3gen_primer_chunk_ms": (tr["emit"][0][1] - tr["emit"][0][0]) * 1000, "ttfa_ms": (tr["emit"][0][1] - t0) * 1000})
+                    res["desglose_primer_chunk"] = {
+                        "prefill_ms_mediana": float(np.median([d["prefill_ms"] for d in desgloses])),
+                        "ms_por_paso_T3_mediana": float(np.median([d["ms_por_paso_T3"] for d in desgloses])),
+                        "pasos_hasta_primer_chunk": desgloses[0]["pasos_hasta_primer_chunk"],
+                        "s3gen_primer_chunk_ms_mediana": float(np.median([d["s3gen_primer_chunk_ms"] for d in desgloses])),
+                        "ttfa_ms_mediana": float(np.median([d["ttfa_ms"] for d in desgloses])),
+                        "detalle": desgloses,
+                    }
+                    d = res["desglose_primer_chunk"]
+                    print(f"desglose 1er chunk: prefill {d['prefill_ms_mediana']:.0f} ms + {d['pasos_hasta_primer_chunk']} pasos T3 x {d['ms_por_paso_T3_mediana']:.1f} ms + S3Gen {d['s3gen_primer_chunk_ms_mediana']:.0f} ms = {d['ttfa_ms_mediana']:.0f} ms", flush=True)
 
                     # -------------------------------------------------------- TTFA de otras configuraciones (se corta tras el primer chunk)
                     barrido = {}

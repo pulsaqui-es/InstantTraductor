@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import gc
 import json
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -86,7 +87,7 @@ def una_peticion(model, texto: str, items, ref_text: str, chunk_size: int, modo:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--fase", choices=["fria", "completa", "velocidad"], default="completa")
+    ap.add_argument("--fase", choices=["fria", "completa", "velocidad", "contencion"], default="completa")
     ap.add_argument("--modo", choices=["icl", "xvec"], default="icl", help="icl = referencia en contexto (ADR-0008); xvec = solo embedding del hablante")
     ap.add_argument("--chunk-sizes", default="1,2,4,8", help="pasos de códec por chunk (1 paso ~ 83 ms de audio)")
     ap.add_argument("--chunk-muestras", type=int, default=8)
@@ -150,6 +151,35 @@ def main() -> None:
                 ttfa2, total2, wav2, sr2, ft2, n2 = una_peticion(model, frases[3], items, ref_text, 8, args.modo, seed=2)
                 res["segunda_peticion"] = {"ttfa_s": round(ttfa2, 3), "total_s": round(total2, 3), "audio_s": round(len(wav2) / sr2, 2)}
                 print(f"1ª petición (fría): TTFA {ttfa:.3f} s, total {total:.3f} s | 2ª: TTFA {ttfa2:.3f} s", flush=True)
+            elif args.fase == "contencion":
+                # TTFA con otra carga compartiendo la GPU (proceso aparte que multiplica matrices fp16 con un ciclo de trabajo dado).
+                model.warmup(prefill_len=100)
+                for i in range(3):
+                    una_peticion(model, frases[i], items, ref_text, 8, args.modo, seed=100 + i)
+                hog = Path(__file__).resolve().parents[1] / "common" / "carga_gpu.py"
+                resultados = {}
+                for duty in (0, 50, 100):
+                    proc = None
+                    if duty:
+                        proc = subprocess.Popen([sys.executable, str(hog), str(duty), "900"], stdout=subprocess.PIPE, text=True)
+                        assert proc.stdout.readline().strip() == "listo"
+                        time.sleep(1.0)
+                    try:
+                        for cs in (4, 8):
+                            ttfas, rtfs = [], []
+                            for rep in range(2):
+                                for i, frase in enumerate(frases):
+                                    ttfa, total, wav, sr, ft, n = una_peticion(model, frase, items, ref_text, cs, args.modo, seed=8000 + 10 * rep + i)
+                                    ttfas.append(ttfa)
+                                    rtfs.append(total / (len(wav) / sr))
+                            resultados[f"carga{duty}_cs{cs}"] = {"ciclo_carga_pct": duty, "chunk_size": cs, "ttfa_s": vb.summarize(ttfas), "rtf": vb.summarize(rtfs)}
+                            r = resultados[f"carga{duty}_cs{cs}"]
+                            print(f"carga {duty:3d} %, chunk_size={cs}: TTFA p50 {r['ttfa_s']['p50'] * 1000:.0f} ms, p95 {r['ttfa_s']['p95'] * 1000:.0f} ms | RTF p50 {r['rtf']['p50']:.3f}", flush=True)
+                    finally:
+                        if proc:
+                            proc.kill()
+                            proc.wait()
+                res["contencion"] = resultados
             elif args.fase == "velocidad":
                 # ¿Se puede pedir 1,1x / 1,25x? Qwen3-TTS Base no tiene parámetro de velocidad; lo único «nativo» es el argumento
                 # instruct (experimental en Base). Se mide el efecto real en la duración del audio y en el TTFA.

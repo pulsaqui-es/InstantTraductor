@@ -108,6 +108,26 @@ class ChatterboxEs:
         ).to(device=self.device)
         self.conds = Conditionals(t3_cond, s3gen_ref_dict)
         self._cond_emb = None
+        self._gen_full = None
+
+    def limit_decoder_prompt(self, seconds: float | None) -> None:
+        """Recorta la referencia que ve el decodificador S3Gen (tokens + mel) a los primeros `seconds` s (None = completa).
+
+        El flujo CFM procesa la referencia entera en cada chunk, así que su coste crece con la longitud de la referencia.
+        Solo para medir el compromiso latencia/calidad: el T3 sigue viendo su condicionamiento normal.
+        """
+        if getattr(self, "_gen_full", None) is None:
+            self._gen_full = dict(self.conds.gen)
+        full = self._gen_full
+        if seconds is None:
+            self.conds.gen = dict(full)
+            return
+        n = min(int(seconds * TOKEN_RATE), int(full["prompt_token"].shape[1]))
+        gen = dict(full)
+        gen["prompt_token"] = full["prompt_token"][:, :n]
+        gen["prompt_token_len"] = torch.tensor([n], dtype=full["prompt_token_len"].dtype, device=full["prompt_token"].device)
+        gen["prompt_feat"] = full["prompt_feat"][:, : 2 * n]
+        self.conds.gen = gen
 
     def _conditioning_embedding(self, exaggeration: float) -> torch.Tensor:
         """Embedding de condicionamiento de T3 (perceiver + voz + emoción), cacheado por (referencia, exageración)."""
@@ -133,8 +153,11 @@ class ChatterboxEs:
 
     # ------------------------------------------------------------------ T3: tokens de voz
     @torch.inference_mode()
-    def speech_tokens(self, text: str, *, cfg_weight=0.5, exaggeration=0.5, temperature=0.8, repetition_penalty=1.2, min_p=0.05, top_p=1.0, max_new_tokens=500):
-        """Generador de tokens de voz (uno a uno), con el mismo muestreo que T3.inference oficial. Termina al emitir EOS."""
+    def speech_tokens(self, text: str, *, cfg_weight=0.5, exaggeration=0.5, temperature=0.8, repetition_penalty=1.2, min_p=0.05, top_p=1.0, max_new_tokens=500, trace: dict | None = None):
+        """Generador de tokens de voz (uno a uno), con el mismo muestreo que T3.inference oficial. Termina al emitir EOS.
+
+        Con trace={} se guardan marcas de tiempo (prefill terminado y hora de cada token) para el desglose de la latencia.
+        """
         t3 = self.t3
         hp = t3.hp
         dev = self.device
@@ -170,6 +193,11 @@ class ChatterboxEs:
         out = t3.tfmr(inputs_embeds=inputs_embeds, past_key_values=None, use_cache=True)
         past = out.past_key_values
         hidden = out.last_hidden_state
+        if trace is not None:
+            torch.cuda.synchronize()
+            trace["t_prefill_done"] = time.perf_counter()
+            trace["prefill_tokens"] = int(inputs_embeds.shape[1])
+            trace["t_tokens"] = []
         for i in range(max_new_tokens):
             logits = t3.speech_head(hidden[:, -1:, :])[:, -1, :]
             if use_cfg:
@@ -183,6 +211,8 @@ class ChatterboxEs:
             nxt = torch.multinomial(torch.softmax(logits, dim=-1), num_samples=1)  # (1, 1)
             generated = torch.cat([generated, nxt], dim=1)
             tok = int(nxt.item())
+            if trace is not None:
+                trace["t_tokens"].append(time.perf_counter())
             if tok == hp.stop_speech_token:
                 return
             yield tok
@@ -257,13 +287,17 @@ class ChatterboxEs:
 
     # ------------------------------------------------------------------ streaming por chunks
     @torch.inference_mode()
-    def stream(self, text: str, *, first_chunk_tokens: int = 10, chunk_tokens: int = 25, ctx_tokens: int = 10, xfade_ms: float = 10.0, seed: int | None = None, n_cfm_timesteps: int | None = None, **gen):
+    def stream(self, text: str, *, first_chunk_tokens: int = 10, chunk_tokens: int = 25, ctx_tokens: int = 10, xfade_ms: float = 10.0, seed: int | None = None, n_cfm_timesteps: int | None = None, trace: dict | None = None, **gen):
         """Genera audio por chunks. Cada elemento: {'audio': np.float32, 'n_tokens': total de tokens hasta ahora, 'final': bool}.
 
         El primer chunk sale cuando hay first_chunk_tokens + 3 tokens (los 3 últimos son la mirada adelante del flujo).
+        Con trace={} se rellenan marcas de tiempo (t0, prefill, cada token, cada decodificación S3Gen) para el desglose.
         """
         if seed is not None:
             torch.manual_seed(seed)
+        if trace is not None:
+            trace["t0"] = time.perf_counter()
+            trace["emit"] = []
         xf = int(self.sr * xfade_ms / 1000)
         fade_in = np.linspace(0.0, 1.0, xf, dtype=np.float32) if xf else None
         toks: list[int] = []
@@ -275,7 +309,10 @@ class ChatterboxEs:
             nonlocal emitted, held
             ctx_start = max(0, emitted - ctx_tokens)
             win = toks[ctx_start:]
+            t_a = time.perf_counter()
             wav = self._decode(win, finalize=final, n_cfm_timesteps=n_cfm_timesteps)
+            if trace is not None:
+                trace["emit"].append((t_a, time.perf_counter(), len(win)))
             end_tok = len(toks) - (1 if final else LOOKAHEAD)  # en el final se descarta el último token (ruido antes del EOS)
             end_tok = max(end_tok, emitted)
             a0 = (emitted - ctx_start) * TOKEN_SAMPLES
@@ -294,7 +331,7 @@ class ChatterboxEs:
             emitted = end_tok
             return out
 
-        for tok in self.speech_tokens(text, **gen):
+        for tok in self.speech_tokens(text, trace=trace, **gen):
             if tok >= SPEECH_VOCAB:
                 continue
             toks.append(tok)
