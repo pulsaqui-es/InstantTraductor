@@ -19,10 +19,10 @@ humano elija escuchando (¿suena a España?); y se responde a «¿se puede pedir
 | | A: Qwen3-TTS 0,6B + faster-qwen3-tts | B: Chatterbox es-ES (PyTorch eager, fp32) |
 |---|---|---|
 | Funciona en Windows nativo + sm_120 | **Sí** (CUDA graphs capturan y se ejecutan) | **Sí** (con torch 2.11 cu130 en lugar del `torch==2.6.0` fijado) |
-| TTFA p50 / p95, configuración principal | **263 / 270 ms** (`chunk_size=8`); 179 / 182 ms (`chunk_size=4`); 117 / 122 ms (`chunk_size=1`) | **730 / 748 ms** (primer chunk de 10 tokens); 609 / 624 ms (5 tokens) |
+| TTFA p50 / p95, configuración principal | **263 / 270 ms** (`chunk_size=8`); 179 / 182 ms (`chunk_size=4`); 117 / 122 ms (`chunk_size=1`) | **726 / 748 ms** (primer chunk de 10 tokens); 609 / 624 ms (5 tokens) |
 | ¿Cumple TTFA p95 ≤ 0,6 s? | **Sí, con margen ×2 a ×5** | **No** tal cual (0,62-0,85 s); con 5 pasos CFM baja a 0,43 s (ver «Resultados») |
 | RTF (generación / audio) | 0,33 (`chunk_size=8`), 0,41 (4), 0,63 (1): 1,6× a 3× tiempo real | 1,12 en streaming (0,89× tiempo real: **no aguanta tiempo real continuo**); 0,65 por frase completa |
-| VRAM pico (NVML − línea base, con contexto CUDA) | 3,3 GiB (`torch` asignado 2,6 GiB) | 3,8 GiB (`torch` asignado 3,4 GiB) |
+| VRAM pico (NVML − línea base, con contexto CUDA) | 3 304 MiB ≈ 3,2 GiB (`torch` asignado 2 679 MiB) | 3 904 MiB ≈ 3,8 GiB (`torch` asignado 3 521 MiB) |
 | Carga del modelo | 6,1 s (+0,8 s de captura de grafos, +0,5 s del prompt de la referencia) | 6,0 s (+1,5 s de la referencia) |
 | Arranque en frío (1ª petición, sin calentar) | 1,42 s (incluye la captura perezosa de los grafos) | 1,00 s (total 3,9 s) |
 | Inteligibilidad (Whisper-small, 6 muestras) | WER medio 2,0 % | WER medio 3,0 % |
@@ -33,7 +33,8 @@ prefiere su acento al escuchar** (la elección final es de oído: no hay benchma
 de optimización (CUDA graphs en T3 y en el decodificador S3Gen, menos pasos CFM), porque el código actual no da TTFA ≤ 0,6 s p95 ni sostiene tiempo
 real en streaming continuo. Detalles, cifras y matices en las secciones siguientes.
 
-PENDIENTE_RESUMEN_EXTRA
+**Lo que decide el humano al escuchar** (no puedo oír el audio): (1) `ref_es_es_24k.wav`, la referencia, ¿suena a España?; (2) las 6 frases de A frente a las de B (rutas en «Muestras para escuchar»); (3) si el acento de A no convence, `extra\A_qwen3_xvec_NN.wav` (modo x-vector) y las variantes de B.
+**Riesgo nuevo y relevante para el plan:** con otro proceso ocupando la GPU el TTFA sube mucho (A: ×2 con el 50 % de carga ajena, ×7-10 con la GPU saturada); ver «Contención de GPU».
 
 ## Entorno
 
@@ -116,7 +117,7 @@ Cifras en bruto (incluida cada petición) en `resultados/*.json`; las tablas sal
 | `p10` (10+3, siguientes de 25) — **principal** | 0,4 s | 726 | **748** | 750 |
 | `p15` (15+3, siguientes de 25) | 0,6 s | 831 | **852** | 860 |
 
-- **RTF en streaming `p10`: p50 1,117, p95 1,321 (0,89× tiempo real)**: el bucle T3 + S3Gen no aguanta tiempo real continuo. Por frase completa (ruta oficial): tiempo hasta el audio completo p50 2,46 s, p95 4,29 s; RTF p50 0,648 (0,20 s por palabra).
+- **RTF en streaming `p10`: p50 1,117, p95 1,321 (0,89× tiempo real)**: el bucle T3 + S3Gen no aguanta tiempo real continuo (fila principal de 40 peticiones con frase completa; su TTFA fue p50 730 / p95 748 ms). Por frase completa (ruta oficial): tiempo hasta el audio completo p50 2,46 s, p95 4,29 s; RTF p50 0,648 (0,20 s por palabra).
 - **Desglose del primer chunk (`p10`, mediana de 10 frases):** prefill 27 ms + 13 pasos de T3 × 20,4 ms (265 ms) + decodificación S3Gen del primer chunk 433 ms (flujo CFM de 10 pasos con guía y vocoder HiFT) = **719 ms**.
   Dominan T3 (37 %) y, sobre todo, el decodificador S3Gen (60 %); parecen costes de lanzamiento de kernels desde Python (el tamaño de la referencia no influye, ver más abajo), que es justo lo que los CUDA graphs aceleran en A.
 - `cfg_weight=0` (una sola secuencia en vez de dos, sin guía): TTFA p50 729 ms, p95 782 ms; RTF 1,12. No ayuda (el coste es de lanzamiento de kernels, no de cómputo).
@@ -147,7 +148,8 @@ Estimación (no medida): con CUDA graphs en el paso de T3 (20 ms → ~6-8 ms) y 
 | Vía | Efecto medido (10 frases × 2 semillas, mismas semillas en cada variante) | TTFA |
 |---|---|---|
 | **A: argumento `instruct`** («Habla más rápido de lo normal», «Habla un 25 % más rápido», «Speak 25% faster than normal», «Habla muy deprisa…») | velocidad efectiva **mediana 0,99-1,05×**, con dispersión enorme (mín 0,89×, máx 1,76×: algunas salidas salen mucho más cortas, posibles palabras comidas). Sin efecto fiable; en Base es «experimental» según la propia biblioteca. | sin cambio (263 → 264-265 ms) |
-| PENDIENTE_VEL_B | | |
+| **B: `cfg_weight`** («ritmo»; la guía de Chatterbox dice que valores altos aceleran) | velocidad efectiva mediana: `cfg_weight` 0,0 → 0,91×; 0,3 → 0,98×; **0,5 (base) → 1,00×**; 0,8 → 1,07×; **1,0 → 1,10×**; 1,5 → 1,12×; **2,5 → 1,24×**. Dispersión por frase de ±10-20 % (p. ej. con 1,0: 0,96× a 1,21×) y calidad no evaluada (valores altos suelen dar artefactos: hay una muestra por variante en `muestras\velocidad\B_chatterbox_cfg*_02.wav`). | no medido; mismo coste por paso (batch 2) |
+| B: `exaggeration` (0,3 a 1,2) | **sin efecto** (0,99-1,02×) | n/a |
 | **Post-proceso: time-stretch del PCM en streaming** (TDHS de la biblioteca C «stretch», la familia de Sonic, o WSOLA) | **factor exacto**: 1,099-1,103× y 1,248-1,249× (TDHS); 1,104-1,105× y 1,257-1,260× (WSOLA) | ver abajo |
 
 **Recomendación: control de velocidad por post-proceso**, en un `RateController` que trabaje sobre el PCM que sale de cualquiera de los motores (coincide con la política de ritmo del informe de traducción y voz, §3.8). Medido con
@@ -158,9 +160,22 @@ chunks de 83, 200, 333 y 667 ms (los tamaños que emiten A y B), sobre 4 muestra
   En la práctica el primer audio sale inmediatamente con el factor aplicado y todo el audio posterior llega ~30-45 ms más tarde de lo que llegaría sin estirar; a cambio cada segundo de voz dura 0,91 s (1,1×) o 0,8 s (1,25×), así que el retraso acumulado baja.
 - TDHS y WSOLA dan el mismo factor y coste; cuál suena mejor a 1,25× lo decide el oído con `muestras\velocidad\`. El informe de traducción y voz ya sitúa 1,0-1,25× como casi imperceptible y >1,4× como notable.
 
-PENDIENTE_VEL_NOTA
+**Respuesta corta:** sí se puede pedir 1,1× y 1,25×, pero solo por post-proceso (exacto, +0,1-2,7 ms de cómputo y 28-46 ms de retraso algorítmico, sin tocar el TTFA del motor). En A no hay ninguna vía nativa útil; en B, `cfg_weight` ≈ 1,0 y ≈ 2,5 dan
+~1,1× y ~1,24× de forma indirecta y ruidosa.
 
-PENDIENTE_CONTENCION
+### Contención de GPU (prueba sintética)
+
+`resultados/qwen3_contencion.json` y `chatterbox_contencion.json` (40 peticiones por celda; TTFA con la referencia cacheada y calentado). Otro proceso multiplica matrices fp16 de 4096² en bucle con un ciclo de trabajo dado, para imitar de forma tosca al ASR y a la traducción
+compartiendo la GPU (WDDM reparte el tiempo entre procesos):
+
+| Carga ajena en la GPU | A `chunk_size=4`: TTFA p50 / **p95** (RTF) | A `chunk_size=8`: TTFA p50 / **p95** (RTF) | B `p5`: TTFA p50 / **p95** | B `p10`: TTFA p50 / **p95** (RTF) |
+|---|---|---|---|---|
+| ninguna | 179 / **181** ms (0,37) | 263 / **266** ms (0,33) | 596 / **629** ms | 719 / **748** ms (1,14) |
+| 50 % del tiempo | 336 / **354** ms (0,70) | 491 / **512** ms (0,61) | 976 / **1 019** ms | 1 184 / **1 261** ms (1,84) |
+| 100 % (saturada) | 1 774 / **1 838** ms (1,31) | 1 969 / **2 072** ms (1,15) | 2 011 / **2 038** ms | 2 534 / **2 576** ms (4,22) |
+
+Con otra carga a la mitad, el TTFA se duplica y A sigue dentro de 0,6 s (`chunk_size=4` con holgura, `chunk_size=8` por poco); con la GPU saturada por otro proceso el TTFA de A pasa a ~2 s y el RTF a >1 (deja de sostener tiempo real) y B empeora más. **El TTS no puede compartir la GPU con
+un trabajo que la sature**: hace falta planificar los motores (no solapar ráfagas largas de ASR/traducción con la síntesis, o priorizar el TTS) y medir el TTFA con el stack completo en marcha.
 
 ## Voz de referencia y origen/licencia
 
@@ -210,7 +225,8 @@ En `%LOCALAPPDATA%\InstantTraductor\spikes\voz\muestras\` (WAV PCM16 mono 24 kHz
 - A se generó por la ruta de streaming (`chunk_size=8`, ICL con la referencia, semilla fija por frase). B, por la ruta oficial de frase completa (`generate`-equivalente, con marca de agua PerTh), que es la calidad
   de referencia del modelo; la ruta de streaming de B (con empalmes entre chunks) está en `extra\B_chatterbox_stream_NN.wav` para comprobar que no se oyen costuras.
 - `muestras\extra\` tiene variantes para decidir con el oído: B con menos pasos CFM / referencia corta del decodificador (`B_chatterbox_p5_tf32_cfm5_NN`, `…_cfm5_ref3s_NN`, `…_cfm3_ref3s_NN`: muestran si la optimización de
-  latencia cuesta calidad), las dos normalizaciones de texto de B (`B_chatterbox_space_NN` / `B_chatterbox_pip_NN`) y A en modo x-vector (`A_qwen3_xvec_NN`, si se genera).
+  latencia cuesta calidad), las dos normalizaciones de texto de B (`B_chatterbox_space_NN` / `B_chatterbox_pip_NN`: generadas antes de normalizar el pico, con algún recorte; solo sirven para la comparación con el ASR),
+  A en modo x-vector (`A_qwen3_xvec_NN`) y A con chunks de 83 ms (`A_qwen3_cs1_NN`).
 - `muestras\velocidad\` tiene muestras estiradas a 1,10× y 1,25× (TDHS y WSOLA) para juzgar cuánto se nota.
 - Whisper-small transcribe las 12 muestras principales con WER medio 2,0 % (A) y 3,0 % (B): son inteligibles. Eso **no** dice nada del acento ni de la naturalidad.
 
@@ -236,7 +252,7 @@ En `%LOCALAPPDATA%\InstantTraductor\spikes\voz\muestras\` (WAV PCM16 mono 24 kHz
 9. **Hugging Face con caché en Windows** duplica el disco si no hay enlaces simbólicos: los modelos se descargan con `local_dir` a `%LOCALAPPDATA%\InstantTraductor\models\`.
 10. **LibriVox caído (Cloudflare 522)** durante la sesión: el audio se bajó de Internet Archive (que aloja las mismas grabaciones); el origen geográfico del lector no se pudo consultar (ver «Voz de referencia»).
 11. **Transcripción de la referencia:** Qwen3 en modo ICL necesita `ref_text`. La única herramienta extra es Whisper-small en CPU (MIT, 0,97 GB), que no entra en el brief pero hace falta para esto y para detectar audio roto; su texto se contrastó con el
-    texto del libro (Gutenberg) y se eligió el tramo cuyas 16 palabras coinciden exactamente.
+    texto del libro (Gutenberg) y se eligió el tramo cuyas 15 palabras coinciden exactamente.
 
 ### Limitaciones del spike (qué no se ha medido)
 
@@ -246,6 +262,27 @@ En `%LOCALAPPDATA%\InstantTraductor\spikes\voz\muestras\` (WAV PCM16 mono 24 kHz
 - **B con streaming propio:** el paquete oficial no lo trae; `cb_es.py` sigue el enfoque de los forks de la comunidad (contexto a la izquierda de 10 tokens y fundido de 10 ms). Sus empalmes no se han evaluado de oído (hay muestras en `extra\`); el TTFA sí es el de ese código.
 - **Sin sesiones largas ni frases de 1-3 palabras:** no se ha buscado fugas de VRAM en horas de uso, ni el comportamiento con cláusulas muy cortas (issue #96 de `faster-qwen3-tts`: saltos de prosodia entre chunks).
 - **Carga:** medida con los ficheros en la caché de disco del sistema operativo (un arranque realmente frío leerá ~2,5 GB de A o ~3,3 GB de B del SSD).
+
+## Conclusión y recomendación para el plan
+
+**¿Cumple TTFA p95 ≤ 0,6 s?**
+
+- **A (Qwen3-TTS-0,6B + faster-qwen3-tts): sí.** p95 de 270 ms con `chunk_size=8`, 182 ms con 4 y 122 ms con 1 (en x-vector, 258 / 170 / 105 ms). Con otra carga ajena del 50 % en la GPU: 512 ms (`chunk_size=8`) y 354 ms (4), todavía dentro; con la GPU saturada, no (≈ 2 s).
+- **B (Chatterbox es-ES): no tal cual.** p95 de 748 ms (primer chunk de 10 tokens) y 624 ms (5 tokens). Con 5 pasos CFM baja a 0,43 s, pero el RTF sigue en 1,0-1,1 (no sostiene tiempo real continuo), y con carga ajena del 50 % pasa de 1,0 s.
+
+**Veredicto del hito 0: GO con A en Windows nativo + sm_120, sin WSL2.** El riesgo nº 2 de ADR-0008 (CUDA graphs en Windows/sm_120) queda cerrado: los grafos capturan y dan 20,9 ms por paso. La elección final entre A y B sigue siendo del humano, de oído, porque no hay benchmark de acento es-ES.
+
+**Recomendaciones para el plan y la spec 001:**
+
+1. **Motor por defecto: A**, salvo que al escuchar `muestras\` el humano prefiera el acento de B. Mantener el `Cloner` intercambiable detrás del mismo contrato (A emite PCM float32 a 24 kHz en chunks de 83 ms × `chunk_size`).
+2. **Parámetros iniciales de A:** `chunk_size=4` (TTFA p95 182 ms, RTF 0,41; sube a 8 si se oyen saltos de prosodia entre chunks); modo ICL con el `ref_text` que ya da la ASR y `x_vector_only` como rescate (acento o arranque en frío; 15-20 ms menos de TTFA y 0,5 GiB menos de VRAM);
+   llamar a `warmup()` al arrancar el servicio (0,8 s; sin él la 1ª petición tarda 1,4 s) y cachear el prompt de la referencia por personaje (0,5 s por referencia nueva). Entorno propio con `transformers==5.15.1` (la 5.18 rompe `qwen-tts-hf`).
+3. **VRAM:** A ocupa 3 304 MiB (2 767 MiB en x-vector) y B 3 904 MiB, además del ~1,8 GiB del escritorio: A encaja en los ~8 GB útiles del plan junto a ASR y traducción.
+4. **Velocidad (1,1× y 1,25×):** un `RateController` con time-stretch en streaming (TDHS o WSOLA) en el núcleo (CPU, 3-4 ms por segundo de audio; +28-46 ms de retraso algorítmico), no `instruct` ni `cfg_weight`.
+5. **Contención de GPU:** es el riesgo principal que queda. Hay que planificar los motores (no solapar ráfagas largas de ASR o traducción con la síntesis, o dar prioridad al TTS) y repetir la medición de TTFA con el stack completo en marcha (y sin juego simultáneo, como decidió el humano).
+6. **Si el humano elige B:** presupuestar optimización antes de la spec 001: CUDA graphs en el paso de T3 (20,4 ms) y en el flujo CFM (~45 ms por paso), 5 pasos CFM en lugar de 10 (−300 ms de TTFA; comprobar la calidad con `extra\B_chatterbox_p5_tf32_cfm5_NN.wav`),
+   quizá T3 y S3Gen en procesos distintos para solaparlos; y volver a medir. Con el código actual no sostiene tiempo real.
+7. **Pendiente (fuera de este spike):** el veredicto de acento del humano; sesiones largas (fugas de VRAM); cláusulas de 1-3 palabras; cambio de referencia a mitad de sesión; calidad con la referencia definitiva que elija el humano.
 
 ## Cómo reproducir
 
@@ -273,6 +310,8 @@ uv run python bench_qwen3.py --fase completa               # calentamiento, barr
 uv run python bench_qwen3.py --fase completa --modo xvec --sin-muestras --salida qwen3_completa_xvec.json
 uv run python bench_qwen3.py --fase velocidad              # efecto de «instruct» en la velocidad
 uv run python bench_qwen3.py --fase contencion             # TTFA con otra carga en la GPU
+uv run python bench_qwen3.py --fase completa --modo xvec --chunk-sizes 8 --repeticiones 1 --subcarpeta-muestras extra --prefijo-muestras A_qwen3_xvec --salida qwen3_xvec_muestras.json
+uv run python bench_qwen3.py --fase completa --chunk-sizes 1 --repeticiones 1 --chunk-muestras 1 --subcarpeta-muestras extra --prefijo-muestras A_qwen3_cs1 --salida qwen3_cs1_muestras.json
 
 # 5. Mediciones B (Chatterbox es-ES)
 cd spikes/voz/chatterbox
@@ -281,7 +320,9 @@ uv run python bench_chatterbox.py --fase completa --muestras-stream    # streami
 uv run python bench_chatterbox.py --fase completa --ab-texto           # dos normalizaciones de texto (muestras en extra\)
 uv run python bench_chatterbox.py --fase optim                         # TF32 / pasos CFM / referencia corta
 uv run python bench_chatterbox.py --fase velocidad                     # cfg_weight y exaggeration frente a la velocidad
+uv run python bench_chatterbox.py --fase velocidad --variantes cfg1.0,cfg1.5,cfg2.5 --salida chatterbox_velocidad_cfg_alto.json
 uv run python bench_chatterbox.py --fase contencion
+uv run python bench_chatterbox.py --fase completa --solo-muestras --muestras-stream --salida chatterbox_muestras_ajuste.json   # regenera las 6 muestras (y las de streaming en extra\)
 
 # 6. Comprobaciones en CPU (sin mediciones de GPU en marcha: compiten por CPU)
 cd spikes/voz/qwen3;      uv run python ../common/asr_check.py A_qwen3
