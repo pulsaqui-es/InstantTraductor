@@ -16,7 +16,8 @@
 - **La puntuación de Nemotron no sirve para cortar frases.** Mayúsculas sí (los finales empiezan en mayúscula y salen los nombres propios). Comas solo con
   `blank_penalty` ≥ 1 (3,5 por 100 palabras). **Punto final casi nunca** (1 % de los finales). Subir `blank_penalty` lo mejora, pero cuesta WER (+0,6 a +3,5 puntos).
 - **Motor B (Whisper turbo FP16):** 2,3 GB de VRAM (pico 2,4 GB), 139 ms por segmento (p95 303 ms), CPU casi nula, puntuación buena (63-67 % de finales con `. ? !`),
-  pero **sin parciales**: el primer texto llega al cerrar el segmento (p50 4,8 s). WER 5,82 % y 6,14 % **con cortes forzados a 5 s**; la comparación de calidad con A no es concluyente.
+  pero **sin parciales**: el primer texto llega al cerrar el segmento (p50 4,8 s). **Es más preciso que A sobre el enunciado entero (WER 3,42 % frente a 5,05 %)**, pero los
+  **cortes forzados a 5 s de la ADR le suben el WER a 5,82 % (frases sueltas) y 6,14 % (habla continua)**. A no pierde nada por el VAD ni por la puerta (5,05 % y 5,90 % con y sin tubería).
 - **Dos correcciones para el plan:** declarar `sherpa-onnx-core` explícitamente en el `pyproject.toml` (uv lo pierde) y **no usar el endpoint nativo** de sherpa-onnx
   (WER 11,3 %, final 1,0 s).
 
@@ -32,7 +33,7 @@ alternativo:
 
 ## Entorno
 
-Mediciones del 2026-10-01 (de las 00:20 a las 02:40), con otros obreros trabajando a la vez en la misma máquina (ver «Carga ajena»).
+Mediciones del 2026-10-01 (de las 00:20 a las 02:40; las líneas base sin VAD, hacia las 10:00), con otros obreros trabajando a la vez en la misma máquina (ver «Carga ajena»).
 
 | Componente | Versión / dato |
 |---|---|
@@ -110,7 +111,7 @@ Todas las cifras salen de `results/*.json` (`uv run python report.py ...`). Las 
 
 | Métrica | **A: Nemotron 560 ms** | A: Nemotron 160 ms | **B: Whisper turbo FP16** | A 160 ms con endpoint nativo (sin VAD) |
 |---|---|---|---|---|
-| WER normalizado | **5,05 %** | 5,90 % | 5,82 % | 11,29 % |
+| WER normalizado | **5,05 %** | 5,90 % | 5,82 % (con corte forzado a 5 s; 3,42 % con el enunciado entero, tabla 6) | 11,29 % |
 | Errores sustituciones / borrados / inserciones (de 1 169) | 46 / 8 / 5 | 56 / 10 / 3 | 36 / 11 / 21 | 55 / 72 / 5 |
 | Primer parcial (en B: primer texto del segmento) | 1,07 / 1,12 | **0,73 / 1,06** | 4,84 / 8,27 | 0,81 / 4,02 |
 | Final desde el fin real del habla | **0,67 / 0,78** | 0,69 / 0,75 | 0,71 / 0,82 | 1,01 / 1,46 |
@@ -202,7 +203,22 @@ apreciable con 2-3, pagando 0,6-3,5 puntos de WER (más inserciones).
 
 El tamaño del trozo de entrada (20-100 ms) casi no cambia nada: el final se retrasa unos 0,03 s con 100 ms.
 
-### Tabla 6: ¿da puntuación y mayúsculas?
+### Tabla 6: WER sin segmentar ni VAD (cada enunciado entero, 73 enunciados)
+
+Separa lo que da cada modelo de lo que cuesta la tubería (`baseline_offline.py`; sin pacing ni VAD; A con 4 hilos).
+
+| Motor | WER % | S / D / I | Comas / 100 pal. | Marcas finales / 100 pal. | Textos con `. ? !` | RTF (sin pacing) |
+|---|---|---|---|---|---|---|
+| A: Nemotron 560 ms, `blank_penalty` 1 | **5,05** | 45 / 10 / 4 | 4,1 | 0,9 | 1 % | 0,167 |
+| A: Nemotron 160 ms, `blank_penalty` 1 | 5,90 | 49 / 14 / 6 | 4,5 | 0,8 | 1 % | 0,445 |
+| B: Whisper turbo FP16, haz 1 | **3,42** | 32 / 5 / 3 | 4,2 | 5,0 | 70 % | 0,023 |
+| B: Whisper turbo FP16, haz 5 | **3,42** | 32 / 5 / 3 | 3,0 | 4,4 | 64 % | 0,025 |
+
+- **La tubería de A no añade errores:** el WER con VAD, puerta y vaciado (tablas 1 y 4) es el mismo que con el enunciado entero (5,05 % y 5,90 %).
+- **Whisper turbo es más preciso en este audio** (3,42 %, un 32 % menos de errores que A 560 ms; haz 1 y haz 5 empatan), pero **los cortes forzados a 5 s le cuestan 2,4 puntos** (5,82 % en la tubería, con 21 inserciones por palabras repetidas en los cortes).
+- B sin cortes forzados dentro de la tubería (VAD solo) no se midió: ver «Límites y pendientes».
+
+### Tabla 7: ¿da puntuación y mayúsculas?
 
 | Texto | Comas / 100 pal. | Marcas finales / 100 pal. | Finales con `. ? !` | Palabras en mayúscula / 100 pal. | Finales que empiezan en mayúscula |
 |---|---|---|---|---|---|
@@ -269,7 +285,7 @@ El motor B esperó 263,7 s al candado de GPU (otro obrero medía en ese momento)
 
 1. **Usar la exportación de 560 ms por defecto** (`num_threads=2`, `blank_penalty=1.0`, Silero con 500 ms de silencio): WER 5,05 % (3,9 % en habla continua), final p50 0,67 s / p95 0,78 s desde el fin real del habla, 0,4-0,5 núcleos,
    ~850 MB de RAM, sin VRAM, sin deriva en 10 min. Encaja en el presupuesto de ASR de `docs/arquitectura.md` (≤ 0,8 s), pero con poco margen en p95 (0,78 s) y bajo carga ajena. La de 160 ms solo compensa si hacen falta parciales más
-   ágiles (primer parcial 0,73 s en lugar de 1,07 s) y cuesta 2,5-3 veces más CPU y +0,85 puntos de WER. Con 1 hilo, 560 ms sigue yendo holgado (RTF 0,30, 0,3 núcleos) con +0,08 s de final: es la opción si la CPU escasea.
+   ágiles (primer parcial 0,73 s en lugar de 1,07 s) y cuesta unas 3 veces más CPU (2,7-3,1) y +0,85 puntos de WER. Con 1 hilo, 560 ms sigue yendo holgado (RTF 0,30, 0,3 núcleos) con +0,08 s de final: es la opción si la CPU escasea.
 2. **El silencio del VAD manda en la latencia del final** (0,57 s de 0,67 s). Con 300 ms: final p50 0,49 s / p95 0,59 s, a cambio de 23 segmentos más (116 frente a 93, más cortes a mitad de frase) y +0,5 puntos de WER.
    El texto está completo ~0,3 s después del fin real del habla, así que el planificador puede adelantar la confirmación (texto estable + silencio del VAD) sin esperar al `final`.
 3. **No contar con la puntuación de Nemotron para cortar en oraciones.** Hay mayúsculas y comas (con `blank_penalty ≥ 1`), pero casi ningún punto final (1 % de los finales; 14-28 % con `blank_penalty` 2-3 a costa de +0,6 a +1,4 puntos de WER con
@@ -278,16 +294,16 @@ El motor B esperó 263,7 s al candado de GPU (otro obrero medía en ese momento)
    (15-21 % de los parciales). El `final` coincide con el último parcial en 82-93 % de los segmentos. Eventos observados: `speech_start`, `partial` (cada 160 o 560 ms de audio), `final` y `endpoint`.
 5. **Dependencias y arranque:** `sherpa-onnx-core` explícito (problema 1); onnxruntime de pip (Silero) y sherpa-onnx pueden compartir proceso; **no usar el endpoint nativo** (WER 11,3 %, final 1,0 s) sino VAD + vaciado + stream nuevo por tramo;
    que no haga falta CUDA para el ASR principal.
-6. **Motor B como respaldo y referencia, no como vía de baja latencia.** FP16 en sm_120 funciona; 2,3 GB de VRAM (2,4 GB de pico, a sumar al presupuesto de `docs/arquitectura.md`), 139 ms de mediana por segmento (p95 303 ms) y CPU casi nula. Sin parciales:
-   el primer texto de un segmento llega p50 4,8 s / p95 8,3 s tras empezar a hablar (el final, p50 0,71 s tras el fin real, igual que A). Con cortes forzados a 5 s el WER sube (5,82 % y 6,14 %, con 21 y 12 inserciones por palabras repetidas en los cortes).
-   Precalentarlo al arrancar (17,7 s en frío). Sirve para ja/zh (spec 004) y para puntuar frases ya cerradas.
-7. **La comparación de calidad A frente a B no está cerrada.** Este audio es lectura limpia de un solo hablante, de un dominio (audiolibros de LibriVox) muy cercano al de entrenamiento (la ficha de Nemotron cita LibriLight), así que 5,05 % frente a 5,82 % no distingue a los motores. Con música, efectos, acentos
-   y otros hablantes, la medición con corpus propio es la de la spec 002, como dice la ADR.
+6. **Motor B como respaldo y referencia de calidad, no como vía de baja latencia.** FP16 en sm_120 funciona; 2,3 GB de VRAM (2,4 GB de pico, a sumar al presupuesto de `docs/arquitectura.md`), 139 ms de mediana por segmento (p95 303 ms) y CPU casi nula. Sin parciales:
+   el primer texto de un segmento llega p50 4,8 s / p95 8,3 s tras empezar a hablar (el final, p50 0,71 s tras el fin real, igual que A). **El corte forzado a 5 s de la ADR cuesta 2,4 puntos de WER** (3,42 % con el enunciado entero, 5,82 % en la tubería; 6,14 % en habla continua):
+   con segmentos así B no gana a A 560 ms (5,05 %). Cortes más largos o por frontera de cláusula, o un solapamiento entre segmentos, mejorarían el WER a costa de latencia: no medido. Precalentarlo al arrancar (17,7 s en frío). Sirve para ja/zh (spec 004) y para puntuar frases ya cerradas.
+7. **Calidad A frente a B:** sobre enunciados enteros, B es claramente mejor en este audio (3,42 % frente a 5,05 %); en streaming, A conserva su WER y B pierde con los cortes. Este audio es lectura limpia de un solo hablante, de un dominio (audiolibros de LibriVox)
+   muy cercano al de entrenamiento (la ficha de Nemotron cita LibriLight), así que las cifras absolutas son optimistas. Con música, efectos, acentos y otros hablantes, la medición con corpus propio es la de la spec 002, como dice la ADR.
 
 ## Límites y pendientes
 
-- **Pendiente (el script ya está):** WER de B **sin cortes forzados y con haz 5** (`run_engine_b.py --variant …:gapped:fast:5:0`), y WER de ambos motores sobre enunciados enteros sin VAD (`baseline_offline.py`); servirían para separar lo que cuesta la tubería de lo que da cada
-  modelo. `report.py --section b` y `--section baselines` generan sus tablas cuando existan.
+- **Pendiente (el script ya está):** WER de B **dentro de la tubería sin corte forzado** y con otros largos de corte (3, 8 y 15 s) y haz 5 (`run_engine_b.py --variant etiqueta:gapped:fast:1:0`, `…:1:8`, `…:5:5`), para cuantificar cuánto WER recupera B a costa de latencia.
+  `report.py --section b` genera su tabla. También quedan sin ejecutar los barridos «de relleno»: relleno de ceros del vaciado y silencio de cierre en modo rápido (`report.py --section a-misc`).
 - No medido: música y efectos, otros hablantes y acentos, GPU para Nemotron (rueda `+cuda12.cudnn9` de sherpa-onnx), INT8 de CTranslate2, ejecuciones de más de 10 min, Python 3.13.
 - Las latencias son p50/p95 de 28-93 segmentos por ejecución y cada medición se hizo una sola vez, con carga ajena variable: las diferencias de pocas centésimas de segundo no son concluyentes.
 - El oráculo de «habla real» (energía) tiene una incertidumbre de unas decenas de ms (contraste con Silero arriba).
@@ -346,7 +362,7 @@ Notas:
 | `asrspike/sysinfo.py`, `gpumem.py` | sistema, carga ajena (CPU/GPU) y VRAM del proceso |
 | `fetch_assets.py`, `build_corpus.py` | descargan modelos y audio; montan los flujos (fuera del repo) |
 | `run_engine_a.py`, `run_engine_b.py` | medición de cada motor |
-| `baseline_offline.py`, `punct_extra.py`, `reanalyze.py`, `report.py` | línea base sin VAD (sin ejecutar, ver «Límites»), extra de puntuación, reanálisis y tablas |
+| `baseline_offline.py`, `punct_extra.py`, `reanalyze.py`, `report.py` | WER sin VAD con enunciados enteros, extra de puntuación, reanálisis y tablas |
 | `campaign/` | `paced_runs.sh` y `bp_sweep.sh` (las campañas que produjeron `results/`) y `wait_quiet.py` (espera a que el equipo esté tranquilo) |
 | `results/` | JSON de cada ejecución, `punct_extra.json` y `events/` con los eventos crudos de las ejecuciones en tiempo real |
 
