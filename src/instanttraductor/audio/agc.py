@@ -106,7 +106,7 @@ class AutoGain:
 
         gain = 10 ** (self._gain_db / 20)
         ramp = (self._applied + (gain - self._applied) * (np.arange(1, count + 1) / count)).astype(np.float32)
-        out = samples * ramp
+        out = (samples * ramp).astype(np.float32, copy=False)
         peak = float(np.max(np.abs(out)))
         if peak > _PEAK_LIMIT:
             scale = _PEAK_LIMIT / peak
