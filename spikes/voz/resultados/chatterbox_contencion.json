@@ -1,0 +1,196 @@
+{
+  "candidato": "B: Chatterbox Multilingual es-ES (T3 es-es + S3Gen v3), PyTorch eager, fp32",
+  "fase": "contencion",
+  "parametros_generacion": {
+    "cfg_weight": 0.5,
+    "exaggeration": 0.5,
+    "temperature": 0.8,
+    "repetition_penalty": 1.2,
+    "min_p": 0.05,
+    "top_p": 1.0,
+    "texto": "space"
+  },
+  "referencia": {
+    "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\ref\\ref_es_es_24k.wav"
+  },
+  "frases_medicion": [
+    "Vale, nos vemos luego en casa de Laura.",
+    "¿Vosotros sabéis dónde he dejado las llaves del coche?",
+    "No me lo puedo creer, otra vez se ha roto el ordenador.",
+    "Tranquilo, tío, que lo arreglamos mañana por la mañana.",
+    "Buenas noches, ¿qué tal todo?",
+    "El tren con destino a Barcelona saldrá de la vía cuatro en cinco minutos.",
+    "Me ha llamado mi madre al móvil y no he podido cogerlo.",
+    "Vamos a tener que darnos prisa si queremos llegar antes de que empiece la película.",
+    "Aquí tenéis la cuenta, y gracias por venir a nuestro restaurante.",
+    "¡Cuidado! Viene un coche por la derecha y no va a frenar.",
+    "Dicen que mañana lloverá en casi toda la península, aunque por la tarde saldrá el sol en el sur.",
+    "¿Sabes qué hora es? Llevamos esperando casi una hora en la puerta.",
+    "El presidente del gobierno anunció ayer que subirá el salario mínimo a partir del próximo año.",
+    "Nunca pensé que fuera a decirte esto, pero creo que has cometido un error enorme.",
+    "¿Puedes bajar el volumen, por favor?",
+    "Vale, de acuerdo, pero esta vez pagáis vosotros la cena.",
+    "En el capítulo anterior descubrimos que el protagonista llevaba años ocultando su verdadera identidad a toda su familia.",
+    "Los científicos han descubierto una nueva especie de pez en las profundidades del océano Atlántico, a más de tres mil metros.",
+    "Si me das un minuto, te explico con calma todo lo que ha pasado esta mañana en la oficina, porque no ha sido culpa mía.",
+    "Atención, pasajeros del vuelo con destino a Sevilla: la puerta de embarque ha cambiado, diríjanse a la puerta doce inmediatamente, por favor."
+  ],
+  "espera_candado_s": 503.1,
+  "entorno": {
+    "python": "3.12.14",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "paquetes": {
+      "chatterbox-tts": "0.1.7",
+      "transformers": "5.2.0",
+      "torch": "2.11.0+cu130",
+      "torchaudio": "2.11.0+cu130",
+      "numpy": "1.26.4",
+      "librosa": "0.11.0",
+      "safetensors": "0.5.3",
+      "huggingface-hub": "1.33.0",
+      "resemble-perth": "1.0.1",
+      "s3tokenizer": "0.3.0",
+      "diffusers": "0.29.0",
+      "spacy-pkuseg": "1.0.1"
+    },
+    "torch": "2.11.0+cu130",
+    "cuda_build": "13.0",
+    "arch_list": [
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120"
+    ],
+    "sm_120": true,
+    "gpu": {
+      "nombre": "NVIDIA GeForce RTX 5070",
+      "vram_total_mib": 12199,
+      "cc": "12.0"
+    },
+    "driver_nvidia": "616.64"
+  },
+  "vram_linea_base_mib": {
+    "nvml": 2378.3,
+    "nvidia_smi": 2095.0,
+    "total": 12227
+  },
+  "carga_modelo_s": 6.37,
+  "carga_s3gen_claves_ausentes": [
+    "tokenizer._mel_filters",
+    "tokenizer.window"
+  ],
+  "carga_s3gen_claves_inesperadas": [],
+  "vram_tras_carga": {
+    "nvml_mib": 5050.4,
+    "torch_allocated_mib": 3074.7,
+    "torch_reserved_mib": 3094.0
+  },
+  "preparar_referencia_s": 1.485,
+  "contencion": {
+    "carga0_p5": {
+      "ciclo_carga_pct": 0,
+      "config": "p5",
+      "ttfa_s": {
+        "n": 40,
+        "mean": 0.5994137200075784,
+        "p50": 0.5955920000269543,
+        "p95": 0.6288907050067791,
+        "min": 0.5799731000442989,
+        "max": 0.6381344000110403
+      }
+    },
+    "carga0_p10": {
+      "ciclo_carga_pct": 0,
+      "config": "p10",
+      "ttfa_s": {
+        "n": 40,
+        "mean": 0.7227069824963109,
+        "p50": 0.7185448999807704,
+        "p95": 0.7480925549985841,
+        "min": 0.6976010000216775,
+        "max": 0.7710770000121556
+      },
+      "rtf": {
+        "n": 8,
+        "mean": 1.1577406795778167,
+        "p50": 1.1411553172176152,
+        "p95": 1.3082912298391678,
+        "min": 1.0368114176306202,
+        "max": 1.3334009883692488
+      }
+    },
+    "carga50_p5": {
+      "ciclo_carga_pct": 50,
+      "config": "p5",
+      "ttfa_s": {
+        "n": 40,
+        "mean": 0.9771769774990389,
+        "p50": 0.9757009500171989,
+        "p95": 1.0190062099834905,
+        "min": 0.9038042000029236,
+        "max": 1.0241134999669157
+      }
+    },
+    "carga50_p10": {
+      "ciclo_carga_pct": 50,
+      "config": "p10",
+      "ttfa_s": {
+        "n": 40,
+        "mean": 1.1918814875010866,
+        "p50": 1.1840887000435032,
+        "p95": 1.261186694985372,
+        "min": 1.1019626000197604,
+        "max": 1.271890500036534
+      },
+      "rtf": {
+        "n": 8,
+        "mean": 1.8699905246324249,
+        "p50": 1.8386159274779992,
+        "p95": 2.1086605262062834,
+        "min": 1.6626977011489137,
+        "max": 2.140325872088122
+      }
+    },
+    "carga100_p5": {
+      "ciclo_carga_pct": 100,
+      "config": "p5",
+      "ttfa_s": {
+        "n": 40,
+        "mean": 2.0072169550025136,
+        "p50": 2.0110956999997143,
+        "p95": 2.037736795042292,
+        "min": 1.9080152999958955,
+        "max": 2.0587654000264592
+      }
+    },
+    "carga100_p10": {
+      "ciclo_carga_pct": 100,
+      "config": "p10",
+      "ttfa_s": {
+        "n": 40,
+        "mean": 2.5359786724977313,
+        "p50": 2.5340866000042297,
+        "p95": 2.5759052249690284,
+        "min": 2.455556000000797,
+        "max": 2.602997099980712
+      },
+      "rtf": {
+        "n": 8,
+        "mean": 4.293934719601237,
+        "p50": 4.222111659014329,
+        "p95": 4.780449284684867,
+        "min": 3.8923965900390627,
+        "max": 4.865899418587634
+      }
+    }
+  },
+  "vram_pico": {
+    "torch_max_allocated_mib": 3473.9,
+    "torch_max_reserved_mib": 3568.0,
+    "nvml_pico_total_mib": 5815.8,
+    "nvidia_smi_ahora_mib": 5260.0,
+    "nvml_pico_menos_linea_base_mib": 3437.5
+  }
+}

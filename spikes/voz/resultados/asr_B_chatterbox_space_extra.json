@@ -1,0 +1,60 @@
+{
+  "wer_medio": 0.03,
+  "wer_max": 0.071,
+  "muestras": [
+    {
+      "muestra": "B_chatterbox_space_01.wav",
+      "audio_s": 5.28,
+      "palabras": 14,
+      "palabras_por_s": 2.65,
+      "wer": 0.071,
+      "texto": "Vale, ¿vosotros venís en coche o cogéis el autobús? Yo llego en veinte minutos.",
+      "asr": "Vale, vosotros venis en coche o cogeis el autobús. Yo llego en 20 minutos."
+    },
+    {
+      "muestra": "B_chatterbox_space_02.wav",
+      "audio_s": 5.08,
+      "palabras": 19,
+      "palabras_por_s": 3.74,
+      "wer": 0.0,
+      "texto": "Se me ha estropeado el ordenador y no encuentro el móvil, así que hoy no puedo contestar a nadie.",
+      "asr": "Se me ha estropeado el ordenador y no encuentro el móvil, así que hoy no puedo contestar a nadie."
+    },
+    {
+      "muestra": "B_chatterbox_space_03.wav",
+      "audio_s": 5.68,
+      "palabras": 16,
+      "palabras_por_s": 2.82,
+      "wer": 0.0,
+      "texto": "Tío, ¿has visto el capítulo de anoche? Me ha parecido una pasada, sobre todo el final.",
+      "asr": "Tío, ¿has visto el capítulo de anoche? Me ha parecido una pasada sobre todo el final."
+    },
+    {
+      "muestra": "B_chatterbox_space_04.wav",
+      "audio_s": 6.96,
+      "palabras": 17,
+      "palabras_por_s": 2.44,
+      "wer": 0.059,
+      "texto": "Buenas tardes, señoras y señores. Les habla el capitán: en breve aterrizaremos en el aeropuerto de Madrid.",
+      "asr": "Buenas tardes, señoras y señores. Les habla el capitán. En breve atarizaremos en el aeropuerto de Madrid."
+    },
+    {
+      "muestra": "B_chatterbox_space_05.wav",
+      "audio_s": 6.96,
+      "palabras": 20,
+      "palabras_por_s": 2.87,
+      "wer": 0.0,
+      "texto": "Después de tres años de negociaciones, el gobierno ha anunciado una reforma que cambiará la vida de millones de personas.",
+      "asr": "Después de tres años de negociaciones, el gobierno ha anunciado una reforma que cambiara la vida de millones de personas."
+    },
+    {
+      "muestra": "B_chatterbox_space_06.wav",
+      "audio_s": 5.84,
+      "palabras": 21,
+      "palabras_por_s": 3.6,
+      "wer": 0.048,
+      "texto": "¡Cuidado con la zorra! Vosotros id por la izquierda, que yo cubro el centro y luego nos vemos en el coche.",
+      "asr": "Cuidado con la zorra, vosotros y por la izquierda, que yo cubro el centro y luego nos vemos en el coche."
+    }
+  ]
+}
