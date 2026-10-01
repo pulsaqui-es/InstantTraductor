@@ -74,10 +74,21 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)  # argparse sale con código 2 si el uso es incorrecto
     _setup_logging()
+    _break_as_interrupt()
     try:
         return int(args.func(args))
     except KeyboardInterrupt:
         return EXIT_OK
+
+
+def _break_as_interrupt() -> None:
+    """Ctrl+Break para igual que Ctrl+C (parada limpia con informe), no matando el proceso de golpe."""
+    import signal
+    import threading
+
+    sigbreak = getattr(signal, "SIGBREAK", None)
+    if sigbreak is not None and threading.current_thread() is threading.main_thread():
+        signal.signal(sigbreak, signal.default_int_handler)
 
 
 def _setup_logging() -> None:
