@@ -416,7 +416,7 @@ COMPONENTS: Final[tuple[Component, ...]] = (
     ),
     Component(
         component_id="voz-es-f-est-01",
-        name="Voz Voz humana 2 (VoxPopuli)",
+        name="Voz humana 2 (VoxPopuli)",
         version="catálogo 1",
         kind="voz",
         license="CC0 1.0 (VoxPopuli, Parlamento Europeo)",
@@ -438,7 +438,7 @@ COMPONENTS: Final[tuple[Component, ...]] = (
     ),
     Component(
         component_id="voz-es-f-est-04",
-        name="Voz Voz humana 1 (VoxPopuli)",
+        name="Voz humana 1 (VoxPopuli)",
         version="catálogo 1",
         kind="voz",
         license="CC0 1.0 (VoxPopuli, Parlamento Europeo)",

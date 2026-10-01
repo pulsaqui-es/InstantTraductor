@@ -150,9 +150,7 @@ class FakeDownloader:
     calls: list[tuple[object, ...]] = field(default_factory=list)
     fail_urls: set[str] = field(default_factory=set)
 
-    def download_file(
-        self, url: str, dest: Path, progress: Callable[[int], None] | None = None
-    ) -> None:
+    def download_file(self, url: str, dest: Path, progress: Callable[[int], None] | None = None) -> None:
         self.calls.append(("file", url))
         if url in self.fail_urls:
             raise ConnectionError(f"sin red para {url}")
@@ -313,7 +311,7 @@ def test_second_run_downloads_nothing(
     assert result.downloaded == ()
     assert system.sync_calls() == []  # el entorno de la voz ya estaba al día
     assert report_of(result, "fake-url").history == (ComponentState.VERIFIED,)
-    assert not any(report.downloaded for report in result.components)
+    assert all(ComponentState.DOWNLOADED not in r.history for r in result.components)
 
 
 def test_corrupt_file_is_downloaded_again_and_the_rest_is_kept(
@@ -406,9 +404,7 @@ def test_zip_is_extracted_next_to_the_archive_and_only_once(
     assert (base / "llama-server.exe").read_bytes() == b"EXE" * 20
 
 
-def test_zip_with_paths_outside_its_folder_is_rejected(
-    paths: AppPaths, system: FakeSystem
-) -> None:
+def test_zip_with_paths_outside_its_folder_is_rejected(paths: AppPaths, system: FakeSystem) -> None:
     evil = make_zip({"../fuera.txt": b"mal"})
     component = Component(
         component_id="evil-zip",
@@ -441,9 +437,7 @@ def test_pypi_wheel_members_are_extracted_by_name(
     assert downloader.downloaded("json") == [("json", PYPI_JSON_URL)]
 
 
-def test_pypi_wheel_with_a_wrong_digest_is_rejected(
-    paths: AppPaths, system: FakeSystem
-) -> None:
+def test_pypi_wheel_with_a_wrong_digest_is_rejected(paths: AppPaths, system: FakeSystem) -> None:
     downloader = FakeDownloader()
     downloader.metadata[PYPI_JSON_URL]["urls"][0]["digests"]["sha256"] = "0" * 64  # type: ignore[index]
 
@@ -479,9 +473,7 @@ def test_hugging_face_component_without_a_pinned_revision_is_not_downloaded(
 # --- fallos ---
 
 
-def test_wrong_hash_after_download_leaves_no_file_and_is_corrupt(
-    paths: AppPaths, system: FakeSystem
-) -> None:
+def test_wrong_hash_after_download_leaves_no_file_and_is_corrupt(paths: AppPaths, system: FakeSystem) -> None:
     downloader = FakeDownloader()
     downloader.urls[f"{URL_BASE}/a.bin"] = b"Q" * len(A_BIN)
 
@@ -498,9 +490,7 @@ def test_wrong_hash_after_download_leaves_no_file_and_is_corrupt(
     assert (base / "sub" / "b.bin").read_bytes() == B_BIN  # el otro fichero sí se bajó
 
 
-def test_a_failing_download_does_not_stop_the_other_components(
-    paths: AppPaths, system: FakeSystem
-) -> None:
+def test_a_failing_download_does_not_stop_the_other_components(paths: AppPaths, system: FakeSystem) -> None:
     downloader = FakeDownloader(fail_urls={f"{URL_BASE}/a.bin"})
 
     result, _ = run(paths, downloader, system)
@@ -513,9 +503,7 @@ def test_a_failing_download_does_not_stop_the_other_components(
     assert "fake-url" not in result.downloaded
 
 
-def test_failing_voice_environment_gives_exit_code_3(
-    paths: AppPaths, downloader: FakeDownloader
-) -> None:
+def test_failing_voice_environment_gives_exit_code_3(paths: AppPaths, downloader: FakeDownloader) -> None:
     system = FakeSystem(sync_returncode=2)
 
     result, _ = run(paths, downloader, system)
@@ -555,16 +543,16 @@ def test_unmet_requirements_give_exit_code_6_and_download_nothing(
 
 
 def test_minimum_requirements_are_accepted(paths: AppPaths, downloader: FakeDownloader) -> None:
-    system = FakeSystem(build=installer.MIN_WINDOWS_BUILD, gpu=GpuInfo("RTX", "580", installer.MIN_CUDA_VERSION))
+    system = FakeSystem(
+        build=installer.MIN_WINDOWS_BUILD, gpu=GpuInfo("RTX", "580", installer.MIN_CUDA_VERSION)
+    )
 
     result, _ = run(paths, downloader, system)
 
     assert result.exit_code == 0
 
 
-def test_lack_of_space_is_detected_before_downloading(
-    paths: AppPaths, downloader: FakeDownloader
-) -> None:
+def test_lack_of_space_is_detected_before_downloading(paths: AppPaths, downloader: FakeDownloader) -> None:
     missing = sum(f.size_bytes for c in FAKE_COMPONENTS for f in c.files)
     system = FakeSystem(free=missing + SPACE_MARGIN_BYTES - 1)
 
@@ -599,9 +587,7 @@ def test_space_only_counts_what_is_missing(paths: AppPaths, downloader: FakeDown
 # --- ffmpeg ---
 
 
-def test_missing_ffmpeg_is_optional_and_does_not_fail(
-    paths: AppPaths, downloader: FakeDownloader
-) -> None:
+def test_missing_ffmpeg_is_optional_and_does_not_fail(paths: AppPaths, downloader: FakeDownloader) -> None:
     system = FakeSystem(ffmpeg=None)
 
     result, text = run(paths, downloader, system)
@@ -626,9 +612,7 @@ def test_check_only_downloads_and_installs_nothing(
     assert system.sync_calls() == []
     assert result.downloaded == ()
     assert not paths.home.exists()
-    assert set(states(result).values()) == {ComponentState.ABSENT, ComponentState.OPTIONAL_MISSING} | {
-        ComponentState.VERIFIED
-    }
+    assert set(states(result).values()) == {ComponentState.ABSENT, ComponentState.VERIFIED}
     assert states(result)["fake-url"] is ComponentState.ABSENT
     assert not result.voice_env.ok
 
@@ -703,9 +687,7 @@ def test_voices_are_installed_by_prepare(
             assert (paths.voices / file.rel_path).is_file()
 
 
-def test_second_run_copies_no_voices(
-    paths: AppPaths, downloader: FakeDownloader, system: FakeSystem
-) -> None:
+def test_second_run_copies_no_voices(paths: AppPaths, downloader: FakeDownloader, system: FakeSystem) -> None:
     run(paths, downloader, system, components=VOICE_COMPONENTS)
 
     result, _ = run(paths, downloader, system, components=VOICE_COMPONENTS)
@@ -790,3 +772,13 @@ def test_default_arguments_do_not_touch_the_real_home(
 
     assert result.exit_code == 3
     assert not (tmp_path / "entorno").exists()
+
+
+# --- nvidia-smi ---
+
+
+def test_parse_cuda_version_reads_the_nvidia_smi_header() -> None:
+    header = "| NVIDIA-SMI 591.44   Driver Version: 591.44   CUDA Version: 13.1 |"
+
+    assert installer.parse_cuda_version(header) == (13, 1)
+    assert installer.parse_cuda_version("sin versión") is None
