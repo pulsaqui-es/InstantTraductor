@@ -74,6 +74,12 @@ WARNING_TTL_S = 6.0
 #: Espera máxima al cerrar cada hilo durante la parada (el total debe quedar en ≤ 2 s).
 JOIN_TIMEOUT_S = 0.4
 
+#: Códigos de salida de contracts/cli.md que puede provocar una sesión.
+EXIT_ERROR = 1
+EXIT_SELFTEST = 4
+EXIT_BAD_INPUT = 5
+EXIT_REQUIREMENTS = 6
+
 
 class SessionError(RuntimeError):
     """Error de la sesión con el código de salida que corresponde (contracts/cli.md)."""
@@ -465,6 +471,13 @@ def make_scheduler_and_recorder(
         on_lag_sample=recorder.add_lag_sample,
     )
     return scheduler, recorder
+
+
+def report_components() -> list[object]:
+    """Componentes del manifiesto que usa una sesión, para el informe: los obligatorios, sin las voces."""
+    from instanttraductor.setup.manifest import COMPONENTS
+
+    return [c for c in COMPONENTS if not c.optional and c.kind != "voz"]
 
 
 def session_id_for(started: datetime) -> str:
