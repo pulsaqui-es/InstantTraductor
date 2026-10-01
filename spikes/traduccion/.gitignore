@@ -1,0 +1,9 @@
+# Entorno virtual y cachés de Python (el .gitignore de la raíz ya los cubre; se repite
+# aquí para que la carpeta del spike sea autosuficiente).
+.venv/
+__pycache__/
+
+# Registros del servidor y datos crudos voluminosos del laboratorio de prompts:
+# se regeneran con `uv run python prompt_lab.py` y `uv run python bench.py`.
+resultados/*.log
+resultados/prompt_lab.json
