@@ -78,7 +78,27 @@ Spike S1 (`spikes/voz/README.md`), medido en la RTX 5070 con Windows nativo.
 
 **Riesgo abierto:** la contención con la traducción en la misma GPU. Con carga ajena al 100 %, el p95 del primer audio sube a ~2 s.
 
+## Catálogo de voces de la v1 (2026-10-01, decisión del humano)
+- **Primera vuelta:** las referencias de LibriVox se rechazaron de oído («voz terrible»). Las grabaciones de aficionados suenan planas.
+- **Segunda vuelta** (`spikes/voces/README.md`):
+  - el diseño de voz de **Qwen3-TTS-1.7B-VoiceDesign** sesea siempre, así que no sirve para el castellano;
+  - **VoxCPM2** (Apache-2.0) con la descripción **en español** sí da acento peninsular;
+  - grabaciones **VoxPopuli** (CC0) de calidad de estudio.
+- **El humano acepta las 4 finalistas y elige Lucía por defecto.** Catálogo:
+
+  | Voz | Origen | Licencia |
+  |---|---|---|
+  | **Lucía** `es-f-dvx-01` (por defecto) | diseñada con VoxCPM2, sin persona real detrás | Apache-2.0 |
+  | Clara `es-f-dvx-08` | diseñada con VoxCPM2, sin persona real detrás | Apache-2.0 |
+  | Voz humana 1 y 2 `es-f-est-04/01` | VoxPopuli, Parlamento Europeo | CC0, «© Unión Europea, Parlamento Europeo» |
+  | Tux `es-m-tux` | LibriVox | dominio público |
+
+- **Las voces van empaquetadas en la app** (`src/instanttraductor/setup/voices/`): no se descargan.
+- **VoxCPM2 es solo una herramienta de autoría** para crear voces nuevas. No forma parte de la app en ejecución: su `transformers` choca con el del servicio de voz.
+- **Línea futura** (propuesta del humano): un catálogo con voces de distintas edades, femeninas y masculinas, diseñadas igual. Va a la spec 003 (hoja de ruta).
+
 ## Referencias
 - `docs/investigacion/2026-09-30-aislamiento-y-clonacion.md`
 - `spikes/voz/README.md` (S1, 2026-10-01)
+- `spikes/voces/README.md` (voces nuevas, 2026-10-01)
 - `docs/investigacion/2026-09-30-traduccion-y-voz.md`
