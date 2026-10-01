@@ -43,7 +43,7 @@ SETTINGS_FILE_NAME: Final = "ajustes.toml"
 
 #: Voz por defecto. Provisional: es la única voz que deja colocada la preparación manual (T013).
 #: Cuando el catálogo de voces (T042) fije la femenina preferida, se cambia aquí.
-DEFAULT_VOICE: Final = "es-m-tux"
+DEFAULT_VOICE: Final = "es-f-dvx-01"  # Lucía, elegida por el humano el 2026-10-01
 
 #: Correspondencia atributo de ``Settings`` (inglés) → clave del TOML (español, la que ve el humano).
 TOML_KEYS: Final[Mapping[str, str]] = MappingProxyType(

@@ -380,10 +380,11 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
 
 ### Implementation for User Story 3
 
-- [ ] T040 [P] [US3] Investigación de voces femeninas castellanas de dominio público (agente `investigador`, en marcha desde el 2026-10-01):
-  - entrega `docs/investigacion/2026-10-01-voces-castellanas.md` con candidatas de LibriVox (URL del MP3, lectora, tramo, `ref_text` verificado, sha256);
-  - deja las muestras en `%LOCALAPPDATA%\InstantTraductor\spikes\voces-candidatas\`;
-  - el humano escucha y preselecciona.
+- [X] T040 [P] [US3] Voces femeninas castellanas (2026-10-01):
+  - primera vuelta, LibriVox: el humano rechazó las 4 lectoras («voz terrible»);
+  - segunda vuelta (`spikes/voces/README.md`): voces diseñadas con VoxCPM2 (descripción en español, acento peninsular) y grabaciones CC0 de VoxPopuli;
+  - el humano acepta las 4 finalistas y elige **Lucía** (`es-f-dvx-01`) por defecto;
+  - las 5 voces del catálogo (Lucía, Clara, Voz humana 1, Voz humana 2 y Tux) están empaquetadas en `src/instanttraductor/setup/voices/`.
 
 **Ola 3, obrero H: preparación y voces**
 - [ ] T041 [P] [US3] Instalador en `src/instanttraductor/setup/installer.py` (depends on T014).
@@ -396,11 +397,12 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - **Entorno de la voz:** `uv sync --frozen --project engines/tts-qwen3`.
   - **Salida:** tabla `rich` con nombre, versión, licencia, tamaño y estado. `--comprobar` solo verifica.
   - **Tests:** `tests/unit/setup/test_installer.py` (descargador falso; la 2.ª ejecución no descarga nada).
-- [ ] T042 [US3] Voces en `src/instanttraductor/setup/voices.py` y en las entradas `kind="voz"` de `src/instanttraductor/setup/manifest.py` (depends on T040, T041).
-  - **Catálogo:** `es-m-tux` + las femeninas que preseleccione el humano en T040 (al menos 2).
-  - **Preparación:** MP3 de origen (con sha256) → recorte con ffmpeg → mono a 24 kHz → −23 LUFS → `<voices>/<id>.wav` + `<id>.json` (`VoiceInfo` + `ref_text` + `source` + `license` + indicio de acento).
-  - **Voz por defecto:** la femenina preferida.
-  - **Tests:** `tests/unit/setup/test_voices.py` (ids ASCII únicos, al menos 1 de cada género, licencia).
+- [ ] T042 [US3] Voces en `src/instanttraductor/setup/voices.py` (depends on T041).
+  - **Catálogo:** las voces **empaquetadas** en `src/instanttraductor/setup/voices/` (WAV + JSON con `voice_id`, `name`, `gender`, `source`, `license` y `ref_text`), leídas con `importlib.resources`. Sin descargas.
+  - **Instalación:** `install_voices()` las copia a `AppPaths.voices` de forma idempotente, verificando el sha256.
+  - **Manifiesto:** entradas `kind="voz"` en `src/instanttraductor/setup/manifest.py` con una fuente de tipo paquete (amplía `Component` para recursos empaquetados sin URL).
+  - **Voz por defecto:** `es-f-dvx-01` (Lucía, `config.DEFAULT_VOICE`).
+  - **Tests:** `tests/unit/setup/test_voices.py` (ids ASCII únicos, al menos 1 de cada género, licencia, `ref_text` no vacío, instalación idempotente con `home` temporal).
 
 **Integración (orquestador)**
 - [ ] T043 [US3] Subcomandos en `src/instanttraductor/cli.py` (depends on T037, T041, T042):

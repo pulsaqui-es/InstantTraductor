@@ -172,7 +172,7 @@ Decisiones de la fase 0 del plan. Formato: **Decisión** · **Motivo** · **Alte
   - **Hugging Face:** `snapshot_download(repo_id, revision=<hash de commit>, allow_patterns=…)` para los repos con varios ficheros (Qwen3-TTS).
   - **GitHub:** `httpx` para las releases (llama.cpp, sherpa-onnx), con comprobación de espacio previa.
   - Los hashes y las revisiones se calculan una vez a partir de las descargas verificadas de los spikes (T013).
-  - **Las voces también son componentes** (MP3 de origen con sha256), así que todo funciona sin red tras la preparación.
+  - **Las voces van empaquetadas en la app** (`src/instanttraductor/setup/voices/`: diseñadas con VoxCPM2, Apache-2.0; VoxPopuli, CC0; LibriVox, dominio público), así que no se descargan y funcionan sin red.
   - ffmpeg portable (gyan.dev *essentials*, GPL) si falta.
   - El entorno del servicio de voz se crea con `uv sync --project engines/tts-<motor>`.
 - **Motivo:** FR-025 a FR-027 y SC-008.
