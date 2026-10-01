@@ -7,6 +7,7 @@ dispositivos de audio. Los tests con el dispositivo real están en `tests/integr
 
 from __future__ import annotations
 
+import ctypes
 import os
 import subprocess
 import sys
@@ -15,6 +16,8 @@ import threading
 import time
 from collections import deque
 from collections.abc import Callable, Iterable
+from types import SimpleNamespace
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -837,6 +840,334 @@ def test_hresults_have_readable_names() -> None:
     assert "AUDCLNT_E_DEVICE_INVALIDATED" in wasapi_capture.hresult_name(-2004287484)  # 0x88890004
     assert wasapi_capture.hresult_name(0x80070057).startswith("E_INVALIDARG")
     assert "0x12345678" in wasapi_capture.hresult_name(0x12345678)
+
+
+@windows_only
+class TestActivationWithoutADevice:
+    """La activación hasta justo antes de hablar con Windows: se sustituye `ActivateAudioInterfaceAsync`."""
+
+    E_INVALIDARG = -2147024809  # 0x80070057
+
+    @pytest.fixture
+    def seen(self, monkeypatch: pytest.MonkeyPatch) -> dict[str, object]:
+        """Apunta lo que recibe `ActivateAudioInterfaceAsync` y responde con un error."""
+        seen: dict[str, object] = {}
+
+        def fake_activate(
+            name: str, iid: object, variant_ref: Any, handler: object, operation: object
+        ) -> int:
+            variant = variant_ref._obj  # lo que había dentro de `byref(...)`
+            blob = variant.data.blob
+            params_type = ctypes.POINTER(wasapi_capture.AUDIOCLIENT_ACTIVATION_PARAMS)
+            params = ctypes.cast(blob.pBlobData, params_type).contents
+            seen.update(
+                name=name,
+                vt=variant.vt,
+                size=blob.cbSize,
+                type=params.ActivationType,
+                pid=params.ProcessLoopbackParams.TargetProcessId,
+                mode=params.ProcessLoopbackParams.ProcessLoopbackMode,
+            )
+            return self.E_INVALIDARG
+
+        monkeypatch.setattr(wasapi_capture, "_win_api", lambda: SimpleNamespace(activate=fake_activate))
+        return seen
+
+    @pytest.mark.parametrize(("exclude", "mode"), [(True, 1), (False, 0)])
+    def test_the_blob_carries_the_pid_and_the_loopback_mode(
+        self, seen: dict[str, object], exclude: bool, mode: int
+    ) -> None:
+        with pytest.raises(EngineError, match="E_INVALIDARG"):
+            wasapi_capture._activate_process_client(4321, exclude, 1.0)
+        assert seen == {
+            "name": "VAD\\Process_Loopback",
+            "vt": 65,  # VT_BLOB
+            "size": 12,
+            "type": 1,  # AUDIOCLIENT_ACTIVATION_TYPE_PROCESS_LOOPBACK
+            "pid": 4321,
+            "mode": mode,  # 1 = EXCLUDE_TARGET_PROCESS_TREE, 0 = INCLUDE_TARGET_PROCESS_TREE
+        }
+
+    def test_the_stream_reports_a_failed_activation_as_an_engine_error(self, seen: dict[str, object]) -> None:
+        with pytest.raises(EngineError, match="E_INVALIDARG"):
+            wasapi_capture._ProcessLoopbackStream(4321, True, lambda: 0.0)
+        assert seen["pid"] == 4321
+
+    def test_start_reports_a_failed_activation_from_the_real_stream(self, seen: dict[str, object]) -> None:
+        """Hilo, COM por hilo y propagación del error hasta `start()`, con la clase real y sin dispositivo."""
+        source = ProcessLoopbackSource(SessionClock(), target_pid=4321, include=True)
+        with pytest.raises(EngineError, match="E_INVALIDARG"):
+            source.start()
+        assert source.exhausted
+        assert (seen["pid"], seen["mode"]) == (4321, 0)
+
+    def test_a_windows_without_process_loopback_is_not_recoverable(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        def missing() -> None:
+            raise AttributeError("ActivateAudioInterfaceAsync")
+
+        monkeypatch.setattr(wasapi_capture, "_win_api", missing)
+        with pytest.raises(EngineError, match="no admite") as error:
+            wasapi_capture._activate_process_client(1, True, 1.0)
+        assert error.value.recoverable is False
+
+
+class FakeCaptureClient:
+    """`IAudioCaptureClient` falso: entrega paquetes desde un búfer de ctypes, como WASAPI.
+
+    `ReleaseBuffer` machaca el búfer: lo que se lea después de soltarlo sería basura.
+    """
+
+    def __init__(self, packets: list[tuple[Samples, int]], channels: int = 1) -> None:
+        self.packets = deque(packets)
+        self.channels = channels
+        self.released: list[int] = []
+        self.fail_after: int | None = None  # nº de paquetes tras los que `GetBuffer` lanza un COMError
+        self._buffer: Any = None
+
+    def GetNextPacketSize(self) -> int:  # noqa: N802 - nombre de la API de WASAPI
+        return len(self.packets[0][0]) // self.channels if self.packets else 0
+
+    def GetBuffer(self) -> tuple[Any, int, int, int, int]:  # noqa: N802
+        if self.fail_after is not None and self.fail_after <= 0:
+            raise wasapi_capture.COMError(-2004287484, "dispositivo invalidado", (None, None, None, 0, None))
+        if self.fail_after is not None:
+            self.fail_after -= 1
+        data, flags = self.packets.popleft()
+        self._buffer = (ctypes.c_ubyte * data.nbytes).from_buffer_copy(data.tobytes())
+        return (
+            ctypes.cast(self._buffer, ctypes.POINTER(ctypes.c_ubyte)),
+            len(data) // self.channels,
+            flags,
+            0,
+            0,
+        )
+
+    def ReleaseBuffer(self, frames: int) -> None:  # noqa: N802
+        self.released.append(frames)
+        if self._buffer is not None:
+            ctypes.memset(self._buffer, 0xFF, ctypes.sizeof(self._buffer))  # NaN: ya no es nuestro
+
+
+def make_real_stream(capture: FakeCaptureClient, clock: Callable[[], float] = lambda: 1.5) -> Any:
+    """Un `_ProcessLoopbackStream` sin abrir (sin `__init__`) que lee de `capture`."""
+    stream = object.__new__(wasapi_capture._ProcessLoopbackStream)
+    stream._now = clock
+    stream._error = None
+    stream._client = None
+    stream._capture = capture
+    stream._event = None
+    stream._channels = capture.channels
+    stream._com_initialized = False  # no se ha llamado a CoInitializeEx: `close` no debe deshacerlo
+    return stream
+
+
+@windows_only
+class TestRealStreamReading:
+    """La lectura de paquetes de `_ProcessLoopbackStream` con un `IAudioCaptureClient` falso."""
+
+    def test_mono_packets_are_copied_before_they_are_released(self) -> None:
+        data = [np.linspace(-0.5, 0.5, 160, dtype=np.float32), np.full(160, 0.25, dtype=np.float32)]
+        capture = FakeCaptureClient([(d, 0) for d in data])
+        stream = make_real_stream(capture, clock=iter([1.0, 1.01]).__next__)
+        packets = stream.read_packets()
+        assert [p.arrival for p in packets] == [1.0, 1.01]
+        assert all(p.samples.dtype == np.float32 for p in packets)
+        assert np.array_equal(np.concatenate([p.samples for p in packets]), np.concatenate(data))
+        assert capture.released == [160, 160]
+        assert stream.error is None
+
+    def test_silent_packets_are_zeros_whatever_the_buffer_holds(self) -> None:
+        garbage = np.full(160, 0.9, dtype=np.float32)  # WASAPI: con el flag SILENT el contenido no vale
+        capture = FakeCaptureClient([(garbage, 0x2), (garbage, 0)])
+        packets = make_real_stream(capture).read_packets()
+        assert not packets[0].samples.any()
+        assert np.all(packets[1].samples == np.float32(0.9))
+        assert capture.released == [160, 160]
+
+    def test_stereo_is_mixed_down_to_mono(self) -> None:
+        left, right = np.full(160, 0.5, dtype=np.float32), np.full(160, -0.1, dtype=np.float32)
+        interleaved = np.stack([left, right], axis=1).reshape(-1)
+        packets = make_real_stream(FakeCaptureClient([(interleaved, 0)], channels=2)).read_packets()
+        assert packets[0].samples.shape == (160,)
+        assert np.allclose(packets[0].samples, 0.2)
+
+    def test_nothing_pending_gives_no_packets(self) -> None:
+        assert make_real_stream(FakeCaptureClient([])).read_packets() == []
+
+    def test_a_wasapi_error_is_recorded_and_keeps_what_was_already_read(self) -> None:
+        capture = FakeCaptureClient([(samples(), 0)] * 3)
+        capture.fail_after = 1
+        stream = make_real_stream(capture)
+        assert len(stream.read_packets()) == 1
+        assert stream.error is not None
+        assert "AUDCLNT_E_DEVICE_INVALIDATED" in stream.error
+
+    def test_each_call_reads_a_bounded_number_of_packets(self) -> None:
+        capture = FakeCaptureClient([(samples(), 0)] * 250)
+        stream = make_real_stream(capture)
+        assert len(stream.read_packets()) == 200
+        assert len(stream.read_packets()) == 50
+
+    def test_a_closed_stream_reads_nothing(self) -> None:
+        stream = make_real_stream(FakeCaptureClient([(samples(), 0)]))
+        stream._capture = None
+        assert stream.read_packets() == []
+
+    @pytest.mark.parametrize(
+        ("result", "ready", "error"),
+        [(0, True, False), (0x102, False, False), (0xFFFFFFFF, False, True)],
+    )
+    def test_wait_maps_the_win32_result(
+        self, monkeypatch: pytest.MonkeyPatch, result: int, ready: bool, error: bool
+    ) -> None:
+        monkeypatch.setattr(
+            wasapi_capture, "_win_api", lambda: SimpleNamespace(wait=lambda event, ms: result)
+        )
+        stream = make_real_stream(FakeCaptureClient([]))
+        assert stream.wait(0.02) is ready
+        assert (stream.error is not None) is error
+
+    def test_close_is_idempotent_and_tolerates_a_dead_device(self) -> None:
+        class DeadClient:
+            stopped = 0
+
+            def Stop(self) -> None:  # noqa: N802
+                self.stopped += 1
+                raise wasapi_capture.COMError(
+                    -2004287484, "dispositivo invalidado", (None, None, None, 0, None)
+                )
+
+        stream = make_real_stream(FakeCaptureClient([]))
+        client = DeadClient()
+        stream._client, stream._event, stream._com_initialized = client, None, False
+        stream.close()
+        stream.close()
+        assert client.stopped == 1
+        assert stream._client is None
+        assert stream._capture is None
+
+
+class FakeAudioClient:
+    """`IAudioClient` falso: rechaza los formatos con los canales indicados."""
+
+    def __init__(self, reject_channels: Iterable[int] = ()) -> None:
+        self.reject_channels = set(reject_channels)
+        self.initialized: list[dict[str, int]] = []
+        self.event: object = None
+        self.started = False
+        self.stopped = False
+        self.capture = FakeCaptureClient([])
+
+    def Initialize(
+        self, mode: int, flags: int, duration: int, period: int, fmt: Any, session: object
+    ) -> None:  # noqa: N802
+        wave_format = fmt.contents
+        self.initialized.append(
+            {
+                "mode": mode,
+                "flags": flags,
+                "duration": duration,
+                "period": period,
+                "tag": wave_format.wFormatTag,
+                "channels": wave_format.nChannels,
+                "rate": wave_format.nSamplesPerSec,
+                "bits": wave_format.wBitsPerSample,
+                "align": wave_format.nBlockAlign,
+            }
+        )
+        if wave_format.nChannels in self.reject_channels:
+            raise wasapi_capture.COMError(-2004287480, "formato no admitido", (None, None, None, 0, None))
+
+    def SetEventHandle(self, handle: object) -> None:  # noqa: N802
+        self.event = handle
+
+    def GetService(self, iid_ref: object) -> Any:  # noqa: N802
+        return SimpleNamespace(QueryInterface=lambda interface: self.capture)
+
+    def Start(self) -> None:  # noqa: N802
+        self.started = True
+
+    def Stop(self) -> None:  # noqa: N802
+        self.stopped = True
+
+
+@windows_only
+class TestRealStreamOpening:
+    """`_ProcessLoopbackStream` se abre con el formato correcto y cae a estéreo si Windows rechaza el mono."""
+
+    @pytest.fixture
+    def clients(self, monkeypatch: pytest.MonkeyPatch) -> list[FakeAudioClient]:
+        """Los clientes que `_activate_process_client` va entregando; cada test fija `clients.reject`."""
+        made: list[FakeAudioClient] = []
+        closed: list[object] = []
+
+        class Clients(list):
+            reject: tuple[int, ...] = ()
+
+        clients = Clients()
+
+        def fake_activate(pid: int, exclude: bool, timeout_s: float) -> FakeAudioClient:
+            client = FakeAudioClient(clients.reject)
+            made.append(client)
+            clients.append(client)
+            return client
+
+        monkeypatch.setattr(wasapi_capture, "_activate_process_client", fake_activate)
+        monkeypatch.setattr(
+            wasapi_capture,
+            "_win_api",
+            lambda: SimpleNamespace(create_event=lambda *args: 4242, close_handle=closed.append),
+        )
+        return clients
+
+    def test_it_asks_for_16_khz_mono_float_loopback_with_events(self, clients: Any) -> None:
+        stream = wasapi_capture._ProcessLoopbackStream(4321, True, lambda: 0.0)
+        try:
+            (client,) = clients
+            (request,) = client.initialized
+            assert request["mode"] == 0  # AUDCLNT_SHAREMODE_SHARED
+            assert request["flags"] == 0x00020000 | 0x00040000 | 0x80000000 | 0x08000000
+            assert request["duration"] == 100 * 10_000  # 100 ms en unidades de 100 ns
+            assert request["period"] == 0
+            assert (request["tag"], request["channels"], request["rate"], request["bits"]) == (
+                3,
+                1,
+                16000,
+                32,
+            )
+            assert request["align"] == 4
+            assert client.event == 4242
+            assert client.started
+            assert stream.error is None
+        finally:
+            stream.close()
+        assert client.stopped
+
+    def test_it_falls_back_to_stereo_when_windows_rejects_mono(self, clients: Any) -> None:
+        clients.reject = (1,)
+        stream = wasapi_capture._ProcessLoopbackStream(4321, True, lambda: 0.0)
+        try:
+            assert [c.initialized[0]["channels"] for c in clients] == [1, 2]  # un cliente nuevo por intento
+            assert clients[1].started
+            assert not clients[0].started
+            assert stream._channels == 2
+            assert clients[1].initialized[0]["align"] == 8
+        finally:
+            stream.close()
+
+    def test_it_fails_with_a_clear_error_when_no_format_is_accepted(self, clients: Any) -> None:
+        clients.reject = (1, 2)
+        with pytest.raises(EngineError, match=r"1 canal\(es\).*2 canal\(es\)"):
+            wasapi_capture._ProcessLoopbackStream(4321, True, lambda: 0.0)
+        assert not any(c.started for c in clients)
+
+    def test_close_stops_the_client_and_is_idempotent(self, clients: Any) -> None:
+        stream = wasapi_capture._ProcessLoopbackStream(4321, False, lambda: 0.0)
+        stream.close()
+        stream.close()
+        assert clients[0].stopped
 
 
 def test_constructing_the_source_does_not_open_anything() -> None:

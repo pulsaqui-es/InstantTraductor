@@ -862,6 +862,11 @@ class ProcessLoopbackSource:
         """Crea el flujo con el PID objetivo actual. Lanza si no se puede (y entonces no hay flujo)."""
         self._stream = self._factory(self._target_pid, not self._include, self._clock.now)
         self._last_packet_at = now  # los 0,5 s sin paquetes se cuentan desde la apertura
+        logger.info(
+            "Captura de audio abierta: PID objetivo %s, modo %s",
+            self._target_pid,
+            "INCLUDE" if self._include else "EXCLUDE",
+        )
 
     def _close_stream(self) -> None:
         stream, self._stream = self._stream, None
@@ -981,7 +986,6 @@ class ProcessLoopbackSource:
         except Exception as exc:
             self._warn(f"No se pudo reabrir la captura de audio: {exc}")
             return
-        logger.info("Captura de audio reabierta (PID objetivo %s)", self._target_pid)
         self._call(self._on_reopen)
 
     # --- Callbacks -------------------------------------------------------------------------------
