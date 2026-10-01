@@ -14,7 +14,7 @@ Los tiempos de generación de este spike (RTF, primer audio) se midieron con la 
 
 ## Resumen
 
-1. **Hay muestras para escuchar** en `%LOCALAPPDATA%\InstantTraductor\spikes\voces-v2\`: 5 voces de estudio (`es-f-est-01` a `05`), 8 voces diseñadas con Qwen3-TTS-VoiceDesign (`es-f-dis-01` a `08`), 6 diseñadas con VoxCPM2 (`es-f-dvx-NN`: `01`, `02`, `04`, `05`, `06`, `08`)
+1. **Hay muestras para escuchar** en `%LOCALAPPDATA%\InstantTraductor\spikes\voces-v2\`: 5 voces de estudio (`es-f-est-01` a `05`), 8 voces diseñadas con Qwen3-TTS-VoiceDesign (`es-f-dis-01` a `08`; de la `05` solo hay versión `th`), 6 diseñadas con VoxCPM2 (`es-f-dvx-NN`: `01`, `02`, `04`, `05`, `06`, `08`)
    y 2 controles. Para cada una, la referencia (`<id>_ref.wav`, con su `ref_text` en `<id>_ref.json`) y las mismas 4 frases sintetizadas por el motor de producción (`<id>_frase1.wav` a `<id>_frase4.wav`):
    diálogo natural, pregunta, exclamación y una frase con «vosotros», «ordenador», «móvil» y «vale». Ninguna frase salió rota (WER por candidata de 0,00 a 0,10).
 2. **El acento lo decide la referencia, y el motor de producción lo conserva.** Con referencias de estudio, el acento de España pasa a lo generado: Δ de 10,5 a 17,1 dB en las 5 de estudio y de 12,4 a 16,5 dB en los 2 controles
@@ -74,7 +74,7 @@ Carga en 19-27 s, **VRAM de torch 4,9 GiB en reposo y 5,5 GiB de pico** (5 064 y
 `generate()` de la 2.0.3 publicada en PyPI no admite `seed=` (se fija con `torch.manual_seed`).
 
 - **Sonda de acento** (misma frase y misma voz base que §1.2; 2 tomas por variante): descripción en inglés, Δ de 0,8 a 1,6 dB (seseo, igual que Qwen3); **descripción entera en español** con «pronuncia la z y ce/ci con la zeta interdental /θ/, distinta de la s, sin seseo»: **12,0 dB** (n 14/6, WER 0).
-- **8 voces × 3 tomas** con esa descripción en español (los mismos 8 timbres de `disenos.py`, traducidos): muchas tomas dan Δ de 12 a 22 dB, pero **17 de las 24 salieron con F0 por debajo de 170 Hz (108-160 Hz, rango de voz de hombre)** aunque la descripción decía «Mujer de N años»;
+- **8 voces × 3 tomas** con esa descripción en español (los mismos 8 timbres de `disenos.py`, traducidos): muchas tomas dan Δ de 12 a 22 dB, pero **17 de las 24 salieron con F0 por debajo de 170 Hz (108-160 Hz, rango de voz de hombre)** aunque la descripción decía «Mujer de N años» (un segundo estimador, YIN, da lo mismo o hasta un 15 % más, así que son graves de verdad y no un error de octava: `comprobar_f0.py`);
   las voces «grave y aterciopelada» (`03`) y «ligera, aireada y sonriente» (`07`) no dieron ninguna toma femenina. Una 2.ª pasada (otros 24 takes, textos de 28-29 palabras para llegar a 8-10 s, y la cláusula «voz femenina aguda de mujer joven, no de hombre») subió las tomas con F0 ≥ 170 Hz de 7 a 13 de 24.
 - Se eligió por voz la toma con F0 ≥ 170 Hz, WER ≤ 0,05, 6-10,6 s y mayor Δ: salen 6 referencias `es-f-dvx-NN` (`03` y `07` sin ninguna toma femenina). Su Δ en lo generado por el motor de producción: `01` 18,6 dB (17,5 con la sonda), `02` 11,9 dB (11,0 con la sonda), `04` 11,7 dB (18,6 con la sonda), `05` 13,5 dB (14,4 con la sonda), `06` 14,3 dB (13,0 con la sonda), `08` 17,5 dB (16,2 con la sonda).
   Dos de ellas son cortas (`02`: 6,2 s; `08`: 7,8 s, por encima del mínimo de 6 s del contrato).
@@ -342,6 +342,9 @@ uv run --project spikes/voces python spikes/voces/exportar_voz.py es-f-est-04
 
 Las medidas en bruto están en `resultados/medidas.json` (por frase: transcripción de Whisper, WER, duración, F0).
 
+Espacio fuera del repo (todo en `%LOCALAPPDATA%\InstantTraductor\`): modelos `voxcpm2` (4,7 GB) y `qwen3-tts-12hz-1.7b-voicedesign` (4,3 GB) en `models\`; las muestras y referencias (WAV de 24 kHz) en `spikes\voces-v2\`, y
+unos 2 GB de parquet de VoxPopuli en `spikes\voces-v2\_trabajo\corpus\` (solo hacen falta para repetir la criba; se pueden borrar).
+
 ## 9. Estructura
 
 ```text
@@ -362,5 +365,6 @@ spikes/voces/
   evaluar_muestras.py        ASR, WER, F0, duración y acento de lo generado
   tabla_readme.py            tablas Markdown de este README a partir de medidas.json
   exportar_voz.py            deja una candidata lista para instalar según el contrato de voz
+  comprobar_f0.py            contrasta la F0 con un segundo estimador (YIN) para descartar errores de octava
   resultados/medidas.json    cifras de todas las candidatas
 ```
