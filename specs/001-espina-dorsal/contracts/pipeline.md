@@ -3,7 +3,7 @@
 Fuente de verdad para `src/instanttraductor/contracts/`. En la fase Foundational se implementa **exactamente** así y se congela con el tag `contratos-001-v1`. Cambiarlo después exige un ADR (constitución, Principio III).
 
 Reglas comunes:
-- Todos los datos que cruzan etapas son `@dataclass(frozen=True, slots=True)`. Los arrays de audio no se mutan después de crearlos.
+- Todos los datos que cruzan etapas son `@dataclass(frozen=True, slots=True)`. Los que llevan arrays de audio (`AudioChunk`, `SpeechPiece`, `SynthesizedChunk`) además llevan `eq=False`, porque comparar arrays de numpy con `==` no da un booleano. Los arrays de audio no se mutan después de crearlos.
 - Audio: `numpy.ndarray` de `float32`, mono, en el rango [-1, 1].
 - Tiempos: `float` en segundos. «Reloj de audio» y «reloj de sesión» se definen en [data-model.md](../data-model.md).
 - Los componentes reciben un `Clock` en su constructor. Ninguno llama a `time.time()` ni a `time.monotonic()` directamente, salvo `SessionClock`.
