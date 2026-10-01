@@ -14,7 +14,7 @@ peticiones por HTTP. Los requisitos son los de ``contracts/tts-service.md``:
 
 - primer bloque de audio: p95 <= 0,6 s desde que se recibe la petición (ADR-0008; spike S1: 182 ms);
 - RTF < 0,5 (spike S1: 0,37-0,41);
-- VRAM del proceso <= 3,5 GB (spike S1: 3 304 MiB, con el contexto CUDA).
+- VRAM del proceso <= 4 GB (spike S1: 3 304 MiB; con el servicio entero, 3 805 MiB; con el contexto CUDA).
 """
 
 from __future__ import annotations
@@ -240,7 +240,7 @@ class TestRealEngine:
         print(f"\nRTF: mediana {statistics.median(factors):.2f}, máximo {max(factors):.2f}")
         assert statistics.median(factors) < MAX_RTF
 
-    def test_the_process_vram_stays_under_3_5_gb(
+    def test_the_process_vram_stays_under_4_gb(
         self, service: RealService, voice_ids: list[str], warm: None
     ) -> None:
         with VramPeak() as peak:

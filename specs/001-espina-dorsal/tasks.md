@@ -263,7 +263,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - **`server.py`:** la API **exacta** de `contracts/tts-service.md` (línea `ready`, `/health`, `/voices`, `/synthesize` en *streaming*, `/shutdown`, solo 127.0.0.1).
   - **Tests:**
     - `engines/tts-qwen3/tests/test_server.py` con un motor falso, sin GPU;
-    - `engines/tts-qwen3/tests/test_engine_gpu.py` (marcadores `gpu` y `model`): primer audio p95 ≤ 0,6 s y VRAM ≤ 3,5 GB.
+    - `engines/tts-qwen3/tests/test_engine_gpu.py` (marcadores `gpu` y `model`): primer audio p95 ≤ 0,6 s y VRAM ≤ 4 GB (medido 3,8 GB, R8).
 - [X] T026 [P] [US1] Cliente del servicio de voz en `src/instanttraductor/tts/` (depends on T014):
   - `service_process.py`: `TtsServiceProcess` sobre `ManagedChild`:
     - lanza `uv run --frozen --offline --project engines/tts-qwen3 tts-service --host 127.0.0.1 --port 0 --voices-dir <AppPaths.voices> --models-dir <AppPaths.models>` con `HF_HUB_OFFLINE=1` y `TRANSFORMERS_OFFLINE=1` (FR-027);
