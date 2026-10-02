@@ -1,0 +1,18 @@
+[project]
+name = "voz-spike-herramientas"
+version = "0.0.0"
+description = "Spike S1: herramientas ligeras sin torch (referencia de voz, time-stretch, informe). Los motores tienen su propio entorno en qwen3/ y chatterbox/."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy",
+    "scipy",
+    "soundfile",
+    "filelock",
+    "nvidia-ml-py",
+    "audiotsm",
+    "audiostretchy>=1.3.5",
+]
+
+[tool.uv]
+# Proyecto de scripts: no se construye ni se instala como paquete.
+package = false

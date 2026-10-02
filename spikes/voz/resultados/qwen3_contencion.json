@@ -1,0 +1,207 @@
+{
+  "candidato": "A: Qwen3-TTS-12Hz-0.6B-Base + faster-qwen3-tts (CUDA graphs)",
+  "fase": "contencion",
+  "modo": "icl",
+  "idioma": "Spanish",
+  "referencia": {
+    "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\ref\\ref_es_es_24k.wav",
+    "duracion_s": 6.86,
+    "texto": "expedito, pero doña Francisca, no convencida con tan endeble argumento, continuó chillando en estos términos."
+  },
+  "frases_medicion": [
+    "Vale, nos vemos luego en casa de Laura.",
+    "¿Vosotros sabéis dónde he dejado las llaves del coche?",
+    "No me lo puedo creer, otra vez se ha roto el ordenador.",
+    "Tranquilo, tío, que lo arreglamos mañana por la mañana.",
+    "Buenas noches, ¿qué tal todo?",
+    "El tren con destino a Barcelona saldrá de la vía cuatro en cinco minutos.",
+    "Me ha llamado mi madre al móvil y no he podido cogerlo.",
+    "Vamos a tener que darnos prisa si queremos llegar antes de que empiece la película.",
+    "Aquí tenéis la cuenta, y gracias por venir a nuestro restaurante.",
+    "¡Cuidado! Viene un coche por la derecha y no va a frenar.",
+    "Dicen que mañana lloverá en casi toda la península, aunque por la tarde saldrá el sol en el sur.",
+    "¿Sabes qué hora es? Llevamos esperando casi una hora en la puerta.",
+    "El presidente del gobierno anunció ayer que subirá el salario mínimo a partir del próximo año.",
+    "Nunca pensé que fuera a decirte esto, pero creo que has cometido un error enorme.",
+    "¿Puedes bajar el volumen, por favor?",
+    "Vale, de acuerdo, pero esta vez pagáis vosotros la cena.",
+    "En el capítulo anterior descubrimos que el protagonista llevaba años ocultando su verdadera identidad a toda su familia.",
+    "Los científicos han descubierto una nueva especie de pez en las profundidades del océano Atlántico, a más de tres mil metros.",
+    "Si me das un minuto, te explico con calma todo lo que ha pasado esta mañana en la oficina, porque no ha sido culpa mía.",
+    "Atención, pasajeros del vuelo con destino a Sevilla: la puerta de embarque ha cambiado, diríjanse a la puerta doce inmediatamente, por favor."
+  ],
+  "espera_candado_s": 529.4,
+  "entorno": {
+    "python": "3.12.14",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "paquetes": {
+      "faster-qwen3-tts": "0.5.3",
+      "qwen-tts-hf": "0.1.1.post1",
+      "transformers": "5.15.1",
+      "accelerate": "1.12.0",
+      "torch": "2.11.0+cu130",
+      "torchaudio": "2.11.0+cu130",
+      "numpy": "2.5.3",
+      "soundfile": "0.14.0",
+      "huggingface-hub": "1.33.0"
+    },
+    "torch": "2.11.0+cu130",
+    "cuda_build": "13.0",
+    "arch_list": [
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120"
+    ],
+    "sm_120": true,
+    "gpu": {
+      "nombre": "NVIDIA GeForce RTX 5070",
+      "vram_total_mib": 12199,
+      "cc": "12.0"
+    },
+    "driver_nvidia": "616.64"
+  },
+  "vram_linea_base_mib": {
+    "nvml": 1772.7,
+    "nvidia_smi": 1489.0,
+    "total": 12227
+  },
+  "carga_modelo_s": 6.25,
+  "vram_tras_carga": {
+    "nvml_mib": 4149.8,
+    "torch_allocated_mib": 2070.4,
+    "torch_reserved_mib": 2200.0
+  },
+  "preparar_referencia_s": 0.453,
+  "contencion": {
+    "carga0_cs4": {
+      "ciclo_carga_pct": 0,
+      "chunk_size": 4,
+      "ttfa_s": {
+        "n": 40,
+        "mean": 0.17870769249857404,
+        "p50": 0.17856435000430793,
+        "p95": 0.1806191399868112,
+        "min": 0.17527310003060848,
+        "max": 0.19084779999684542
+      },
+      "rtf": {
+        "n": 40,
+        "mean": 0.3723174919781019,
+        "p50": 0.37311384787443125,
+        "p95": 0.41246078537789377,
+        "min": 0.3328396838247393,
+        "max": 0.4204856730771448
+      }
+    },
+    "carga0_cs8": {
+      "ciclo_carga_pct": 0,
+      "chunk_size": 8,
+      "ttfa_s": {
+        "n": 40,
+        "mean": 0.263548812494264,
+        "p50": 0.263081749988487,
+        "p95": 0.2661975800059736,
+        "min": 0.2608856000006199,
+        "max": 0.27199919999111444
+      },
+      "rtf": {
+        "n": 40,
+        "mean": 0.3299157321774933,
+        "p50": 0.3301979673999246,
+        "p95": 0.35901107934378257,
+        "min": 0.30127143382474864,
+        "max": 0.36440370193024413
+      }
+    },
+    "carga50_cs4": {
+      "ciclo_carga_pct": 50,
+      "chunk_size": 4,
+      "ttfa_s": {
+        "n": 40,
+        "mean": 0.3366143475053832,
+        "p50": 0.33631339998100884,
+        "p95": 0.354470659972867,
+        "min": 0.3076375999953598,
+        "max": 0.3649476999999024
+      },
+      "rtf": {
+        "n": 40,
+        "mean": 0.6919851106903379,
+        "p50": 0.697341451772366,
+        "p95": 0.7672737196020993,
+        "min": 0.6159658823547515,
+        "max": 0.7847733172988788
+      }
+    },
+    "carga50_cs8": {
+      "ciclo_carga_pct": 50,
+      "chunk_size": 8,
+      "ttfa_s": {
+        "n": 40,
+        "mean": 0.48825721500325014,
+        "p50": 0.4908930999808945,
+        "p95": 0.5115739149507135,
+        "min": 0.46180590003496036,
+        "max": 0.5193277000216767
+      },
+      "rtf": {
+        "n": 40,
+        "mean": 0.6072594979997489,
+        "p50": 0.6059742443383516,
+        "p95": 0.6542639335558494,
+        "min": 0.5536568382376572,
+        "max": 0.6861100480679082
+      }
+    },
+    "carga100_cs4": {
+      "ciclo_carga_pct": 100,
+      "chunk_size": 4,
+      "ttfa_s": {
+        "n": 40,
+        "mean": 1.771108824989642,
+        "p50": 1.7736975500010885,
+        "p95": 1.838322649957263,
+        "min": 1.6627399999997579,
+        "max": 1.8592632999643683
+      },
+      "rtf": {
+        "n": 40,
+        "mean": 1.3057659429558053,
+        "p50": 1.3085029927318612,
+        "p95": 1.5897261195294667,
+        "min": 0.985197397055933,
+        "max": 1.680802403839502
+      }
+    },
+    "carga100_cs8": {
+      "ciclo_carga_pct": 100,
+      "chunk_size": 8,
+      "ttfa_s": {
+        "n": 40,
+        "mean": 1.971426517490181,
+        "p50": 1.969409449986415,
+        "p95": 2.07246439003211,
+        "min": 1.783785599982366,
+        "max": 2.104727300000377
+      },
+      "rtf": {
+        "n": 40,
+        "mean": 1.1496345470271254,
+        "p50": 1.1460634815782365,
+        "p95": 1.4681025963197025,
+        "min": 0.839487147056977,
+        "max": 1.5893447595982042
+      }
+    }
+  },
+  "vram_pico": {
+    "torch_max_allocated_mib": 2679.0,
+    "torch_max_reserved_mib": 3076.0,
+    "nvml_pico_total_mib": 5350.1,
+    "nvidia_smi_ahora_mib": 4795.0,
+    "nvml_pico_menos_linea_base_mib": 3577.5
+  }
+}

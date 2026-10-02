@@ -1,0 +1,421 @@
+{
+  "candidato": "A: Qwen3-TTS-12Hz-0.6B-Base + faster-qwen3-tts (CUDA graphs)",
+  "fase": "completa",
+  "modo": "xvec",
+  "idioma": "Spanish",
+  "referencia": {
+    "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\ref\\ref_es_es_24k.wav",
+    "duracion_s": 6.86,
+    "texto": "expedito, pero doña Francisca, no convencida con tan endeble argumento, continuó chillando en estos términos."
+  },
+  "frases_medicion": [
+    "Vale, nos vemos luego en casa de Laura.",
+    "¿Vosotros sabéis dónde he dejado las llaves del coche?",
+    "No me lo puedo creer, otra vez se ha roto el ordenador.",
+    "Tranquilo, tío, que lo arreglamos mañana por la mañana.",
+    "Buenas noches, ¿qué tal todo?",
+    "El tren con destino a Barcelona saldrá de la vía cuatro en cinco minutos.",
+    "Me ha llamado mi madre al móvil y no he podido cogerlo.",
+    "Vamos a tener que darnos prisa si queremos llegar antes de que empiece la película.",
+    "Aquí tenéis la cuenta, y gracias por venir a nuestro restaurante.",
+    "¡Cuidado! Viene un coche por la derecha y no va a frenar.",
+    "Dicen que mañana lloverá en casi toda la península, aunque por la tarde saldrá el sol en el sur.",
+    "¿Sabes qué hora es? Llevamos esperando casi una hora en la puerta.",
+    "El presidente del gobierno anunció ayer que subirá el salario mínimo a partir del próximo año.",
+    "Nunca pensé que fuera a decirte esto, pero creo que has cometido un error enorme.",
+    "¿Puedes bajar el volumen, por favor?",
+    "Vale, de acuerdo, pero esta vez pagáis vosotros la cena.",
+    "En el capítulo anterior descubrimos que el protagonista llevaba años ocultando su verdadera identidad a toda su familia.",
+    "Los científicos han descubierto una nueva especie de pez en las profundidades del océano Atlántico, a más de tres mil metros.",
+    "Si me das un minuto, te explico con calma todo lo que ha pasado esta mañana en la oficina, porque no ha sido culpa mía.",
+    "Atención, pasajeros del vuelo con destino a Sevilla: la puerta de embarque ha cambiado, diríjanse a la puerta doce inmediatamente, por favor."
+  ],
+  "espera_candado_s": 81.2,
+  "entorno": {
+    "python": "3.12.14",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "paquetes": {
+      "faster-qwen3-tts": "0.5.3",
+      "qwen-tts-hf": "0.1.1.post1",
+      "transformers": "5.15.1",
+      "accelerate": "1.12.0",
+      "torch": "2.11.0+cu130",
+      "torchaudio": "2.11.0+cu130",
+      "numpy": "2.5.3",
+      "soundfile": "0.14.0",
+      "huggingface-hub": "1.33.0"
+    },
+    "torch": "2.11.0+cu130",
+    "cuda_build": "13.0",
+    "arch_list": [
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120"
+    ],
+    "sm_120": true,
+    "gpu": {
+      "nombre": "NVIDIA GeForce RTX 5070",
+      "vram_total_mib": 12199,
+      "cc": "12.0"
+    },
+    "driver_nvidia": "616.64"
+  },
+  "vram_linea_base_mib": {
+    "nvml": 1772.8,
+    "nvidia_smi": 1489.0,
+    "total": 12227
+  },
+  "carga_modelo_s": 6.27,
+  "vram_tras_carga": {
+    "nvml_mib": 4154.0,
+    "torch_allocated_mib": 2070.4,
+    "torch_reserved_mib": 2200.0
+  },
+  "preparar_referencia_s": 1.084,
+  "calentamiento_capturar_grafos_s": 0.86,
+  "barrido_chunk_size": {
+    "8": {
+      "ttfa_s": {
+        "n": 20,
+        "mean": 0.24538698999385816,
+        "p50": 0.2444114499958232,
+        "p95": 0.2561656349746045,
+        "min": 0.2412241999991238,
+        "max": 0.25646270002471283
+      },
+      "rtf": {
+        "n": 20,
+        "mean": 0.30879709813280376,
+        "p50": 0.3075674301078173,
+        "p95": 0.31957458289649393,
+        "min": 0.29927157352657935,
+        "max": 0.3245483653769882
+      },
+      "xrt": {
+        "n": 20,
+        "mean": 3.2402888852094724,
+        "p50": 3.251322703325438,
+        "p95": 3.341415752458069,
+        "min": 3.0812048578288853,
+        "max": 3.3414466606905666
+      },
+      "n_peticiones": 20
+    }
+  },
+  "registros": [
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 0,
+      "palabras": 8,
+      "ttfa_s": 0.2444,
+      "total_s": 0.9434,
+      "audio_s": 2.96,
+      "rtf": 0.3187,
+      "prefill_ms": 43.1,
+      "decode_primer_chunk_ms": 167.8,
+      "n_chunks": 5
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 1,
+      "palabras": 9,
+      "ttfa_s": 0.2459,
+      "total_s": 1.0473,
+      "audio_s": 3.28,
+      "rtf": 0.3193,
+      "prefill_ms": 45.3,
+      "decode_primer_chunk_ms": 167.9,
+      "n_chunks": 6
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 2,
+      "palabras": 12,
+      "ttfa_s": 0.2461,
+      "total_s": 1.2139,
+      "audio_s": 3.92,
+      "rtf": 0.3097,
+      "prefill_ms": 44.3,
+      "decode_primer_chunk_ms": 168.4,
+      "n_chunks": 7
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 3,
+      "palabras": 9,
+      "ttfa_s": 0.2412,
+      "total_s": 1.0837,
+      "audio_s": 3.52,
+      "rtf": 0.3079,
+      "prefill_ms": 44.5,
+      "decode_primer_chunk_ms": 166.7,
+      "n_chunks": 6
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 4,
+      "palabras": 5,
+      "ttfa_s": 0.246,
+      "total_s": 0.6751,
+      "audio_s": 2.08,
+      "rtf": 0.3245,
+      "prefill_ms": 45.7,
+      "decode_primer_chunk_ms": 167.3,
+      "n_chunks": 4
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 5,
+      "palabras": 14,
+      "ttfa_s": 0.2488,
+      "total_s": 1.3486,
+      "audio_s": 4.4,
+      "rtf": 0.3065,
+      "prefill_ms": 45.6,
+      "decode_primer_chunk_ms": 168.8,
+      "n_chunks": 7
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 6,
+      "palabras": 12,
+      "ttfa_s": 0.243,
+      "total_s": 1.0207,
+      "audio_s": 3.28,
+      "rtf": 0.3112,
+      "prefill_ms": 42.9,
+      "decode_primer_chunk_ms": 167.8,
+      "n_chunks": 6
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 7,
+      "palabras": 15,
+      "ttfa_s": 0.2444,
+      "total_s": 1.337,
+      "audio_s": 4.4,
+      "rtf": 0.3039,
+      "prefill_ms": 44.9,
+      "decode_primer_chunk_ms": 167.6,
+      "n_chunks": 7
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 8,
+      "palabras": 11,
+      "ttfa_s": 0.2436,
+      "total_s": 1.2076,
+      "audio_s": 3.92,
+      "rtf": 0.3081,
+      "prefill_ms": 45.2,
+      "decode_primer_chunk_ms": 165.7,
+      "n_chunks": 7
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 9,
+      "palabras": 12,
+      "ttfa_s": 0.2565,
+      "total_s": 1.267,
+      "audio_s": 4.0,
+      "rtf": 0.3167,
+      "prefill_ms": 56.7,
+      "decode_primer_chunk_ms": 168.0,
+      "n_chunks": 7
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 10,
+      "palabras": 19,
+      "ttfa_s": 0.2561,
+      "total_s": 1.5532,
+      "audio_s": 5.12,
+      "rtf": 0.3034,
+      "prefill_ms": 45.5,
+      "decode_primer_chunk_ms": 169.4,
+      "n_chunks": 8
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 11,
+      "palabras": 12,
+      "ttfa_s": 0.2433,
+      "total_s": 1.0861,
+      "audio_s": 3.44,
+      "rtf": 0.3157,
+      "prefill_ms": 44.5,
+      "decode_primer_chunk_ms": 167.3,
+      "n_chunks": 6
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 12,
+      "palabras": 16,
+      "ttfa_s": 0.2414,
+      "total_s": 1.6221,
+      "audio_s": 5.36,
+      "rtf": 0.3026,
+      "prefill_ms": 45.3,
+      "decode_primer_chunk_ms": 166.3,
+      "n_chunks": 9
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 13,
+      "palabras": 15,
+      "ttfa_s": 0.2425,
+      "total_s": 1.2881,
+      "audio_s": 4.24,
+      "rtf": 0.3038,
+      "prefill_ms": 43.9,
+      "decode_primer_chunk_ms": 167.0,
+      "n_chunks": 7
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 14,
+      "palabras": 6,
+      "ttfa_s": 0.2449,
+      "total_s": 0.7136,
+      "audio_s": 2.24,
+      "rtf": 0.3186,
+      "prefill_ms": 44.8,
+      "decode_primer_chunk_ms": 167.9,
+      "n_chunks": 4
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 15,
+      "palabras": 10,
+      "ttfa_s": 0.2436,
+      "total_s": 1.2291,
+      "audio_s": 4.0,
+      "rtf": 0.3073,
+      "prefill_ms": 46.7,
+      "decode_primer_chunk_ms": 165.8,
+      "n_chunks": 7
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 16,
+      "palabras": 18,
+      "ttfa_s": 0.2435,
+      "total_s": 2.035,
+      "audio_s": 6.8,
+      "rtf": 0.2993,
+      "prefill_ms": 45.7,
+      "decode_primer_chunk_ms": 166.1,
+      "n_chunks": 11
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 17,
+      "palabras": 21,
+      "ttfa_s": 0.2449,
+      "total_s": 2.1565,
+      "audio_s": 7.2,
+      "rtf": 0.2995,
+      "prefill_ms": 45.2,
+      "decode_primer_chunk_ms": 167.4,
+      "n_chunks": 12
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 18,
+      "palabras": 25,
+      "ttfa_s": 0.2424,
+      "total_s": 1.8483,
+      "audio_s": 6.16,
+      "rtf": 0.3,
+      "prefill_ms": 43.1,
+      "decode_primer_chunk_ms": 167.2,
+      "n_chunks": 10
+    },
+    {
+      "chunk_size": 8,
+      "rep": 0,
+      "frase": 19,
+      "palabras": 22,
+      "ttfa_s": 0.2453,
+      "total_s": 2.3942,
+      "audio_s": 8.0,
+      "rtf": 0.2993,
+      "prefill_ms": 44.9,
+      "decode_primer_chunk_ms": 167.2,
+      "n_chunks": 13
+    }
+  ],
+  "muestras": [
+    {
+      "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\muestras\\extra\\A_qwen3_xvec_01.wav",
+      "frase": "Vale, ¿vosotros venís en coche o cogéis el autobús? Yo llego en veinte minutos.",
+      "audio_s": 5.44,
+      "ttfa_s": 0.248,
+      "pico": 0.855
+    },
+    {
+      "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\muestras\\extra\\A_qwen3_xvec_02.wav",
+      "frase": "Se me ha estropeado el ordenador y no encuentro el móvil, así que hoy no puedo contestar a nadie.",
+      "audio_s": 5.6,
+      "ttfa_s": 0.245,
+      "pico": 0.848
+    },
+    {
+      "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\muestras\\extra\\A_qwen3_xvec_03.wav",
+      "frase": "Tío, ¿has visto el capítulo de anoche? Me ha parecido una pasada, sobre todo el final.",
+      "audio_s": 5.84,
+      "ttfa_s": 0.245,
+      "pico": 0.66
+    },
+    {
+      "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\muestras\\extra\\A_qwen3_xvec_04.wav",
+      "frase": "Buenas tardes, señoras y señores. Les habla el capitán: en breve aterrizaremos en el aeropuerto de Madrid.",
+      "audio_s": 7.12,
+      "ttfa_s": 0.245,
+      "pico": 0.984
+    },
+    {
+      "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\muestras\\extra\\A_qwen3_xvec_05.wav",
+      "frase": "Después de tres años de negociaciones, el gobierno ha anunciado una reforma que cambiará la vida de millones de personas.",
+      "audio_s": 7.2,
+      "ttfa_s": 0.244,
+      "pico": 0.805
+    },
+    {
+      "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\muestras\\extra\\A_qwen3_xvec_06.wav",
+      "frase": "¡Cuidado con la zorra! Vosotros id por la izquierda, que yo cubro el centro y luego nos vemos en el coche.",
+      "audio_s": 5.12,
+      "ttfa_s": 0.254,
+      "pico": 0.855
+    }
+  ],
+  "vram_pico": {
+    "torch_max_allocated_mib": 2448.6,
+    "torch_max_reserved_mib": 2538.0,
+    "nvml_pico_total_mib": 4540.2,
+    "nvidia_smi_ahora_mib": 4256.0,
+    "nvml_pico_menos_linea_base_mib": 2767.4
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "voice_id": "es-f-est-01",
+  "name": "Voz humana 2 (VoxPopuli)",
+  "gender": "f",
+  "source": "voxpopuli: 20170405-0900-PLENARY-14-es_20170405-18:01:16_6 0.0-9.04 s",
+  "license": "CC0 1.0 (datos de VoxPopuli, Meta AI); audio original del Parlamento Europeo (sesiones plenarias), reutilización autorizada citando la fuente: © Unión Europea, Parlamento Europeo. Aviso legal: https://www.europarl.europa.eu/legal-notice/es/",
+  "ref_text": "Fue este Parlamento el que lo aprobó y lo negoció con el Consejo, con una gran colaboración con la Comisión."
+}

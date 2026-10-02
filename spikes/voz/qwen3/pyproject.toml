@@ -1,0 +1,33 @@
+[project]
+name = "voz-spike-qwen3"
+version = "0.0.0"
+description = "Spike S1 (hito 0): Qwen3-TTS-0.6B Base + faster-qwen3-tts en RTX 5070 con Windows nativo"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "faster-qwen3-tts==0.5.3",
+    # La capa de compatibilidad de qwen-tts-hf 0.1.1.post1 rompe con transformers 5.18 (MimiConfig sin rope_theta):
+    # se fija el mínimo que exige faster-qwen3-tts.
+    "transformers==5.15.1",
+    # PyTorch con CUDA 13.0 (incluye sm_120 para la RTX 5070). torchaudio solo existe hasta 2.11 en este índice.
+    "torch==2.11.0",
+    "torchaudio==2.11.0",
+    "numpy",
+    "scipy",
+    "soundfile",
+    "filelock",
+    "nvidia-ml-py",
+    "huggingface-hub",
+]
+
+[tool.uv]
+# Proyecto de scripts: no se construye ni se instala como paquete.
+package = false
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchaudio = { index = "pytorch-cu130" }
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true

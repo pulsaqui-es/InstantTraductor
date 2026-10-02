@@ -1,0 +1,155 @@
+{
+  "que_se_mide": "Nivel de la fricativa inicial/intervocálica relativo a la vocal más fuerte de la palabra (dB). Palabras «theta»: solo /θ/ (ce, ci, z, sin s); palabras «s»: solo /s/ intervocálica o inicial.",
+  "interpretacion": "Con distinción (castellano peninsular) la fricativa de las palabras «theta» es mucho más débil que la de las «s» (Δ grande y significativo). Con seseo (español de América, andaluz) son la misma /s/ (Δ ~ 0).",
+  "limites": "Es un indicio acústico, no una prueba del país del lector. El control argentino solo tiene la palabra «hace» como ejemplo de «theta»; los datos de los lectores de LibriVox son prosa libre transcrita con Whisper-small.",
+  "grupos": {
+    "tux_trafalgar02_30_330": {
+      "n_theta": 29,
+      "n_s": 58,
+      "palabras_theta": [
+        "aborrezco",
+        "arrogancia",
+        "brazo",
+        "bribonazo",
+        "cadiz",
+        "canonazo",
+        "catorce",
+        "celebre",
+        "cito",
+        "comparacion",
+        "convencida",
+        "corcel",
+        "dicen",
+        "gracia",
+        "hacen",
+        "hacer",
+        "hicieran",
+        "hizo",
+        "izquierdo",
+        "marcial",
+        "parece",
+        "pareciendome",
+        "quince",
+        "recibir",
+        "vicente"
+      ],
+      "nivel_rel_db": {
+        "theta_mediana": -20.943971633911133,
+        "s_mediana": -15.186116218566895,
+        "p_mann_whitney": 1.900416238929031e-07
+      },
+      "centroide_hz": {
+        "theta_mediana": 4832.171853717117,
+        "s_mediana": 4149.272872379142,
+        "p_mann_whitney": 2.8821044319489367e-09
+      },
+      "dur_ms": {
+        "theta_mediana": 40.0,
+        "s_mediana": 40.0,
+        "p_mann_whitney": 0.7510710641650069
+      },
+      "pico_hz": {
+        "theta_mediana": 3890.625,
+        "s_mediana": 3796.875,
+        "p_mann_whitney": 0.005096685406602221
+      }
+    },
+    "mongope_abel03_30_330": {
+      "n_theta": 26,
+      "n_s": 50,
+      "palabras_theta": [
+        "belleza",
+        "cederia",
+        "cedertela",
+        "ciudad",
+        "decir",
+        "gozaria",
+        "hacer",
+        "haciendo",
+        "inmortalizado",
+        "naci",
+        "nacido",
+        "paciencia",
+        "quicio",
+        "vencedor",
+        "violencia",
+        "voz"
+      ],
+      "nivel_rel_db": {
+        "theta_mediana": -23.91987419128418,
+        "s_mediana": -11.5360689163208,
+        "p_mann_whitney": 1.285402729584247e-08
+      },
+      "centroide_hz": {
+        "theta_mediana": 6307.287575075359,
+        "s_mediana": 5325.9492429716865,
+        "p_mann_whitney": 7.910135009931015e-05
+      },
+      "dur_ms": {
+        "theta_mediana": 42.5,
+        "s_mediana": 92.5,
+        "p_mann_whitney": 1.0957097575444184e-06
+      },
+      "pico_hz": {
+        "theta_mediana": 5718.75,
+        "s_mediana": 5156.25,
+        "p_mann_whitney": 0.5360012654571544
+      }
+    },
+    "es-ES_peninsular_SLR61": {
+      "n_theta": 5,
+      "n_s": 29,
+      "palabras_theta": [
+        "catorce",
+        "once"
+      ],
+      "nivel_rel_db": {
+        "theta_mediana": -31.31476593017578,
+        "s_mediana": -15.856586456298828,
+        "p_mann_whitney": 7.187625783451211e-06
+      },
+      "centroide_hz": {
+        "theta_mediana": 7435.04882479573,
+        "s_mediana": 5749.802790093605,
+        "p_mann_whitney": 0.12226870220228854
+      },
+      "dur_ms": {
+        "theta_mediana": 65.0,
+        "s_mediana": 87.5,
+        "p_mann_whitney": 0.341873772989455
+      },
+      "pico_hz": {
+        "theta_mediana": 6187.5,
+        "s_mediana": 5437.5,
+        "p_mann_whitney": 0.4942634255019165
+      }
+    },
+    "es-AR_argentino_SLR61": {
+      "n_theta": 86,
+      "n_s": 44,
+      "palabras_theta": [
+        "hace"
+      ],
+      "nivel_rel_db": {
+        "theta_mediana": -15.838989734649658,
+        "s_mediana": -14.076743125915527,
+        "p_mann_whitney": 0.052257798429726346
+      },
+      "centroide_hz": {
+        "theta_mediana": 8986.402862380375,
+        "s_mediana": 6078.501308497507,
+        "p_mann_whitney": 3.711552497318921e-11
+      },
+      "dur_ms": {
+        "theta_mediana": 70.0,
+        "s_mediana": 72.5,
+        "p_mann_whitney": 0.5794857321473588
+      },
+      "pico_hz": {
+        "theta_mediana": 9281.25,
+        "s_mediana": 6234.375,
+        "p_mann_whitney": 2.6586514514187447e-10
+      }
+    }
+  }
+}

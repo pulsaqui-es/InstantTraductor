@@ -1,0 +1,14 @@
+{
+  "ia_id": "trafalgar_0909_librivox",
+  "fichero": "trafalgar_02_perezgaldos.mp3",
+  "inicio_s": 159.72,
+  "fin_s": 166.58,
+  "origen": "LibriVox (dominio público): «Trafalgar», de Benito Pérez Galdós, sección 02, leída por Tux",
+  "url_item": "https://archive.org/details/trafalgar_0909_librivox",
+  "url_audio": "https://archive.org/download/trafalgar_0909_librivox/trafalgar_02_perezgaldos.mp3",
+  "lector": "Tux (voluntario de LibriVox)",
+  "minuto": "02:39,72 a 02:46,58 del fichero trafalgar_02_perezgaldos.mp3",
+  "licencia": "Dominio público (LibriVox; Internet Archive la marca como dominio público)",
+  "texto": "expedito, pero doña Francisca, no convencida con tan endeble argumento, continuó chillando en estos términos.",
+  "fuente_texto": "Project Gutenberg #16961 (Trafalgar), contrastado con la transcripción de Whisper-small del propio recorte"
+}

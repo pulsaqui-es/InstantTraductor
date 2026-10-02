@@ -1,0 +1,8 @@
+{
+  "voice_id": "es-f-dvx-08",
+  "name": "Clara",
+  "gender": "f",
+  "source": "Diseñada con VoxCPM2 (openbmb/VoxCPM2) (Apache-2.0); descripción: (Mujer de 30 años, voz serena, tranquilizadora y cálida de tono medio, ritmo constante y sin prisa, tono suave y amable, entonación natural y expresiva, dicción muy clara; voz femenina aguda de mujer joven, no de hombre; hablante nativa de castellano de Segovia, España, con acento peninsular: pronuncia la z y ce/ci con la zeta interdental /θ/, distinta de la s, sin seseo)",
+  "license": "Apache-2.0 (modelo); audio sintético sin voz humana de origen",
+  "ref_text": "Mi abuela siempre decía que la paciencia es la mejor medicina, y con el tiempo he entendido por qué lo decía tan convencida y con tanta seguridad."
+}

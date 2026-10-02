@@ -1,0 +1,57 @@
+[project]
+name = "instanttraductor"
+version = "0.1.0"
+description = "Traductor simultáneo local: lo que suena en el PC, hablado en español de España."
+readme = "README.md"
+requires-python = "==3.12.*"
+dependencies = [
+    "numpy>=2.5.3",
+    "comtypes>=1.4.17",
+    "miniaudio==1.71",
+    "pycaw>=20260927",
+    "soxr>=1.1.0",
+    "audiostretchy>=1.3.5",
+    "onnxruntime>=1.30.0",
+    "sherpa-onnx==1.13.8",
+    # Explícito: en Windows uv pierde esta dependencia y sherpa cae en el onnxruntime.dll de System32 (research R5).
+    "sherpa-onnx-core==1.13.8",
+    "httpx>=0.28.1",
+    "huggingface-hub>=1.33.0",
+    "rich>=15.0.0",
+    "tomli-w>=1.2.0",
+    "psutil>=7.2.2",
+]
+
+[project.scripts]
+instanttraductor = "instanttraductor.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4",
+    "pytest-timeout>=2.4",
+    "ruff>=0.13",
+    "soundfile>=0.14.0",
+    "pyarrow>=25.0.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+exclude = ["spikes", "engines", "docs", "specs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -m 'not gpu and not model and not device'"
+timeout = 60
+markers = [
+    "gpu: necesita la GPU NVIDIA (solo el orquestador, de uno en uno)",
+    "model: necesita modelos descargados (solo el orquestador)",
+    "device: usa dispositivos de audio reales (solo el orquestador)",
+]

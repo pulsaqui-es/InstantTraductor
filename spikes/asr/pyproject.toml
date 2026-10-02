@@ -1,0 +1,34 @@
+[project]
+name = "instanttraductor-spike-asr"
+version = "0.0.0"
+description = "Spike S3: reconocimiento de voz en inglés en streaming (Nemotron + sherpa-onnx frente a faster-whisper). No es código de producto."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    # Motor A: transductor en streaming (Nemotron) sobre sherpa-onnx, en CPU
+    "sherpa-onnx>=1.13.8",
+    # En Windows el wheel de sherpa-onnx declara esta dependencia, pero la resolución universal
+    # de uv la pierde (los metadatos difieren entre plataformas). Sin ella, el .pyd no encuentra
+    # sus DLL y cae en el onnxruntime.dll 1.17.1 de System32 ("API version [28] is not available").
+    "sherpa-onnx-core>=1.13.8",
+    # VAD: el modelo Silero (.onnx) se ejecuta con onnxruntime en CPU.
+    # No se usa el paquete `silero-vad` porque arrastra torch.
+    "onnxruntime>=1.30",
+    # Motor B: faster-whisper sobre CTranslate2 (GPU, FP16)
+    "faster-whisper==1.2.1",
+    "ctranslate2>=4.8,<4.9",
+    "nvidia-cublas-cu12",
+    # Datos, métricas y utilidades
+    "numpy",
+    "soundfile",
+    "pyarrow",
+    "huggingface-hub",
+    "jiwer",
+    "whisper-normalizer",
+    "psutil",
+    "filelock",
+]
+
+[tool.uv]
+# Spike: un proyecto "virtual", sin empaquetar. Los scripts se lanzan con `uv run python <script>.py`.
+package = false

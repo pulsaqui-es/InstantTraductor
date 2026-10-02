@@ -1,0 +1,565 @@
+{
+  "entorno": {
+    "formato_mezcla_dispositivo": {
+      "frecuencia": 48000,
+      "canales": 8,
+      "bits": 32,
+      "formato": 65534
+    },
+    "volumen_maestro_pct": 78.0,
+    "windows": "Windows-11-10.0.26200-SP0 build 26200 (25H2 UBR 9457)",
+    "python": "3.12.14",
+    "miniaudio": "1.71",
+    "numpy": "2.5.3",
+    "pycaw": "20260927",
+    "comtypes": "1.4.17",
+    "psutil": "7.2.2",
+    "cffi": "2.1.1",
+    "dispositivo_por_defecto": {
+      "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+      "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+    },
+    "dispositivos_activos": [
+      {
+        "nombre": "Realtek Digital Output (Realtek(R) Audio)",
+        "id": "{0.0.0.00000000}.{bb2b6dd2-08c7-4168-8846-db8b3c9dd285}"
+      },
+      {
+        "nombre": "Altavoces (Logitech G733 Gaming Headset)",
+        "id": "{0.0.0.00000000}.{fba879dd-885d-4b6f-bea7-60323fe0357a}"
+      }
+    ],
+    "pid": 140440,
+    "cadena_propia": "python.exe(140440) <- python.exe(200540) <- uv.exe(531836) <- bash.exe(666692) <- bash.exe(294024) <- bash.exe(305000) <- claude.exe(53368) <- Code.exe(283472) <- Code.exe(713364) <- explorer.exe(705220) <- <muerto o PID reutilizado>(520964)"
+  },
+  "fases": {
+    "ambiente": {
+      "duracion_s": 8.0,
+      "exclude": {
+        "paquetes": 800,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 15999.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 11.02,
+        "intervalo_max_ms": 11.5,
+        "rms_dbfs": -180.0,
+        "flags": [
+          0
+        ]
+      },
+      "include": {
+        "paquetes": 800,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 15999.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 10.95,
+        "intervalo_max_ms": 11.47,
+        "rms_dbfs": -180.0,
+        "flags": [
+          0
+        ]
+      },
+      "endpoint": {
+        "paquetes": 0,
+        "paquetes_por_s": 0.0,
+        "frames_por_s": 0.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": null,
+        "intervalo_p99_ms": null,
+        "intervalo_max_ms": null,
+        "rms_dbfs": null,
+        "flags": []
+      }
+    },
+    "reproductor_en_ceros": {
+      "duracion_s": 8.0,
+      "exclude": {
+        "paquetes": 800,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 15999.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 11.05,
+        "intervalo_max_ms": 11.22,
+        "rms_dbfs": -180.0,
+        "flags": [
+          0
+        ]
+      },
+      "include": {
+        "paquetes": 800,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 15999.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 11.06,
+        "intervalo_max_ms": 11.34,
+        "rms_dbfs": -135.2,
+        "flags": [
+          0
+        ]
+      },
+      "endpoint": {
+        "paquetes": 800,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 15999.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 11.12,
+        "intervalo_max_ms": 11.36,
+        "rms_dbfs": -135.0,
+        "flags": [
+          0
+        ]
+      }
+    },
+    "rafagas": {
+      "duracion_s": 6.86,
+      "exclude": {
+        "paquetes": 686,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 15996.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 10.95,
+        "intervalo_max_ms": 11.1,
+        "rms_dbfs": -180.0,
+        "flags": [
+          0
+        ]
+      },
+      "include": {
+        "paquetes": 686,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 15996.0,
+        "pct_con_señal": 27.8,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 11.03,
+        "intervalo_max_ms": 11.53,
+        "rms_dbfs": -28.2,
+        "flags": [
+          0
+        ]
+      },
+      "endpoint": {
+        "paquetes": 686,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 15996.0,
+        "pct_con_señal": 27.8,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 11.09,
+        "intervalo_max_ms": 11.3,
+        "rms_dbfs": -28.1,
+        "flags": [
+          0
+        ]
+      }
+    },
+    "reproductor_cerrado": {
+      "duracion_s": 4.0,
+      "exclude": {
+        "paquetes": 400,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 15998.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 10.74,
+        "intervalo_max_ms": 10.92,
+        "rms_dbfs": -180.0,
+        "flags": [
+          0
+        ]
+      },
+      "include": {
+        "paquetes": 401,
+        "paquetes_por_s": 100.2,
+        "frames_por_s": 16038.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 10.95,
+        "intervalo_max_ms": 11.05,
+        "rms_dbfs": -180.0,
+        "flags": [
+          0
+        ]
+      },
+      "endpoint": {
+        "paquetes": 0,
+        "paquetes_por_s": 0.0,
+        "frames_por_s": 0.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": null,
+        "intervalo_p99_ms": null,
+        "intervalo_max_ms": null,
+        "rms_dbfs": null,
+        "flags": []
+      }
+    },
+    "ffplay_silencio": {
+      "duracion_s": 2.95,
+      "exclude": {
+        "paquetes": 294,
+        "paquetes_por_s": 99.7,
+        "frames_por_s": 15948.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 10.78,
+        "intervalo_max_ms": 10.97,
+        "rms_dbfs": -133.9,
+        "flags": [
+          0
+        ]
+      },
+      "include": {
+        "paquetes": 295,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 16003.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 10.87,
+        "intervalo_max_ms": 11.07,
+        "rms_dbfs": -180.0,
+        "flags": [
+          0
+        ]
+      },
+      "endpoint": {
+        "paquetes": 294,
+        "paquetes_por_s": 99.7,
+        "frames_por_s": 15948.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 10.96,
+        "intervalo_max_ms": 11.11,
+        "rms_dbfs": -133.8,
+        "flags": [
+          0,
+          2
+        ]
+      }
+    },
+    "deriva": {
+      "duracion_s": 300.0,
+      "exclude": {
+        "paquetes": 30000,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 16000.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 10.99,
+        "intervalo_max_ms": 27.23,
+        "rms_dbfs": -180.0,
+        "flags": [
+          0
+        ]
+      },
+      "include": {
+        "paquetes": 30000,
+        "paquetes_por_s": 100.0,
+        "frames_por_s": 16000.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": 10.0,
+        "intervalo_p99_ms": 10.98,
+        "intervalo_max_ms": 24.08,
+        "rms_dbfs": -180.0,
+        "flags": [
+          0
+        ]
+      },
+      "endpoint": {
+        "paquetes": 0,
+        "paquetes_por_s": 0.0,
+        "frames_por_s": 0.0,
+        "pct_con_señal": 0.0,
+        "intervalo_med_ms": null,
+        "intervalo_p99_ms": null,
+        "intervalo_max_ms": null,
+        "rms_dbfs": null,
+        "flags": []
+      }
+    }
+  },
+  "ambiente_silencioso": true,
+  "qpc": {
+    "exclude": {
+      "paquetes": 33349,
+      "duracion_s": 333.5,
+      "pasos_de_sello_exactos_pct": 99.99,
+      "desviacion_sello_std_ms": 0.104,
+      "desviacion_sello_absmax_ms": 16.771,
+      "saltos_de_sello_mayores_de_5ms": 2,
+      "tasa_por_sellos_hz": 15998.78,
+      "deriva_sellos_ppm": -77.0,
+      "tasa_por_llegada_hz": 15998.84,
+      "deriva_llegada_ppm": -73.0,
+      "llegada_menos_sello_med_ms": 9.35,
+      "llegada_menos_sello_p99_ms": 11.91
+    },
+    "include": {
+      "paquetes": 33350,
+      "duracion_s": 333.5,
+      "pasos_de_sello_exactos_pct": 99.99,
+      "desviacion_sello_std_ms": 0.074,
+      "desviacion_sello_absmax_ms": 11.148,
+      "saltos_de_sello_mayores_de_5ms": 2,
+      "tasa_por_sellos_hz": 15999.1,
+      "deriva_sellos_ppm": -56.0,
+      "tasa_por_llegada_hz": 15999.13,
+      "deriva_llegada_ppm": -54.0,
+      "llegada_menos_sello_med_ms": 10.53,
+      "llegada_menos_sello_p99_ms": 11.67
+    },
+    "endpoint": {
+      "paquetes": 2029,
+      "duracion_s": 24.9,
+      "pasos_de_sello_exactos_pct": 2.22,
+      "desviacion_sello_std_ms": 101.833,
+      "desviacion_sello_absmax_ms": 4587.006,
+      "saltos_de_sello_mayores_de_5ms": 2,
+      "tasa_por_sellos_hz": 13043.03,
+      "deriva_sellos_ppm": -184811.0,
+      "tasa_por_llegada_hz": 13033.96,
+      "deriva_llegada_ppm": -185378.0,
+      "llegada_menos_sello_med_ms": -9.58,
+      "llegada_menos_sello_p99_ms": 4.2
+    },
+    "exclude_2": {
+      "paquetes": 33351,
+      "duracion_s": 333.5,
+      "pasos_de_sello_exactos_pct": 99.99,
+      "desviacion_sello_std_ms": 0.098,
+      "desviacion_sello_absmax_ms": 14.46,
+      "saltos_de_sello_mayores_de_5ms": 2,
+      "tasa_por_sellos_hz": 15998.8,
+      "deriva_sellos_ppm": -75.0,
+      "tasa_por_llegada_hz": 15998.88,
+      "deriva_llegada_ppm": -70.0,
+      "llegada_menos_sello_med_ms": 9.66,
+      "llegada_menos_sello_p99_ms": 11.69
+    },
+    "include_2": {
+      "paquetes": 33352,
+      "duracion_s": 333.5,
+      "pasos_de_sello_exactos_pct": 99.99,
+      "desviacion_sello_std_ms": 0.076,
+      "desviacion_sello_absmax_ms": 12.819,
+      "saltos_de_sello_mayores_de_5ms": 2,
+      "tasa_por_sellos_hz": 15999.13,
+      "deriva_sellos_ppm": -55.0,
+      "tasa_por_llegada_hz": 15999.15,
+      "deriva_llegada_ppm": -53.0,
+      "llegada_menos_sello_med_ms": 10.63,
+      "llegada_menos_sello_p99_ms": 11.5
+    },
+    "endpoint_2": {
+      "paquetes": 2029,
+      "duracion_s": 24.9,
+      "pasos_de_sello_exactos_pct": 2.22,
+      "desviacion_sello_std_ms": 101.833,
+      "desviacion_sello_absmax_ms": 4587.006,
+      "saltos_de_sello_mayores_de_5ms": 2,
+      "tasa_por_sellos_hz": 13043.03,
+      "deriva_sellos_ppm": -184811.0,
+      "tasa_por_llegada_hz": 13033.93,
+      "deriva_llegada_ppm": -185379.0,
+      "llegada_menos_sello_med_ms": -9.58,
+      "llegada_menos_sello_p99_ms": 4.24
+    }
+  },
+  "qpc_deriva": {
+    "exclude": {
+      "paquetes": 30000,
+      "duracion_s": 300.0,
+      "pasos_de_sello_exactos_pct": 100.0,
+      "desviacion_sello_std_ms": 0.0,
+      "desviacion_sello_absmax_ms": 0.0,
+      "saltos_de_sello_mayores_de_5ms": 0,
+      "tasa_por_sellos_hz": 16000.0,
+      "deriva_sellos_ppm": 0.0,
+      "tasa_por_llegada_hz": 16000.0,
+      "deriva_llegada_ppm": 0.0,
+      "llegada_menos_sello_med_ms": 9.29,
+      "llegada_menos_sello_p99_ms": 10.07
+    },
+    "include": {
+      "paquetes": 30000,
+      "duracion_s": 300.0,
+      "pasos_de_sello_exactos_pct": 100.0,
+      "desviacion_sello_std_ms": 0.0,
+      "desviacion_sello_absmax_ms": 0.0,
+      "saltos_de_sello_mayores_de_5ms": 0,
+      "tasa_por_sellos_hz": 16000.0,
+      "deriva_sellos_ppm": 0.0,
+      "tasa_por_llegada_hz": 16000.01,
+      "deriva_llegada_ppm": 0.0,
+      "llegada_menos_sello_med_ms": 10.49,
+      "llegada_menos_sello_p99_ms": 11.25
+    },
+    "endpoint": {},
+    "exclude_2": {
+      "paquetes": 30000,
+      "duracion_s": 300.0,
+      "pasos_de_sello_exactos_pct": 100.0,
+      "desviacion_sello_std_ms": 0.0,
+      "desviacion_sello_absmax_ms": 0.0,
+      "saltos_de_sello_mayores_de_5ms": 0,
+      "tasa_por_sellos_hz": 16000.0,
+      "deriva_sellos_ppm": 0.0,
+      "tasa_por_llegada_hz": 16000.0,
+      "deriva_llegada_ppm": -0.0,
+      "llegada_menos_sello_med_ms": 9.61,
+      "llegada_menos_sello_p99_ms": 10.39
+    },
+    "include_2": {
+      "paquetes": 30000,
+      "duracion_s": 300.0,
+      "pasos_de_sello_exactos_pct": 100.0,
+      "desviacion_sello_std_ms": 0.0,
+      "desviacion_sello_absmax_ms": 0.0,
+      "saltos_de_sello_mayores_de_5ms": 0,
+      "tasa_por_sellos_hz": 16000.0,
+      "deriva_sellos_ppm": 0.0,
+      "tasa_por_llegada_hz": 16000.0,
+      "deriva_llegada_ppm": -0.0,
+      "llegada_menos_sello_med_ms": 10.64,
+      "llegada_menos_sello_p99_ms": 11.41
+    },
+    "endpoint_2": {}
+  },
+  "relleno": {
+    "exclude": {
+      "muestras_emitidas": 5335680,
+      "duracion_s": 333.5042587,
+      "paquetes_reales_s": 333.48,
+      "rellenadas_s": 0.0,
+      "recortadas_ms": 0.0,
+      "huecos": 0,
+      "retraso_medio_ms": 6.451995805349004,
+      "retraso_max_ms": 26.212467
+    },
+    "include": {
+      "muestras_emitidas": 5335840,
+      "duracion_s": 333.5080566,
+      "paquetes_reales_s": 333.49,
+      "rellenadas_s": 0.0,
+      "recortadas_ms": 0.0,
+      "huecos": 0,
+      "retraso_medio_ms": 2.481397112976733,
+      "retraso_max_ms": 22.005042
+    },
+    "endpoint": {
+      "muestras_emitidas": 397749,
+      "duracion_s": 24.8949718,
+      "paquetes_reales_s": 20.2780625,
+      "rellenadas_s": 4.58125,
+      "recortadas_ms": 0.0,
+      "huecos": 1,
+      "retraso_medio_ms": 12.418532954216865,
+      "retraso_max_ms": 139.806543
+    }
+  },
+  "extras": {
+    "sesiones_al_empezar": [
+      {
+        "pid": 15840,
+        "proceso": "steam.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 706344,
+        "proceso": "Discord.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 448316,
+        "proceso": "lghub_agent.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 28328,
+        "proceso": "ShellExperienceHost.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 446880,
+        "proceso": "FACEIT.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 435276,
+        "proceso": "steamwebhelper.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 692572,
+        "proceso": "Discord.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      }
+    ],
+    "sesiones_con_ffplay": [
+      {
+        "pid": 15840,
+        "proceso": "steam.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 706344,
+        "proceso": "Discord.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 448316,
+        "proceso": "lghub_agent.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 28328,
+        "proceso": "ShellExperienceHost.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 446880,
+        "proceso": "FACEIT.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 435276,
+        "proceso": "steamwebhelper.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 692572,
+        "proceso": "Discord.exe",
+        "estado": "inactiva",
+        "volumen": 1.0
+      },
+      {
+        "pid": 140440,
+        "proceso": "python.exe",
+        "estado": "activa",
+        "volumen": 1.0
+      },
+      {
+        "pid": 343536,
+        "proceso": "ffplay.exe",
+        "estado": "activa",
+        "volumen": 1.0
+      }
+    ]
+  }
+}

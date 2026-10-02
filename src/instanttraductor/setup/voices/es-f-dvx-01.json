@@ -1,0 +1,8 @@
+{
+  "voice_id": "es-f-dvx-01",
+  "name": "Lucía",
+  "gender": "f",
+  "source": "Diseñada con VoxCPM2 (openbmb/VoxCPM2) (Apache-2.0); descripción: (Mujer de 25 años, voz suave y cálida de tono medio, amable y cercana, entonación natural y expresiva con una melodía marcada, dicción clara, ritmo pausado y natural; voz femenina aguda de mujer joven, no de hombre; hablante nativa de castellano de Madrid, España, con acento peninsular: pronuncia la z y ce/ci con la zeta interdental /θ/, distinta de la s, sin seseo)",
+  "license": "Apache-2.0 (modelo); audio sintético sin voz humana de origen",
+  "ref_text": "Cuando llegué a la estación, el tren ya se había marchado. Entonces me senté, respiré hondo y decidí esperar con calma al siguiente, mirando cómo caía la lluvia."
+}

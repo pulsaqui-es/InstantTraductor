@@ -32,7 +32,7 @@ Integra según llegan los informes, respetando el orden de dependencias.
    - `DONE` / `DONE_WITH_CONCERNS`: integra y lee las NOTAS.
    - `NEEDS_CONTEXT`: contesta al obrero con SendMessage (conserva su contexto) o resuelve tú el hueco (por ejemplo, añadir una dependencia) y reanúdalo.
    - `BLOCKED`: analiza la causa. Si exige cambiar un contrato o la spec, detén la ola, redacta un ADR y consulta al humano.
-2. Comprueba la propiedad: `git diff --name-only <base>..<rama>` debe estar contenido en los ficheros asignados. Si no lo está, no integres y reanuda al obrero con la corrección.
+2. Comprueba la propiedad **antes del merge**: `git diff --name-only $(git merge-base HEAD <rama>)..<rama>` debe estar contenido en los ficheros asignados. Usa siempre el `merge-base`, no la base del brief: el worktree nace del HEAD del momento del lanzamiento, que puede ser posterior. Si no se cumple, no integres y reanuda al obrero con la corrección.
 3. Integra con `git merge --no-ff <rama> -m "Ola N: integra T0xx"`. Si hay conflicto en `uv.lock`, regenera con `uv lock` y commitea. Si es en otro fichero, el reparto estaba mal: resuélvelo tú y anótalo en la bitácora.
 4. Verifica con `uv run pytest -q` y `uv run ruff check .`. Si sale rojo y el merge aún no está publicado, deshazlo (`git reset --hard ORIG_HEAD`) y devuelve la salida del fallo al obrero con SendMessage: su worktree sigue existiendo.
 5. Marca `[X]` en `tasks.md` las tareas integradas (solo tú escribes `tasks.md`) y commitea.

@@ -1,0 +1,6 @@
+# Spike de investigacion (S4): solo se vigilan errores reales (pyflakes), no el estilo.
+# Ruff usa este fichero para todo lo que hay bajo spikes/audio, en vez de la configuracion de la raiz.
+line-length = 120
+
+[lint]
+select = ["F", "E9"]

@@ -1,0 +1,157 @@
+{
+  "candidato": "A: Qwen3-TTS-12Hz-0.6B-Base + faster-qwen3-tts (CUDA graphs)",
+  "fase": "velocidad",
+  "modo": "icl",
+  "idioma": "Spanish",
+  "referencia": {
+    "wav": "C:\\Users\\Usuario\\AppData\\Local\\InstantTraductor\\spikes\\voz\\ref\\ref_es_es_24k.wav",
+    "duracion_s": 6.86,
+    "texto": "expedito, pero doña Francisca, no convencida con tan endeble argumento, continuó chillando en estos términos."
+  },
+  "frases_medicion": [
+    "Vale, nos vemos luego en casa de Laura.",
+    "¿Vosotros sabéis dónde he dejado las llaves del coche?",
+    "No me lo puedo creer, otra vez se ha roto el ordenador.",
+    "Tranquilo, tío, que lo arreglamos mañana por la mañana.",
+    "Buenas noches, ¿qué tal todo?",
+    "El tren con destino a Barcelona saldrá de la vía cuatro en cinco minutos.",
+    "Me ha llamado mi madre al móvil y no he podido cogerlo.",
+    "Vamos a tener que darnos prisa si queremos llegar antes de que empiece la película.",
+    "Aquí tenéis la cuenta, y gracias por venir a nuestro restaurante.",
+    "¡Cuidado! Viene un coche por la derecha y no va a frenar.",
+    "Dicen que mañana lloverá en casi toda la península, aunque por la tarde saldrá el sol en el sur.",
+    "¿Sabes qué hora es? Llevamos esperando casi una hora en la puerta.",
+    "El presidente del gobierno anunció ayer que subirá el salario mínimo a partir del próximo año.",
+    "Nunca pensé que fuera a decirte esto, pero creo que has cometido un error enorme.",
+    "¿Puedes bajar el volumen, por favor?",
+    "Vale, de acuerdo, pero esta vez pagáis vosotros la cena.",
+    "En el capítulo anterior descubrimos que el protagonista llevaba años ocultando su verdadera identidad a toda su familia.",
+    "Los científicos han descubierto una nueva especie de pez en las profundidades del océano Atlántico, a más de tres mil metros.",
+    "Si me das un minuto, te explico con calma todo lo que ha pasado esta mañana en la oficina, porque no ha sido culpa mía.",
+    "Atención, pasajeros del vuelo con destino a Sevilla: la puerta de embarque ha cambiado, diríjanse a la puerta doce inmediatamente, por favor."
+  ],
+  "espera_candado_s": 277.4,
+  "entorno": {
+    "python": "3.12.14",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "paquetes": {
+      "faster-qwen3-tts": "0.5.3",
+      "qwen-tts-hf": "0.1.1.post1",
+      "transformers": "5.15.1",
+      "accelerate": "1.12.0",
+      "torch": "2.11.0+cu130",
+      "torchaudio": "2.11.0+cu130",
+      "numpy": "2.5.3",
+      "soundfile": "0.14.0",
+      "huggingface-hub": "1.33.0"
+    },
+    "torch": "2.11.0+cu130",
+    "cuda_build": "13.0",
+    "arch_list": [
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120"
+    ],
+    "sm_120": true,
+    "gpu": {
+      "nombre": "NVIDIA GeForce RTX 5070",
+      "vram_total_mib": 12199,
+      "cc": "12.0"
+    },
+    "driver_nvidia": "616.64"
+  },
+  "vram_linea_base_mib": {
+    "nvml": 1777.2,
+    "nvidia_smi": 1494.0,
+    "total": 12227
+  },
+  "carga_modelo_s": 7.0,
+  "vram_tras_carga": {
+    "nvml_mib": 4157.9,
+    "torch_allocated_mib": 2070.4,
+    "torch_reserved_mib": 2200.0
+  },
+  "preparar_referencia_s": 0.507,
+  "velocidad_instruct": {
+    "sin_instruccion": {
+      "instruct": null,
+      "velocidad_efectiva_mediana": 1.0,
+      "velocidad_efectiva_min": 1.0,
+      "velocidad_efectiva_max": 1.0,
+      "ttfa_s": {
+        "n": 20,
+        "mean": 0.2640631499933079,
+        "p50": 0.2631565000338014,
+        "p95": 0.26954202497727237,
+        "min": 0.2605079999775626,
+        "max": 0.2757592999842018
+      }
+    },
+    "es_mas_rapido": {
+      "instruct": "Habla más rápido de lo normal.",
+      "velocidad_efectiva_mediana": 1.013,
+      "velocidad_efectiva_min": 0.919,
+      "velocidad_efectiva_max": 1.557,
+      "ttfa_s": {
+        "n": 20,
+        "mean": 0.2664251350041013,
+        "p50": 0.26456829998642206,
+        "p95": 0.2712014349934179,
+        "min": 0.26111319998744875,
+        "max": 0.2874129000119865
+      }
+    },
+    "es_25_por_ciento": {
+      "instruct": "Habla un 25 % más rápido.",
+      "velocidad_efectiva_mediana": 1.015,
+      "velocidad_efectiva_min": 0.937,
+      "velocidad_efectiva_max": 1.758,
+      "ttfa_s": {
+        "n": 20,
+        "mean": 0.2650575950043276,
+        "p50": 0.26416834999690764,
+        "p95": 0.26995482500060464,
+        "min": 0.261572299990803,
+        "max": 0.2772740999935195
+      }
+    },
+    "en_25_percent": {
+      "instruct": "Speak 25% faster than normal.",
+      "velocidad_efectiva_mediana": 1.052,
+      "velocidad_efectiva_min": 0.94,
+      "velocidad_efectiva_max": 1.703,
+      "ttfa_s": {
+        "n": 20,
+        "mean": 0.2643983049958479,
+        "p50": 0.2636321999889333,
+        "p95": 0.2696154799632495,
+        "min": 0.26209589996142313,
+        "max": 0.26985829998739064
+      }
+    },
+    "es_muy_deprisa": {
+      "instruct": "Habla muy deprisa, con un ritmo ágil.",
+      "velocidad_efectiva_mediana": 0.988,
+      "velocidad_efectiva_min": 0.887,
+      "velocidad_efectiva_max": 1.73,
+      "ttfa_s": {
+        "n": 20,
+        "mean": 0.2636803399946075,
+        "p50": 0.26355360000161454,
+        "p95": 0.2653423750190996,
+        "min": 0.26058599998941645,
+        "max": 0.27110269997501746
+      }
+    }
+  },
+  "vram_pico": {
+    "torch_max_allocated_mib": 2682.3,
+    "torch_max_reserved_mib": 3082.0,
+    "nvml_pico_total_mib": 5087.7,
+    "nvidia_smi_ahora_mib": 4800.0,
+    "nvml_pico_menos_linea_base_mib": 3310.5
+  }
+}

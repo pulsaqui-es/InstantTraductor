@@ -1,0 +1,14 @@
+[project]
+name = "spike-traduccion"
+version = "0.1.0"
+description = "Spike S2: traducción con Hy-MT2-1.8B servido por llama-server (ADR-0007)"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "httpx>=0.28",
+    "filelock>=3.16",
+]
+
+[tool.uv]
+# Es un conjunto de scripts sueltos, no un paquete instalable.
+package = false
