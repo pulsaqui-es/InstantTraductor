@@ -73,6 +73,8 @@ TTS_LOOKAHEAD_S = 1.0
 #: Ventana de audio que se le pasa al verificador de idioma (spec 002, R3): de 1 a 6 s, acabando en la unidad.
 LID_MIN_S = 1.0
 LID_MAX_S = 6.0
+#: Frases traducidas que pueden esperar a la voz como mucho (la traducción no se adelanta más).
+MT_LOOKAHEAD_UNITS = 1
 #: Periodo del hilo de control (``scheduler.tick()`` 4 veces por segundo).
 TICK_S = 0.25
 #: Cuánto tiempo se muestra un aviso en la interfaz.
@@ -338,6 +340,13 @@ class Pipeline:
     def _translate_loop(self) -> None:
         parts = self.parts
         while not self._stop.is_set():
+            # Bajo demanda, como la voz: con una frase traducida esperando, no se traduce la siguiente.
+            # Así el modo (normal o resumido) se decide cuando la frase está a punto de sonar y no al llegar;
+            # con habla seguida, toda la cola quedaba traducida en modo normal (validación de la 002, ja).
+            if self._synth_queue.qsize() >= MT_LOOKAHEAD_UNITS:
+                self._work.wait(0.05)
+                self._work.clear()
+                continue
             request = parts.scheduler.next_translation()
             if request is None:
                 self._work.wait(0.05)
@@ -390,6 +399,7 @@ class Pipeline:
                 request = self._synth_queue.get(timeout=0.05)
             except Empty:
                 continue
+            self._work.set()  # hay hueco: la traducción puede preparar la siguiente
             # Bajo demanda: no se adelanta más de tts_lookahead_s de audio al sink.
             while not self._stop.is_set() and parts.sink.pending_seconds() > self.tts_lookahead_s:
                 time.sleep(0.02)
