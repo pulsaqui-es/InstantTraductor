@@ -56,15 +56,15 @@
 
 ### Implementation — ola 1, obrero A (captura de la app)
 
-- [ ] T008 [P] [US1] Lista de apps en `src/instanttraductor/audio/apps.py`. Portar `spikes/captura_app/listar_apps.py` y `common.py` (research.md, R4).
+- [X] T008 [P] [US1] Lista de apps en `src/instanttraductor/audio/apps.py`. Portar `spikes/captura_app/listar_apps.py` y `common.py` (research.md, R4).
   - `list_audio_apps(*, probe_s=0.6) -> list[AudioApp]`: sesiones de todos los endpoints de render activos; objetivo = la sesión o su padre directo si tiene la misma imagen; agrupar por `exe_path`; `display_name` del `FileDescription`.
   - Sonda INCLUDE de `probe_s`: `sounding` = RMS ≥ -60 dBFS.
   - **Ocultar la propia app y todos sus antepasados.**
   - `find_app(name_or_path) -> list[AppIdentity]` (sin distinguir mayúsculas, por nombre visible o por nombre del exe) y `resolve_root(exe_path) -> AppIdentity | None` (PID y `create_time` actuales).
   - Inyectable para tests (enumerador y tabla de procesos).
   - Tests en `tests/unit/audio/test_apps.py` con los dobles de T005.
-- [ ] T009 [P] [US1] Captura sin vigilancia del PID en INCLUDE, en `src/instanttraductor/audio/wasapi_capture.py`. Con `include=True` y `target_pid`, `ProcessLoopbackSource` no reabre ni llama a `on_reopen` porque muera el PID objetivo (S6, hallazgo 2). En EXCLUDE no cambia nada. Tests en `tests/unit/audio/test_wasapi_capture.py`.
-- [ ] T010 [US1] `AppLoopbackSource` en `src/instanttraductor/audio/app_source.py`, que implementa `AudioSource` (depends on T008, T009). Portar el vigilante de `spikes/captura_app/capturar_app.py`.
+- [X] T009 [P] [US1] Captura sin vigilancia del PID en INCLUDE, en `src/instanttraductor/audio/wasapi_capture.py`. Con `include=True` y `target_pid`, `ProcessLoopbackSource` no reabre ni llama a `on_reopen` porque muera el PID objetivo (S6, hallazgo 2). En EXCLUDE no cambia nada. Tests en `tests/unit/audio/test_wasapi_capture.py`.
+- [X] T010 [US1] `AppLoopbackSource` en `src/instanttraductor/audio/app_source.py`, que implementa `AudioSource` (depends on T008, T009). Portar el vigilante de `spikes/captura_app/capturar_app.py`.
   - **Vigilante** cada 0,25 s por (PID, `create_time`).
   - **Estados** `esperando`, `sonando` y `silencio` (data-model.md, AppCaptureState), con callback `on_state(estado, nombre)`.
   - **Mientras espera**, chunks de ceros de 20 ms a ritmo del `Clock`, contiguos.
@@ -74,7 +74,7 @@
   - **Tests:**
     - `tests/unit/audio/test_app_source.py`, con dobles de proceso y de captura: espera, aparición, muerte y reinicio, y reanudación ≤ 5 s con reloj manual;
     - `AudioSourceContract` con `finite=False`.
-- [ ] T011 [US1] Tests `device` en `tests/integration/test_app_capture_device.py` (depends on T010):
+- [X] T011 [US1] Tests `device` en `tests/integration/test_app_capture_device.py` (depends on T010):
   - lista con un emisor propio (ffplay de un tono a -30 dBFS);
   - INCLUDE del emisor: oye su tono y no el de un segundo emisor;
   - matar y relanzar el emisor: reanuda en ≤ 5 s;
@@ -92,45 +92,45 @@
 
 ### Implementation — ola 1, obrero B (reconocedores y filtro de idioma)
 
-- [ ] T012 [P] [US2] `XAsrZhStreaming` en `src/instanttraductor/asr/xasr_zh.py`, que implementa `AsrEngine`.
+- [X] T012 [P] [US2] `XAsrZhStreaming` en `src/instanttraductor/asr/xasr_zh.py`, que implementa `AsrEngine`.
   - X-ASR-zh-en int8 de 960 ms con puntuación, en sherpa-onnx `OnlineRecognizer` y CPU.
   - Portar de `spikes/idiomas/idiomas/asr.py`.
   - Mismo patrón que `asr/sherpa_streaming.py`: parciales y FINAL en `flush()`.
   - `language="zh"`.
   - Tests unitarios con un `recognizer` falso en `tests/unit/asr/test_xasr_zh.py`.
-- [ ] T013 [P] [US2] `SenseVoiceSegmentAsr` en `src/instanttraductor/asr/sensevoice.py`, que implementa `AsrEngine` con `capabilities.partials=False`.
+- [X] T013 [P] [US2] `SenseVoiceSegmentAsr` en `src/instanttraductor/asr/sensevoice.py`, que implementa `AsrEngine` con `capabilities.partials=False`.
   - **Funcionamiento:** acumula en `accept()`; en `flush()` decodifica con `OfflineRecognizer` (SenseVoice 2024-07-17, `use_itn=True` y el idioma fijado: `ja` o `ko`) y devuelve un FINAL.
   - **Corte forzado (R2):** con `max_segment_s` (el de `max_habla_sin_traducir_s`) de habla continua, emite un FINAL cortando en la trama de menos energía de los últimos 1,5 s y sigue con el resto.
   - **Tests** con un decodificador falso en `tests/unit/asr/test_sensevoice.py`: FINAL al hacer `flush`, corte forzado y `reset`.
-- [ ] T014 [US2] Fábrica por idioma en `src/instanttraductor/asr/factory.py` (depends on T012, T013):
+- [X] T014 [US2] Fábrica por idioma en `src/instanttraductor/asr/factory.py` (depends on T012, T013):
   - `create_asr(language, clock, *, models_dir, max_segment_s) -> AsrEngine`, más una carga previa `load_recognizer(language)` para el hilo de arranque;
   - en → Nemotron (existente), zh → X-ASR, ja y ko → SenseVoice;
   - tests en `tests/unit/asr/test_factory.py`.
-- [ ] T015 [P] [US2] `WhisperLanguageVerifier` en `src/instanttraductor/lid/whisper_lid.py`, que implementa `LanguageVerifier` (research.md, R3).
+- [X] T015 [P] [US2] `WhisperLanguageVerifier` en `src/instanttraductor/lid/whisper_lid.py`, que implementa `LanguageVerifier` (research.md, R3).
   - Whisper base ONNX (encoder y decoder de sherpa-onnx) con onnxruntime en CPU y un hilo.
   - Portar `spikes/idiomas/idiomas/lid.py`.
   - Probabilidades restringidas a {en, es, ja, zh, ko}; `accepted` si gana el idioma elegido.
   - Entrada de 1-6 s a 16 kHz.
   - Tests unitarios con sesiones ONNX falsas en `tests/unit/lid/test_whisper_lid.py` y `LanguageVerifierContract`.
-- [ ] T016 [US2] Tests `model` en `tests/integration/test_asr_multilang_model.py` (depends on T014, T015). Con 10 frases FLEURS por idioma del corpus de S5 (`%LOCALAPPDATA%\InstantTraductor\spikes\idiomas\`; se saltan si no existe):
+- [X] T016 [US2] Tests `model` en `tests/integration/test_asr_multilang_model.py` (depends on T014, T015). Con 10 frases FLEURS por idioma del corpus de S5 (`%LOCALAPPDATA%\InstantTraductor\spikes\idiomas\`; se saltan si no existe):
   - CER ≤ 1,5 × el de S5;
   - el verificador acepta ≥ 9/10 del idioma correcto y rechaza ≥ 9/10 de español.
 
 ### Implementation — ola 1, obrero C (traducción por idioma y «vosotros»)
 
-- [ ] T017 [P] [US2] Traducción por idioma en `src/instanttraductor/mt/hymt2.py` (research.md, R10):
+- [X] T017 [P] [US2] Traducción por idioma en `src/instanttraductor/mt/hymt2.py` (research.md, R10):
   - el prompt nombra el idioma de origen de `request.source_language`;
   - filtro de longitud en caracteres: en ≤ 3×, ko ≤ 4×, ja ≤ 6× y zh ≤ 7×;
   - `max_tokens` por caracteres en ja y zh;
   - el glosario base de España solo con origen `en`;
   - tests en `tests/unit/mt/test_hymt2.py` (las 50 frases zh de S5 ya no se rechazan: usar 5 de ellas como fixture de texto).
-- [ ] T018 [US3] «Vosotros» en `src/instanttraductor/mt/vosotros.py` y `src/instanttraductor/mt/hymt2.py` (depends on T017; research.md, R8):
+- [X] T018 [US3] «Vosotros» en `src/instanttraductor/mt/vosotros.py` y `src/instanttraductor/mt/hymt2.py` (depends on T017; research.md, R8):
   - **(a) nota de escena** solo con origen en inglés: marca de plural en las últimas 5 líneas en inglés y ninguna de singular → nota de estilo en el turno. Recortar la salida desde `"\n\n("`;
   - **(b) `postedit_vosotros(source_en, text) -> str`**, portado de `spikes/habla_baja/postedit.py`: solo con señal de plural informal en el inglés;
   - **(c) reintento** con el 7B solo si queda «ustedes» y hay señal;
   - **(d) cláusula de estilo** en el modo CONCISE;
   - **tests** en `tests/unit/mt/test_vosotros.py` con frases de `spikes/habla_baja` (corpus B0): sin daños en singulares ni en la 3.ª persona del plural.
-- [ ] T019 [US3] Tests `gpu`+`model` en `tests/integration/test_vosotros_model.py` (depends on T018): con el corpus B0 de S7, ≥ 80 % de «vosotros» y ≤ 2 % de «ustedes» (SC-006).
+- [X] T019 [US3] Tests `gpu`+`model` en `tests/integration/test_vosotros_model.py` (depends on T018): con el corpus B0 de S7, ≥ 80 % de «vosotros» y ≤ 2 % de «ustedes» (SC-006).
 
 ---
 
