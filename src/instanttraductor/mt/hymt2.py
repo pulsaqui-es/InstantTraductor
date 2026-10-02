@@ -15,9 +15,22 @@
 N words», sin ejemplos, sin contexto y sin glosario: con los 12 ejemplos el modelo no acorta (S2). El 1.8B no
 sabe resumir: una petición CONCISE se traduce en modo normal y el resultado lleva ``mode=NORMAL``.
 
+**Idioma de origen** (spec 002, R10): ``request.source_language`` (en, ja, zh o ko). Con ja, zh y ko el
+sistema y el turno final nombran el idioma («Translate the following Japanese text...»); con en el *prompt*
+es el medido en S2 y S7, sin cambios. El filtro de longitud y ``max_tokens`` dependen del idioma (ja y zh
+miden en caracteres, porque ``count_words`` cuenta una tira de ideogramas como una palabra) y el glosario
+base de España solo actúa con origen en inglés.
+
+**«Vosotros»** (spec 002, R8, solo con origen en inglés; ver ``mt/vosotros.py``): si las últimas 5 líneas en
+inglés del contexto indican un grupo, el turno final lleva una nota de estilo de plural informal; se recorta
+de la salida la nota que el modelo repite; se aplica la posedición por reglas; y, si aun así queda «ustedes»
+con esa señal de grupo, se reintenta una vez con una nota más explícita (se queda con el reintento si sale
+«vosotros» y no «ustedes»). El modo CONCISE lleva en su cláusula de estilo el registro informal.
+
 **Filtros de salida**: traducción vacía, sin letras latinas (o con escrituras de otros idiomas), más larga
-que 3 veces el original o truncada, y eco del *prompt* (o muletillas del tipo «Aquí tienes la traducción»).
-Si salta alguno, el resultado lleva ``rejected=True`` y el texto vacío, y la frase no se pronuncia.
+que 3 veces el original (en: 4 ko, 6 ja, 7 zh) o truncada, y eco del *prompt* (o muletillas del tipo «Aquí
+tienes la traducción»). Si salta alguno, el resultado lleva ``rejected=True`` y el texto vacío, y la frase
+no se pronuncia.
 """
 
 from __future__ import annotations
@@ -39,16 +52,28 @@ from instanttraductor.contracts import (
     Clock,
     EngineError,
     GlossaryEntry,
+    SourceLanguage,
     TranslationMode,
     TranslationRequest,
     TranslationResult,
 )
 from instanttraductor.mt.selection import MtModel
+from instanttraductor.mt.vosotros import (
+    PLURAL_NOTE,
+    RETRY_NOTE,
+    clean_output,
+    group_state,
+    has_ustedes,
+    has_vosotros,
+    postedit_vosotros,
+)
 from instanttraductor.pipeline.clock import SessionClock
 
 __all__ = [
     "BASE_GLOSSARY_RESOURCE",
     "FEWSHOT_ES_ES",
+    "LANGUAGE_NAMES",
+    "MAX_LENGTH_RATIO_BY_LANGUAGE",
     "HyMt2Translator",
     "build_concise_messages",
     "build_messages",
@@ -83,28 +108,53 @@ CONNECT_TIMEOUT_S: Final = 2.0
 # Plantillas del prompt (idénticas a las de S2: no se pueden retocar sin volver a medir)
 # ---------------------------------------------------------------------------
 #: Mensaje de sistema. El estilo no cambia la variante por sí solo, pero es lo medido en S2.
-SYSTEM_PROMPT: Final = (
-    "Translate every user message into Spanish. "
+_SYSTEM_STYLE: Final = (
     "The translation style must strictly conform to "
     '[natural and concise Spanish from Spain (peninsular); use "vosotros" for the informal plural "you"]. '
     "ONLY output the translated result without any additional explanation."
 )
+SYSTEM_PROMPT: Final = "Translate every user message into Spanish. " + _SYSTEM_STYLE
+#: Mensaje de sistema con origen ja, zh o ko: nombra el idioma de origen (R10).
+SYSTEM_PROMPT_FROM: Final = "Translate every user message from {language} into Spanish. " + _SYSTEM_STYLE
 #: Cada turno de usuario envuelto en la plantilla oficial «Default Translation».
 TURN_TEMPLATE: Final = (
     "Translate the following text into Spanish. Note that you must ONLY output the translated result "
     "without any additional explanation:\n\n{text}"
 )
+#: El mismo turno, nombrando el idioma de origen (solo el turno final con ja, zh o ko).
+TURN_TEMPLATE_FROM: Final = (
+    "Translate the following {language} text into Spanish. Note that you must ONLY output the translated "
+    "result without any additional explanation:\n\n{text}"
+)
+#: Nombre en inglés de cada idioma de origen, tal como va en el *prompt*.
+LANGUAGE_NAMES: Final[dict[SourceLanguage, str]] = {
+    SourceLanguage.EN: "English",
+    SourceLanguage.JA: "Japanese",
+    SourceLanguage.ZH: "Chinese",
+    SourceLanguage.KO: "Korean",
+}
 #: Plantilla oficial «Terminology» en chino (en inglés el glosario se respeta mucho menos: S2).
 #: «参考下面的翻译» = «Consulta las traducciones siguientes»; «翻译成» = «se traduce como».
 TERMINOLOGY_TEMPLATE: Final = (
     "参考下面的翻译：\n{rows}\n将以下文本翻译为西班牙语，注意只需要输出翻译后的结果，不要额外解释：\n\n{text}"
 )
 TERMINOLOGY_ROW: Final = "{source} 翻译成 {target}"
-#: Modo CONCISE: plantilla oficial «Style» con estilo telegráfico y tope de palabras (7B, S2).
+#: Modo CONCISE: plantilla oficial «Style» con estilo telegráfico, tope de palabras (7B, S2) y registro
+#: informal con «vosotros» (S7, B1e: sin la cláusula solo el 2 % de los plurales salía en «vosotros»).
 CONCISE_TEMPLATE: Final = (
     "Please translate the following text into Spanish. Note that the translation style must strictly "
     "conform to [telegraphic Spanish from Spain, like a news headline: drop filler words, "
-    "at most {max_words} words]:\n\n{text}"
+    "at most {max_words} words; "
+    'informal register: several listeners = "vosotros" (estáis, tenéis, venid), one listener = "tú"]:'
+    "\n\n{text}"
+)
+#: La misma plantilla CONCISE nombrando el idioma de origen (ja, zh y ko).
+CONCISE_TEMPLATE_FROM: Final = (
+    "Please translate the following {language} text into Spanish. Note that the translation style must "
+    "strictly conform to [telegraphic Spanish from Spain, like a news headline: drop filler words, "
+    "at most {max_words} words; "
+    'informal register: several listeners = "vosotros" (estáis, tenéis, venid), one listener = "tú"]:'
+    "\n\n{text}"
 )
 
 #: 12 ejemplos fijos (inglés, español de España: «vosotros», léxico peninsular) para cebar el estilo.
@@ -139,19 +189,45 @@ SPANISH_EXPANSION: Final = Fraction(1)
 
 _WORD = re.compile(r"[\w'’]+")
 
+#: Idiomas sin espacios entre palabras: ``count_words`` cuenta una frase entera como una sola palabra.
+_UNSPACED_LANGUAGES: Final = frozenset({SourceLanguage.JA, SourceLanguage.ZH})
+#: Palabras españolas por carácter de origen en ja y zh: relación de caracteres de S5 (p50 de 3,9 en ja y 2,8
+#: en zh) entre ~5,8 caracteres por palabra española con su espacio. Solo se usa en el tope del modo CONCISE.
+_SPANISH_WORDS_PER_CHAR: Final[dict[SourceLanguage, Fraction]] = {
+    SourceLanguage.JA: Fraction(13, 20),
+    SourceLanguage.ZH: Fraction(1, 2),
+}
+#: Tokens de salida por carácter de origen en ja y zh: el máximo de S5 fue de 5 caracteres de salida por
+#: carácter de origen, unos 1,7 tokens; con 3 sobra para no truncar y el tope sigue acotado.
+TOKENS_PER_SOURCE_CHAR: Final = 3
+
 
 def count_words(text: str) -> int:
     """Palabras de un texto (una contracción como «you're» cuenta como una)."""
     return len(_WORD.findall(text))
 
 
-def concise_word_budget(source: str) -> int:
+def count_characters(text: str) -> int:
+    """Caracteres con contenido (letras, ideogramas, kana, hangul y cifras): sin espacios ni signos."""
+    return sum(1 for char in text if char.isalnum())
+
+
+def _source_words(source: str, source_language: SourceLanguage) -> int:
+    """Palabras del original; en ja y zh, las palabras españolas que cabe esperar por sus caracteres."""
+    if source_language in _UNSPACED_LANGUAGES:
+        return ceil(_SPANISH_WORDS_PER_CHAR[source_language] * count_characters(source))
+    return count_words(source)
+
+
+def concise_word_budget(source: str, source_language: SourceLanguage = SourceLanguage.EN) -> int:
     """Tope N de palabras del modo CONCISE: ``ceil(0,6 × palabras del original)`` (mínimo 1)."""
-    return max(1, ceil(CONCISE_RATIO * SPANISH_EXPANSION * count_words(source)))
+    return max(1, ceil(CONCISE_RATIO * SPANISH_EXPANSION * _source_words(source, source_language)))
 
 
-def max_tokens_for(source: str) -> int:
-    """Tope de tokens de salida: ~4 por palabra del original, entre 64 y 512 (S2)."""
+def max_tokens_for(source: str, source_language: SourceLanguage = SourceLanguage.EN) -> int:
+    """Tope de tokens de salida (64 a 512): ~4 por palabra del original (S2); en ja y zh, 3 por carácter."""
+    if source_language in _UNSPACED_LANGUAGES:
+        return min(512, max(64, TOKENS_PER_SOURCE_CHAR * count_characters(source)))
     return min(512, max(64, 4 * count_words(source)))
 
 
@@ -191,11 +267,17 @@ def _base_matchers() -> tuple[tuple[GlossaryEntry, re.Pattern[str]], ...]:
     return tuple((entry, _term_pattern(entry.source)) for entry in load_base_glossary())
 
 
-def select_glossary(source: str, user: Iterable[GlossaryEntry] = ()) -> tuple[GlossaryEntry, ...]:
+def select_glossary(
+    source: str,
+    user: Iterable[GlossaryEntry] = (),
+    *,
+    source_language: SourceLanguage = SourceLanguage.EN,
+) -> tuple[GlossaryEntry, ...]:
     """Glosario de una frase: el del usuario entero y, después, el base filtrado por la frase.
 
-    - Del base solo entran las entradas cuyo término aparece en ``source`` como palabra completa (con
-      plural en «s»), para no engordar el *prompt*.
+    - Del base (inglés → español de España) solo entran las entradas cuyo término aparece en ``source`` como
+      palabra completa (con plural en «s»), para no engordar el *prompt*. Con origen ja, zh o ko no entra
+      ninguna: sus términos están en inglés.
     - Si el usuario define un término que también está en el base, manda el del usuario.
     - Se ignoran las entradas con el origen o el destino en blanco.
     """
@@ -206,6 +288,8 @@ def select_glossary(source: str, user: Iterable[GlossaryEntry] = ()) -> tuple[Gl
         if key and entry.target.strip() and key not in seen:
             seen.add(key)
             chosen.append(entry)
+    if source_language is not SourceLanguage.EN:
+        return tuple(chosen)
     for entry, pattern in _base_matchers():
         if entry.source.casefold() not in seen and pattern.search(source):
             chosen.append(entry)
@@ -222,9 +306,20 @@ def build_normal_messages(
     source: str,
     context: Iterable[tuple[str, str]] = (),
     glossary: Sequence[GlossaryEntry] = (),
+    *,
+    source_language: SourceLanguage = SourceLanguage.EN,
+    plural_note: bool = False,
 ) -> list[Message]:
-    """Mensajes del modo NORMAL: sistema, 12 ejemplos, contexto y el turno final (con glosario si hay)."""
-    messages: list[Message] = [{"role": "system", "content": SYSTEM_PROMPT}]
+    """Mensajes del modo NORMAL: sistema, 12 ejemplos, contexto y el turno final (con glosario si hay).
+
+    Con ``source_language`` ja, zh o ko el sistema y el turno final nombran el idioma; los ejemplos y el
+    contexto van con la plantilla genérica. Con ``plural_note`` el turno final lleva, tras el texto, la nota
+    de plural informal (``vosotros``).
+    """
+    named = source_language is not SourceLanguage.EN
+    language = LANGUAGE_NAMES[source_language]
+    system = SYSTEM_PROMPT_FROM.format(language=language) if named else SYSTEM_PROMPT
+    messages: list[Message] = [{"role": "system", "content": system}]
     previous = [*FEWSHOT_ES_ES, *((o.strip(), t.strip()) for o, t in context if o.strip() and t.strip())]
     for original, translation in previous:
         messages.append({"role": "user", "content": TURN_TEMPLATE.format(text=original)})
@@ -232,16 +327,27 @@ def build_normal_messages(
     if glossary:
         rows = "\n".join(TERMINOLOGY_ROW.format(source=g.source, target=g.target) for g in glossary)
         last = TERMINOLOGY_TEMPLATE.format(rows=rows, text=source)
+    elif named:
+        last = TURN_TEMPLATE_FROM.format(language=language, text=source)
     else:
         last = TURN_TEMPLATE.format(text=source)
+    if plural_note:
+        last += PLURAL_NOTE
     messages.append({"role": "user", "content": last})
     return messages
 
 
-def build_concise_messages(source: str, max_words: int | None = None) -> list[Message]:
+def build_concise_messages(
+    source: str, max_words: int | None = None, source_language: SourceLanguage = SourceLanguage.EN
+) -> list[Message]:
     """Mensajes del modo CONCISE: un único mensaje de usuario con la plantilla *Style* telegráfica."""
-    budget = concise_word_budget(source) if max_words is None else max_words
-    return [{"role": "user", "content": CONCISE_TEMPLATE.format(max_words=budget, text=source)}]
+    budget = concise_word_budget(source, source_language) if max_words is None else max_words
+    if source_language is SourceLanguage.EN:
+        content = CONCISE_TEMPLATE.format(max_words=budget, text=source)
+    else:
+        language = LANGUAGE_NAMES[source_language]
+        content = CONCISE_TEMPLATE_FROM.format(language=language, max_words=budget, text=source)
+    return [{"role": "user", "content": content}]
 
 
 def build_messages(
@@ -249,18 +355,31 @@ def build_messages(
     mode: TranslationMode,
     context: Iterable[tuple[str, str]] = (),
     glossary: Sequence[GlossaryEntry] = (),
+    *,
+    source_language: SourceLanguage = SourceLanguage.EN,
+    plural_note: bool = False,
 ) -> list[Message]:
     """Mensajes de chat de una petición, según el modo."""
     if mode is TranslationMode.CONCISE:
-        return build_concise_messages(source)
-    return build_normal_messages(source, context, glossary)
+        return build_concise_messages(source, source_language=source_language)
+    return build_normal_messages(
+        source, context, glossary, source_language=source_language, plural_note=plural_note
+    )
 
 
 # ---------------------------------------------------------------------------
 # Filtros de salida
 # ---------------------------------------------------------------------------
-#: La salida no puede ser más larga que esto por el original (en caracteres).
+#: La salida no puede ser más larga que esto por el original (en caracteres) con origen en inglés.
 MAX_LENGTH_RATIO: Final = 3
+#: Lo mismo por idioma de origen (R10). En S5 la relación de caracteres tuvo p50 de 2,8 (zh), 3,9 (ja) y
+#: 2,4 (ko) y máximo de 5,0: con 3 en todos el filtro rechazaba 48 de 50 frases en chino.
+MAX_LENGTH_RATIO_BY_LANGUAGE: Final[dict[SourceLanguage, int]] = {
+    SourceLanguage.EN: MAX_LENGTH_RATIO,
+    SourceLanguage.KO: 4,
+    SourceLanguage.JA: 6,
+    SourceLanguage.ZH: 7,
+}
 
 
 def _char_class(*ranges: tuple[int, int]) -> re.Pattern[str]:
@@ -342,12 +461,19 @@ def _echoes_the_prompt(source: str, text: str) -> bool:
     return False
 
 
-def rejection_reason(source: str, output: str, *, finish_reason: str | None = None) -> str | None:
+def rejection_reason(
+    source: str,
+    output: str,
+    *,
+    finish_reason: str | None = None,
+    source_language: SourceLanguage = SourceLanguage.EN,
+) -> str | None:
     """Motivo por el que ``output`` no vale como traducción de ``source``, o ``None`` si pasa los filtros.
 
     - ``"vacía"``: no hay texto.
     - ``"idioma"``: ninguna letra latina, o letras de otras escrituras (chino, japonés, cirílico...).
-    - ``"longitud"``: más de 3 veces el original (en caracteres) o cortada por ``max_tokens``.
+    - ``"longitud"``: más veces el original (en caracteres) que el tope del idioma de origen (en 3, ko 4,
+      ja 6, zh 7) o cortada por ``max_tokens``.
     - ``"eco del prompt"``: repite el *prompt* (instrucciones, etiquetas) o empieza con una muletilla.
     """
     text = output.strip()
@@ -355,7 +481,8 @@ def rejection_reason(source: str, output: str, *, finish_reason: str | None = No
         return "vacía"
     if not _LATIN_LETTER.search(text) or _FOREIGN_SCRIPT.search(text):
         return "idioma"
-    if finish_reason == "length" or len(text) > MAX_LENGTH_RATIO * len(source.strip()):
+    max_ratio = MAX_LENGTH_RATIO_BY_LANGUAGE[source_language]
+    if finish_reason == "length" or len(text) > max_ratio * len(source.strip()):
         return "longitud"
     if _echoes_the_prompt(source, text):
         return "eco del prompt"
@@ -414,18 +541,30 @@ class HyMt2Translator:
         if mode is TranslationMode.CONCISE and not self.supports_concise:
             mode = TranslationMode.NORMAL  # el 1.8B no sabe resumir (ADR-0011)
         source = request.unit.source_text.strip()
+        language = request.source_language
+        english = language is SourceLanguage.EN
 
         reason: str | None
         text = ""
         if not source:
             reason = "vacía"
         else:
-            glossary = () if mode is TranslationMode.CONCISE else select_glossary(source, request.glossary)
-            messages = build_messages(source, mode, request.context, glossary)
-            output, finish_reason = self._complete(messages, max_tokens_for(source))
-            reason = rejection_reason(source, output, finish_reason=finish_reason)
-            if reason is None:
-                text = output.strip()
+            concise = mode is TranslationMode.CONCISE
+            glossary = () if concise else select_glossary(source, request.glossary, source_language=language)
+            # «Vosotros» (R8): solo con origen en inglés, que es donde hay señal de plural que consultar.
+            group = english and group_state(source, [original for original, _ in request.context])
+            messages = build_messages(
+                source,
+                mode,
+                request.context,
+                glossary,
+                source_language=language,
+                plural_note=group and not concise,
+            )
+            max_tokens = max_tokens_for(source, language)
+            text, reason = self._attempt(messages, source, max_tokens, language)
+            if reason is None and group and not concise and has_ustedes(text):
+                text = self._retry_with_vosotros(messages, source, max_tokens, language) or text
         if reason is not None:
             logger.warning("Traducción rechazada (%s): unidad %d", reason, request.unit.unit_id)
         return TranslationResult(
@@ -436,6 +575,39 @@ class HyMt2Translator:
             finished_at=self._clock.now(),
             rejected=reason is not None,
         )
+
+    def _attempt(
+        self, messages: list[Message], source: str, max_tokens: int, language: SourceLanguage
+    ) -> tuple[str, str | None]:
+        """Una petición al modelo: ``(texto, motivo de rechazo)``. Con origen en inglés, posedita el texto."""
+        output, finish_reason = self._complete(messages, max_tokens)
+        output = clean_output(output)
+        reason = rejection_reason(source, output, finish_reason=finish_reason, source_language=language)
+        if reason is not None:
+            return "", reason
+        text = output.strip()
+        if language is SourceLanguage.EN:
+            text = postedit_vosotros(source, text)
+        return text, None
+
+    def _retry_with_vosotros(
+        self, messages: list[Message], source: str, max_tokens: int, language: SourceLanguage
+    ) -> str | None:
+        """Repite la petición con la nota de plural informal del reintento (B2).
+
+        Devuelve el texto nuevo si pasa los filtros y sale «vosotros» sin «ustedes»; si no (o si el servidor
+        falla), ``None`` y se queda la primera traducción.
+        """
+        retried = [dict(message) for message in messages]
+        retried[-1]["content"] += RETRY_NOTE
+        try:
+            text, reason = self._attempt(retried, source, max_tokens, language)
+        except EngineError as error:
+            logger.warning("Reintento de «vosotros» fallido, se queda la primera traducción: %s", error)
+            return None
+        if reason is None and has_vosotros(text) and not has_ustedes(text):
+            return text
+        return None
 
     def close(self) -> None:
         """Cierra la conexión con el servidor (idempotente). No para a ``llama-server``."""
