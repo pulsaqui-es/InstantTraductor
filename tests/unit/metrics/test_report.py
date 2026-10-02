@@ -39,6 +39,8 @@ TOP_LEVEL_KEYS = [
     "session_id",
     "mode",
     "input_file",
+    "source_language",
+    "capture",
     "started_at",
     "duration_s",
     "settings",
@@ -55,10 +57,11 @@ SUMMARY_KEYS = [
     "dropped",
     "rejected",
     "failed",
+    "rejected_language",
     "sentence_delay_s",
     "stages_s",
 ]
-STAGE_NAMES = ["capture", "asr", "mt", "tts_first", "playback"]
+STAGE_NAMES = ["capture", "asr", "mt", "tts_first", "playback", "lid"]
 SETTINGS_KEYS = [
     "voz",
     "volumen_voz",
@@ -67,6 +70,7 @@ SETTINGS_KEYS = [
     "umbral_descartar_s",
     "velocidad_max",
     "max_habla_sin_traducir_s",
+    "idioma_origen",
 ]
 UTTERANCE_KEYS = [
     "unit_id",
@@ -92,6 +96,7 @@ TIMINGS_KEYS = [
     "tts_finished_at",
     "play_started_at",
     "play_finished_at",
+    "lid_done_at",
 ]
 DIAGNOSTICS_KEYS = [
     "startup_s",
@@ -229,9 +234,9 @@ class TestSchema:
     def test_top_level_keys_and_their_order(self) -> None:
         assert list(build(recorder_with(*five_spoken()))) == TOP_LEVEL_KEYS
 
-    def test_the_schema_version_is_one(self) -> None:
-        assert SCHEMA_VERSION == 1
-        assert build()["schema_version"] == 1
+    def test_the_schema_version_is_two(self) -> None:
+        assert SCHEMA_VERSION == 2  # 2: spec 002 (idioma, escucha y etapa lid)
+        assert build()["schema_version"] == 2
 
     def test_summary_keys(self) -> None:
         summary = build(recorder_with(*five_spoken()))["summary"]
@@ -241,7 +246,7 @@ class TestSchema:
         for stage in STAGE_NAMES:
             assert list(summary["stages_s"][stage]) == ["p50", "p95"]
 
-    def test_settings_block_has_the_seven_keys_in_spanish(self) -> None:
+    def test_settings_block_has_the_eight_keys_in_spanish(self) -> None:
         settings = build(settings=Settings(voice="es-f-01", voice_volume=0.8, max_speed=1.3))["settings"]
         assert list(settings) == SETTINGS_KEYS
         assert settings == {
@@ -252,6 +257,7 @@ class TestSchema:
             "umbral_descartar_s": 8.0,
             "velocidad_max": 1.3,
             "max_habla_sin_traducir_s": 6.0,
+            "idioma_origen": "en",
         }
 
     def test_each_utterance_has_the_contract_keys(self) -> None:
@@ -343,6 +349,7 @@ class TestSummary:
             "mt": {"p50": 0.25, "p95": 0.43},
             "tts_first": {"p50": 0.45, "p95": 0.59},
             "playback": {"p50": 1.5, "p95": 3.6},
+            "lid": {"p50": None, "p95": None},
         }
 
     def test_the_percentiles_interpolate_linearly(self) -> None:
@@ -506,6 +513,7 @@ class TestUtterances:
             "tts_finished_at": None,
             "play_started_at": None,
             "play_finished_at": None,
+            "lid_done_at": None,
         }
 
     def test_times_are_rounded_to_three_decimals(self) -> None:
@@ -675,10 +683,12 @@ def reference_report() -> dict[str, Any]:
 #: `informe.json` de `reference_report()`: las cifras se comprobaron a mano contra `SPOKEN_STAGES`.
 REFERENCE_JSON = """\
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "session_id": "20261001-213000",
   "mode": "directo",
   "input_file": null,
+  "source_language": "en",
+  "capture": null,
   "started_at": "2026-10-01T21:30:00+02:00",
   "duration_s": 1800.0,
   "settings": {
@@ -688,7 +698,8 @@ REFERENCE_JSON = """\
     "umbral_resumir_s": 5.0,
     "umbral_descartar_s": 8.0,
     "velocidad_max": 1.25,
-    "max_habla_sin_traducir_s": 6.0
+    "max_habla_sin_traducir_s": 6.0,
+    "idioma_origen": "en"
   },
   "components": [
     {
@@ -710,6 +721,7 @@ REFERENCE_JSON = """\
     "dropped": 1,
     "rejected": 1,
     "failed": 1,
+    "rejected_language": 0,
     "sentence_delay_s": {
       "p50": 3.0,
       "p95": 5.6,
@@ -735,6 +747,10 @@ REFERENCE_JSON = """\
       "playback": {
         "p50": 1.5,
         "p95": 3.6
+      },
+      "lid": {
+        "p50": null,
+        "p95": null
       }
     }
   },
@@ -772,7 +788,8 @@ REFERENCE_JSON = """\
         "tts_first_audio_at": 11.05,
         "tts_finished_at": 11.55,
         "play_started_at": 11.5,
-        "play_finished_at": 12.5
+        "play_finished_at": 12.5,
+        "lid_done_at": null
       },
       "sentence_delay_s": 1.5
     },
@@ -796,7 +813,8 @@ REFERENCE_JSON = """\
         "tts_first_audio_at": 21.3,
         "tts_finished_at": 21.8,
         "play_started_at": 22.0,
-        "play_finished_at": 23.0
+        "play_finished_at": 23.0,
+        "lid_done_at": null
       },
       "sentence_delay_s": 2.0
     },
@@ -820,7 +838,8 @@ REFERENCE_JSON = """\
         "tts_first_audio_at": 31.5,
         "tts_finished_at": 32.0,
         "play_started_at": 33.0,
-        "play_finished_at": 34.0
+        "play_finished_at": 34.0,
+        "lid_done_at": null
       },
       "sentence_delay_s": 3.0
     },
@@ -844,7 +863,8 @@ REFERENCE_JSON = """\
         "tts_first_audio_at": 41.8,
         "tts_finished_at": 42.3,
         "play_started_at": 44.0,
-        "play_finished_at": 45.0
+        "play_finished_at": 45.0,
+        "lid_done_at": null
       },
       "sentence_delay_s": 4.0
     },
@@ -868,7 +888,8 @@ REFERENCE_JSON = """\
         "tts_first_audio_at": 52.05,
         "tts_finished_at": 52.55,
         "play_started_at": 56.0,
-        "play_finished_at": 57.0
+        "play_finished_at": 57.0,
+        "lid_done_at": null
       },
       "sentence_delay_s": 6.0
     },
@@ -892,7 +913,8 @@ REFERENCE_JSON = """\
         "tts_first_audio_at": null,
         "tts_finished_at": null,
         "play_started_at": null,
-        "play_finished_at": null
+        "play_finished_at": null,
+        "lid_done_at": null
       },
       "sentence_delay_s": null
     },
@@ -916,7 +938,8 @@ REFERENCE_JSON = """\
         "tts_first_audio_at": null,
         "tts_finished_at": null,
         "play_started_at": null,
-        "play_finished_at": null
+        "play_finished_at": null,
+        "lid_done_at": null
       },
       "sentence_delay_s": null
     },
@@ -940,7 +963,8 @@ REFERENCE_JSON = """\
         "tts_first_audio_at": null,
         "tts_finished_at": null,
         "play_started_at": null,
-        "play_finished_at": null
+        "play_finished_at": null,
+        "lid_done_at": null
       },
       "sentence_delay_s": null
     }

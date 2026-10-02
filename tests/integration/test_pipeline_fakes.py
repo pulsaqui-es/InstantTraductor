@@ -217,8 +217,8 @@ def test_report_follows_the_contract_schema() -> None:
         duration_s=clock.now(),
         settings=Settings(),
     )
-    assert report["schema_version"] == 1
-    assert set(report["summary"]["stages_s"]) == {"capture", "asr", "mt", "tts_first", "playback"}
+    assert report["schema_version"] == 2
+    assert set(report["summary"]["stages_s"]) == {"capture", "asr", "mt", "tts_first", "playback", "lid"}
     assert report["summary"]["spoken"] == 3
 
 

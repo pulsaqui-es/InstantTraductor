@@ -109,6 +109,7 @@ class TestMarkdown:
             ["Traducción", "0,250", "0,430", "-"],
             ["Voz (primer audio)", "0,450", "0,590", "-"],
             ["Reproducción (hasta empezar a sonar)", "1,500", "3,600", "-"],
+            ["Verificación de idioma", "-", "-", "-"],
         ]
 
     def test_an_empty_percentile_is_a_dash(self) -> None:
@@ -131,6 +132,7 @@ class TestMarkdown:
             ["Aceleradas", "1"],
             ["Descartadas", "1"],
             ["Rechazadas", "1"],
+            ["Rechazadas por idioma", "0"],
             ["Fallidas", "1"],
         ]
 
@@ -412,6 +414,7 @@ REFERENCE_MARKDOWN = """\
 # Informe de la sesión 20261001-213000
 
 - **Modo:** directo
+- **Idioma de origen:** en
 - **Inicio:** 2026-10-01T21:30:00+02:00
 - **Duración:** 30 min 00 s
 - **Modelo de traducción:** hy-mt2-7b-q4
@@ -426,6 +429,7 @@ REFERENCE_MARKDOWN = """\
 | Traducción | 0,250 | 0,430 | - |
 | Voz (primer audio) | 0,450 | 0,590 | - |
 | Reproducción (hasta empezar a sonar) | 1,500 | 3,600 | - |
+| Verificación de idioma | - | - | - |
 
 ## Recuentos
 
@@ -437,6 +441,7 @@ REFERENCE_MARKDOWN = """\
 | Aceleradas | 3 |
 | Descartadas | 1 |
 | Rechazadas | 1 |
+| Rechazadas por idioma | 0 |
 | Fallidas | 1 |
 
 ## Las 10 frases más lentas

@@ -36,6 +36,7 @@ import os
 from collections import Counter
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from datetime import datetime
+from enum import StrEnum
 from pathlib import Path
 from typing import Any, Final, Literal
 
@@ -44,6 +45,7 @@ import numpy as np
 from instanttraductor.config import TOML_KEYS, Settings
 from instanttraductor.contracts import Outcome, StageTimings, TranslationMode, UtteranceRecord
 from instanttraductor.metrics.recorder import MetricsRecorder
+from instanttraductor.pipeline.scheduler import LANGUAGE_REJECTED_REASON
 
 __all__ = [
     "MAX_LAG_STREAK_S",
@@ -59,7 +61,7 @@ __all__ = [
     "write_report",
 ]
 
-SCHEMA_VERSION: Final = 1
+SCHEMA_VERSION: Final = 2  # 2: spec 002 (idioma, escucha, etapa lid)
 REPORT_JSON_NAME: Final = "informe.json"
 REPORT_MD_NAME: Final = "informe.md"
 SLOWEST_COUNT: Final = 10  # frases en la tabla de «las más lentas»
@@ -84,6 +86,7 @@ _TIMING_FIELDS: Final = (
     "tts_finished_at",
     "play_started_at",
     "play_finished_at",
+    "lid_done_at",
 )
 #: Los ajustes que van al informe (atributo de `Settings`), en el orden del contrato.
 _SETTINGS_FIELDS: Final = (
@@ -94,6 +97,7 @@ _SETTINGS_FIELDS: Final = (
     "drop_after_s",
     "max_speed",
     "max_untranslated_s",
+    "source_language",
 )
 
 
@@ -108,6 +112,8 @@ _STAGES: Final[dict[str, Callable[[StageTimings], float | None]]] = {
     "mt": lambda t: _seconds_between(t.mt_finished_at, t.mt_started_at),
     "tts_first": lambda t: _seconds_between(t.tts_first_audio_at, t.tts_started_at),
     "playback": lambda t: _seconds_between(t.play_started_at, t.tts_first_audio_at),
+    # Spec 002: de la unidad lista hasta el fin de la verificación de idioma (espera en cola incluida).
+    "lid": lambda t: _seconds_between(t.lid_done_at, t.unit_ready_at),
 }
 
 
@@ -166,6 +172,9 @@ def _summary(records: Sequence[UtteranceRecord]) -> dict[str, Any]:
         "dropped": sum(r.outcome is Outcome.DROPPED for r in records),
         "rejected": sum(r.outcome is Outcome.REJECTED for r in records),
         "failed": sum(r.outcome is Outcome.FAILED for r in records),
+        "rejected_language": sum(
+            r.outcome is Outcome.REJECTED and r.reason == LANGUAGE_REJECTED_REASON for r in records
+        ),
         "sentence_delay_s": {
             "p50": _percentile(delays, 50),
             "p95": _percentile(delays, 95),
@@ -185,6 +194,7 @@ def build_report(
     session_id: str | None = None,
     input_file: str | os.PathLike[str] | None = None,
     components: Iterable[Any] = (),
+    capture: str | None = None,
 ) -> dict[str, Any]:
     """El informe de la sesión como diccionario, con el esquema y el orden de `contracts/informe.md`.
 
@@ -194,6 +204,7 @@ def build_report(
     - `duration_s`: duración de la sesión en el reloj de sesión (cierra una racha de retraso abierta).
     - `settings`: los ajustes con los que corrió la sesión.
     - `input_file`: solo en modo archivo.
+    - `capture`: qué se escuchó en directo (spec 002): «todo el PC» o el nombre de la app; None en archivo.
     - `components`: los componentes usados, como `Component` del manifiesto o como diccionarios con
       `component_id`, `version` y `license`.
     """
@@ -208,6 +219,8 @@ def build_report(
         "session_id": session_id if session_id is not None else started_at.strftime("%Y%m%d-%H%M%S"),
         "mode": mode,
         "input_file": None if input_file is None else os.fspath(input_file),
+        "source_language": str(settings.source_language),
+        "capture": capture,
         "started_at": started_at.isoformat(timespec="seconds"),
         "duration_s": _rounded(duration),
         "settings": {TOML_KEYS[name]: _setting_value(getattr(settings, name)) for name in _SETTINGS_FIELDS},
@@ -219,6 +232,8 @@ def build_report(
 
 
 def _setting_value(value: Any) -> Any:
+    if isinstance(value, StrEnum):
+        return str(value)
     return round(value, 3) if isinstance(value, float) else value
 
 
@@ -289,7 +304,13 @@ def report_warnings(report: Mapping[str, Any]) -> list[str]:
             )
         else:
             warnings.append(f"{label}.")
-    if n := _count(summary, "rejected"):
+    language = _count(summary, "rejected_language")
+    if language:
+        warnings.append(
+            f"{_plural(language, 'frase en otro idioma ignorada', 'frases en otro idioma ignoradas')} "
+            "(no eran del idioma de origen elegido)."
+        )
+    if n := _count(summary, "rejected") - language:
         warnings.append(
             f"{_plural(n, 'traducción rechazada', 'traducciones rechazadas')} por los filtros de salida: "
             + ("no se pronunció." if n == 1 else "no se pronunciaron.")
@@ -361,6 +382,7 @@ _STAGE_LABELS: Final = (
     ("mt", "Traducción"),
     ("tts_first", "Voz (primer audio)"),
     ("playback", "Reproducción (hasta empezar a sonar)"),
+    ("lid", "Verificación de idioma"),
 )
 
 
@@ -401,6 +423,10 @@ def report_to_markdown(report: Mapping[str, Any]) -> str:
     lines.append(f"- **Modo:** {report.get('mode', '-')}")
     if report.get("input_file"):
         lines.append(f"- **Fichero de entrada:** {report['input_file']}")
+    if report.get("source_language"):
+        lines.append(f"- **Idioma de origen:** {report['source_language']}")
+    if report.get("capture"):
+        lines.append(f"- **Escucha:** {report['capture']}")
     lines.append(f"- **Inicio:** {report.get('started_at', '-')}")
     lines.append(f"- **Duración:** {_duration_text(report.get('duration_s'))}")
     lines.append(f"- **Modelo de traducción:** {diagnostics.get('mt_model') or '-'}")
@@ -428,6 +454,7 @@ def report_to_markdown(report: Mapping[str, Any]) -> str:
         ("Aceleradas", "accelerated"),
         ("Descartadas", "dropped"),
         ("Rechazadas", "rejected"),
+        ("Rechazadas por idioma", "rejected_language"),
         ("Fallidas", "failed"),
     )
     lines += _table(

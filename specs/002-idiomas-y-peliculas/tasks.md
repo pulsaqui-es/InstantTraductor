@@ -173,7 +173,7 @@
   - subcomandos `apps` e `idioma`;
   - línea de estado con el idioma y lo que se escucha;
   - tests en `tests/unit/test_cli.py`.
-- [ ] T026 Informe en `src/instanttraductor/metrics/report.py` y `metrics/recorder.py`: la etapa `lid` en `stages_s`, el recuento de rechazadas por idioma y los campos `source_language` y `capture` (data-model.md); tests.
+- [X] T026 Informe en `src/instanttraductor/metrics/report.py` y `metrics/recorder.py`: la etapa `lid` en `stages_s`, el recuento de rechazadas por idioma y los campos `source_language` y `capture` (data-model.md); tests.
 
 ---
 
