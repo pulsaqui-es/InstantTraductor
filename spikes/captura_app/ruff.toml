@@ -1,0 +1,5 @@
+# Spike de investigacion (S6): solo se vigilan errores reales (pyflakes), no el estilo.
+line-length = 120
+
+[lint]
+select = ["F", "E9"]

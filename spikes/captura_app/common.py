@@ -126,9 +126,7 @@ def file_description(path: str) -> str:
             return ""
         ptr = ctypes.c_void_p()
         length = wintypes.UINT()
-        if not version.VerQueryValueW(
-            buf, "\\VarFileInfo\\Translation", ctypes.byref(ptr), ctypes.byref(length)
-        ):
+        if not version.VerQueryValueW(buf, "\\VarFileInfo\\Translation", ctypes.byref(ptr), ctypes.byref(length)):
             return ""
         lang, codepage = ctypes.cast(ptr, ctypes.POINTER(ctypes.c_ushort * 2)).contents
         for key in (f"{lang:04x}{codepage:04x}", "040904b0", "040904e4", "000004b0"):
@@ -195,18 +193,21 @@ def _endpoint_name(device) -> str:
         return device.GetId()
 
 
-def enumerate_sessions(peak_window_s: float = 0.0, poll_s: float = 0.05) -> list[SessionInfo]:
+def enumerate_sessions(
+    peak_window_s: float = 0.0, poll_s: float = 0.05, *, with_names: bool = True
+) -> list[SessionInfo]:
     """Sesiones de render de TODOS los endpoints activos, no solo el predeterminado.
 
     `peak_window_s`: tiempo durante el que se sondea el pico y se guarda el máximo (el medidor es
     instantáneo: una app que suena a ráfagas puede dar 0 en una sola lectura).
+    `with_names=False` se ahorra leer el nombre amistoso de cada endpoint (el sondeo del vigilante).
     """
     enumerator = AudioUtilities.GetDeviceEnumerator()
     collection = enumerator.EnumAudioEndpoints(E_RENDER, DEVICE_STATE_ACTIVE)
     sessions: list[SessionInfo] = []
     for i in range(collection.GetCount()):
         device = collection.Item(i)
-        name = _endpoint_name(device)
+        name = _endpoint_name(device) if with_names else device.GetId()
         try:
             iface = device.Activate(IAudioSessionManager2._iid_, CLSCTX_ALL, None)
             manager = iface.QueryInterface(IAudioSessionManager2)
@@ -224,9 +225,7 @@ def enumerate_sessions(peak_window_s: float = 0.0, poll_s: float = 0.05) -> list
                 peak = float(meter.GetPeakValue())
             except comtypes.COMError:
                 continue
-            sessions.append(
-                SessionInfo(name, pid, state, peak, system, identifier, proc_info(pid), ctl, meter)
-            )
+            sessions.append(SessionInfo(name, pid, state, peak, system, identifier, proc_info(pid), ctl, meter))
     if peak_window_s > 0:
         end = time.perf_counter() + peak_window_s
         while time.perf_counter() < end:
@@ -324,9 +323,7 @@ def build_apps(sessions: list[SessionInfo], *, hide_own: bool = True) -> tuple[l
         entry.targets = dedupe_targets(entry.targets)
         covered = {t.pid for t in entry.targets}
         entry.uncovered = [
-            s.pid
-            for s in entry.sessions
-            if s.pid not in covered and (s.proc is None or s.proc.ppid not in covered)
+            s.pid for s in entry.sessions if s.pid not in covered and (s.proc is None or s.proc.ppid not in covered)
         ]
     apps = sorted(groups.values(), key=lambda a: (not a.sounding, a.name.lower()))
     return apps, notes
@@ -342,9 +339,7 @@ def app_label(app: AppEntry) -> str:
 def find_app(apps: list[AppEntry], query: str) -> list[AppEntry]:
     """Apps cuyo nombre visible, nombre de imagen o ruta contienen `query` (sin distinguir mayúsculas)."""
     q = query.lower()
-    return [
-        a for a in apps if q in a.name.lower() or q in os.path.basename(a.exe).lower() or q in a.exe.lower()
-    ]
+    return [a for a in apps if q in a.name.lower() or q in os.path.basename(a.exe).lower() or q in a.exe.lower()]
 
 
 def find_processes(query: str) -> list[ProcInfo]:
