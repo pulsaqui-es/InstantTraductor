@@ -40,6 +40,7 @@ from instanttraductor.contracts import (
     PlaybackEvent,
     PlaybackEventKind,
     Segmenter,
+    SourceLanguage,
     SpeechPiece,
     StageTimings,
     SynthesisRequest,
@@ -171,7 +172,7 @@ EXPECTED_FIELDS: dict[type, tuple[str, ...]] = {
         "language",
     ),
     GlossaryEntry: ("source", "target"),
-    TranslationRequest: ("unit", "context", "glossary", "mode"),
+    TranslationRequest: ("unit", "context", "glossary", "mode", "source_language"),
     TranslationResult: ("unit_id", "text", "mode", "started_at", "finished_at", "rejected"),
     VoiceRef: ("voice_id",),
     VoiceInfo: ("voice_id", "name", "gender", "source", "license"),
@@ -192,6 +193,7 @@ EXPECTED_FIELDS: dict[type, tuple[str, ...]] = {
         "tts_finished_at",
         "play_started_at",
         "play_finished_at",
+        "lid_done_at",
     ),
     UtteranceRecord: (
         "unit_id",
@@ -210,6 +212,7 @@ EXPECTED_DEFAULTS: dict[type, dict[str, Any]] = {
     AsrEvent: {"language": "en", "words": ()},
     TranslationUnit: {"language": "en"},
     TranslationResult: {"rejected": False},
+    TranslationRequest: {"source_language": SourceLanguage.EN},  # contratos-002-v1
     SynthesisRequest: {"speed": 1.0},
     DelayPolicy: {
         "accelerate_after_s": 3.0,
@@ -228,6 +231,7 @@ EXPECTED_DEFAULTS: dict[type, dict[str, Any]] = {
         "tts_finished_at": None,
         "play_started_at": None,
         "play_finished_at": None,
+        "lid_done_at": None,  # contratos-002-v1
     },
 }
 
