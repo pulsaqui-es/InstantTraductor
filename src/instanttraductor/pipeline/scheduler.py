@@ -370,6 +370,19 @@ class Scheduler:
                     self._on_cancelled_locked(phrase)
         self._deliver()
 
+    def refresh_speed(self, unit_id: int) -> float:
+        """Velocidad de la frase justo antes de sintetizarla (FR-012).
+
+        Es la mayor entre la que se fijó al traducirla y la de la última decisión de retraso, y queda anotada
+        para el informe. 1,0 si la frase ya no está abierta.
+        """
+        with self._lock:
+            phrase = self._open.get(unit_id)
+            if phrase is None:
+                return 1.0
+            phrase.speed = max(phrase.speed, self._decision.speed)
+            return phrase.speed
+
     @property
     def source_language(self) -> SourceLanguage:
         return self._source_language

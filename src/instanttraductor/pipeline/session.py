@@ -23,7 +23,7 @@ import time
 import wave
 from collections import deque
 from collections.abc import Callable, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
 from pathlib import Path
 from queue import Empty, Queue
@@ -169,6 +169,7 @@ class Pipeline:
         self._stop = threading.Event()  # «hilos, parad»: lo pone stop() o un hilo que muere (_guard)
         self._closed = False  # stop() ya paró las piezas (su idempotencia no depende de _stop)
         self._work = threading.Event()  # despierta al hilo de traducción
+        self._voice_waiting = threading.Event()  # la voz tiene una frase y espera turno en el sink
         self._synth_queue: Queue[SynthesisRequest] = Queue()
         self._threads: list[threading.Thread] = []
         self._listening_done = threading.Event()
@@ -343,7 +344,7 @@ class Pipeline:
             # Bajo demanda, como la voz: con una frase traducida esperando, no se traduce la siguiente.
             # Así el modo (normal o resumido) se decide cuando la frase está a punto de sonar y no al llegar;
             # con habla seguida, toda la cola quedaba traducida en modo normal (validación de la 002, ja).
-            if self._synth_queue.qsize() >= MT_LOOKAHEAD_UNITS:
+            if self._synth_queue.qsize() >= MT_LOOKAHEAD_UNITS or self._voice_waiting.is_set():
                 self._work.wait(0.05)
                 self._work.clear()
                 continue
@@ -399,12 +400,21 @@ class Pipeline:
                 request = self._synth_queue.get(timeout=0.05)
             except Empty:
                 continue
-            self._work.set()  # hay hueco: la traducción puede preparar la siguiente
-            # Bajo demanda: no se adelanta más de tts_lookahead_s de audio al sink.
-            while not self._stop.is_set() and parts.sink.pending_seconds() > self.tts_lookahead_s:
-                time.sleep(0.02)
+            # Bajo demanda: no se adelanta más de tts_lookahead_s de audio al sink. Mientras espera, tampoco
+            # avanza la traducción: la siguiente se traduce cuando esta empieza a sonar, con el retraso real.
+            self._voice_waiting.set()
+            try:
+                while not self._stop.is_set() and parts.sink.pending_seconds() > self.tts_lookahead_s:
+                    time.sleep(0.02)
+            finally:
+                self._voice_waiting.clear()
+                self._work.set()  # hay hueco: la traducción puede preparar la siguiente
             if self._stop.is_set() or not parts.scheduler.is_open(request.unit_id):
                 continue
+            # La velocidad se vuelve a decidir ahora, con el retraso de este momento (FR-012).
+            speed = parts.scheduler.refresh_speed(request.unit_id)
+            if speed != request.speed:
+                request = replace(request, speed=speed)
             self._speak(request)
 
     def _speak(self, request: SynthesisRequest) -> None:
