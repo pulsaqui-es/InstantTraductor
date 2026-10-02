@@ -29,6 +29,7 @@ class StageTimings:
     tts_finished_at: float | None = None
     play_started_at: float | None = None
     play_finished_at: float | None = None
+    lid_done_at: float | None = None  # spec 002: fin de la verificación de idioma (contratos-002-v1)
 
     @property
     def sentence_delay(self) -> float | None:

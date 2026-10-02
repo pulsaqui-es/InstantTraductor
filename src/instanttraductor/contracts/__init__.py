@@ -1,7 +1,8 @@
-"""Contratos entre etapas del pipeline (congelados con el tag `contratos-001-v1`).
+"""Contratos entre etapas del pipeline.
 
-Fuente de verdad: `specs/001-espina-dorsal/contracts/pipeline.md`. Cambiar estos módulos exige un ADR
-(constitución, Principio III).
+Congelados con `contratos-001-v1` y ampliados de forma aditiva en `contratos-002-v1`. Fuente de verdad:
+`specs/001-espina-dorsal/contracts/pipeline.md` y `specs/002-idiomas-y-peliculas/contracts/pipeline-002.md`.
+Cambiar estos módulos exige un ADR (constitución, Principio III).
 """
 
 from instanttraductor.contracts.audio import (
@@ -16,6 +17,12 @@ from instanttraductor.contracts.audio import (
 )
 from instanttraductor.contracts.clock import Clock
 from instanttraductor.contracts.errors import EngineError
+from instanttraductor.contracts.language import (
+    VERIFIER_LANGUAGES,
+    LanguageVerdict,
+    LanguageVerifier,
+    SourceLanguage,
+)
 from instanttraductor.contracts.metrics import Outcome, StageTimings, UtteranceRecord
 from instanttraductor.contracts.scheduling import DelayController, DelayDecision, DelayPolicy
 from instanttraductor.contracts.speech import (
@@ -45,6 +52,10 @@ from instanttraductor.contracts.translation import (
 from instanttraductor.contracts.units import Segmenter, TranslationUnit
 
 __all__ = [
+    "VERIFIER_LANGUAGES",
+    "LanguageVerdict",
+    "LanguageVerifier",
+    "SourceLanguage",
     "CAPTURE_RATE",
     "PLAYBACK_RATE",
     "AsrCapabilities",

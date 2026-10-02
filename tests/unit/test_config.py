@@ -21,6 +21,7 @@ from instanttraductor.config import (
     save_settings,
     settings_path,
 )
+from instanttraductor.contracts import SourceLanguage
 
 # --- utilidades ---
 
@@ -76,6 +77,8 @@ def test_toml_keys_map_every_attribute_to_its_spanish_key() -> None:
         "glossary": "glosario",
         "show_text": "mostrar_texto",
         "save_audio": "guardar_audio",
+        "source_language": "idioma_origen",
+        "capture_app": "app_escuchada",
     }
 
 
@@ -543,3 +546,36 @@ def test_ffmpeg_path_is_none_when_missing(monkeypatch: pytest.MonkeyPatch) -> No
     monkeypatch.setattr(shutil, "which", lambda name: None)
 
     assert ffmpeg_path() is None
+
+
+# --- spec 002: idioma de origen y app escuchada ---
+
+
+def test_the_source_language_defaults_to_english_and_accepts_the_four_languages() -> None:
+    assert Settings().source_language is SourceLanguage.EN
+    for code in ("en", "ja", "zh", "ko"):
+        assert Settings(source_language=code).source_language == code
+
+
+@pytest.mark.parametrize("bad", ["es", "EN", "", 1, None])
+def test_an_unknown_source_language_is_rejected_with_its_spanish_key(bad: object) -> None:
+    with pytest.raises(ValueError, match="idioma_origen"):
+        Settings(source_language=bad)  # type: ignore[arg-type]
+
+
+def test_capture_app_is_empty_or_the_absolute_path_of_an_exe() -> None:
+    assert Settings().capture_app == ""
+    chrome = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+    assert Settings(capture_app=chrome).capture_app == chrome
+    for bad in ("chrome", "chrome.exe", r"C:\Programaspp.txt", 3):
+        with pytest.raises(ValueError, match="app_escuchada"):
+            Settings(capture_app=bad)  # type: ignore[arg-type]
+
+
+def test_the_new_settings_survive_a_save_and_load(tmp_path: Path) -> None:
+    settings = Settings(source_language="ko", capture_app=r"C:\Discord\Discord.exe")
+    path = tmp_path / "ajustes.toml"
+    save_settings(settings, path)
+    text = path.read_text(encoding="utf-8")
+    assert 'idioma_origen = "ko"' in text
+    assert load_settings(path) == settings

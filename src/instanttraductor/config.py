@@ -29,11 +29,13 @@ import shutil
 import tomllib
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from types import MappingProxyType
 from typing import Any, Final
 
 import tomli_w
+
+from instanttraductor.contracts.language import SourceLanguage
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +61,8 @@ TOML_KEYS: Final[Mapping[str, str]] = MappingProxyType(
         "glossary": "glosario",
         "show_text": "mostrar_texto",
         "save_audio": "guardar_audio",
+        "source_language": "idioma_origen",
+        "capture_app": "app_escuchada",
     }
 )
 
@@ -145,6 +149,24 @@ def _glossary(value: object) -> tuple[tuple[str, str], ...]:
     return tuple(entries)
 
 
+def _source_language(value: object) -> SourceLanguage:
+    try:
+        return SourceLanguage(value)
+    except ValueError:
+        raise ValueError("debe ser uno de: " + ", ".join(lang.value for lang in SourceLanguage)) from None
+
+
+def _capture_app(value: object) -> str:
+    """Vacío (todo el PC) o la ruta absoluta del ejecutable de la app que se escucha (ADR-0012)."""
+    if not isinstance(value, str):
+        raise ValueError("debe ser un texto: vacío o la ruta de un .exe")
+    if value == "":
+        return value
+    if not (PureWindowsPath(value).is_absolute() and value.lower().endswith(".exe")):
+        raise ValueError("debe estar vacío (todo el PC) o ser la ruta absoluta de un .exe")
+    return value
+
+
 #: Validador de cada atributo (individual; el orden entre los tres umbrales se comprueba aparte).
 _CHECKS: Final[Mapping[str, Callable[[object], Any]]] = MappingProxyType(
     {
@@ -159,6 +181,8 @@ _CHECKS: Final[Mapping[str, Callable[[object], Any]]] = MappingProxyType(
         "glossary": _glossary,
         "show_text": _boolean,
         "save_audio": _boolean,
+        "source_language": _source_language,
+        "capture_app": _capture_app,
     }
 )
 
@@ -186,6 +210,8 @@ class Settings:
     glossary: tuple[tuple[str, str], ...] = ()  # glosario: inglés → español
     show_text: bool = False  # mostrar_texto
     save_audio: bool = False  # guardar_audio (FR-030)
+    source_language: SourceLanguage = SourceLanguage.EN  # idioma_origen (spec 002)
+    capture_app: str = ""  # app_escuchada: vacío = todo el PC; si no, ruta del .exe (spec 002)
 
     def __post_init__(self) -> None:
         for name, check in _CHECKS.items():
@@ -205,6 +231,7 @@ class Settings:
         """Los ajustes con las claves en español del TOML (el glosario, como tabla)."""
         data = {key: getattr(self, name) for name, key in TOML_KEYS.items()}
         data[TOML_KEYS["glossary"]] = dict(self.glossary)
+        data[TOML_KEYS["source_language"]] = str(self.source_language)
         return data
 
 

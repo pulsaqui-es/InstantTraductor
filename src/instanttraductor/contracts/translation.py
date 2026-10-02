@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import Protocol
 
+from instanttraductor.contracts.language import SourceLanguage
 from instanttraductor.contracts.units import TranslationUnit
 
 
@@ -25,6 +26,7 @@ class TranslationRequest:
     context: tuple[tuple[str, str], ...]
     glossary: tuple[GlossaryEntry, ...]
     mode: TranslationMode
+    source_language: SourceLanguage = SourceLanguage.EN  # spec 002 (contratos-002-v1)
 
 
 @dataclass(frozen=True, slots=True)

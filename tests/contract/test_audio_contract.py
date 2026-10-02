@@ -325,3 +325,42 @@ class TestAudioSinkFake(AudioSinkContract):
     @pytest.fixture
     def let_time_pass(self) -> Callable[[AudioSink, float], None]:
         return lambda sink, seconds: sink.advance(seconds)  # type: ignore[attr-defined]
+
+
+class ZeroSource:
+    """Fuente infinita que solo entrega ceros, como `AppLoopbackSource` esperando a la app (spec 002)."""
+
+    sample_rate = CAPTURE_RATE
+
+    def __init__(self) -> None:
+        self._t = 0.0
+        self._started = False
+        self._stopped = False
+
+    def start(self) -> None:
+        self._started = True
+
+    def read(self, timeout: float) -> AudioChunk | None:
+        if not self._started or self._stopped:
+            return None
+        samples = np.zeros(int(0.02 * CAPTURE_RATE), np.float32)
+        chunk = AudioChunk(samples, CAPTURE_RATE, self._t)
+        self._t += 0.02
+        return chunk
+
+    @property
+    def exhausted(self) -> bool:
+        return self._stopped
+
+    def stop(self) -> None:
+        self._stopped = True
+
+
+class TestZeroSourceContract(AudioSourceContract):
+    """El contrato admite fuentes en vivo que solo entregan ceros (spec 002, T006)."""
+
+    finite = False
+
+    @pytest.fixture
+    def make_impl(self) -> Callable[[], AudioSource]:
+        return ZeroSource
