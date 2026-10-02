@@ -427,7 +427,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - `/speckit-converge` hasta «Converged»;
   - agente `revisor` (Opus) sobre `main..001-espina-dorsal`;
   - corregir los hallazgos GRAVE y MEDIO.
-- [ ] T048 Cerrar la feature (depends on T047):
+- [X] T048 Cerrar la feature (depends on T047):
   - skill `registrar-hito` (bitácora, CHANGELOG `0.1.0`, hoja de ruta y resolución de ADR-0006 con los datos de S3);
   - PR y merge a main;
   - tag `v0.1.0`.
