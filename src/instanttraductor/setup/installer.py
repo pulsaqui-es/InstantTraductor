@@ -41,6 +41,7 @@ import os
 import re
 import shutil
 import subprocess
+import tarfile
 import zipfile
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
@@ -444,6 +445,55 @@ def _extracts_zips(component: Component) -> bool:
     return component.kind == "binario" and any(f.rel_path.endswith(".zip") for f in component.files)
 
 
+def _download_archive_files(
+    work: _Work, downloader: Downloader, progress: Progress, errors: list[str]
+) -> bool:
+    """Baja el archivo del componente, extrae los ficheros que faltan o están corruptos y lo borra.
+
+    Devuelve si se descargó el archivo entero (válido o no), como `_download_url_files`.
+    """
+    archive = work.component.archive
+    assert archive is not None
+    bad = work.bad_files()
+    if not bad:
+        return False
+    work.base.mkdir(parents=True, exist_ok=True)
+    part = work.base / ".archivo.part"
+    _discard(part)
+    task = progress.add_task(escape(archive.url.rsplit("/", 1)[-1]), total=archive.size_bytes)
+    try:
+        downloader.download_file(archive.url, part, lambda n, t=task: progress.update(t, advance=n))
+    except Exception as error:  # red, disco... un fallo no debe parar el resto de componentes
+        _discard(part)
+        errors.append(f"{archive.url.rsplit('/', 1)[-1]}: {error}")
+        return False
+    finally:
+        progress.remove_task(task)
+    try:
+        if _file_state(part.parent, ComponentFile(part.name, archive.sha256, archive.size_bytes)) is not (
+            ComponentState.VERIFIED
+        ):
+            errors.append("el sha256 del archivo descargado no coincide")
+            return True
+        root = work.base.resolve()
+        wanted = {archive.prefix + file.rel_path: file for file in bad}
+        with tarfile.open(part, "r:*") as tar:
+            for member in tar.getmembers():
+                file = wanted.get(member.name)
+                if file is None or not member.isfile():
+                    continue
+                source = tar.extractfile(member)
+                if source is not None:
+                    _write_stream(source, _safe_target(root, file.rel_path))
+        for file in bad:
+            work.files[file.rel_path] = _file_state(work.base, file)
+            if work.files[file.rel_path] is not ComponentState.VERIFIED:
+                errors.append(f"{file.rel_path}: no está en el archivo o su sha256 no coincide")
+        return True
+    finally:
+        _discard(part)
+
+
 # --- trabajo por componente ---
 
 
@@ -674,7 +724,9 @@ def _install_component(work: _Work, downloader: Downloader, progress: Progress, 
     try:
         if work.bad_files():
             work.base.mkdir(parents=True, exist_ok=True)
-            if component.hf_repo_id is not None:
+            if component.archive is not None:
+                fetched = _download_archive_files(work, downloader, progress, errors)
+            elif component.hf_repo_id is not None:
                 fetched = _download_hugging_face(work, downloader, console)
             elif component.source_url is not None and is_pypi_metadata_url(component.source_url):
                 fetched = _download_pypi_wheel(work, downloader, progress)

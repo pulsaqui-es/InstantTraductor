@@ -112,6 +112,7 @@ def test_components_with_files_have_a_source() -> None:
                 component.source_url is not None
                 or component.hf_repo_id is not None
                 or component.package is not None
+                or component.archive is not None
             )
             assert has_source, component.component_id
 
@@ -567,3 +568,32 @@ def test_feature_002_models_are_not_installed_in_an_empty_home(
     for component_id in ("sensevoice-small", "whisper-base-lid"):
         assert not is_installed(component_id)
         assert component_dir(component_id) == tmp_path / "models" / component_id
+
+
+# --- spec 002: fuente de archivo comprimido -------------------------------------------------------------
+def test_an_archive_source_is_validated() -> None:
+    from instanttraductor.setup.manifest import ComponentArchive
+
+    good = "a" * 64
+    ComponentArchive("https://x.org/m-v1.tar.bz2", good, 10, prefix="m-v1/")
+    for kwargs in (
+        {"url": "http://x.org/m.tar.bz2"},
+        {"url": "https://x.org/latest/m.tar.bz2"},
+        {"url": "https://x.org/m.zip"},
+        {"sha256": "XYZ"},
+        {"size_bytes": 0},
+        {"prefix": "m-v1"},
+    ):
+        args = {"url": "https://x.org/m-v1.tar.bz2", "sha256": good, "size_bytes": 10, "prefix": ""}
+        args.update(kwargs)
+        with pytest.raises(ValueError):
+            ComponentArchive(**args)  # type: ignore[arg-type]
+
+
+def test_the_chinese_recognizer_comes_from_its_pinned_archive() -> None:
+    from instanttraductor.asr import xasr_zh
+
+    component = get_component("x-asr-zh")
+    assert component.archive is not None and component.archive.url.endswith(".tar.bz2")
+    assert component.install_dir == "models/x-asr-zh" and component.license == "Apache-2.0"
+    assert {f.rel_path for f in component.files} == set(xasr_zh.MODEL_FILES)

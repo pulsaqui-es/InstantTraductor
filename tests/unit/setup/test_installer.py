@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import tarfile
 import zipfile
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
@@ -24,7 +25,7 @@ from instanttraductor.setup.installer import (
     GpuInfo,
     prepare,
 )
-from instanttraductor.setup.manifest import Component, ComponentFile
+from instanttraductor.setup.manifest import Component, ComponentArchive, ComponentFile
 
 COMMIT = "0123456789abcdef0123456789abcdef01234567"
 
@@ -788,3 +789,83 @@ def test_parse_cuda_version_reads_the_umd_header_of_recent_drivers() -> None:
     header = "| NVIDIA-SMI 616.64     KMD Version: 616.64        CUDA UMD Version: 13.4     |"
 
     assert installer.parse_cuda_version(header) == (13, 4)
+
+
+# --- Componentes que se publican como archivo comprimido (spec 002: X-ASR) --------------------------------
+def make_tar_bz2(members: dict[str, bytes]) -> bytes:
+    buffer = io.BytesIO()
+    with tarfile.open(fileobj=buffer, mode="w:bz2") as tar:
+        for name, data in members.items():
+            info = tarfile.TarInfo(name)
+            info.size = len(data)
+            tar.addfile(info, io.BytesIO(data))
+    return buffer.getvalue()
+
+
+ARCHIVE_URL = "https://example.com/releases/model-v1.tar.bz2"
+ARCHIVE_FILES = {"enc.onnx": b"E" * 200, "tokens.txt": b"t" * 30}
+ARCHIVE_BYTES = make_tar_bz2(
+    {**{f"model-v1/{name}": data for name, data in ARCHIVE_FILES.items()}, "model-v1/README.md": b"no"}
+)
+ARCHIVE_COMPONENT = Component(
+    component_id="archived",
+    name="Archivado",
+    version="v1",
+    kind="modelo",
+    license="Apache-2.0",
+    install_dir="models/archived",
+    archive=ComponentArchive(ARCHIVE_URL, sha(ARCHIVE_BYTES), len(ARCHIVE_BYTES), prefix="model-v1/"),
+    files=tuple(file_of(name, data) for name, data in ARCHIVE_FILES.items()),
+)
+
+
+def archive_downloader(data: bytes = ARCHIVE_BYTES) -> FakeDownloader:
+    downloader = FakeDownloader()
+    downloader.urls[ARCHIVE_URL] = data
+    return downloader
+
+
+def test_an_archive_component_extracts_only_its_files_and_deletes_the_archive(
+    paths: AppPaths, system: FakeSystem
+) -> None:
+    result, _ = run(paths, archive_downloader(), system, components=(ARCHIVE_COMPONENT,))
+
+    assert report_of(result, "archived").state is ComponentState.VERIFIED
+    folder = paths.home / "models" / "archived"
+    assert sorted(p.name for p in folder.iterdir()) == ["enc.onnx", "tokens.txt"]  # sin README ni el archivo
+    assert (folder / "enc.onnx").read_bytes() == ARCHIVE_FILES["enc.onnx"]
+
+
+def test_an_archive_component_is_not_downloaded_twice(paths: AppPaths, system: FakeSystem) -> None:
+    downloader = archive_downloader()
+    run(paths, downloader, system, components=(ARCHIVE_COMPONENT,))
+    downloader.calls.clear()
+
+    result, _ = run(paths, downloader, system, components=(ARCHIVE_COMPONENT,))
+
+    assert downloader.downloaded("file") == []
+    assert report_of(result, "archived").state is ComponentState.VERIFIED
+
+
+def test_an_archive_with_a_wrong_hash_extracts_nothing(paths: AppPaths, system: FakeSystem) -> None:
+    tampered = make_tar_bz2({f"model-v1/{name}": data for name, data in ARCHIVE_FILES.items()})
+    result, _ = run(paths, archive_downloader(tampered), system, components=(ARCHIVE_COMPONENT,))
+
+    report = report_of(result, "archived")
+    assert report.state is not ComponentState.VERIFIED
+    assert "sha256" in report.detail
+    folder = paths.home / "models" / "archived"
+    assert not any(folder.iterdir())  # ni los ficheros ni el archivo a medias
+
+
+def test_a_corrupt_file_of_an_archive_component_is_restored_from_the_archive(
+    paths: AppPaths, system: FakeSystem
+) -> None:
+    downloader = archive_downloader()
+    run(paths, downloader, system, components=(ARCHIVE_COMPONENT,))
+    (paths.home / "models" / "archived" / "tokens.txt").write_bytes(b"roto")
+
+    result, _ = run(paths, downloader, system, components=(ARCHIVE_COMPONENT,))
+
+    assert report_of(result, "archived").state is ComponentState.VERIFIED
+    assert (paths.home / "models" / "archived" / "tokens.txt").read_bytes() == ARCHIVE_FILES["tokens.txt"]

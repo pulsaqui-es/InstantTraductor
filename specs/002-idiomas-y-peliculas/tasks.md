@@ -149,7 +149,7 @@
 
 ## Phase 6: Integración (ola 2) — orquestador y obrero D
 
-- [ ] T022 [P] Componentes nuevos en `src/instanttraductor/setup/manifest.py` (obrero D, research.md, R9):
+- [X] T022 [P] Componentes nuevos en `src/instanttraductor/setup/manifest.py` (obrero D, research.md, R9):
   - `x-asr-zh`, `sensevoice-small` (2024-07-17 int8) y `whisper-base-lid`;
   - URL o revisión fijadas, verificando que existen, y sha256 y tamaños de **cada fichero** calculados descargándolos a una carpeta temporal fuera del repo;
   - licencias: Apache-2.0, «FunASR Model License v1.1» y MIT;

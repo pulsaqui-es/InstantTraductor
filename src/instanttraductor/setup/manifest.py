@@ -81,6 +81,36 @@ class ComponentFile:
 
 
 @dataclass(frozen=True, slots=True)
+class ComponentArchive:
+    """Un archivo comprimido fijado (``.tar.bz2``, ``.tar.gz`` o ``.tar.xz``) del que salen los ficheros.
+
+    Para modelos que solo se publican así (p. ej. las *releases* de sherpa-onnx). El instalador lo baja,
+    comprueba su ``sha256``, extrae solo los ficheros del componente (``prefix`` + ``rel_path``), los
+    verifica uno a uno y lo borra.
+    """
+
+    url: str  # https y versionada, sin «latest»
+    sha256: str
+    size_bytes: int
+    prefix: str = ""  # carpeta dentro del archivo, con «/» final (vacío: en la raíz)
+
+    def __post_init__(self) -> None:
+        owner = f"Archivo «{self.url}»"
+        if not (isinstance(self.url, str) and self.url.startswith("https://")):
+            raise _invalid(owner, "url", "debe ser una URL https")
+        if "latest" in self.url.lower():
+            raise _invalid(owner, "url", "la URL debe estar fijada, sin «latest»")
+        if not self.url.endswith((".tar.bz2", ".tar.gz", ".tar.xz")):
+            raise _invalid(owner, "url", "debe ser un .tar.bz2, .tar.gz o .tar.xz")
+        if not (isinstance(self.sha256, str) and _SHA256.fullmatch(self.sha256)):
+            raise _invalid(owner, "sha256", "deben ser 64 dígitos hexadecimales en minúsculas")
+        if isinstance(self.size_bytes, bool) or not isinstance(self.size_bytes, int) or self.size_bytes <= 0:
+            raise _invalid(owner, "size_bytes", "debe ser un entero positivo")
+        if self.prefix and not self.prefix.endswith("/"):
+            raise _invalid(owner, "prefix", "debe acabar en «/» (o estar vacío)")
+
+
+@dataclass(frozen=True, slots=True)
 class Component:
     """Un componente descargable (binario, modelo, entorno o voz) con su origen fijado y su licencia."""
 
@@ -96,6 +126,7 @@ class Component:
     allow_patterns: tuple[str, ...] | None = None  # ...y patrones de ficheros (None = todo el repo)
     package: str | None = None  # alternativa a las dos anteriores: paquete de Python con recursos...
     package_dir: str | None = None  # ...y carpeta de recursos dentro de él (sin red)
+    archive: ComponentArchive | None = None  # alternativa: un .tar.* fijado del que se extraen los ficheros
     files: tuple[ComponentFile, ...] = ()  # vacío mientras T013 no calcula hashes y tamaños
     optional: bool = False  # True: la app funciona sin él (p. ej. ffmpeg, que puede estar en el PATH)
 
@@ -120,7 +151,9 @@ class Component:
             raise _invalid(owner, "files", "debe ser una tupla de ComponentFile")
         if len({file.rel_path for file in files}) != len(files):
             raise _invalid(owner, "files", "hay rutas repetidas")
-        if files and self.source_url is None and self.hf_repo_id is None and self.package is None:
+        if files and all(
+            src is None for src in (self.source_url, self.hf_repo_id, self.package, self.archive)
+        ):
             raise _invalid(owner, "source_url", "hay ficheros pero no se sabe de dónde bajarlos")
         object.__setattr__(self, "files", files)
 
@@ -137,6 +170,10 @@ class Component:
 
     def _check_source(self, owner: str) -> None:
         self._check_package(owner)
+        if self.archive is not None and (
+            self.source_url is not None or self.hf_repo_id is not None or self.package is not None
+        ):
+            raise _invalid(owner, "archive", "no puede combinarse con source_url, hf_repo_id ni package")
         if self.source_url is not None:
             if self.hf_repo_id is not None:
                 raise _invalid(owner, "hf_repo_id", "no puede combinarse con source_url")
@@ -269,8 +306,42 @@ COMPONENTS: Final[tuple[Component, ...]] = (
     # Componentes de la feature 002 (research R9, ADR-0013). Fuente: los repositorios de Hugging Face de
     # sherpa-onnx, con la revisión fijada y solo los ficheros que usa cada motor. sha256 y tamaños
     # verificados el 2026-10-02 contra los modelos del spike S5 (spikes/idiomas/fetch_models.py).
-    # x-asr-zh (X-ASR-zh-en 960 ms streaming, punct, int8, Apache-2.0) queda pendiente: solo existe como
-    # tar.bz2 de la release «asr-models» de sherpa-onnx y el instalador no extrae tar.bz2.
+    Component(
+        component_id="x-asr-zh",
+        name="X-ASR-zh-en (reconocimiento de voz en chino, streaming)",
+        version="960 ms int8 punct (2026-06-05)",
+        kind="modelo",
+        license="Apache-2.0",  # tarjeta de GilgameshWind/X-ASR-zh-en (leída el 2026-10-02)
+        install_dir="models/x-asr-zh",
+        # Solo se publica como .tar.bz2 en la release «asr-models» de sherpa-onnx: se extraen sus 5 ficheros.
+        archive=ComponentArchive(
+            url="https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-x-asr-960ms-streaming-zipformer-transducer-zh-en-punct-int8-2026-06-05.tar.bz2",
+            sha256="0a92b798bd6801c333c7ce8aebf5ba769bfe7f3f3511699a67837b2288428603",
+            size_bytes=133_895_831,
+            prefix="sherpa-onnx-x-asr-960ms-streaming-zipformer-transducer-zh-en-punct-int8-2026-06-05/",
+        ),
+        files=(
+            ComponentFile(
+                "tokens.txt", "b818a60878b9aae978cbb8ad594acbd403d76d1af2e31ef4197c84e2dbdba27c", 58_806
+            ),
+            ComponentFile(
+                "bpe.model", "f87a38025a5fdd1e4e9591f6a44bb81295097ce0b80df6f4ab9f44e52c64ca5f", 119_265
+            ),
+            ComponentFile(
+                "encoder.int8.onnx",
+                "017e3cf23097302dbc57ebd72cf4a209cf55c367920669e2d9ce9c0381a96ddd",
+                155_276_576,
+            ),
+            ComponentFile(
+                "decoder.onnx", "a1cbc9eac2d5e3fb6617a218c67ad6daaa7f4e0fd225f08b2c22ab0413c8c257", 11_309_084
+            ),
+            ComponentFile(
+                "joiner.int8.onnx",
+                "aedb7fa697b2ab43f20499826fff7c997eea7d67db77be97769aeeeb726e63b3",
+                2_581_422,
+            ),
+        ),
+    ),
     Component(
         component_id="sensevoice-small",
         name="SenseVoice-Small (reconocimiento de voz ja/ko)",
