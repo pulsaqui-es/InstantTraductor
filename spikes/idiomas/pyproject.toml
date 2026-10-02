@@ -1,0 +1,28 @@
+[project]
+name = "instanttraductor-spike-idiomas"
+version = "0.0.0"
+description = "Spike S5: ASR en japonés, chino y coreano, filtro de idioma y traducción ja/zh/ko a español (spec 002). No es código de producto."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    # Reconocedores (CPU) e identificación de idioma hablado
+    "sherpa-onnx>=1.13.8",
+    # Ver spikes/asr/README.md, problema 1: uv pierde esta dependencia en Windows.
+    "sherpa-onnx-core>=1.13.8",
+    # Silero VAD (modelo .onnx, sin torch)
+    "onnxruntime>=1.30",
+    # Datos, métricas y utilidades
+    "numpy",
+    "soundfile",
+    "soxr",
+    "huggingface-hub",
+    "jiwer",
+    "psutil",
+    "filelock",
+    "httpx>=0.28",
+    "pyarrow>=25.0.1",
+]
+
+[tool.uv]
+# Spike: proyecto "virtual", sin empaquetar. Los scripts se lanzan con `uv run python <script>.py`.
+package = false
