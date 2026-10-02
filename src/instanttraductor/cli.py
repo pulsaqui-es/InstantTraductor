@@ -13,6 +13,7 @@ import threading
 from dataclasses import replace
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+from typing import Any
 
 EXIT_OK = 0
 EXIT_ERROR = 1
@@ -21,6 +22,10 @@ EXIT_NOT_PREPARED = 3
 EXIT_SELFTEST = 4
 EXIT_BAD_INPUT = 5
 EXIT_REQUIREMENTS = 6
+
+#: Idiomas de origen (spec 002) y su nombre en español.
+LANGUAGES = ("en", "ja", "zh", "ko")
+LANGUAGE_NAMES = {"en": "inglés", "ja": "japonés", "zh": "chino", "ko": "coreano"}
 
 logger = logging.getLogger("instanttraductor")
 
@@ -43,6 +48,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     directo.add_argument("--mostrar-texto", action="store_true", help="muestra el original y la traducción")
     directo.add_argument("--informe", metavar="DIR", type=Path, help="carpeta del informe de la sesión")
+    directo.add_argument("--idioma", choices=LANGUAGES, help="idioma de origen de esta sesión")
+    listening = directo.add_mutually_exclusive_group()
+    listening.add_argument("--app", metavar="NOMBRE", help="escuchar solo esa aplicación en esta sesión")
+    listening.add_argument(
+        "--elegir-app", action="store_true", help="elegir de una lista la app que se escucha (se guarda)"
+    )
+    listening.add_argument("--todo-el-pc", action="store_true", help="escuchar todo el PC en esta sesión")
     directo.set_defaults(func=cmd_directo)
 
     archivo = sub.add_parser("archivo", help="traduce un fichero de audio o vídeo")
@@ -51,6 +63,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--salida", metavar="DIR", type=Path, help="carpeta de salida (por defecto <nombre>_es)"
     )
     archivo.add_argument("--voz", metavar="ID", help="voz de esta ejecución")
+    archivo.add_argument("--idioma", choices=LANGUAGES, help="idioma de origen del fichero")
     archivo.set_defaults(func=cmd_archivo)
 
     preparar = sub.add_parser("preparar", help="descarga y verifica los componentes")
@@ -63,6 +76,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     voces.add_argument("--elegir", metavar="ID", help="guarda la voz en los ajustes")
     voces.set_defaults(func=cmd_voces)
+
+    apps = sub.add_parser("apps", help="lista las aplicaciones que están sonando")
+    apps.set_defaults(func=cmd_apps)
+
+    idioma = sub.add_parser("idioma", help="muestra o elige el idioma de origen")
+    idioma.add_argument("--elegir", choices=LANGUAGES, help="guarda el idioma de origen")
+    idioma.set_defaults(func=cmd_idioma)
 
     diagnostico = sub.add_parser(
         "diagnostico", help="versiones, GPU, dispositivos y estado de la preparación"
@@ -149,6 +169,12 @@ def cmd_directo(args: argparse.Namespace) -> int:
         settings = replace(settings, voice_volume=args.volumen / 100)
     if args.mostrar_texto:
         settings = replace(settings, show_text=True)
+    if args.idioma:
+        settings = replace(settings, source_language=args.idioma)
+    resolved = _resolve_listening(args, saved, settings, console)
+    if isinstance(resolved, int):
+        return resolved
+    saved, settings = resolved
 
     from instanttraductor.pipeline.live import LiveSession
     from instanttraductor.pipeline.session import SessionError
@@ -229,6 +255,8 @@ def cmd_archivo(args: argparse.Namespace) -> int:
             )
             return EXIT_USAGE
         settings = replace(settings, voice=args.voz)
+    if args.idioma:
+        settings = replace(settings, source_language=args.idioma)
 
     from instanttraductor.pipeline.file_session import FileSession
     from instanttraductor.pipeline.session import SessionError
@@ -271,6 +299,116 @@ def _voice_exists(voice_id: str) -> bool:
     from instanttraductor.setup.voices import list_voices
 
     return any(voice.voice_id == voice_id for voice in list_voices())
+
+
+def _resolve_listening(
+    args: argparse.Namespace, saved: Any, settings: Any, console: Any
+) -> tuple[Any, Any] | int:
+    """Qué se escucha en esta sesión (spec 002, contracts/cli-002.md).
+
+    Devuelve (ajustes guardados, ajustes de la sesión) o un código de salida si no se puede.
+    """
+    from instanttraductor.audio.apps import find_app, list_audio_apps
+    from instanttraductor.config import save_settings
+
+    if args.todo_el_pc:
+        return saved, replace(settings, capture_app="")
+    if args.elegir_app:
+        chosen = _pick_app(console, [app.identity for app in list_audio_apps()])
+        if chosen is None:
+            return EXIT_USAGE
+        saved = replace(saved, capture_app=chosen.exe_path)
+        save_settings(saved)
+        console.print(f"Se escuchará {chosen.display_name} (guardado).", markup=False)
+        return saved, replace(settings, capture_app=chosen.exe_path)
+    if args.app:
+        matches = find_app(args.app)
+        if not matches:
+            console.print(
+                f"No encuentro ninguna app abierta que se llame «{args.app}». "
+                "Mira las que suenan con: instanttraductor apps",
+                markup=False,
+            )
+            return EXIT_USAGE
+        chosen = matches[0] if len(matches) == 1 else _pick_app(console, matches)
+        if chosen is None:
+            return EXIT_USAGE
+        return saved, replace(settings, capture_app=chosen.exe_path)
+    if settings.capture_app and not Path(settings.capture_app).exists():
+        # La app se actualizó y cambió de carpeta (Discord usa app-<versión>): se busca por el nombre del exe.
+        exe_name = Path(settings.capture_app).name
+        by_name = [m for m in find_app(exe_name) if Path(m.exe_path).name.lower() == exe_name.lower()]
+        if len(by_name) == 1:
+            saved = replace(saved, capture_app=by_name[0].exe_path)
+            save_settings(saved)
+            return saved, replace(settings, capture_app=by_name[0].exe_path)
+        console.print(
+            f"La app guardada ya no está en {settings.capture_app}. Elige otra con: directo --elegir-app",
+            markup=False,
+        )
+    if not settings.capture_app:
+        console.print(
+            "Escuchando todo el PC. Para escuchar solo la película: instanttraductor directo --elegir-app",
+            style="dim",
+            markup=False,
+        )
+    return saved, settings
+
+
+def _pick_app(console: Any, identities: list[Any]) -> Any:
+    """Lista numerada de apps y elección con un número. None si no hay ninguna o se cancela."""
+    if not identities:
+        console.print(
+            "No hay ninguna aplicación sonando ahora. Pon la película y vuelve a probar.", markup=False
+        )
+        return None
+    for number, identity in enumerate(identities, start=1):
+        console.print(f"  {number}. {identity.display_name}  ({identity.exe_path})", markup=False)
+    answer = input("Número de la app que quieres escuchar (Enter para cancelar): ").strip()
+    if not answer.isdigit() or not 1 <= int(answer) <= len(identities):
+        console.print("Cancelado.", markup=False)
+        return None
+    return identities[int(answer) - 1]
+
+
+def cmd_apps(args: argparse.Namespace) -> int:
+    from rich.console import Console
+    from rich.table import Table
+
+    from instanttraductor.audio.apps import list_audio_apps
+
+    console = Console()
+    apps = list_audio_apps()
+    if not apps:
+        console.print("No hay ninguna aplicación con sonido ahora mismo.", markup=False)
+        return EXIT_OK
+    table = Table(title="Aplicaciones con sonido")
+    for column in ("Nº", "App", "Suena", "Nivel", "Ejecutable"):
+        table.add_column(column)
+    for number, app in enumerate(apps, start=1):
+        level = f"{app.level_dbfs:.0f} dBFS" if app.sounding else "-"
+        sounding = "sí" if app.sounding else "no"
+        table.add_row(
+            str(number), app.identity.display_name, sounding, level, Path(app.identity.exe_path).name
+        )
+    console.print(table)
+    console.print(
+        "Para escuchar solo una: instanttraductor directo --app NOMBRE (o --elegir-app)", markup=False
+    )
+    return EXIT_OK
+
+
+def cmd_idioma(args: argparse.Namespace) -> int:
+    from instanttraductor.config import load_settings, save_settings
+
+    settings = load_settings()
+    if args.elegir:
+        save_settings(replace(settings, source_language=args.elegir))
+        print(f"Idioma de origen: {LANGUAGE_NAMES[args.elegir]} (guardado).")
+        return EXIT_OK
+    name = LANGUAGE_NAMES[str(settings.source_language)]
+    print(f"Idioma de origen: {name}. Para cambiarlo: instanttraductor idioma --elegir en|ja|zh|ko")
+    return EXIT_OK
 
 
 def cmd_preparar(args: argparse.Namespace) -> int:

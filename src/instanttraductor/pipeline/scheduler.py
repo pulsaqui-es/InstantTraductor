@@ -370,6 +370,10 @@ class Scheduler:
                     self._on_cancelled_locked(phrase)
         self._deliver()
 
+    @property
+    def source_language(self) -> SourceLanguage:
+        return self._source_language
+
     def on_language_checked(self, unit_id: int, *, accepted: bool) -> None:
         """Resultado del verificador de idioma (spec 002) para una frase `TRANSLATING`.
 

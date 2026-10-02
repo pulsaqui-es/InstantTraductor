@@ -121,6 +121,8 @@ class PipelineParts:
     save_audio_path: Path | None = None
     #: Verificador de idioma (spec 002, ADR-0012): sin él se traduce todo, como en la 0.1.
     language_verifier: LanguageVerifier | None = None
+    #: Para la interfaz (spec 002): qué se escucha ahora («todo el PC», «Chrome», «esperando a Chrome»).
+    listening_label: Callable[[], str] | None = None
 
 
 class Warnings:
@@ -457,6 +459,8 @@ class Pipeline:
                         warnings=self.warnings.current(),
                         last_source=self._last_source,
                         last_translation=self._last_translation,
+                        language=str(parts.scheduler.source_language),
+                        listening=parts.listening_label() if parts.listening_label is not None else None,
                     )
                 )
 

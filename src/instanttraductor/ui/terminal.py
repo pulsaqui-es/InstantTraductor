@@ -73,6 +73,12 @@ class StatusSnapshot:
     warnings: tuple[str, ...] = ()
     last_source: str | None = None
     last_translation: str | None = None
+    language: str | None = None  # spec 002: código del idioma de origen (en, ja, zh, ko)
+    listening: str | None = None  # spec 002: qué se escucha («todo el PC», «Chrome», «esperando a Chrome»)
+
+
+#: Nombre en español de cada idioma de origen (spec 002).
+LANGUAGE_NAMES: Final = {"en": "inglés", "ja": "japonés", "zh": "chino", "ko": "coreano"}
 
 
 def _label_grid() -> Table:
@@ -267,6 +273,10 @@ class TerminalUI:
 
         grid = _label_grid()
         grid.add_row("Estado", Text(_STATE_LABELS.get(state, state), style=_STATE_STYLES.get(state, "")))
+        if snap.language:
+            grid.add_row("Idioma", Text(LANGUAGE_NAMES.get(snap.language, snap.language)))
+        if snap.listening:
+            grid.add_row("Escucha", Text(snap.listening))
         grid.add_row("Retraso", Text(_seconds(snap.lag_s)))
         grid.add_row("Velocidad", Text(f"{_num(snap.speed, 2)}×"))
         grid.add_row(

@@ -46,6 +46,9 @@ from instanttraductor.ui.terminal import StatusSnapshot
 
 logger = logging.getLogger(__name__)
 
+#: Lo que se escucha sin app elegida (interfaz e informe).
+ALL_PC = "todo el PC"
+
 
 class LiveDevices(Protocol):
     """Los dispositivos de audio del modo directo."""
@@ -98,7 +101,14 @@ class LiveSession:
                 on_progress=self._progress,
             )
         )
-        self._devices = devices if devices is not None else WasapiDevices(capture_app=settings.capture_app)
+        app_name = Path(settings.capture_app).stem if settings.capture_app else ""
+        self._app_name = app_name
+        self._listening = f"esperando a {app_name}" if app_name else ALL_PC
+        self._devices = (
+            devices
+            if devices is not None
+            else WasapiDevices(capture_app=settings.capture_app, on_app_state=self._on_app_state)
+        )
         self._clock_factory = clock_factory
         self._pipeline: Pipeline | None = None
         self._fatal: SessionError | None = None
@@ -142,6 +152,7 @@ class LiveSession:
                 child_pids=self._engines.child_pids,
                 save_audio_path=save_path,
                 language_verifier=self._engines.language_verifier(),
+                listening_label=lambda: self._listening,
             )
             sink.start(scheduler.on_playback_event)
             sink.set_volume(settings.voice_volume)
@@ -199,6 +210,16 @@ class LiveSession:
     def fatal_error(self) -> SessionError | None:
         return self._fatal
 
+    def _on_app_state(self, state: str, name: str) -> None:
+        """Estado de la app escuchada (spec 002), para la interfaz y el informe."""
+        self._app_name = name
+        if state == "sonando":
+            self._listening = name
+        elif state == "esperando":
+            self._listening = f"esperando a {name}"
+        else:
+            self._listening = f"{name} (no llega sonido)"
+
     def _on_capture_reopen(self) -> None:
         """ADR-0010: tras reabrir la captura se repite el autotest, en otro hilo (el callback vuelve ya)."""
 
@@ -236,6 +257,7 @@ class LiveSession:
             settings=self.settings,
             session_id=session_id_for(self._started_at),
             components=report_components(),
+            capture=self._app_name or ALL_PC,
         )
         write_report(report, self._report_path())
         return report

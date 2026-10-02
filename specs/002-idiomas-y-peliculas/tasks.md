@@ -162,12 +162,12 @@
     - `StageTimings.lid_done_at`;
   - `TranslationRequest.source_language`;
   - E2E con dobles en `tests/integration/test_language_filter_fakes.py`: película en «inglés» y conversación en «español» (FakeLanguageVerifier), solo se pronuncia la primera.
-- [ ] T024 [US1] Integración de la escucha y los idiomas en `src/instanttraductor/pipeline/engines.py`, `pipeline/live.py` y `pipeline/file_session.py` (depends on T010, T014, T023):
+- [X] T024 [US1] Integración de la escucha y los idiomas en `src/instanttraductor/pipeline/engines.py`, `pipeline/live.py` y `pipeline/file_session.py` (depends on T010, T014, T023):
   - motores por idioma con `create_asr`, y el verificador;
   - `WasapiDevices`: fuente `AppLoopbackSource` o `ProcessLoopbackSource` según el modo, y **autotest invertido** en modo app;
   - el estado de la app va a los avisos o a la interfaz;
   - `file_session` con el idioma.
-- [ ] T025 [US1] CLI e interfaz en `src/instanttraductor/cli.py` y `src/instanttraductor/ui/terminal.py` (depends on T024; contracts/cli-002.md):
+- [X] T025 [US1] CLI e interfaz en `src/instanttraductor/cli.py` y `src/instanttraductor/ui/terminal.py` (depends on T024; contracts/cli-002.md):
   - `--idioma`, `--app`, `--elegir-app` (lista numerada, se elige con un número y se guarda) y `--todo-el-pc`;
   - `archivo --idioma`;
   - subcomandos `apps` e `idioma`;
