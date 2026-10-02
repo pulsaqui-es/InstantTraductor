@@ -23,11 +23,38 @@ import capturar_app as ca
 import common as c
 import numpy as np
 import psutil
+from instanttraductor.audio.selftest import tone_ratio_db
 from instanttraductor.audio.wasapi_capture import ProcessLoopbackSource
 
 HERE = Path(__file__).resolve().parent
 CREATE_NO_WINDOW = 0x08000000
 BASE_PY = getattr(sys, "_base_executable", sys.executable)
+
+
+def start_own_tone(freq: float):
+    """Tono continuo propio (-30 dBFS) desde ESTE proceso, para ver quién lo oye (solo en esta prueba)."""
+    import array
+
+    import miniaudio
+
+    state = {"pos": 0}
+
+    def gen():
+        frames = yield b""
+        while True:
+            idx = np.arange(state["pos"], state["pos"] + frames)
+            state["pos"] += frames
+            frames = yield array.array(
+                "f", (0.0316 * np.sin(2 * np.pi * freq * idx / 48000)).astype(np.float32).tobytes()
+            )
+
+    device = miniaudio.PlaybackDevice(
+        output_format=miniaudio.SampleFormat.FLOAT32, nchannels=1, sample_rate=48000, buffersize_msec=10
+    )
+    stream = gen()
+    next(stream)
+    device.start(stream)
+    return device
 
 
 def main() -> None:
@@ -43,6 +70,7 @@ def main() -> None:
     ap.add_argument(
         "--consola-heredada", action="store_true", help="sin CREATE_NO_WINDOW: la cadena comparte la consola"
     )
+    ap.add_argument("--tono-propio", action="store_true", help="este proceso también suena (1234 Hz) mientras se mide")
     args = ap.parse_args()
 
     # El intérprete base no ve el venv: se le pasa su site-packages por PYTHONPATH (solo numpy y miniaudio).
@@ -84,6 +112,8 @@ def main() -> None:
         for s in srcs.values():
             s.start()
         acc = {pid: [0.0, 0] for pid in srcs}
+        keep: dict[int, list[np.ndarray]] = {pid: [] for pid in srcs}  # solo audio propio (tonos de prueba)
+        own_device = start_own_tone(1234.0) if args.tono_propio else None
         end = time.perf_counter() + args.duracion
         while time.perf_counter() < end:
             for pid, s in srcs.items():
@@ -92,14 +122,23 @@ def main() -> None:
                     x = chunk.samples.astype(np.float64)
                     acc[pid][0] += float(np.sum(x * x))
                     acc[pid][1] += len(x)
+                    keep[pid].append(chunk.samples)
                     chunk = s.read(0.0)
         for s in srcs.values():
             s.stop()
+        if own_device is not None:
+            own_device.close()
         leaf = chain[-1].pid
         print(f"cadena: {' -> '.join(f'{p.name()}({p.pid})' for p in chain)}  (la hoja {leaf} es el emisor)")
         for label, pid in targets:
             rms = (acc[pid][0] / max(acc[pid][1], 1)) ** 0.5
-            print(f"  INCLUDE({pid:>7d}) {label:<44s} rms {c.db(rms):7.1f} dBFS  {'OYE' if rms > 1e-4 else 'silencio'}")
+            audio = np.concatenate(keep[pid]) if keep[pid] else np.zeros(0, dtype=np.float32)
+            leaf_db = tone_ratio_db(audio, 16000, 777.0) if len(audio) > 8000 else 0.0
+            own_db = tone_ratio_db(audio, 16000, 1234.0) if len(audio) > 8000 else 0.0
+            print(
+                f"  INCLUDE({pid:>7d}) {label:<44s} rms {c.db(rms):7.1f} dBFS  {'OYE' if rms > 1e-4 else 'silencio':<8s} "
+                f"tono del emisor hijo (777 Hz): {leaf_db:5.1f} dB; tono propio (1234 Hz): {own_db:5.1f} dB"
+            )
     finally:
         subprocess.run(["taskkill", "/PID", str(root.pid), "/T", "/F"], capture_output=True)
 
