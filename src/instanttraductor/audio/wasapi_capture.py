@@ -714,8 +714,10 @@ class ProcessLoopbackSource:
     - Un hilo propio vacía el dispositivo, rellena los huecos de más de 100 ms, cuenta el reloj de audio y
       vigila la captura. `read` solo espera en una cola: el consumidor puede tardar sin perder audio.
     - **Vigilante:** reabre la captura, como máximo una vez cada 10 s, si pasan más de 0,5 s sin paquetes, si
-      WASAPI da un error o si el PID objetivo ya no es el correcto (el propio proceso cambió de PID; o, con un
-      `target_pid` explícito, ese proceso murió). Entonces llama a `on_reopen()` para que la sesión repita el
+      WASAPI da un error o si el PID objetivo ya no es el correcto (el propio proceso cambió de PID; o, en
+      EXCLUDE con un `target_pid` explícito, ese proceso murió). En INCLUDE con un `target_pid` explícito no
+      se vigila el PID: quien lo eligió (`AppLoopbackSource`) es quien lo cambia, y reabrir sobre un PID
+      muerto no arreglaría nada (ADR-0012). Al reabrir llama a `on_reopen()` para que la sesión repita el
       autotest. **`on_reopen` y `on_warning` se llaman desde el hilo de captura: deben volver enseguida**
       (el autotest, en otro hilo). Si la reapertura falla, solo hay `on_warning`; se reintenta a los 10 s.
     - `on_warning(texto)`: avisos para la persona, en español (hueco en la captura, reapertura, audio sin
@@ -964,7 +966,9 @@ class ProcessLoopbackSource:
         """False si el PID objetivo ya no es el correcto (condición 3 del vigilante)."""
         if self._follow_process:
             return _current_pid() == self._target_pid  # el proceso cambió de PID (fork/spawn)
-        return _pid_exists(self._target_pid)  # PID explícito: sigue vivo
+        if self._include:
+            return True  # INCLUDE de un PID explícito: lo vigila quien lo eligió (`AppLoopbackSource`)
+        return _pid_exists(self._target_pid)  # EXCLUDE de un PID explícito: sigue vivo
 
     def _check_watchdog(self, now: float, stream_error: str | None) -> None:
         reason = self._watchdog.check(

@@ -558,6 +558,41 @@ class TestWatchdogInTheSource:
         rig.run(PACKET_S)
         assert rig.factory.calls == [(1234, True), (1234, True)]
 
+    def test_include_with_an_explicit_pid_does_not_watch_the_target_pid(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """S6, hallazgo 2: el vigilante de la app cambia de PID; la captura no reabre ni avisa por eso."""
+        alive = {"value": True}
+        monkeypatch.setattr(wasapi_capture, "_pid_exists", lambda pid: alive["value"])
+        rig = Rig(include=True, target_pid=1234)
+        rig.run(0.5)
+        alive["value"] = False  # el PID objetivo muere, pero los paquetes (ceros) siguen llegando
+        rig.run(3.0)
+        assert rig.factory.calls == [(1234, False)]
+        assert rig.reopened_at == []
+        assert not any("Reabriendo" in w for w in rig.warnings)
+        assert not rig.stream.closed
+
+    def test_include_with_an_explicit_pid_still_reopens_for_the_other_reasons(self) -> None:
+        rig = Rig(include=True, target_pid=1234)
+        rig.run(1.0)
+        rig.run(0.6, packets=False)  # sin paquetes: se reabre con el mismo PID
+        assert rig.factory.calls == [(1234, False), (1234, False)]
+        assert len(rig.reopened_at) == 1
+        rig.run(10.5)
+        rig.stream.error = "AUDCLNT_E_DEVICE_INVALIDATED (0x88890004)"
+        rig.run(PACKET_S)
+        assert len(rig.factory.calls) == 3
+
+    def test_include_of_the_own_process_still_follows_a_pid_change(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        rig = Rig(include=True)  # sin target_pid: el propio proceso (control positivo del autotest)
+        rig.run(1.0)
+        monkeypatch.setattr(wasapi_capture, "_current_pid", lambda: 424242)
+        rig.run(PACKET_S)
+        assert rig.factory.calls == [(os.getpid(), False), (424242, False)]
+
     def test_at_most_one_reopen_every_10_seconds(self) -> None:
         rig = Rig()
         rig.run(1.0)
