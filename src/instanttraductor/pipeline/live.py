@@ -89,9 +89,16 @@ class LiveSession:
         self._on_status = on_status
         self._progress = on_progress or (lambda text: logger.info(text))
         self._engines = (
-            engines if engines is not None else RealEngines(self.paths, on_progress=self._progress)
+            engines
+            if engines is not None
+            else RealEngines(
+                self.paths,
+                language=settings.source_language,
+                max_segment_s=settings.max_untranslated_s,
+                on_progress=self._progress,
+            )
         )
-        self._devices = devices if devices is not None else WasapiDevices()
+        self._devices = devices if devices is not None else WasapiDevices(capture_app=settings.capture_app)
         self._clock_factory = clock_factory
         self._pipeline: Pipeline | None = None
         self._fatal: SessionError | None = None
@@ -134,6 +141,7 @@ class LiveSession:
                 on_status=self._on_status,
                 child_pids=self._engines.child_pids,
                 save_audio_path=save_path,
+                language_verifier=self._engines.language_verifier(),
             )
             sink.start(scheduler.on_playback_event)
             sink.set_volume(settings.voice_volume)
@@ -239,7 +247,19 @@ class LiveSession:
 
 
 class WasapiDevices:
-    """Los dispositivos reales: captura *process loopback* (EXCLUDE), reproducción WASAPI y autotest."""
+    """Los dispositivos reales: reproducción WASAPI, autotest y la captura *process loopback*.
+
+    - `capture_app` vacío: todo el PC salvo la propia app (EXCLUDE, ADR-0010).
+    - `capture_app` = ruta de un .exe: solo esa aplicación (INCLUDE, ADR-0012), con su vigilante que espera y
+      reabre cuando la app se cierra o se reinicia. El autotest va con el cableado invertido: la captura de la
+      app no debe oír nuestro tono y una INCLUDE propia sí (research.md de la 002, R5).
+    """
+
+    def __init__(
+        self, *, capture_app: str = "", on_app_state: Callable[[str, str], None] | None = None
+    ) -> None:
+        self.capture_app = capture_app
+        self._on_app_state = on_app_state
 
     def selftest(self) -> float:
         from instanttraductor.audio.selftest import run_echo_selftest
@@ -247,12 +267,26 @@ class WasapiDevices:
         from instanttraductor.audio.wasapi_playback import DeviceSink
 
         temp_clock = SessionClock()
+        make_source = lambda include: ProcessLoopbackSource(temp_clock, include=include)  # noqa: E731
+        if self.capture_app:
+            from instanttraductor.audio.apps import resolve_root
+
+            root = resolve_root(self.capture_app)
+            if root is None:
+                # La app aún no está abierta: no hay a quién probar. La lista ya oculta la propia app y sus
+                # antepasados, que son los únicos casos en que la voz propia entraría en una INCLUDE.
+                logger.info("Autotest omitido: la app elegida aún no está abierta (%s).", self.capture_app)
+                return _default_echo_threshold()
+
+            def make_source(include: bool) -> AudioSource:  # type: ignore[misc]
+                if include:
+                    return ProcessLoopbackSource(temp_clock, include=True)  # INCLUDE propia: debe oír el tono
+                return ProcessLoopbackSource(temp_clock, include=True, target_pid=root.root_pid)
+
         temp_sink = DeviceSink(temp_clock)
         temp_sink.start(lambda event: None)  # sus eventos no van al planificador
         try:
-            result = run_echo_selftest(
-                temp_sink, lambda include: ProcessLoopbackSource(temp_clock, include=include)
-            )
+            result = run_echo_selftest(temp_sink, make_source)
         finally:
             temp_sink.stop()
         if not result.ok:
@@ -275,6 +309,22 @@ class WasapiDevices:
     def source(
         self, clock: Clock, *, on_reopen: Callable[[], None], on_warning: Callable[[str], None]
     ) -> AudioSource:
+        if self.capture_app:
+            from instanttraductor.audio.app_source import AppLoopbackSource
+
+            def on_state(state: Any, name: str) -> None:
+                if str(state) == "esperando":
+                    on_warning(f"Esperando a que suene {name}…")
+                if self._on_app_state is not None:
+                    self._on_app_state(str(state), name)
+
+            return AppLoopbackSource(clock, self.capture_app, on_state=on_state, on_warning=on_warning)
         from instanttraductor.audio.wasapi_capture import ProcessLoopbackSource
 
         return ProcessLoopbackSource(clock, on_reopen=on_reopen, on_warning=on_warning)
+
+
+def _default_echo_threshold() -> float:
+    from instanttraductor.audio.echo_monitor import DEFAULT_THRESHOLD
+
+    return float(DEFAULT_THRESHOLD)

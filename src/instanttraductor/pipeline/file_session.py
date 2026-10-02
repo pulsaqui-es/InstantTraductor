@@ -74,7 +74,14 @@ class FileSession:
         self.paths = paths or AppPaths()
         self._progress = on_progress or (lambda text: logger.info(text))
         self._engines = (
-            engines if engines is not None else RealEngines(self.paths, on_progress=self._progress)
+            engines
+            if engines is not None
+            else RealEngines(
+                self.paths,
+                language=settings.source_language,
+                max_segment_s=settings.max_untranslated_s,
+                on_progress=self._progress,
+            )
         )
         self._clock_factory = clock_factory
         self._info: InputInfo | None = None
@@ -121,6 +128,7 @@ class FileSession:
                 recorder=recorder,
                 agc=AutoGain(),
                 child_pids=self._engines.child_pids,
+                language_verifier=self._engines.language_verifier(),
             )
             self._sink, self._source = sink, source
             sink.start(scheduler.on_playback_event)

@@ -41,7 +41,6 @@ from instanttraductor.mt.hymt2 import (
 )
 from instanttraductor.mt.llama_server import find_free_port
 from instanttraductor.mt.selection import MtModel
-from instanttraductor.mt.vosotros import PLURAL_NOTE
 from instanttraductor.pipeline.clock import ManualClock
 from tests.contract.test_translation_contract import SENTENCES, TranslatorContract, make_request
 
@@ -1268,46 +1267,46 @@ def test_the_concise_prompt_names_the_source_language() -> None:
 GROUP_CONTEXT = (("Alright, everybody, gather around.", "Vale, todos, acercaos."),)
 
 
-def test_the_group_note_goes_after_the_text_when_the_scene_is_a_group(no_base_glossary: None) -> None:
-    translator, server = make_translator()
+def test_the_first_pass_never_carries_the_note(no_base_glossary: None) -> None:
+    translator, server = make_translator(FakeChatServer(lambda body: chat_response("Vale, ¿lo entendéis?")))
 
     translator.translate(make_request(1, "Do you understand?", context=GROUP_CONTEXT))
 
-    assert server.messages[-1] == {
-        "role": "user",
-        "content": S2_WRAPPER + "Do you understand?" + NOTE_LITERAL,
-    }
-    assert PLURAL_NOTE == NOTE_LITERAL
+    assert len(server.bodies) == 1  # ya sale «vosotros»: sin reintento
+    assert server.messages[-1] == {"role": "user", "content": S2_WRAPPER + "Do you understand?"}
 
 
-def test_the_note_does_not_change_the_prefix_of_the_prompt(no_base_glossary: None) -> None:
-    translator, server = make_translator()
+def test_the_retry_keeps_the_cached_prefix_of_the_prompt(no_base_glossary: None) -> None:
+    server = FakeChatServer(retry_responder("¿Lo entiendes?", "¿Lo entendéis?"))
+    translator, _ = make_translator(server)
 
     translator.translate(make_request(1, "Do you understand?", context=GROUP_CONTEXT))
-    translator.translate(make_request(2, "Do you understand?", context=(("Hi.", "Hola."),)))
 
-    with_note, without = server.bodies[0]["messages"], server.bodies[1]["messages"]
-    assert with_note[:25] == without[:25]  # sistema y 12 ejemplos
-    assert without[-1]["content"] == S2_WRAPPER + "Do you understand?"
+    first, retried = server.bodies[0]["messages"], server.bodies[1]["messages"]
+    assert retried[:25] == first[:25]  # sistema y 12 ejemplos
+    assert retried[-1]["content"] == S2_WRAPPER + "Do you understand?" + RETRY_LITERAL
 
 
-def test_the_note_also_follows_the_terminology_turn(no_base_glossary: None) -> None:
-    translator, server = make_translator()
+def test_the_retry_note_also_follows_the_terminology_turn(no_base_glossary: None) -> None:
+    server = FakeChatServer(retry_responder("La Corte de Ascuas llama.", "Os llama la Corte de Ascuas."))
+    translator, _ = make_translator(server)
     glossary = (GlossaryEntry("Ember Court", "Corte de Ascuas"),)
 
     translator.translate(make_request(1, "The Ember Court calls.", context=GROUP_CONTEXT, glossary=glossary))
 
-    content = server.messages[-1]["content"]
+    content = server.bodies[1]["messages"][-1]["content"]
     assert content.startswith("参考下面的翻译：\nEmber Court 翻译成 Corte de Ascuas")
-    assert content.endswith("The Ember Court calls." + NOTE_LITERAL)
+    assert content.endswith("The Ember Court calls." + RETRY_LITERAL)
 
 
-def test_a_plural_marker_in_the_sentence_itself_adds_the_note(no_base_glossary: None) -> None:
-    translator, server = make_translator()
+def test_a_plural_marker_without_vosotros_in_the_answer_triggers_the_retry(no_base_glossary: None) -> None:
+    server = FakeChatServer(retry_responder("¿Listos?", "¿Estáis listos?"))
+    translator, _ = make_translator(server)
 
-    translator.translate(make_request(1, "Are you guys ready?"))
+    result = translator.translate(make_request(1, "Are you guys ready?"))
 
-    assert server.messages[-1]["content"] == S2_WRAPPER + "Are you guys ready?" + NOTE_LITERAL
+    assert len(server.bodies) == 2
+    assert result.text == "¿Estáis listos?"
 
 
 @pytest.mark.parametrize(
@@ -1323,23 +1322,26 @@ def test_a_plural_marker_in_the_sentence_itself_adds_the_note(no_base_glossary: 
         ),  # el plural queda fuera de las últimas 5
     ],
 )
-def test_without_a_group_signal_the_turn_has_no_note(
+def test_without_a_group_signal_there_is_no_retry(
     text: str, context: tuple[tuple[str, str], ...], no_base_glossary: None
 ) -> None:
-    translator, server = make_translator()
+    translator, server = make_translator(FakeChatServer(lambda body: chat_response("¿Lo entiendes?")))
 
     translator.translate(make_request(1, text, context=context))
 
+    assert len(server.bodies) == 1
     assert server.messages[-1]["content"] == S2_WRAPPER + text
 
 
 def test_the_plural_marker_four_lines_back_still_counts(no_base_glossary: None) -> None:
-    translator, server = make_translator()
+    server = FakeChatServer(retry_responder("¿Lo entiendes?", "¿Lo entendéis?"))
+    translator, _ = make_translator(server)
     context = (GROUP_CONTEXT[0], *[(f"Line {n}.", f"Línea {n}.") for n in range(4)])
 
-    translator.translate(make_request(1, "Do you understand?", context=context))
+    result = translator.translate(make_request(1, "Do you understand?", context=context))
 
-    assert server.messages[-1]["content"].endswith(NOTE_LITERAL)
+    assert len(server.bodies) == 2
+    assert result.text == "¿Lo entendéis?"
 
 
 @pytest.mark.parametrize("language", [SourceLanguage.JA, SourceLanguage.ZH, SourceLanguage.KO])
@@ -1450,7 +1452,6 @@ def test_a_residual_ustedes_with_a_group_signal_retries_once_with_the_retry_note
     first, second = server.bodies[0]["messages"], server.bodies[1]["messages"]
     assert second[:-1] == first[:-1]
     assert second[-1]["content"] == first[-1]["content"] + RETRY_LITERAL
-    assert first[-1]["content"].endswith(NOTE_LITERAL)  # el reintento va tras la nota de escena
     assert second[-1]["role"] == "user"
     assert second is not first
     assert server.bodies[1]["max_tokens"] == server.bodies[0]["max_tokens"]
@@ -1531,13 +1532,23 @@ def test_no_retry_with_a_singular_marker_in_the_sentence() -> None:
 
 
 def test_the_group_signal_can_come_from_the_scene() -> None:
+    server = FakeChatServer(retry_responder("¿Lo entiendes?", "¿Lo entendéis?"))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(make_request(1, "Do you understand?", context=GROUP_CONTEXT))
+
+    assert len(server.bodies) == 2
+    assert result.text == "¿Lo entendéis?"
+
+
+def test_a_residual_ustedes_without_you_in_the_english_is_not_retried() -> None:
+    """Sin «you», «ustedes» suele ser un «they» mal traducido: pasarlo a «vosotros» lo empeoraría."""
     server = FakeChatServer(retry_responder("Ustedes llegan tarde.", "Llegáis tarde."))
     translator, _ = make_translator(server)
 
-    result = translator.translate(make_request(1, "They are late.", context=GROUP_CONTEXT))
+    translator.translate(make_request(1, "They are late.", context=GROUP_CONTEXT))
 
-    assert len(server.bodies) == 2
-    assert result.text == "Llegáis tarde."
+    assert len(server.bodies) == 1
 
 
 def test_no_retry_when_the_postedit_already_removed_the_ustedes() -> None:

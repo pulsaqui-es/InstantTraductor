@@ -23,6 +23,8 @@ from instanttraductor.contracts import (
     AsrEngine,
     Clock,
     EngineError,
+    LanguageVerifier,
+    SourceLanguage,
     Synthesizer,
     TranslationMode,
     TranslationRequest,
@@ -57,6 +59,10 @@ class Engines(Protocol):
 
     def synthesizer(self) -> Synthesizer: ...
 
+    def language_verifier(self) -> LanguageVerifier | None:
+        """Verificador de idioma (spec 002, ADR-0012); None si no hay (se traduce todo, como en la 0.1)."""
+        ...
+
     def child_pids(self) -> list[int]:
         """PID de los procesos hijos vivos (memoria del informe)."""
         ...
@@ -71,10 +77,21 @@ class Engines(Protocol):
 
 
 class RealEngines:
-    """Los motores reales: servicio de voz y ``llama-server`` como hijos; VAD y ASR en este proceso."""
+    """Los motores reales: servicio de voz y ``llama-server`` como hijos; VAD, ASR y verificador de idioma en
+    este proceso. El reconocedor es el del idioma de origen elegido (spec 002, ADR-0013)."""
 
-    def __init__(self, paths: AppPaths, *, on_progress: Callable[[str], None] | None = None) -> None:
+    def __init__(
+        self,
+        paths: AppPaths,
+        *,
+        language: SourceLanguage = SourceLanguage.EN,
+        max_segment_s: float = 6.0,
+        on_progress: Callable[[str], None] | None = None,
+    ) -> None:
         self._paths = paths
+        self._language = SourceLanguage(language)
+        self._max_segment_s = max_segment_s
+        self._verifier: Any = None
         self._progress = on_progress or (lambda text: logger.info(text))
         self._tts: Any = None
         self._llama: Any = None
@@ -103,7 +120,10 @@ class RealEngines:
             self._tts.start()
             loaded: dict[str, Any] = {}
             loader = threading.Thread(
-                target=_load_listening, args=(loaded,), name="carga-escucha", daemon=True
+                target=_load_listening,
+                args=(loaded, self._language, self._paths.models),
+                name="carga-escucha",
+                daemon=True,
             )
             loader.start()
             self._tts.wait_ready()
@@ -124,6 +144,7 @@ class RealEngines:
             if "error" in loaded:
                 raise loaded["error"]
             self._vad, self._recognizer = loaded["vad"], loaded["recognizer"]
+            self._verifier = loaded["verifier"]
         except SessionError:
             self.stop()
             raise
@@ -142,7 +163,13 @@ class RealEngines:
         )
         try:
             warm.translate(
-                TranslationRequest(unit=unit, context=(), glossary=(), mode=TranslationMode.NORMAL)
+                TranslationRequest(
+                    unit=unit,
+                    context=(),
+                    glossary=(),
+                    mode=TranslationMode.NORMAL,
+                    source_language=self._language,
+                )
             )
         finally:
             close = getattr(warm, "close", None)
@@ -154,9 +181,18 @@ class RealEngines:
         return self._vad  # type: ignore[no-any-return]
 
     def asr(self, clock: Clock) -> AsrEngine:
-        from instanttraductor.asr.sherpa_streaming import NemotronStreamingAsr
+        from instanttraductor.asr.factory import create_asr
 
-        return NemotronStreamingAsr(clock, recognizer=self._recognizer)
+        return create_asr(
+            self._language,
+            clock,
+            models_dir=self._paths.models,
+            max_segment_s=self._max_segment_s,
+            recognizer=self._recognizer,
+        )
+
+    def language_verifier(self) -> LanguageVerifier | None:
+        return self._verifier  # type: ignore[no-any-return]
 
     def translator(self, clock: Clock) -> Translator:
         from instanttraductor.mt.hymt2 import HyMt2Translator
@@ -188,15 +224,19 @@ class RealEngines:
         children = [p.child for p in (self._tts, self._llama) if p is not None]
         if children:
             stop_all(children, grace_s=1.0)
+        if self._verifier is not None:
+            self._verifier.close()
 
 
-def _load_listening(out: dict[str, Any]) -> None:
+def _load_listening(out: dict[str, Any], language: SourceLanguage, models_dir: Any) -> None:
     try:
-        from instanttraductor.asr.sherpa_streaming import create_recognizer
+        from instanttraductor.asr.factory import load_recognizer
+        from instanttraductor.lid.whisper_lid import WhisperLanguageVerifier
         from instanttraductor.vad.silero import SileroVad
 
         out["vad"] = SileroVad()
-        out["recognizer"] = create_recognizer()
+        out["recognizer"] = load_recognizer(language, models_dir=models_dir)
+        out["verifier"] = WhisperLanguageVerifier(model_dir=models_dir / "whisper-base-lid")
     except Exception as error:  # se relanza en el hilo principal
         out["error"] = error
 

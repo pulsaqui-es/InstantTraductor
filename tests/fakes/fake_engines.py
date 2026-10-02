@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence
 
-from instanttraductor.contracts import Clock, Synthesizer, Translator
+from instanttraductor.contracts import Clock, LanguageVerifier, Synthesizer, Translator
 from instanttraductor.pipeline.session import SessionError
 from tests.fakes.fake_speech import FakeAsrEngine, FakeVad, ScriptedAsrEvent
 from tests.fakes.fake_synthesis import FakeSynthesizer
@@ -17,6 +17,7 @@ class FakeEngines:
     - `script`: guion del `FakeAsrEngine`.
     - `start_error`: si se da, `start()` lo lanza (p. ej. un `SessionError` con su código).
     - `failures`: fallos de hijos que `recover()` atiende de uno en uno: `(motivo, se_recupera)`.
+    - `verifier`: verificador de idioma (por defecto ninguno: se traduce todo).
     """
 
     mt_model_name = "fake-mt"
@@ -29,12 +30,14 @@ class FakeEngines:
         synthesizer: Synthesizer | None = None,
         start_error: SessionError | None = None,
         failures: Sequence[tuple[str, bool]] = (),
+        verifier: LanguageVerifier | None = None,
     ) -> None:
         self._script = list(script)
         self._translator = translator or FakeTranslator(supports_concise=True)
         self._synthesizer = synthesizer or FakeSynthesizer()
         self._start_error = start_error
         self._failures = list(failures)
+        self._verifier = verifier
         self.started = False
         self.stopped = False
         self.restarts = 0
@@ -55,6 +58,9 @@ class FakeEngines:
 
     def synthesizer(self) -> Synthesizer:
         return self._synthesizer
+
+    def language_verifier(self) -> LanguageVerifier | None:
+        return self._verifier
 
     def child_pids(self) -> list[int]:
         return []

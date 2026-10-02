@@ -65,6 +65,7 @@ from instanttraductor.mt.vosotros import (
     group_state,
     has_ustedes,
     has_vosotros,
+    needs_vosotros_retry,
     postedit_vosotros,
 )
 from instanttraductor.pipeline.clock import SessionClock
@@ -553,17 +554,12 @@ class HyMt2Translator:
             glossary = () if concise else select_glossary(source, request.glossary, source_language=language)
             # «Vosotros» (R8): solo con origen en inglés, que es donde hay señal de plural que consultar.
             group = english and group_state(source, [original for original, _ in request.context])
-            messages = build_messages(
-                source,
-                mode,
-                request.context,
-                glossary,
-                source_language=language,
-                plural_note=group and not concise,
-            )
+            # Primera pasada sin nota (la nota en todas baja la cifra: S7, B2); el reintento con la nota va
+            # solo a las marcadas, la combinación medida que llega al 81 % de «vosotros».
+            messages = build_messages(source, mode, request.context, glossary, source_language=language)
             max_tokens = max_tokens_for(source, language)
             text, reason = self._attempt(messages, source, max_tokens, language)
-            if reason is None and group and not concise and has_ustedes(text):
+            if reason is None and english and not concise and needs_vosotros_retry(source, text, group=group):
                 text = self._retry_with_vosotros(messages, source, max_tokens, language) or text
         if reason is not None:
             logger.warning("Traducción rechazada (%s): unidad %d", reason, request.unit.unit_id)

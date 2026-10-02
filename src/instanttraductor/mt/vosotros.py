@@ -565,6 +565,24 @@ def group_state(source: str, previous_sources: Iterable[str] = ()) -> bool:
     )
 
 
+def needs_vosotros_retry(source: str, text: str, *, group: bool) -> bool:
+    """¿Se reintenta la traducción con la nota de plural informal? (S7, B2: la marca que da el 81 %).
+
+    Nunca si el inglés habla a una sola persona («sir», «buddy»...). Si no, tras las reglas de posedición, se
+    marca si:
+    - queda «ustedes» y el inglés lleva «you» (sin «you», «ustedes» suele ser un «they» mal traducido);
+    - el inglés de la frase lleva marca de plural y no ha salido «vosotros»;
+    - la escena es de grupo (`group_state`) y no hay ni «vosotros» ni «ustedes».
+    """
+    if SINGULAR_EN.search(source):
+        return False
+    if has_ustedes(text):
+        return bool(_EN_YOU.search(source))
+    if PLURAL_EN.search(source) and not has_vosotros(text):
+        return True
+    return group and not has_vosotros(text)
+
+
 # ---------------------------------------------------------------------------------------------------------
 # Salida del modelo
 # ---------------------------------------------------------------------------------------------------------
