@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import threading
 from collections.abc import Callable, Iterator
+from dataclasses import replace
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib import resources
 from pathlib import Path
@@ -20,6 +21,7 @@ import pytest
 from instanttraductor.contracts import (
     EngineError,
     GlossaryEntry,
+    SourceLanguage,
     TranslationMode,
     TranslationRequest,
     Translator,
@@ -30,6 +32,7 @@ from instanttraductor.mt.hymt2 import (
     build_concise_messages,
     build_normal_messages,
     concise_word_budget,
+    count_characters,
     count_words,
     load_base_glossary,
     max_tokens_for,
@@ -38,6 +41,7 @@ from instanttraductor.mt.hymt2 import (
 )
 from instanttraductor.mt.llama_server import find_free_port
 from instanttraductor.mt.selection import MtModel
+from instanttraductor.mt.vosotros import PLURAL_NOTE
 from instanttraductor.pipeline.clock import ManualClock
 from tests.contract.test_translation_contract import SENTENCES, TranslatorContract, make_request
 
@@ -63,6 +67,10 @@ S2_LAST_SHOT = ("We'll take the subway to the stadium.", "Cogeremos el metro has
 CONCISE_PREFIX = (
     "Please translate the following text into Spanish. Note that the translation style must strictly "
     "conform to [telegraphic Spanish from Spain, like a news headline: drop filler words, at most "
+)
+#: Lo que sigue al tope de palabras: la cláusula de estilo con el registro informal (T018, R8).
+CONCISE_STYLE_CLAUSE = (
+    '; informal register: several listeners = "vosotros" (estáis, tenéis, venid), one listener = "tú"]:'
 )
 
 
@@ -446,7 +454,8 @@ def test_concise_mode_is_a_single_style_message_with_the_word_budget() -> None:
     result = translator.translate(make_request(1, text, TranslationMode.CONCISE))
 
     assert result.mode is TranslationMode.CONCISE
-    assert server.messages == [{"role": "user", "content": CONCISE_PREFIX + "6 words]:\n\n" + text}]
+    expected = CONCISE_PREFIX + "6 words" + CONCISE_STYLE_CLAUSE + "\n\n" + text
+    assert server.messages == [{"role": "user", "content": expected}]
     assert server.bodies[0]["cache_prompt"] is True
 
 
@@ -461,7 +470,7 @@ def test_concise_mode_ignores_context_and_the_fixed_examples() -> None:
 
 def test_build_concise_messages_accepts_an_explicit_budget() -> None:
     assert build_concise_messages("one two three", 2) == [
-        {"role": "user", "content": CONCISE_PREFIX + "2 words]:\n\none two three"}
+        {"role": "user", "content": CONCISE_PREFIX + "2 words" + CONCISE_STYLE_CLAUSE + "\n\none two three"}
     ]
 
 
@@ -929,3 +938,652 @@ def test_the_base_glossary_can_be_replaced_by_another_file(
     monkeypatch.setattr(hymt2.resources, "files", lambda package: tmp_path)
 
     assert select_glossary("Welcome to the moon base!") == (GlossaryEntry("Moon Base", "Base Lunar"),)
+
+
+# ===========================================================================
+# T017: traducción por idioma de origen (spec 002, research R10)
+# ===========================================================================
+def request_in(
+    language: SourceLanguage,
+    text: str,
+    mode: TranslationMode = TranslationMode.NORMAL,
+    *,
+    context: tuple[tuple[str, str], ...] = (),
+    glossary: tuple[GlossaryEntry, ...] = (),
+) -> TranslationRequest:
+    return replace(make_request(1, text, mode, context=context, glossary=glossary), source_language=language)
+
+
+#: Frases reales de ``spikes/idiomas/traducciones_*.md`` (FLEURS, CC BY 4.0) con la traducción de Hy-MT2-7B
+#: en S5. Con el filtro de 3x de la 001 se rechazaban 48 de 50 en chino; la relación aquí llega a 5.
+CJK_SENTENCES: dict[SourceLanguage, tuple[tuple[str, str], ...]] = {
+    SourceLanguage.ZH: (
+        (
+            "由于分离和重组，变异在每一代的两个库之间来回变动。",
+            "Debido a la separación y reorganización, las mutaciones varían de un lado a otro entre las dos "
+            "colecciones en cada generación.",
+        ),
+        (
+            "该大学的研究人员表示，这两种化合物相互作用形成的晶体可能会造成肾脏功能障碍。",
+            "Los investigadores de la universidad afirman que los cristales que se forman por la interacción "
+            "de estos dos compuestos pueden causar problemas en el funcionamiento renal.",
+        ),
+        (
+            "尽管如此，还是要听从有关部门的建议，遵守所有的标志并密切注意安全警告。",
+            "Aun así, hay que seguir los consejos de las autoridades competentes, respetar todos los "
+            "carteles y prestar mucha atención a las advertencias de seguridad.",
+        ),
+        (
+            "它指出，对主体来说最有效的位置是将图像垂直和水平分为三部分的线的交叉点（见示例）。",
+            "Se indica que la posición más eficaz para el sujeto es el punto de intersección de las líneas "
+            "que dividen la imagen en tres partes vertical y horizontalmente (ver ejemplo).",
+        ),
+        (
+            "古代文明和部落开始驯养它们，食用和使用它们的奶、肉、毛和皮。",
+            "Las civilizaciones y tribus antiguas comenzaron a domesticarlos para consumir y utilizar su "
+            "leche, carne, lana y piel.",
+        ),
+    ),
+    SourceLanguage.JA: (
+        (
+            "しかし、現在も鳥の外観は多くの点で恐竜に似ています。",
+            "Sin embargo, hoy en día la apariencia de las aves sigue siendo similar a la de los dinosaurios "
+            "en muchos aspectos.",
+        ),
+        (
+            "脳病理と行動の相関関係は、科学者たちの研究を裏付けるものです。",
+            "La relación entre la patología cerebral y el comportamiento respalda las investigaciones de los "
+            "científicos.",
+        ),
+        (
+            "月面は岩石と塵でできています。月の外層は地殻と呼ばれています。",
+            "La superficie lunar está formada por rocas y polvo. La capa externa de la Luna se llama "
+            "corteza.",
+        ),
+        (
+            "すべての名詞は、「あなた」を指す単語Sieと同様に、文の途中であっても常に大文字で始まります。",
+            "Todos los sustantivos, al igual que la palabra Sie que se refiere a “tú”, siempre comienzan en "
+            "mayúscula, incluso en medio de una oración.",
+        ),
+        (
+            "それでも、当局からのアドバイスを受け、すべての標識を守り、安全上の警告に細心の注意を払いましょう。",
+            "Aun así, sigamos los consejos de las autoridades, respetemos todos los carteles y prestemos "
+            "mucha atención a las advertencias de seguridad.",
+        ),
+    ),
+    SourceLanguage.KO: (
+        (
+            "유럽 역사의 이 시기에 부유하고 강력해진 가톨릭교회는 철저한 조사를 받았습니다.",
+            "Durante este período de la historia europea, la Iglesia católica, que se había vuelto rica y "
+            "poderosa, fue sometida a una investigación exhaustiva.",
+        ),
+        (
+            "악천후는 피해, 심각한 사회 혼란 또는 인명 손실을 초래할 수 있는 위험한 기상 현상의 총칭이다.",
+            "El mal tiempo es el término general para los fenómenos meteorológicos peligrosos que pueden "
+            "causar daños, graves disturbios sociales o pérdida de vidas humanas.",
+        ),
+        (
+            "쿤달리니 요가를 하면 요가 자세, 호흡 운동, 만트라 및 시각화를 통해 "
+            "쿤달리니 에너지(계몽 에너지)가 깨어납니다.",
+            "Al practicar el yoga Kundalini, la energía Kundalini (energía de iluminación) se despierta a "
+            "través de posturas de yoga, ejercicios de respiración, mantras y visualización.",
+        ),
+        (
+            "pH 레벨은 시험을 거친 화학 물질에서 수소(pH에서 H) 이온의 양으로 표시합니다.",
+            "El nivel de pH indica la cantidad de iones de hidrógeno (H en el pH) en una sustancia química "
+            "sometida a pruebas.",
+        ),
+        (
+            "사막 모래의 영향으로 인해, 1990년 팀북투는 위험에 처한 세계 문화유산 목록에 추가되었습니다.",
+            "Debido a los efectos de la arena del desierto, en 1990 Timbuktu fue incluida en la lista del "
+            "Patrimonio Mundial en Peligro.",
+        ),
+    ),
+}
+CJK_CASES = [
+    pytest.param(language, source, translation, id=f"{language.value}-{index}")
+    for language, pairs in CJK_SENTENCES.items()
+    for index, (source, translation) in enumerate(pairs)
+]
+OVER_THREE_TIMES = [case for case in CJK_CASES if len(case.values[2]) > 3 * len(case.values[1])]
+
+NOTE_LITERAL = (
+    '\n\n(Spanish from Spain, informal: use "vosotros" when you address several people, never "ustedes".)'
+)
+RETRY_LITERAL = (
+    '\n\n(The listeners are several friends or colleagues: translate "you" as informal plural for Spain '
+    '(use "vosotros" forms such as estáis, tenéis, venid, no os preocupéis; never "ustedes").)'
+)
+
+
+def test_the_real_fixtures_cover_the_three_languages_and_the_old_filter_would_reject_most() -> None:
+    assert {case.values[0] for case in CJK_CASES} == {SourceLanguage.ZH, SourceLanguage.JA, SourceLanguage.KO}
+    assert len(OVER_THREE_TIMES) >= 8
+
+
+@pytest.mark.parametrize(("language", "source", "translation"), CJK_CASES)
+def test_real_translations_pass_the_filters_of_their_source_language(
+    language: SourceLanguage, source: str, translation: str
+) -> None:
+    assert rejection_reason(source, translation, source_language=language) is None
+
+
+@pytest.mark.parametrize(("language", "source", "translation"), OVER_THREE_TIMES)
+def test_the_english_length_filter_rejected_those_same_translations(
+    language: SourceLanguage, source: str, translation: str
+) -> None:
+    assert rejection_reason(source, translation) == "longitud"
+    assert rejection_reason(source, translation, source_language=SourceLanguage.EN) == "longitud"
+
+
+@pytest.mark.parametrize(("language", "source", "translation"), CJK_CASES)
+def test_the_translator_accepts_real_translations_in_each_language(
+    language: SourceLanguage, source: str, translation: str
+) -> None:
+    translator, _ = make_translator(FakeChatServer(lambda body: chat_response(translation)))
+
+    result = translator.translate(request_in(language, source))
+
+    assert result.rejected is False
+    assert result.text == translation
+
+
+def test_the_same_chinese_translation_is_rejected_when_the_request_says_english() -> None:
+    source, translation = CJK_SENTENCES[SourceLanguage.ZH][0]  # 5 veces el original
+    translator, _ = make_translator(FakeChatServer(lambda body: chat_response(translation)))
+
+    assert translator.translate(request_in(SourceLanguage.EN, source)).rejected is True
+    assert translator.translate(request_in(SourceLanguage.ZH, source)).rejected is False
+
+
+@pytest.mark.parametrize(
+    ("language", "ratio"),
+    [
+        (SourceLanguage.EN, 3),
+        (SourceLanguage.KO, 4),
+        (SourceLanguage.JA, 6),
+        (SourceLanguage.ZH, 7),
+    ],
+)
+def test_the_length_limit_of_each_language(language: SourceLanguage, ratio: int) -> None:
+    source = "一二三四五六七八九十"
+    assert hymt2.MAX_LENGTH_RATIO_BY_LANGUAGE[language] == ratio
+    assert rejection_reason(source, "a" * (ratio * len(source)), source_language=language) is None
+    assert rejection_reason(source, "a" * (ratio * len(source) + 1), source_language=language) == "longitud"
+
+
+def test_a_truncated_answer_is_rejected_in_every_language() -> None:
+    for language in SourceLanguage:
+        assert (
+            rejection_reason("一二三", "Hola", finish_reason="length", source_language=language) == "longitud"
+        )
+
+
+def test_the_other_filters_do_not_depend_on_the_language() -> None:
+    for language in SourceLanguage:
+        assert rejection_reason("一二三", "", source_language=language) == "vacía"
+        assert rejection_reason("一二三", "你好", source_language=language) == "idioma"
+        echo = "Aquí tienes la traducción: hola"
+        assert rejection_reason("一二三四五六七八九十" * 2, echo, source_language=language) == (
+            "eco del prompt"
+        )
+
+
+def test_max_tokens_in_chinese_and_japanese_is_three_per_character() -> None:
+    assert count_characters("你好，世界！ 1") == 5  # sin espacios ni signos
+    for language in (SourceLanguage.ZH, SourceLanguage.JA):
+        assert max_tokens_for("一" * 10, language) == 64  # el mínimo
+        assert max_tokens_for("一" * 25, language) == 75
+        assert max_tokens_for("一" * 100, language) == 300
+        assert max_tokens_for("一" * 200, language) == 512  # el máximo
+
+
+def test_a_cjk_sentence_is_not_one_word_for_max_tokens() -> None:
+    source = CJK_SENTENCES[SourceLanguage.ZH][1][0]  # 38 caracteres, 3 palabras para count_words
+    assert count_words(source) < 5
+    assert max_tokens_for(source) == 64  # por palabras truncaba
+    assert max_tokens_for(source, SourceLanguage.ZH) == 3 * count_characters(source) > 64
+
+
+def test_max_tokens_in_korean_and_english_stays_per_word() -> None:
+    korean = CJK_SENTENCES[SourceLanguage.KO][1][0]
+    assert max_tokens_for(korean, SourceLanguage.KO) == max_tokens_for(korean)
+    assert max_tokens_for(korean, SourceLanguage.KO) == min(512, max(64, 4 * count_words(korean)))
+    assert max_tokens_for("one two three", SourceLanguage.EN) == 64
+
+
+def test_the_request_to_the_server_uses_the_max_tokens_of_the_language() -> None:
+    source = CJK_SENTENCES[SourceLanguage.ZH][1][0]
+    translator, server = make_translator()
+
+    translator.translate(request_in(SourceLanguage.ZH, source))
+
+    assert server.bodies[0]["max_tokens"] == 3 * count_characters(source)
+
+
+@pytest.mark.parametrize(
+    ("language", "name"),
+    [(SourceLanguage.JA, "Japanese"), (SourceLanguage.ZH, "Chinese"), (SourceLanguage.KO, "Korean")],
+)
+def test_the_prompt_names_the_source_language(
+    language: SourceLanguage, name: str, no_base_glossary: None
+) -> None:
+    translator, server = make_translator()
+    context = (("元の文", "La frase original."),)
+
+    translator.translate(request_in(language, "ありがとう", context=context))
+
+    messages = server.messages
+    assert messages[0]["content"].startswith(f"Translate every user message from {name} into Spanish. ")
+    assert messages[0]["content"].endswith(
+        S2_SYSTEM.removeprefix("Translate every user message into Spanish. ")
+    )
+    assert messages[-1] == {
+        "role": "user",
+        "content": (
+            f"Translate the following {name} text into Spanish. Note that you must ONLY output the "
+            "translated result without any additional explanation:\n\nありがとう"
+        ),
+    }
+    # Los ejemplos y el contexto, con la plantilla genérica (el prefijo cacheado no cambia por frase).
+    assert messages[1] == {"role": "user", "content": S2_WRAPPER + S2_FIRST_SHOT[0]}
+    assert messages[-3] == {"role": "user", "content": S2_WRAPPER + "元の文"}
+    assert len(messages) == 1 + 2 * 12 + 2 + 1
+
+
+def test_english_keeps_the_prompt_measured_in_s2(no_base_glossary: None) -> None:
+    translator, server = make_translator()
+
+    translator.translate(request_in(SourceLanguage.EN, "okay"))
+
+    assert server.messages[0] == {"role": "system", "content": S2_SYSTEM}
+    assert server.messages[-1] == {"role": "user", "content": S2_WRAPPER + "okay"}
+
+
+def test_the_prefix_up_to_the_context_is_identical_between_sentences_of_the_same_language(
+    no_base_glossary: None,
+) -> None:
+    translator, server = make_translator()
+
+    translator.translate(request_in(SourceLanguage.JA, "ありがとう"))
+    translator.translate(request_in(SourceLanguage.JA, "さようなら", context=(("ありがとう", "Gracias."),)))
+
+    assert server.bodies[0]["messages"][:-1] == server.bodies[1]["messages"][:25]
+
+
+def test_the_base_glossary_only_acts_with_english_as_source() -> None:
+    sentence = "put the juice in the fridge"
+    assert {e.source for e in select_glossary(sentence)} == {"juice", "fridge"}
+    assert {e.source for e in select_glossary(sentence, source_language=SourceLanguage.EN)} == {
+        "juice",
+        "fridge",
+    }
+    for language in (SourceLanguage.JA, SourceLanguage.ZH, SourceLanguage.KO):
+        assert select_glossary(sentence, source_language=language) == ()
+
+
+def test_the_user_glossary_still_applies_in_every_language() -> None:
+    user = (GlossaryEntry("エンバー宮廷", "Corte de Ascuas"),)
+    for language in (SourceLanguage.JA, SourceLanguage.ZH, SourceLanguage.KO):
+        assert select_glossary("juice fridge", user, source_language=language) == user
+
+
+def test_a_japanese_request_gets_no_base_terminology_but_does_get_the_users() -> None:
+    translator, server = make_translator()
+
+    translator.translate(request_in(SourceLanguage.JA, "juice を fridge に入れて"))
+    assert "参考" not in server.messages[-1]["content"]
+
+    user = (GlossaryEntry("エンバー宮廷", "Corte de Ascuas"),)
+    translator.translate(request_in(SourceLanguage.JA, "エンバー宮廷の門が閉まった", glossary=user))
+    assert terminology_rows(server.messages[-1]["content"]) == ["エンバー宮廷 翻译成 Corte de Ascuas"]
+
+
+def test_the_concise_budget_of_chinese_and_japanese_is_estimated_from_the_characters() -> None:
+    twenty = "一二三四五六七八九十" * 2
+    assert concise_word_budget(twenty, SourceLanguage.ZH) == 6  # ceil(0,6 * ceil(0,5 * 20))
+    assert concise_word_budget(twenty, SourceLanguage.JA) == 8  # ceil(0,6 * ceil(0,65 * 20))
+    assert concise_word_budget("하나 둘 셋 넷 다섯", SourceLanguage.KO) == 3  # por palabras, como en
+    assert concise_word_budget("one two three four five") == 3
+    assert concise_word_budget("", SourceLanguage.ZH) == 1
+
+
+def test_the_concise_prompt_names_the_source_language() -> None:
+    twenty = "一二三四五六七八九十" * 2
+    translator, server = make_translator()
+
+    result = translator.translate(request_in(SourceLanguage.JA, twenty, TranslationMode.CONCISE))
+
+    assert result.mode is TranslationMode.CONCISE
+    [message] = server.messages
+    assert message["content"].startswith("Please translate the following Japanese text into Spanish. ")
+    assert "at most 8 words" in message["content"]
+    assert message["content"].endswith("]:\n\n" + twenty)
+    assert build_concise_messages(twenty, source_language=SourceLanguage.JA) == server.messages
+
+
+# ===========================================================================
+# T018: «vosotros» (spec 002, research R8)
+# ===========================================================================
+GROUP_CONTEXT = (("Alright, everybody, gather around.", "Vale, todos, acercaos."),)
+
+
+def test_the_group_note_goes_after_the_text_when_the_scene_is_a_group(no_base_glossary: None) -> None:
+    translator, server = make_translator()
+
+    translator.translate(make_request(1, "Do you understand?", context=GROUP_CONTEXT))
+
+    assert server.messages[-1] == {
+        "role": "user",
+        "content": S2_WRAPPER + "Do you understand?" + NOTE_LITERAL,
+    }
+    assert PLURAL_NOTE == NOTE_LITERAL
+
+
+def test_the_note_does_not_change_the_prefix_of_the_prompt(no_base_glossary: None) -> None:
+    translator, server = make_translator()
+
+    translator.translate(make_request(1, "Do you understand?", context=GROUP_CONTEXT))
+    translator.translate(make_request(2, "Do you understand?", context=(("Hi.", "Hola."),)))
+
+    with_note, without = server.bodies[0]["messages"], server.bodies[1]["messages"]
+    assert with_note[:25] == without[:25]  # sistema y 12 ejemplos
+    assert without[-1]["content"] == S2_WRAPPER + "Do you understand?"
+
+
+def test_the_note_also_follows_the_terminology_turn(no_base_glossary: None) -> None:
+    translator, server = make_translator()
+    glossary = (GlossaryEntry("Ember Court", "Corte de Ascuas"),)
+
+    translator.translate(make_request(1, "The Ember Court calls.", context=GROUP_CONTEXT, glossary=glossary))
+
+    content = server.messages[-1]["content"]
+    assert content.startswith("参考下面的翻译：\nEmber Court 翻译成 Corte de Ascuas")
+    assert content.endswith("The Ember Court calls." + NOTE_LITERAL)
+
+
+def test_a_plural_marker_in_the_sentence_itself_adds_the_note(no_base_glossary: None) -> None:
+    translator, server = make_translator()
+
+    translator.translate(make_request(1, "Are you guys ready?"))
+
+    assert server.messages[-1]["content"] == S2_WRAPPER + "Are you guys ready?" + NOTE_LITERAL
+
+
+@pytest.mark.parametrize(
+    ("text", "context"),
+    [
+        ("Do you understand?", ()),
+        ("Do you understand?", (("Open your books to page twelve.", "Abrid los libros en la página doce."),)),
+        ("Do you understand?", (*GROUP_CONTEXT, ("Hey, buddy, come here.", "Oye, amigo, ven."))),
+        ("Sir, are you guys coming?", GROUP_CONTEXT),
+        (
+            "Do you understand?",
+            (GROUP_CONTEXT[0], *[(f"Line {n}.", f"Línea {n}.") for n in range(5)]),
+        ),  # el plural queda fuera de las últimas 5
+    ],
+)
+def test_without_a_group_signal_the_turn_has_no_note(
+    text: str, context: tuple[tuple[str, str], ...], no_base_glossary: None
+) -> None:
+    translator, server = make_translator()
+
+    translator.translate(make_request(1, text, context=context))
+
+    assert server.messages[-1]["content"] == S2_WRAPPER + text
+
+
+def test_the_plural_marker_four_lines_back_still_counts(no_base_glossary: None) -> None:
+    translator, server = make_translator()
+    context = (GROUP_CONTEXT[0], *[(f"Line {n}.", f"Línea {n}.") for n in range(4)])
+
+    translator.translate(make_request(1, "Do you understand?", context=context))
+
+    assert server.messages[-1]["content"].endswith(NOTE_LITERAL)
+
+
+@pytest.mark.parametrize("language", [SourceLanguage.JA, SourceLanguage.ZH, SourceLanguage.KO])
+def test_the_note_is_only_for_english_sources(language: SourceLanguage, no_base_glossary: None) -> None:
+    translator, server = make_translator()
+
+    translator.translate(request_in(language, "皆さん、準備はいいですか", context=GROUP_CONTEXT))
+
+    assert "vosotros" not in json.dumps(server.messages[-1], ensure_ascii=False)
+
+
+def test_concise_mode_has_the_informal_register_in_its_style_clause_and_no_note() -> None:
+    translator, server = make_translator()
+
+    translator.translate(
+        make_request(1, "Are you guys ready?", TranslationMode.CONCISE, context=GROUP_CONTEXT)
+    )
+
+    [message] = server.messages
+    assert message["content"].count("vosotros") == 1
+    assert 'several listeners = "vosotros" (estáis, tenéis, venid), one listener = "tú"' in message["content"]
+    assert "never" not in message["content"]  # la nota del modo normal no va en CONCISE
+
+
+def test_the_note_the_model_repeats_is_cut_before_the_filters() -> None:
+    echoed = "¿Tenéis hambre?" + "\n\n(Español de España, informal: usa «vosotros» cuando hables a varios.)"
+    translator, _ = make_translator(FakeChatServer(lambda body: chat_response(echoed)))
+
+    result = translator.translate(make_request(1, "Are you hungry, guys?", context=GROUP_CONTEXT))
+
+    assert result.rejected is False
+    assert result.text == "¿Tenéis hambre?"
+
+
+def test_without_the_cut_that_echo_would_have_been_rejected_for_its_length() -> None:
+    echoed = "¿Tenéis hambre?" + "\n\n(Español de España, informal: usa «vosotros» cuando hables a varios.)"
+    assert rejection_reason("Are you hungry, guys?", echoed) == "longitud"
+
+
+def test_the_cut_also_applies_without_a_group_note() -> None:
+    translator, _ = make_translator(FakeChatServer(lambda body: chat_response("Hola.\n\n(Nota: saludo)")))
+
+    result = translator.translate(make_request(1, "Hello there, friend"))
+
+    assert result.text == "Hola."
+
+
+def test_the_translation_is_post_edited_with_the_english_signal() -> None:
+    translator, server = make_translator(FakeChatServer(lambda body: chat_response("¿Están ustedes listos?")))
+
+    result = translator.translate(make_request(1, "Are you guys ready?"))
+
+    assert result.text == "¿Estáis vosotros listos?"
+    assert len(server.bodies) == 1  # no queda «ustedes»: sin reintento
+
+
+def test_the_postedit_also_applies_in_concise_mode() -> None:
+    translator, _ = make_translator(FakeChatServer(lambda body: chat_response("Tomen asiento, todos.")))
+
+    result = translator.translate(make_request(1, "Take a seat, everyone.", TranslationMode.CONCISE))
+
+    assert result.text == "Tomad asiento, todos."
+    assert result.mode is TranslationMode.CONCISE
+
+
+def test_the_postedit_never_touches_a_japanese_translation() -> None:
+    translator, _ = make_translator(FakeChatServer(lambda body: chat_response("¿Están ustedes listos?")))
+
+    result = translator.translate(request_in(SourceLanguage.JA, "皆さん、準備はいいですか？"))
+
+    assert result.text == "¿Están ustedes listos?"
+
+
+def test_a_singular_sentence_is_not_damaged_by_the_pipeline() -> None:
+    translator, server = make_translator(
+        FakeChatServer(lambda body: chat_response("¿Has terminado los deberes?"))
+    )
+
+    result = translator.translate(make_request(1, "Did you finish your homework?"))
+
+    assert result.text == "¿Has terminado los deberes?"
+    assert len(server.bodies) == 1
+
+
+# --- Reintento --------------------------------------------------------------------------------------------
+def retry_responder(first: str, second: str) -> Callable[[dict[str, Any]], httpx.Response]:
+    """Responde ``first`` a la petición normal y ``second`` a la que lleva la nota del reintento."""
+
+    def respond(body: dict[str, Any]) -> httpx.Response:
+        retried = body["messages"][-1]["content"].endswith(RETRY_LITERAL)
+        return chat_response(second if retried else first)
+
+    return respond
+
+
+#: «they» + «ustedes»: la posedición lo deja (ambiguo) y «you guys» da la señal de grupo.
+AMBIGUOUS = "They are late, you guys."
+
+
+def test_a_residual_ustedes_with_a_group_signal_retries_once_with_the_retry_note() -> None:
+    server = FakeChatServer(retry_responder("Ustedes llegan tarde.", "Llegáis tarde, ¿eh?"))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(make_request(1, AMBIGUOUS))
+
+    assert result.text == "Llegáis tarde, ¿eh?"
+    assert len(server.bodies) == 2
+    first, second = server.bodies[0]["messages"], server.bodies[1]["messages"]
+    assert second[:-1] == first[:-1]
+    assert second[-1]["content"] == first[-1]["content"] + RETRY_LITERAL
+    assert first[-1]["content"].endswith(NOTE_LITERAL)  # el reintento va tras la nota de escena
+    assert second[-1]["role"] == "user"
+    assert second is not first
+    assert server.bodies[1]["max_tokens"] == server.bodies[0]["max_tokens"]
+
+
+def test_the_retry_is_made_only_once_even_if_it_still_says_ustedes() -> None:
+    server = FakeChatServer(retry_responder("Ustedes llegan tarde.", "Ustedes llegáis tarde."))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(make_request(1, AMBIGUOUS))
+
+    assert len(server.bodies) == 2
+    assert result.text == "Ustedes llegan tarde."  # se queda la primera
+
+
+@pytest.mark.parametrize(
+    "second",
+    [
+        "Llegan tarde.",  # ni «vosotros» ni «ustedes»
+        "你们迟到了",  # el filtro de idioma la rechaza
+        "",
+        # demasiado larga: más de 3 veces el original
+        "Llegáis tarde, vosotros y ustedes, y además no avisáis de nada porque os da lo mismo.",
+    ],
+)
+def test_a_retry_that_is_not_better_keeps_the_first_translation(second: str) -> None:
+    server = FakeChatServer(retry_responder("Ustedes llegan tarde.", second))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(make_request(1, AMBIGUOUS))
+
+    assert len(server.bodies) == 2
+    assert result.text == "Ustedes llegan tarde."
+    assert result.rejected is False
+
+
+def test_a_retry_that_fails_keeps_the_first_translation() -> None:
+    def respond(body: dict[str, Any]) -> httpx.Response:
+        if body["messages"][-1]["content"].endswith(RETRY_LITERAL):
+            return httpx.Response(500, text="boom")
+        return chat_response("Ustedes llegan tarde.")
+
+    translator, server = make_translator(FakeChatServer(respond))
+
+    result = translator.translate(make_request(1, AMBIGUOUS))
+
+    assert len(server.bodies) == 2
+    assert result.text == "Ustedes llegan tarde."
+
+
+def test_a_retry_that_repeats_the_note_is_cleaned_like_the_first_attempt() -> None:
+    second = "Llegáis tarde.\n\n(Español de España: vosotros)"
+    server = FakeChatServer(retry_responder("Ustedes llegan tarde.", second))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(make_request(1, AMBIGUOUS))
+
+    assert result.text == "Llegáis tarde."
+
+
+def test_no_retry_without_a_group_signal() -> None:
+    server = FakeChatServer(retry_responder("Ustedes llegan tarde.", "Llegáis tarde."))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(make_request(1, "They are late."))
+
+    assert len(server.bodies) == 1
+    assert result.text == "Ustedes llegan tarde."
+
+
+def test_no_retry_with_a_singular_marker_in_the_sentence() -> None:
+    server = FakeChatServer(retry_responder("Ustedes llegan tarde.", "Llegáis tarde."))
+    translator, _ = make_translator(server)
+
+    translator.translate(make_request(1, "They are late, sir, you guys.", context=GROUP_CONTEXT))
+
+    assert len(server.bodies) == 1
+
+
+def test_the_group_signal_can_come_from_the_scene() -> None:
+    server = FakeChatServer(retry_responder("Ustedes llegan tarde.", "Llegáis tarde."))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(make_request(1, "They are late.", context=GROUP_CONTEXT))
+
+    assert len(server.bodies) == 2
+    assert result.text == "Llegáis tarde."
+
+
+def test_no_retry_when_the_postedit_already_removed_the_ustedes() -> None:
+    server = FakeChatServer(retry_responder("¿Están ustedes listos?", "no debería llegar"))
+    translator, _ = make_translator(server)
+
+    translator.translate(make_request(1, "Are you guys ready?"))
+
+    assert len(server.bodies) == 1
+
+
+def test_no_retry_in_concise_mode() -> None:
+    server = FakeChatServer(lambda body: chat_response("Ustedes tarde."))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(make_request(1, AMBIGUOUS, TranslationMode.CONCISE))
+
+    assert len(server.bodies) == 1
+    assert result.text == "Ustedes tarde."
+
+
+@pytest.mark.parametrize("language", [SourceLanguage.JA, SourceLanguage.ZH, SourceLanguage.KO])
+def test_no_retry_for_cjk_sources(language: SourceLanguage) -> None:
+    server = FakeChatServer(lambda body: chat_response("Ustedes llegan tarde."))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(request_in(language, "皆さん遅いですよ", context=GROUP_CONTEXT))
+
+    assert len(server.bodies) == 1
+    assert result.text == "Ustedes llegan tarde."
+
+
+def test_no_retry_when_the_first_translation_was_rejected() -> None:
+    server = FakeChatServer(lambda body: chat_response("你们迟到了"))
+    translator, _ = make_translator(server)
+
+    result = translator.translate(make_request(1, AMBIGUOUS))
+
+    assert len(server.bodies) == 1
+    assert result.rejected is True
+
+
+def test_the_retry_also_works_with_the_1_8b() -> None:
+    server = FakeChatServer(retry_responder("Ustedes llegan tarde.", "Llegáis tarde."))
+    translator, _ = make_translator(server, kind=MtModel.HY_MT2_1_8B)
+
+    result = translator.translate(make_request(1, AMBIGUOUS))
+
+    assert result.text == "Llegáis tarde."
