@@ -486,3 +486,84 @@ def test_voice_components_are_packaged_and_share_the_voices_dir() -> None:
         assert component.hf_repo_id is None
         assert not component.optional
         assert len(component.files) == 2  # .wav y .json
+
+
+# --- componentes de la feature 002 (T022) ---
+
+
+def test_feature_002_models_are_in_the_manifest() -> None:
+    sensevoice = get_component("sensevoice-small")
+    whisper = get_component("whisper-base-lid")
+
+    for component, install_dir in (
+        (sensevoice, "models/sensevoice-small"),
+        (whisper, "models/whisper-base-lid"),
+    ):
+        assert component.kind == "modelo"
+        assert not component.optional
+        assert component.install_dir == install_dir
+        assert component.files
+        assert re.fullmatch(r"[0-9a-f]{40}", component.hf_revision or "")
+        assert component.allow_patterns is not None
+        # El instalador baja solo lo que declara el manifiesto: cada fichero encaja con un patrón.
+        assert {file.rel_path for file in component.files} == set(component.allow_patterns)
+    assert sensevoice.license == "FunASR Model License v1.1"
+    assert whisper.license == "MIT"
+    assert sensevoice.hf_repo_id == "csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17"
+    assert whisper.hf_repo_id == "csukuangfj/sherpa-onnx-whisper-base"
+
+
+def test_feature_002_models_declare_the_files_their_engines_expect() -> None:
+    """Los motores comprueban `MODEL_FILES` en `component_dir(COMPONENT_ID)`: el manifiesto debe darlos."""
+    from instanttraductor.asr import sensevoice
+    from instanttraductor.lid import whisper_lid
+
+    for component_id, model_files in (
+        (sensevoice.COMPONENT_ID, sensevoice.MODEL_FILES),
+        (whisper_lid.COMPONENT_ID, whisper_lid.MODEL_FILES),
+    ):
+        component = get_component(component_id)
+        assert set(model_files) <= {file.rel_path for file in component.files}, component_id
+        assert component.install_dir == f"models/{component_id}"
+
+
+def test_feature_002_file_sizes_and_hashes_come_from_the_verified_downloads() -> None:
+    """Valores calculados el 2026-10-02 descargando cada fichero de su revisión de Hugging Face."""
+    found = {
+        (component_id, file.rel_path): (file.size_bytes, file.sha256)
+        for component_id in ("sensevoice-small", "whisper-base-lid")
+        for file in get_component(component_id).files
+    }
+
+    assert found == {
+        ("sensevoice-small", "model.int8.onnx"): (
+            239_233_841,
+            "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+        ),
+        ("sensevoice-small", "tokens.txt"): (
+            315_894,
+            "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc",
+        ),
+        ("sensevoice-small", "LICENSE"): (
+            71,
+            "221c6df10b0931a5629adad671ea48fb7747e034c414b6d2bfa275bc3dd4ea17",
+        ),
+        ("whisper-base-lid", "base-encoder.int8.onnx"): (
+            29_120_534,
+            "0b8fb1304b6109976038efff5ace81720e00386f3ff6b54ee8c75291ca0a1e11",
+        ),
+        ("whisper-base-lid", "base-decoder.int8.onnx"): (
+            130_672_026,
+            "9759d217388a01b3a4c7c15533201067b48ae819c4daafc8624e64b9409dc02d",
+        ),
+    }
+
+
+def test_feature_002_models_are_not_installed_in_an_empty_home(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("INSTANTTRADUCTOR_HOME", str(tmp_path))
+
+    for component_id in ("sensevoice-small", "whisper-base-lid"):
+        assert not is_installed(component_id)
+        assert component_dir(component_id) == tmp_path / "models" / component_id
