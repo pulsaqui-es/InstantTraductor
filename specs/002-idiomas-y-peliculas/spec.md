@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-02
 
-**Status**: Draft
+**Status**: Approved (H1, orquestador por delegación ADR-0009; alcance decidido por el humano, 2026-10-02)
 
 **Input**: User description: "Segunda versión del intérprete, centrada en lo que la persona usuaria encontró al usarlo con películas y series. Incluye:
 (1) idioma de origen elegido a mano entre inglés, japonés, chino (mandarín) y coreano, sin detección automática;
@@ -19,6 +19,13 @@ Objetivos:
 - ≥ 80 % del diálogo bajo o susurrado traducido;
 - ≥ 95 % de plurales informales con «vosotros».
 Fuera de alcance: detección automática del idioma (004), clonación (003), interfaz gráfica (005) y traducir mientras se juega en el mismo PC. Restricciones: 100 % local sin costes, uso personal, Windows 11 y RTX 5070 con la VRAM casi llena."
+
+## Clarifications
+
+### Session 2026-10-02
+
+- Q: ¿Cómo se elige la aplicación que se escucha? → A: Con una lista al arrancar. Si no hay ninguna guardada, o se pide expresamente, la terminal muestra numeradas las aplicaciones que están sonando y se elige con un número. La elección se recuerda. También se puede indicar por nombre al arrancar.
+- Q: Si la aplicación elegida no está abierta o no suena al arrancar, ¿qué hace la app? → A: Espera a que suene, avisándolo en la terminal, y empieza a traducir en cuanto suena. Nunca escucha otra cosa mientras tanto.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -94,7 +101,7 @@ La persona usuaria ve una película entera. La app aguanta la sesión completa s
 
 ### Edge Cases
 
-- **La aplicación elegida no está sonando al arrancar.** La app espera a que suene y lo indica en la terminal, sin fallar.
+- **La aplicación elegida no está sonando al arrancar.** La app espera a que suene y lo indica en la terminal, sin fallar y sin escuchar mientras tanto ninguna otra fuente.
 - **Varias ventanas o pestañas del mismo navegador.** Se escucha todo el audio de esa aplicación: no se distingue por pestaña.
 - **La persona usuaria elige la propia app de traducción** (o algo que no se puede escuchar). Se rechaza con un mensaje claro.
 - **Contenido protegido que llega en silencio a la captura.** Se avisa de que no llega audio de la aplicación, como en la versión 0.1.
@@ -119,10 +126,10 @@ La persona usuaria ve una película entera. La app aguanta la sesión completa s
 **Aplicación que se escucha**
 
 - **FR-006**: La persona usuaria MUST poder elegir escuchar una sola aplicación o todo el PC. En el segundo caso se mantiene el comportamiento de la versión 0.1.
-- **FR-007**: La app MUST mostrar las aplicaciones que están sonando, con un nombre reconocible, para elegir una.
+- **FR-007**: La app MUST mostrar las aplicaciones que están sonando, numeradas y con un nombre reconocible, para elegir una con un número al arrancar. Esto ocurre cuando no hay ninguna guardada o cuando la persona usuaria lo pide. También MUST poder indicarse la aplicación por su nombre al arrancar.
 - **FR-008**: La aplicación elegida MUST recordarse entre sesiones (por su nombre, no por un identificador temporal), y MUST poder cambiarse solo para una sesión.
 - **FR-009**: Escuchando una aplicación, el sonido de cualquier otra MUST NOT llegar a la traducción.
-- **FR-010**: Si la aplicación elegida se cierra, se reinicia o aún no está sonando, la app MUST avisarlo en la terminal y MUST volver a escucharla en cuanto esté disponible, sin reiniciarse ni detener la sesión.
+- **FR-010**: Si la aplicación elegida se cierra, se reinicia o aún no está sonando (también al arrancar), la app MUST avisarlo en la terminal, MUST esperar sin escuchar ninguna otra fuente y MUST volver a escucharla en cuanto suene, sin reiniciarse ni detener la sesión.
 - **FR-011**: La app MUST seguir sin captar nunca su propia voz, en cualquiera de los dos modos de escucha, y MUST comprobarlo al arrancar como en la versión 0.1.
 - **FR-012**: La terminal MUST mostrar qué se está escuchando (la aplicación o todo el PC) y el idioma de origen activo.
 
