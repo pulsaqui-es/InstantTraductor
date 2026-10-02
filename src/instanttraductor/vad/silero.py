@@ -7,9 +7,10 @@ El modelo es el `silero_vad.onnx` de `component_dir("silero-vad")`, ejecutado co
 delante y un estado recurrente `[2, 1, 128]`; es la misma interfaz que `OnnxWrapper` del paquete oficial.
 `SileroVad` pone encima la lógica de disparo del `VADIterator` oficial:
 
-- entra en habla con una trama de probabilidad ≥ `threshold` (0,5) y la deja con `min_silence_ms` (500 ms)
-  seguidos sin habla; en ese silencio solo cuentan las tramas con probabilidad < `neg_threshold` (0,35): las
-  intermedias (0,35 a 0,5) ni abren ni cierran, y solo una trama ≥ `threshold` reinicia la cuenta;
+- entra en habla con una trama de probabilidad ≥ `threshold` (0,30) y la deja con `min_silence_ms` (500 ms)
+  seguidos sin habla; en ese silencio solo cuentan las tramas con probabilidad < `neg_threshold` (0,15): las
+  intermedias ni abren ni cierran, y solo una trama ≥ `threshold` reinicia la cuenta. Los umbrales bajaron de
+  0,5/0,35 en la spec 002 para no perder habla baja (research.md de la 002, R7: +1,7 puntos y +0,04 s);
 - `speech_pad_ms` (150 ms) es el relleno previo: `SPEECH_START` se adelanta ese tiempo, sin pasar del primer
   audio recibido, para que quien alimente al ASR incluya el arranque de la primera palabra.
 
@@ -115,12 +116,18 @@ class SileroOnnx:
         return float(out[0, 0])
 
 
+#: Umbrales por defecto (spec 002, research.md R7: habla baja sin subir las falsas alarmas medidas).
+DEFAULT_THRESHOLD = 0.30
+DEFAULT_NEG_THRESHOLD = 0.15
+
+
 class SileroVad:
     """VAD en streaming sobre tramas de 32 ms: `SPEECH_START` al entrar en habla y `SPEECH_END` al salir.
 
-    Parámetros (research.md R5): `threshold` 0,5, `neg_threshold` 0,35, `min_silence_ms` 500 y
-    `speech_pad_ms` 150. `model` es la probabilidad inyectable; sin él se carga el modelo ONNX de
-    `default_model_path()` (`EngineError` no recuperable si falta: `instanttraductor preparar` lo instala).
+    Parámetros: `threshold` 0,30 y `neg_threshold` 0,15 (spec 002, R7; en la 001, 0,5 y 0,35),
+    `min_silence_ms` 500 y `speech_pad_ms` 150. `model` es la probabilidad inyectable; sin él se carga el
+    modelo ONNX de `default_model_path()` (`EngineError` no recuperable si falta: lo instala
+    `instanttraductor preparar`).
 
     Los eventos alternan START y END, y `in_speech` es True si y solo si el último fue START. Un tramo de
     habla muy corto (un chasquido) también produce su pareja START/END: descartarlo es cosa del ASR, que no
@@ -131,8 +138,8 @@ class SileroVad:
         self,
         model: SpeechProbabilityModel | None = None,
         *,
-        threshold: float = 0.5,
-        neg_threshold: float = 0.35,
+        threshold: float = DEFAULT_THRESHOLD,
+        neg_threshold: float = DEFAULT_NEG_THRESHOLD,
         min_silence_ms: float = 500.0,
         speech_pad_ms: float = 150.0,
     ) -> None:

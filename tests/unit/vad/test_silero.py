@@ -169,26 +169,26 @@ class TestTrigger:
         assert times == sorted(times)
 
     def test_threshold_is_inclusive_and_the_exit_threshold_is_exclusive(self) -> None:
-        # p = 0,5 ya es habla; p = 0,35 todavía no cuenta como silencio.
-        vad = SileroVad(ScriptedModel([0.5] * 3 + [0.35] * 60))
+        # p = 0,30 ya es habla; p = 0,15 todavía no cuenta como silencio.
+        vad = SileroVad(ScriptedModel([0.30] * 3 + [0.15] * 60))
         found = run_frames(vad, 63)
         assert [event.kind for _, event in found] == [START]
         assert vad.in_speech is True
 
     def test_probabilities_between_the_thresholds_do_not_open_the_speech(self) -> None:
-        vad = SileroVad(ScriptedModel([0.4] * 20))
+        vad = SileroVad(ScriptedModel([0.2] * 20))
         assert run_frames(vad, 20) == []
         assert vad.in_speech is False
 
     def test_probabilities_between_the_thresholds_do_not_close_the_speech(self) -> None:
-        vad = SileroVad(ScriptedModel(burst(3) + [0.4] * 60))
+        vad = SileroVad(ScriptedModel(burst(3) + [0.2] * 60))
         found = run_frames(vad, 63)
         assert [event.kind for _, event in found] == [START]
         assert vad.in_speech is True
 
     def test_only_a_speech_frame_resets_the_silence_timer(self) -> None:
-        """Como el `VADIterator` oficial: las tramas intermedias (0,35-0,5) no reinician el silencio."""
-        vad = SileroVad(ScriptedModel(burst(5, 5) + [0.4] * 5 + [0.0] * 10))
+        """Como el `VADIterator` oficial: las tramas intermedias (0,15-0,30) no reinician el silencio."""
+        vad = SileroVad(ScriptedModel(burst(5, 5) + [0.2] * 5 + [0.0] * 10))
         found = run_frames(vad, 25)
         # El silencio empieza en la trama 5 (0,16 s). Con las tramas 10-14 intermedias, sigue corriendo
         # y llega a 500 ms en la 20, que sí es silencio.
@@ -311,10 +311,10 @@ class TestReset:
 
 
 class TestParameters:
-    def test_defaults_are_the_ones_of_research_r5(self) -> None:
+    def test_defaults_are_the_ones_of_the_002_research_r7(self) -> None:
         vad = SileroVad(ScriptedModel([]))
-        assert vad.threshold == 0.5
-        assert vad.neg_threshold == 0.35
+        assert vad.threshold == 0.30
+        assert vad.neg_threshold == 0.15
         assert vad.min_silence_ms == 500.0
         assert vad.speech_pad_ms == 150.0
 
