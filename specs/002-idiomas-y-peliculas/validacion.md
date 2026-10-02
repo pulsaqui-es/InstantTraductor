@@ -30,7 +30,32 @@ Mismo equipo que en la 001: RTX 5070, Ryzen 7 8700F, Windows 11 26200. Fechas en
   - «ustedes» solo se reintenta si el inglés lleva «you», para no convertir un «they» en «vosotros».
 
 ## §4 Idiomas (SC-001)
-*Pendiente: en curso.*
+Corpus FLEURS de S5 (lectura continua, de 11 a 12 min por idioma, con música a -10 dB) en modo archivo:
+
+| Idioma | Frases pronunciadas | Retardo de frase p50 / p95 | Cumple |
+|---|---|---|---|
+| zh | 62/62 | 0,9 / 3,9 s | sí |
+| ko | 103 (25 rechazos por idioma, que eran ruido) | 2,1 / 5,7 s | p95 no |
+| ja | 105 (24 rechazos por idioma, que eran ruido) | 2,1 / 6,1 s | p95 no |
+| en (001, sesión real del humano) | 94/95 | 1,16 / 3,57 s | sí |
+
+**Las rechazadas por idioma no son habla perdida.** Son trocitos de una sílaba que SenseVoice «reconoce» en la música («そ。», «あ。», «The.»), y el filtro de idioma las descarta.
+
+**Fallo de diseño encontrado y corregido** (venía de la 0.1):
+- El planificador decidía acelerar o resumir al traducir cada frase, nada más reconocerla, con un retraso que no contaba el audio ya encolado en el sink.
+- Con habla seguida, nunca resumía: en ja, 0 resumidas y 2 aceleradas, con un retraso de hasta 8,2 s.
+- Ahora:
+  - la traducción espera a que la frase anterior empiece a sonar;
+  - el modo y la velocidad se deciden con el retraso previsto (lo que ya espera la frase + el audio pendiente en el sink).
+- Efecto en ja: 6 resumidas y 33 aceleradas, p95 de 6,5 → 6,1 s.
+
+**Lo que queda es estructural de este corpus:** frases leídas de 8 a 25 s, una tras otra. Una frase corta que sigue a una larga espera a que suene la traducción de la larga.
+*Pendiente:* medirlo con diálogo real (anime, serie coreana) con el humano, antes de decidir si hace falta más (umbrales o resumen más agresivo para ja/ko).
+
+## SC-002 Calidad ja/zh/ko
+- Hojas de revisión: `%LOCALAPPDATA%\InstantTraductor\calidadevision_{ja,zh,ko}.txt`. Cada frase con su referencia (es_419 de FLEURS) y lo que dijo la app.
+- Primera lectura del orquestador: en ja hay varias frases con el sentido cambiado (errores del reconocedor y cortes forzados a 6 s). Si no llega al 85 %, la alternativa prevista es Parakeet-ja (R2).
+- *Pendiente: juicio del humano.*
 
 ## §5 y §6 Escuchar una app y Discord (SC-003, SC-003b, SC-004)
 *Pendiente: con el humano.*
