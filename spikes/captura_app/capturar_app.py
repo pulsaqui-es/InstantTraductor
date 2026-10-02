@@ -93,19 +93,23 @@ _EXE_CACHE: dict[c.ProcKey, str] = {}
 def snapshot_matching(matcher: Matcher) -> list[c.ProcInfo]:
     """Procesos vivos de la app (los descendientes sin `exe`; las raíces con `exe`). Cuesta ~5 ms.
 
-    Medido (350 procesos, 27 de Chrome): `psutil.process_iter(["pid", "ppid", "name", "create_time"])` es
-    casi gratis, pero pedir `exe` de cada proceso cuesta 18 ms (0,5 s con Chrome) y `cmdline` 40 ms. Por eso
-    se filtra por nombre de proceso, y `exe` y `cmdline` (esta solo existe en las pruebas, para distinguir
+    Medido (390 procesos, 27 de Chrome): `process_iter(["pid", "name"])` cuesta ~50 ms, pero pedir
+    `create_time` de TODOS los procesos tarda 7,7 s la primera vez (cada llamada abre el proceso; los
+    protegidos tardan más), `exe` cuesta 18 ms por proceso y `cmdline` 40 ms. Por eso se filtra por nombre y `exe` y `cmdline` (esta solo existe en las pruebas, para distinguir
     mi navegador temporal del de uso real) se consultan solo en las RAÍCES, con caché por (pid, create_time).
     Los descendientes de una raíz aceptada entran con ella.
     """
     q = matcher.query.lower()
     me = set(c.own_pids())
     infos: list[c.ProcInfo] = []
-    for p in psutil.process_iter(["pid", "ppid", "name", "create_time"]):
-        i = p.info
-        if i["name"] and q in i["name"].lower() and i["pid"] not in me and i["create_time"] is not None:
-            infos.append(c.ProcInfo(i["pid"], i["create_time"], i["ppid"] or 0, "", i["name"]))
+    for p in psutil.process_iter(["pid", "name"]):  # las instancias de Process se reutilizan entre llamadas
+        name = p.info["name"] or ""
+        if q not in name.lower() or p.info["pid"] in me:
+            continue
+        try:
+            infos.append(c.ProcInfo(p.pid, p.create_time(), p.ppid(), "", name))
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
     roots = c.root_processes(infos)
     for r in roots:
         r.exe = _exe_cached(r)
@@ -151,6 +155,7 @@ class AppWatcher:
         self.source: ProcessLoopbackSource | None = None
         self.recent: deque[tuple[float, float, float]] = deque(maxlen=2000)  # (llegada, rms, pico)
         self.open_count = 0
+        self._meter_warned = False
         self.open_times: dict[int, float] = {}  # nº de apertura -> instante de la apertura
         self.warnings: list[str] = []
         self.first_audio_after_open: dict[int, float] = {}  # nº de apertura -> llegada del primer audio
@@ -250,12 +255,21 @@ class AppWatcher:
             if s.proc is not None
             and self.matcher(s.proc, _cmdline_cached(s.proc) if self.matcher.cmdline_contains else None)
         ]
+        others = [s for s in sessions if s not in mine and not s.system and s.pid != 0]
         for _ in range(3):
-            for s in mine:
+            for s in mine + others:
                 s.refresh_peak()
             time.sleep(0.05)
         session_peak = max((s.peak for s in mine if not s.system), default=0.0)
+        others_peak = max((s.peak for s in others), default=0.0)
         _, cap_peak = self.audio_level(1.2)
+        if session_peak >= SESSION_PEAK and others_peak >= SESSION_PEAK and session_peak >= others_peak - 1e-4:
+            # Medido con Discord: el medidor de su sesión copia la mezcla del endpoint (iguala o supera al de
+            # la sesión más alta de otra app). Con él no se puede afirmar «suena pero llega silencio».
+            if not self._meter_warned:
+                self._meter_warned = True
+                self._log("MEDIDOR", "el pico de la sesión copia al de otra app: no sirve para detectar silencio")
+            return None
         silent = session_peak >= SESSION_PEAK and cap_peak < AUDIBLE_PEAK
         now = time.perf_counter()
         if silent:

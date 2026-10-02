@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import array
 import json
+import os
 import sys
 import time
 
@@ -41,7 +42,16 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=10, help="número de ráfagas")
     ap.add_argument("--max-s", type=float, default=600.0, help="tope de vida del proceso (s)")
     ap.add_argument("--buffer-ms", type=int, default=10)
+    ap.add_argument("--cadena", type=int, default=1, help="eslabones: >1 lanza otro emisor hijo y espera (M2)")
+    ap.add_argument("--via-cmd", action="store_true", help="con --cadena, lanza el hijo a través de `cmd /c`")
     args = ap.parse_args()
+    if args.cadena > 1:  # eslabón intermedio: no suena, solo lanza al siguiente
+        import subprocess
+
+        nxt = [sys.executable, os.path.abspath(__file__), "--cadena", str(args.cadena - 1)]
+        nxt += ["--freq", str(args.freq), "--amp", str(args.amp), "--max-s", str(args.max_s)]
+        nxt += ["--via-cmd"] if args.via_cmd else []
+        sys.exit(subprocess.call((["cmd", "/c"] if args.via_cmd else []) + nxt))
 
     state = {"pos": 0, "burst": 0, "announced": -1, "done": False}
     phase_inc = 2 * np.pi * args.freq / RATE
@@ -89,8 +99,6 @@ def main() -> None:
     stream = gen()
     next(stream)
     device.start(stream)
-    import os
-
     emit(ev="ready", pid=os.getpid(), ppid=os.getppid(), t_ns=time.perf_counter_ns())
     t0 = time.perf_counter()
     try:
