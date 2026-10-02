@@ -16,7 +16,7 @@ import numpy as np
 import psutil
 import soundfile as sf
 
-from idiomas.asr import CANDIDATES, make_pipeline, make_recognizer, simulate
+from idiomas.asr import CANDIDATES, make_pipeline, make_recognizer, simulate, simulate_paced
 from idiomas.paths import CORPUS_MANIFEST, RESULTS_DIR, corpus_dir
 from idiomas.text import cer, per_item_cer
 
@@ -88,6 +88,7 @@ def main() -> None:
     ap.add_argument("--conds", default="clean,music")
     ap.add_argument("--limit", type=int, default=0, help="solo las N primeras frases (prueba de humo)")
     ap.add_argument("--tag", default="")
+    ap.add_argument("--paced", action="store_true", help="tiempo real de verdad (reloj de pared) en lugar del reloj virtual")
     args = ap.parse_args()
     cand = CANDIDATES[args.model]
     if args.lang not in cand.langs:
@@ -120,7 +121,7 @@ def main() -> None:
         samples = sf.read(corpus_dir() / f"stream_{args.lang}_{cond}.wav", dtype="float32")[0]
         if args.limit:
             samples = samples[: int((items[-1]["end"] + 1.5) * 16000)]
-        sim = simulate(make_pipeline(args.model, args.lang, rec), samples)
+        sim = (simulate_paced if args.paced else simulate)(make_pipeline(args.model, args.lang, rec), samples)
         res = analyze(items, args.lang, sim)
         res.update({k: sim[k] for k in ("audio_s", "compute_s", "rtf", "cpu_cores", "lateness_p95", "lateness_max", "t_vad", "t_asr")})
         out["conds"][cond] = res

@@ -1,0 +1,150 @@
+{
+ "xasr960": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.0052681889924375966
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.005068792680394836
+  }
+ },
+ "zipformer_zh": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 3,
+    "chars": 3,
+    "examples": [
+     "爹",
+     "我",
+     "不"
+    ]
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.00527303867546531
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.00514217733599556
+  }
+ },
+ "sensevoice": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 281,
+    "examples": [
+     "春花在家。",
+     "。",
+     "。",
+     "我们怕我不怕快来孩自己。",
+     "嘿。"
+    ]
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.004863698498617547
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 277,
+    "examples": [
+     "我花在家。",
+     "。",
+     "。",
+     "我们爱我不爱快我孩自己。",
+     "嘿。"
+    ]
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.004560263827637148
+  }
+ }
+}

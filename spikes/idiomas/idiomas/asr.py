@@ -377,3 +377,50 @@ def simulate(pipe, samples: np.ndarray) -> dict:
         "t_asr": pipe.t_asr,
         "decode_ms": pipe.decode_ms,
     }
+
+
+def simulate_paced(pipe, samples: np.ndarray, setup_delay_s: float = 0.25) -> dict:
+    """Igual que ``simulate`` pero en tiempo real de verdad (como ``spikes/asr/asrspike/realtime.py``): cada trama de 32 ms
+    se entrega cuando le toca según el reloj de pared y los eventos se sellan con el reloj de pared. Solo sirve para
+    contrastar el reloj virtual de ``simulate`` en una ejecución.
+    """
+    proc = psutil.Process()
+    cpu0 = sum(proc.cpu_times()[:2])
+    t0 = time.perf_counter() + setup_delay_s
+    events: list[dict] = []
+    lateness: list[float] = []
+    compute = 0.0
+    n = len(samples)
+    for pos in range(0, n, FRAME):
+        chunk = samples[pos : pos + FRAME]
+        due = t0 + (pos + len(chunk)) / SAMPLE_RATE
+        wait = due - time.perf_counter()
+        if wait > 0:
+            time.sleep(wait)
+        lateness.append(max(0.0, time.perf_counter() - due))
+        c0 = time.perf_counter()
+        evs = pipe.push(chunk)
+        compute += time.perf_counter() - c0
+        now = time.perf_counter() - t0
+        for e in evs:
+            e["t"] = now
+            events.append(e)
+    now = time.perf_counter() - t0
+    for e in pipe.flush():
+        e["t"] = now
+        events.append(e)
+    audio_s = n / SAMPLE_RATE
+    cpu = sum(proc.cpu_times()[:2]) - cpu0
+    return {
+        "events": events,
+        "audio_s": audio_s,
+        "compute_s": compute,
+        "rtf": compute / audio_s,
+        "cpu_cores": cpu / (time.perf_counter() - t0 + setup_delay_s),
+        "wall_s": time.perf_counter() - t0,
+        "lateness_p95": float(np.percentile(lateness, 95)),
+        "lateness_max": float(np.max(lateness)),
+        "t_vad": pipe.t_vad,
+        "t_asr": pipe.t_asr,
+        "decode_ms": pipe.decode_ms,
+    }

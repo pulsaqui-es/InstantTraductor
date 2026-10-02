@@ -1,0 +1,146 @@
+{
+ "sensevoice": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 232,
+    "examples": [
+     ".",
+     "그.",
+     "아.",
+     ".",
+     "."
+    ]
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.0046229094893593965
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 231,
+    "examples": [
+     ".",
+     "그.",
+     "그.",
+     ".",
+     "."
+    ]
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.0047043070038004465
+  }
+ },
+ "nemotron35_bp1": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.0047676559954804056
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.004813491818301069
+  }
+ },
+ "kangkyu64": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.0059333179850364105
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.006098109170367631
+  }
+ }
+}

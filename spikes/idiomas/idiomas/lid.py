@@ -53,10 +53,15 @@ _MEL = _mel_filters()
 _WINDOW = np.hanning(N_FFT + 1)[:-1].astype(np.float32)  # hann periódica (torch.hann_window)
 
 
-def log_mel(x: np.ndarray) -> np.ndarray:
-    """Log-mel de Whisper de ``x`` (relleno de ceros a 30 s): forma (80, 3000)."""
-    audio = np.zeros(CHUNK, dtype=np.float32)
-    audio[: min(len(x), CHUNK)] = x[:CHUNK]
+def log_mel(x: np.ndarray, window_s: float = 30.0) -> np.ndarray:
+    """Log-mel de Whisper de ``x`` con relleno de ceros a ``window_s`` segundos: forma (80, 100 * window_s).
+
+    Whisper original mira siempre 30 s (3000 tramas); los ONNX de sherpa-onnx aceptan ventanas más cortas (el
+    codificador cuesta casi proporcional), a costa de salirse de lo que vio en el entrenamiento.
+    """
+    n = int(window_s * SR)
+    audio = np.zeros(n, dtype=np.float32)
+    audio[: min(len(x), n)] = x[:n]
     padded = np.pad(audio, N_FFT // 2, mode="reflect")
     n_frames = 1 + (len(padded) - N_FFT) // HOP
     idx = np.arange(N_FFT)[None, :] + HOP * np.arange(n_frames)[:, None]
@@ -71,7 +76,8 @@ def log_mel(x: np.ndarray) -> np.ndarray:
 class WhisperLid:
     """Puntuaciones de idioma de Whisper tiny/base (int8) con onnxruntime, en CPU."""
 
-    def __init__(self, size: str = "tiny", threads: int = 1) -> None:
+    def __init__(self, size: str = "tiny", threads: int = 1, window_s: float = 30.0) -> None:
+        self.window_s = window_s
         base = models_dir() / f"sherpa-onnx-whisper-{size}"
         opts = ort.SessionOptions()
         opts.intra_op_num_threads = threads
@@ -89,7 +95,7 @@ class WhisperLid:
         self.base = base
 
     def logits(self, x: np.ndarray) -> np.ndarray:
-        mel = log_mel(x)[None]
+        mel = log_mel(x, self.window_s)[None]
         cross_k, cross_v = self.enc.run(None, {"mel": mel})
         kv = np.zeros((self.n_layer, 1, 448, self.n_state), dtype=np.float32)
         out = self.dec.run(

@@ -1,0 +1,214 @@
+{
+ "parakeet_ja": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 427,
+    "examples": [
+     "うん。",
+     "。",
+     "うん。",
+     "うん。",
+     "うん。"
+    ]
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.005145317983115092
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 439,
+    "examples": [
+     "うん。",
+     "。",
+     "うん。",
+     "うん。",
+     "うん。"
+    ]
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.005061641162610613
+  }
+ },
+ "reazon_ja": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 298,
+    "examples": [
+     "なるほど",
+     "頑張れ",
+     "頑張れ",
+     "お",
+     "ハハ"
+    ]
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.005112236000131816
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 302,
+    "examples": [
+     "ああ",
+     "あれ",
+     "あれ",
+     "はい",
+     "うん"
+    ]
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.004972710333531722
+  }
+ },
+ "sensevoice": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 228,
+    "examples": [
+     "。",
+     ".",
+     "。",
+     "。",
+     "The."
+    ]
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.00499735950162479
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 150,
+    "chars": 220,
+    "examples": [
+     "。",
+     ".",
+     "。",
+     "。",
+     "The."
+    ]
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.0051792384821843975
+  }
+ },
+ "nemotron35_bp1": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.029662221670150757,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.00513066950700401
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 150,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.05620959401130676,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.005250586325031084
+  }
+ }
+}
