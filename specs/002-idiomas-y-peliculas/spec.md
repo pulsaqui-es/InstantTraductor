@@ -169,7 +169,7 @@ La persona usuaria ve una película entera. La app aguanta la sesión completa s
 - **SC-003b**: Con una película compartida por Discord y una conversación en español en la llamada a la vez, durante 10 minutos, ninguna frase de la conversación se traduce, y las de la película se traducen como en SC-001.
 - **SC-004**: Si la aplicación elegida se reinicia, la traducción se reanuda en ≤ 5 s desde que vuelve a sonar.
 - **SC-005**: En un corpus de diálogo bajo, susurrado o con palabras alargadas, al menos el 80 % de las frases se traducen y se oyen.
-- **SC-006**: En un corpus de frases con plural informal, al menos el 95 % de las traducciones usan «vosotros» y sus formas verbales.
+- **SC-006**: En un corpus de frases con plural informal, al menos el 80 % de las traducciones usan «vosotros» y sus formas verbales, y como mucho el 2 % usan «ustedes». Objetivo revisado por el humano el 2026-10-02 tras el spike S7: el 95 % no es alcanzable con el traductor actual.
 - **SC-007**: En 10 minutos de música, canciones y efectos sin diálogo, la app pronuncia como mucho 1 frase.
 - **SC-008**: En una sesión en directo de 30 minutos, la app no capta ni traduce su propia voz ni una vez.
 - **SC-009**: En una sesión de 60 minutos no hay cortes ni bloqueos, el retraso nunca pasa de 8 s más de 10 s seguidos y la memoria al final no supera en más de un 10 % la del minuto 5.
