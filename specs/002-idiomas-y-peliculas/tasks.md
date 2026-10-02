@@ -138,9 +138,9 @@
 
 **Goal**: habla baja y unidades con sentido (FR-013, FR-014, FR-016). El «vosotros» está en T018 y T019.
 
-- [ ] T020 [US3] VAD más sensible en `src/instanttraductor/vad/silero.py`: valores por defecto `threshold=0.30` y `neg_threshold=0.15` (research.md, R7). Actualizar sus tests (orquestador, ola 2).
-- [ ] T021 [US3] Cola mínima de unidad en `src/instanttraductor/pipeline/segmenter.py` (orquestador, ola 2):
-  - no cerrar por coma ni por pausa una unidad de < 4 palabras (en, ko) o < 8 caracteres (ja, zh); se une a la siguiente;
+- [X] T020 [US3] VAD más sensible en `src/instanttraductor/vad/silero.py`: valores por defecto `threshold=0.30` y `neg_threshold=0.15` (research.md, R7). Actualizar sus tests (orquestador, ola 2).
+- [X] T021 [US3] Cola mínima de unidad en `src/instanttraductor/pipeline/segmenter.py` (orquestador, ola 2):
+  - no cortar por cláusula si detrás quedarían < 4 palabras (la regla medida en S7); en ja y zh no hay espacios ni cortes de cláusula: la unidad es el segmento del VAD o el corte forzado;
   - el tope `max_untranslated_s` sigue mandando;
   - recibe el idioma;
   - tests en `tests/unit/pipeline/test_segmenter.py`.
@@ -154,7 +154,7 @@
   - URL o revisión fijadas, verificando que existen, y sha256 y tamaños de **cada fichero** calculados descargándolos a una carpeta temporal fuera del repo;
   - licencias: Apache-2.0, «FunASR Model License v1.1» y MIT;
   - adaptar `tests/unit/setup/test_manifest.py` y `tests/unit/setup/test_installer.py` si hace falta. El instalador de la 001 debe soportarlos sin cambios de diseño.
-- [ ] T023 Pipeline en `src/instanttraductor/pipeline/session.py`, más `src/instanttraductor/audio/audio_ring.py` y `src/instanttraductor/pipeline/scheduler.py` (depends on T002–T007, T015):
+- [X] T023 Pipeline en `src/instanttraductor/pipeline/session.py`, más `src/instanttraductor/audio/audio_ring.py` y `src/instanttraductor/pipeline/scheduler.py` (depends on T002–T007, T015):
   - **anillo de audio** (≥ 30 s, tras el AGC);
   - el hilo de traducción **verifica el idioma** antes de traducir (contracts/pipeline-002.md, reglas):
     - si se rechaza: `Scheduler.on_rejected(unit_id, "idioma")`, un método nuevo que cierra como `REJECTED`;

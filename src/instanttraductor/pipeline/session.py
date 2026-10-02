@@ -31,6 +31,7 @@ from queue import Empty, Queue
 import numpy as np
 
 from instanttraductor.audio.agc import SOURCE_SILENCE_WARNING_S, AutoGain
+from instanttraductor.audio.audio_ring import AudioRing
 from instanttraductor.audio.dsp import StreamResampler, StreamTimeStretch
 from instanttraductor.config import AppPaths, Settings
 from instanttraductor.contracts import (
@@ -43,11 +44,13 @@ from instanttraductor.contracts import (
     Clock,
     DelayPolicy,
     EngineError,
+    LanguageVerifier,
     Outcome,
     Segmenter,
     SpeechPiece,
     SynthesisRequest,
     Synthesizer,
+    TranslationRequest,
     TranslationUnit,
     Translator,
     UtteranceRecord,
@@ -67,6 +70,9 @@ logger = logging.getLogger(__name__)
 PRE_ROLL_S = 0.5
 #: La voz solo sintetiza la frase siguiente cuando al sink le queda menos que esto (T029, nota 3).
 TTS_LOOKAHEAD_S = 1.0
+#: Ventana de audio que se le pasa al verificador de idioma (spec 002, R3): de 1 a 6 s, acabando en la unidad.
+LID_MIN_S = 1.0
+LID_MAX_S = 6.0
 #: Periodo del hilo de control (``scheduler.tick()`` 4 veces por segundo).
 TICK_S = 0.25
 #: Cuánto tiempo se muestra un aviso en la interfaz.
@@ -113,6 +119,8 @@ class PipelineParts:
     child_pids: Callable[[], Sequence[int | None]] = field(default=lambda: ())
     #: Si existe, se escribe aquí el audio captado (FR-030: solo si se pide).
     save_audio_path: Path | None = None
+    #: Verificador de idioma (spec 002, ADR-0012): sin él se traduce todo, como en la 0.1.
+    language_verifier: LanguageVerifier | None = None
 
 
 class Warnings:
@@ -163,6 +171,8 @@ class Pipeline:
         self._last_source = None
         self._last_translation = None
         self._wav: wave.Wave_write | None = None
+        self._ring = AudioRing(parts.source.sample_rate) if parts.language_verifier is not None else None
+        self.language_check_failures = 0
 
     # --- ciclo de vida -------------------------------------------------------
     def start(self) -> None:
@@ -264,6 +274,8 @@ class Pipeline:
             self._save(chunk)
             if parts.agc is not None:
                 chunk = parts.agc.process(chunk)
+            if self._ring is not None:
+                self._ring.append(chunk)
             if parts.echo_monitor is not None:
                 arrival = self._arrival(chunk.t_end)
                 parts.echo_monitor.feed_captured(chunk, arrival)  # type: ignore[attr-defined]
@@ -329,6 +341,8 @@ class Pipeline:
                 self._work.wait(0.05)
                 self._work.clear()
                 continue
+            if not self._language_ok(request):
+                continue
             try:
                 result = parts.translator.translate(request)
             except EngineError as error:
@@ -340,6 +354,31 @@ class Pipeline:
             synthesis = parts.scheduler.on_translation(result)
             if synthesis is not None:
                 self._synth_queue.put(synthesis)
+
+    def _language_ok(self, request: TranslationRequest) -> bool:
+        """Spec 002 (R3): ¿es la unidad habla en el idioma elegido? Si no, el planificador la cierra.
+
+        Si el verificador falla, la unidad se traduce igual: se prefiere no perder habla
+        (contracts/pipeline-002.md).
+        """
+        verifier, ring = self.parts.language_verifier, self._ring
+        if verifier is None or ring is None:
+            return True
+        unit = request.unit
+        start = max(min(unit.t_start, unit.t_end - LID_MIN_S), unit.t_end - LID_MAX_S)
+        samples = ring.slice(start, unit.t_end)
+        accepted = True
+        if len(samples) >= int(0.25 * ring.sample_rate):  # sin audio suficiente no se decide nada
+            if len(samples) < int(LID_MIN_S * ring.sample_rate):
+                pad = np.zeros(int(LID_MIN_S * ring.sample_rate) - len(samples), np.float32)
+                samples = np.concatenate([pad, samples])
+            try:
+                accepted = verifier.verify(samples, ring.sample_rate, request.source_language).accepted
+            except EngineError as error:
+                self.language_check_failures += 1
+                logger.warning("Falló el verificador de idioma (se traduce igual): %s", error)
+        self.parts.scheduler.on_language_checked(unit.unit_id, accepted=accepted)
+        return accepted
 
     # --- voz -----------------------------------------------------------------
     def _voice_loop(self) -> None:
@@ -476,6 +515,7 @@ def make_scheduler_and_recorder(
         glossary=settings.glossary,
         on_record=record,
         on_lag_sample=recorder.add_lag_sample,
+        source_language=settings.source_language,
     )
     return scheduler, recorder
 

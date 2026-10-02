@@ -80,6 +80,7 @@ from instanttraductor.contracts import (
     Outcome,
     PlaybackEvent,
     PlaybackEventKind,
+    SourceLanguage,
     StageTimings,
     SynthesisRequest,
     TranslationMode,
@@ -95,6 +96,7 @@ __all__ = [
     "CUT_REASON",
     "DROP_REASON_LAG",
     "LAG_SAMPLE_INTERVAL_S",
+    "LANGUAGE_REJECTED_REASON",
     "REJECTED_REASON",
     "STOP_REASON",
     "Scheduler",
@@ -107,6 +109,7 @@ LAG_SAMPLE_INTERVAL_S: Final = 0.5  # una muestra de retraso cada 0,5 s (contrac
 DROP_REASON_LAG: Final = "retraso excesivo"  # FR-014: descartada por la política de retraso
 STOP_REASON: Final = "parada"  # lo pendiente al detener la sesión
 REJECTED_REASON: Final = "traducción rechazada por los filtros de salida"
+LANGUAGE_REJECTED_REASON: Final = "idioma"  # spec 002: el verificador dice que no es el idioma elegido
 CUT_REASON: Final = "cortada mientras sonaba"  # el sink canceló la frase que estaba sonando
 CANCELLED_REASON: Final = "cancelada antes de sonar"  # el sink canceló una frase que esperaba
 
@@ -160,6 +163,7 @@ class _Phrase:
     tts_finished_at: float | None = None
     play_started_at: float | None = None
     play_finished_at: float | None = None
+    lid_done_at: float | None = None
 
     def timings(self) -> StageTimings:
         unit = self.unit
@@ -176,6 +180,7 @@ class _Phrase:
             tts_finished_at=self.tts_finished_at,
             play_started_at=self.play_started_at,
             play_finished_at=self.play_finished_at,
+            lid_done_at=self.lid_done_at,
         )
 
 
@@ -207,6 +212,7 @@ class Scheduler:
         on_record: Callable[[UtteranceRecord], None] | None = None,
         on_lag_sample: Callable[[float, float], None] | None = None,
         lag_interval_s: float = LAG_SAMPLE_INTERVAL_S,
+        source_language: SourceLanguage = SourceLanguage.EN,
     ) -> None:
         if context_utterances < 0:
             raise ValueError(f"context_utterances no puede ser negativo (recibido: {context_utterances}).")
@@ -222,6 +228,7 @@ class Scheduler:
         self._on_record = on_record
         self._on_lag_sample = on_lag_sample
         self._lag_interval_s = lag_interval_s
+        self._source_language = SourceLanguage(source_language)
 
         self._lock = threading.RLock()
         self._open: dict[int, _Phrase] = {}  # frases sin cerrar, en orden de unit_id
@@ -286,6 +293,7 @@ class Scheduler:
                 context=tuple(self._context),
                 glossary=self._glossary,
                 mode=phrase.mode,
+                source_language=self._source_language,
             )
 
     def on_translation(self, result: TranslationResult) -> SynthesisRequest | None:
@@ -360,6 +368,20 @@ class Scheduler:
                     self._on_finished_locked(phrase, event.at)
                 else:
                     self._on_cancelled_locked(phrase)
+        self._deliver()
+
+    def on_language_checked(self, unit_id: int, *, accepted: bool) -> None:
+        """Resultado del verificador de idioma (spec 002) para una frase `TRANSLATING`.
+
+        Anota cuándo acabó y, si no es el idioma elegido, la cierra como `REJECTED` con el motivo «idioma»:
+        no se traduce ni suena.
+        """
+        with self._lock:
+            phrase = self._open.get(unit_id)
+            if phrase is not None:
+                phrase.lid_done_at = self._clock.now()
+                if not accepted:
+                    self._close_locked(phrase, UnitState.REJECTED, LANGUAGE_REJECTED_REASON)
         self._deliver()
 
     def on_failure(self, unit_id: int, reason: str) -> None:
