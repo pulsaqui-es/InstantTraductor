@@ -48,7 +48,22 @@ Fechas en hora de Madrid.
 - Retardo de frase p50 de 1,70 s y p95 de 2,94 s (objetivo: ≤ 3 s y ≤ 5 s).
 - Etapas (p50): ASR 1,25 s, traducción 0,13 s y primer audio 0,22 s.
 - **Observación:** con la música de fondo, el reconocedor parte algunas frases en trozos muy cortos («make it», «furnished»). En el modo archivo, con audio limpio, no pasa.
-- *Pendiente con el humano:* 10 min de una serie real con auriculares.
+
+**Sesión real del humano (2026-10-02 15:17, informe `20261002-151737`):** película o serie en inglés con auriculares, 12,5 min.
+- 95 frases: 94 pronunciadas y 1 descartada por retraso.
+- **Retardo de frase p50 de 1,16 s y p95 de 3,57 s: SC-001 se cumple con contenido real.**
+- Ecos: 0. Cortes de audio (`underruns`): 0. Racha de retraso por encima del umbral de descarte: 0 s.
+- Memoria: núcleo de 841 a 843 MB; hijos de 4922 a 4924 MB. Estable.
+- Arranque en 42 s, en frío tras reiniciar el PC (SC-010: ≤ 60 s).
+- **Problemas que encontró el humano** (pasan a la spec 002):
+  1. Las voces en español de Discord de fondo se cuelan y lían la traducción. **Decisión del humano:** capturar solo la app elegida.
+  2. El habla muy baja o alargada no llega a traducirse.
+
+## Pendiente (pasa a la spec 002)
+- SC-002 completo (30 min sin eco): de momento hay 12,5 min con 0 ecos.
+- SC-005 completo (60 min): de momento hay 12,5 min estables.
+- §10, cambio de dispositivo.
+- §11, sin red.
 
 **SC-006, 20 paradas con Ctrl+Break** (`scripts/stop_test.py --veces 20`, 2026-10-01 22:55): **20 de 20 correctas.**
 - Parada: mediana de 1,51 s y máximo de 1,68 s.

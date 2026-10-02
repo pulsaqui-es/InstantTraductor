@@ -171,7 +171,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
     - un motor que falla una vez se reinicia y, si falla dos, la parada es limpia (FR-018);
     - el informe cumple el esquema de `contracts/informe.md`;
     - `stop()` en ≤ 2 s.
-- [ ] T034 [US1] Validación en el PC (orquestador; `device`, `gpu` y `model`) (depends on T032, T013):
+- [X] T034 [US1] Validación en el PC (orquestador; `device`, `gpu` y `model`) (depends on T032, T013):
   - `scripts/stop_test.py` (20 arranques y paradas con Ctrl+Break, midiendo el tiempo y los procesos hijos vivos, SC-006);
   - quickstart §5, §6, §7, §8, §10 (con el humano) y §11 (sin red);
   - resultados con cifras en `specs/001-espina-dorsal/validacion.md`.
@@ -376,7 +376,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
 
 ### Tests for User Story 3
 
-- [ ] T044 [US3] Validación de quickstart §2 y §3 en el PC (orquestador y humano) (depends on T043): el humano escucha las voces y elige (SC-009). Resultados en `validacion.md`.
+- [X] T044 [US3] Validación de quickstart §2 y §3 en el PC (orquestador y humano) (depends on T043): el humano escucha las voces y elige (SC-009). Resultados en `validacion.md`.
 
 ### Implementation for User Story 3
 
