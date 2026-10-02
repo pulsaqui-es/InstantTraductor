@@ -1,0 +1,2384 @@
+[
+{
+"clip": "whisper_tts__1320-122612-0008.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 3,
+"unit_words": [
+10,
+9,
+4
+],
+"delay_end_s": 0.5199999999999996,
+"delay_start_s": 4.579999999999999,
+"unit_lat_s": [
+0.5119999999999996,
+0.29139999999999944,
+0.5199999999999996
+],
+"vad_segments": [
+[
+1.42,
+5.57
+],
+[
+6.03,
+9.92
+]
+],
+"text": "The eyes of the whole party followed the unexpected movement And read their success in the air of triumph, that the youth assumed",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "The eyes of the whole party followed the unexpected movement and read their success in the air of triumph that the youth assumed",
+"text_agc": "The eyes of the whole party followed the unexpected movement and read their success in the air of triumph that the youth assumed",
+"text_vad": "The eyes of the whole party followed the unexpected movement And read their success in the air of triumph, that the youth assumed",
+"speech_level_in_dbfs": -29.999562879122212,
+"speech_level_after_agc_dbfs": -22.509252545867806,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 10.922920227050781,
+"vad_pmax_in_speech": 0.9999954104423523,
+"vad_frac_above_05": 0.8867924528301887,
+"vad_overlap_frac": 0.9456057007125891
+},
+{
+"clip": "whisper_tts_q__1320-122612-0008.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+10,
+13
+],
+"delay_end_s": 0.5199999999999996,
+"delay_start_s": 4.5,
+"unit_lat_s": [
+0.5279999999999996,
+0.5519999999999996
+],
+"vad_segments": [
+[
+1.42,
+5.47
+],
+[
+6.03,
+9.89
+]
+],
+"text": "The eyes of the whole party followed the unexpected movement And read their success in the air of triumph that the youth assumed",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "The eyes of the whole party followed the unexpected movement and read their success in the air of triumph that the youth assumed",
+"text_agc": "The eyes of the whole party followed the unexpected movement and read their success in the air of triumph that the youth assumed",
+"text_vad": "The eyes of the whole party followed the unexpected movement And read their success in the air of triumph that the youth assumed",
+"speech_level_in_dbfs": -42.09985639455313,
+"speech_level_after_agc_dbfs": -23.90762066886586,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 21.28805923461914,
+"vad_pmax_in_speech": 0.999991774559021,
+"vad_frac_above_05": 0.8415094339622642,
+"vad_overlap_frac": 0.9304038004750594
+},
+{
+"clip": "whisper_tts_mus__1320-122612-0008.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.34782608695652173,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+9
+],
+"delay_end_s": 0.6199999999999992,
+"delay_start_s": 9.04,
+"unit_lat_s": [
+0.5879999999999992
+],
+"vad_segments": [
+[
+6.86,
+9.95
+]
+],
+"text": "In the air of triumph that the youth assume",
+"recall_ideal": 0.9130434782608695,
+"recall_agc": 0.9130434782608695,
+"recall_vad": 0.34782608695652173,
+"text_ideal": "The eyes of the whole party follow the unexpected movement and read their success in the air of triumph that the youth assume",
+"text_agc": "The eyes of the whole party follow the unexpected movement and read their success in the air of triumph that the youth assume",
+"text_vad": "In the air of triumph that the youth assume",
+"speech_level_in_dbfs": -32.3635191836773,
+"speech_level_after_agc_dbfs": -21.868157849469757,
+"gain_at_start_db": 10.49611759185791,
+"gain_at_end_db": 12.048724174499512,
+"vad_pmax_in_speech": 0.9828674793243408,
+"vad_frac_above_05": 0.2679245283018868,
+"vad_overlap_frac": 0.3636579572446556
+},
+{
+"clip": "whisper_tts__2094-142345-0036.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+17,
+3
+],
+"delay_end_s": 0.5399999999999991,
+"delay_start_s": 6.199999999999999,
+"unit_lat_s": [
+0.8707722772277231,
+0.5279999999999987
+],
+"vad_segments": [
+[
+1.42,
+8.03
+]
+],
+"text": "Nay, dear aunt, you never heard me say that all people are called to forsake their work and their families",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "Nay, dear aunt, you never heard me say that all people are called to forsake their work and their families",
+"text_agc": "Nay, dear aunt, you never heard me say that all people are called to forsake their work and their families",
+"text_vad": "Nay, dear aunt, you never heard me say that all people are called to forsake their work and their families",
+"speech_level_in_dbfs": -29.999298954407593,
+"speech_level_after_agc_dbfs": -22.75696881167797,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 14.442371368408203,
+"vad_pmax_in_speech": 0.999998152256012,
+"vad_frac_above_05": 0.8975609756097561,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_q__2094-142345-0036.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+17,
+3
+],
+"delay_end_s": 0.40000000000000036,
+"delay_start_s": 6.199999999999999,
+"unit_lat_s": [
+0.8707722772277231,
+0.516
+],
+"vad_segments": [
+[
+1.42,
+7.9
+]
+],
+"text": "Nay, dear aunt, you never heard me say that all people are called to forsake their work and their families",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "Nay, dear aunt, you never heard me say that all people are called to forsake their work and their families",
+"text_agc": "Nay, dear aunt, you never heard me say that all people are called to forsake their work and their families",
+"text_vad": "Nay, dear aunt, you never heard me say that all people are called to forsake their work and their families",
+"speech_level_in_dbfs": -42.01038539201995,
+"speech_level_after_agc_dbfs": -24.267722156055328,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 22.71974754333496,
+"vad_pmax_in_speech": 0.9999963641166687,
+"vad_frac_above_05": 0.8634146341463415,
+"vad_overlap_frac": 0.9822085889570553
+},
+{
+"clip": "whisper_tts_mus__2094-142345-0036.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.75,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+12,
+3
+],
+"delay_end_s": 0.5600000000000005,
+"delay_start_s": 6.5,
+"unit_lat_s": [
+1.0920249999999996,
+0.548
+],
+"vad_segments": [
+[
+3.4,
+8.03
+]
+],
+"text": "heard me say that all people are called to forsake their work and their families",
+"recall_ideal": 0.95,
+"recall_agc": 0.95,
+"recall_vad": 0.75,
+"text_ideal": "Nay, dear aunt, you never heard me say that old people are called to forsake their work and their families",
+"text_agc": "Nay, dear aunt, you never heard me say that old people are called to forsake their work and their families",
+"text_vad": "heard me say that all people are called to forsake their work and their families",
+"speech_level_in_dbfs": -31.695612555324363,
+"speech_level_after_agc_dbfs": -21.90515541674394,
+"gain_at_start_db": 12.18644905090332,
+"gain_at_end_db": 11.297982215881348,
+"vad_pmax_in_speech": 0.9918731451034546,
+"vad_frac_above_05": 0.6829268292682927,
+"vad_overlap_frac": 0.708282208588957
+},
+{
+"clip": "whisper_tts__237-134500-0033.wav",
+"cond": "whisper_tts",
+"recall": 0.9473684210526315,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+8,
+8
+],
+"delay_end_s": 0.5699999999999985,
+"delay_start_s": 4.14,
+"unit_lat_s": [
+0.7603773584905662,
+0.5279999999999987
+],
+"vad_segments": [
+[
+1.61,
+8.03
+]
+],
+"text": "Wish you weren't so restless and didn't get so worked up over things she said sadly",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.9473684210526315,
+"text_ideal": "I wish you weren't so restless and didn't get so worked up over things she said sadly",
+"text_agc": "I wish you weren't so restless and didn't get so worked up over things she said sadly",
+"text_vad": "Wish you weren't so restless and didn't get so worked up over things she said sadly",
+"speech_level_in_dbfs": -29.99951988226036,
+"speech_level_after_agc_dbfs": -23.07462396633349,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 17.702804565429688,
+"vad_pmax_in_speech": 0.9999936819076538,
+"vad_frac_above_05": 0.8921568627450981,
+"vad_overlap_frac": 0.983050847457627
+},
+{
+"clip": "whisper_tts_q__237-134500-0033.wav",
+"cond": "whisper_tts_q",
+"recall": 0.8947368421052632,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+8,
+8
+],
+"delay_end_s": 0.5299999999999994,
+"delay_start_s": 4.18,
+"unit_lat_s": [
+0.7618867924528292,
+0.5519999999999996
+],
+"vad_segments": [
+[
+1.64,
+7.97
+]
+],
+"text": "Wish she weren't so restless and didn't get so worked up over things she said sadly",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.8947368421052632,
+"text_ideal": "I wish you weren't so restless and didn't get so worked up over things she said sadly",
+"text_agc": "I wish you weren't so restless and didn't get so worked up over things she said sadly",
+"text_vad": "Wish she weren't so restless and didn't get so worked up over things she said sadly",
+"speech_level_in_dbfs": -42.08296099217419,
+"speech_level_after_agc_dbfs": -24.861547654835952,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 25.48370361328125,
+"vad_pmax_in_speech": 0.9999908208847046,
+"vad_frac_above_05": 0.8921568627450981,
+"vad_overlap_frac": 0.9747303543913712
+},
+{
+"clip": "whisper_tts_mus__237-134500-0033.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.9473684210526315,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+8,
+8
+],
+"delay_end_s": 1.4900000000000002,
+"delay_start_s": 4.18,
+"unit_lat_s": [
+0.6334117647058815,
+0.0
+],
+"vad_segments": [
+[
+1.64,
+9.48
+]
+],
+"text": "Wish you weren't so restless and didn't get so worked up over things she said sadly",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.9473684210526315,
+"text_ideal": "I wish you weren't so restless and didn't get so worked up over things she said sadly",
+"text_agc": "I wish you weren't so restless and didn't get so worked up over things she said sadly",
+"text_vad": "Wish you weren't so restless and didn't get so worked up over things she said sadly",
+"speech_level_in_dbfs": -32.24045248217206,
+"speech_level_after_agc_dbfs": -21.827553525631636,
+"gain_at_start_db": 11.847929000854492,
+"gain_at_end_db": 12.835929870605469,
+"vad_pmax_in_speech": 0.9997873306274414,
+"vad_frac_above_05": 0.9019607843137255,
+"vad_overlap_frac": 0.9781201848998459
+},
+{
+"clip": "whisper_tts__260-123288-0002.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+13,
+4
+],
+"delay_end_s": 0.6099999999999994,
+"delay_start_s": 6.22,
+"unit_lat_s": [
+0.6067741935483868,
+0.5599999999999987
+],
+"vad_segments": [
+[
+1.45,
+8.96
+]
+],
+"text": "The atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "The atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"text_agc": "The atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"text_vad": "The atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"speech_level_in_dbfs": -29.998974639590102,
+"speech_level_after_agc_dbfs": -22.822087588301294,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 15.441612243652344,
+"vad_pmax_in_speech": 0.9999946355819702,
+"vad_frac_above_05": 0.9313304721030042,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_q__260-123288-0002.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+13,
+4
+],
+"delay_end_s": 0.6099999999999994,
+"delay_start_s": 6.22,
+"unit_lat_s": [
+0.6067741935483868,
+0.5599999999999987
+],
+"vad_segments": [
+[
+1.45,
+8.96
+]
+],
+"text": "The atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "The atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"text_agc": "The atmosphere is charged with vapours pervaded with the electricity generated by the evaporation of saline waters",
+"text_vad": "The atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"speech_level_in_dbfs": -42.00540606024588,
+"speech_level_after_agc_dbfs": -24.223037757580165,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 24.63715362548828,
+"vad_pmax_in_speech": 0.9999939203262329,
+"vad_frac_above_05": 0.9098712446351931,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_mus__260-123288-0002.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.9411764705882353,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+12,
+4
+],
+"delay_end_s": 1.2699999999999996,
+"delay_start_s": 6.3,
+"unit_lat_s": [
+0.635662921348314,
+0.5800000000000001
+],
+"vad_segments": [
+[
+1.51,
+9.6
+]
+],
+"text": "Atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.9411764705882353,
+"text_ideal": "The atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"text_agc": "The atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"text_vad": "Atmosphere is charged with vapors pervaded with the electricity generated by the evaporation of saline waters",
+"speech_level_in_dbfs": -32.148837328897606,
+"speech_level_after_agc_dbfs": -21.714754855274524,
+"gain_at_start_db": 13.1113920211792,
+"gain_at_end_db": 11.796954154968262,
+"vad_pmax_in_speech": 0.9997057914733887,
+"vad_frac_above_05": 0.927038626609442,
+"vad_overlap_frac": 0.998110661268556
+},
+{
+"clip": "whisper_tts__2830-3980-0031.wav",
+"cond": "whisper_tts",
+"recall": 0.7407407407407407,
+"emitted": true,
+"n_units": 3,
+"unit_words": [
+2,
+5,
+14
+],
+"delay_end_s": 0.3000000000000007,
+"delay_start_s": 2.0,
+"unit_lat_s": [
+0.556,
+0.6719999999999997,
+0.6440000000000001
+],
+"vad_segments": [
+[
+2.41,
+2.94
+],
+[
+4.39,
+6.21
+],
+[
+6.92,
+12.1
+]
+],
+"text": "Not invade Says and preach their doctrine Godless princes, bishops and doctors, as we have done by the help of God",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.7407407407407407,
+"text_ideal": "Why do they not invade the Catholic provinces and preach their doctrine to godless princes, bishops and doctors, as we have done by the help of God",
+"text_agc": "Why do they not invade the Catholic provinces and preach their doctrine to godless princes, bishops and doctors, as we have done by the help of God",
+"text_vad": "Not invade Says and preach their doctrine Godless princes, bishops and doctors, as we have done by the help of God",
+"speech_level_in_dbfs": -30.000000853894946,
+"speech_level_after_agc_dbfs": -22.934540268633103,
+"gain_at_start_db": 0.4320281744003296,
+"gain_at_end_db": 11.531998634338379,
+"vad_pmax_in_speech": 0.9850252270698547,
+"vad_frac_above_05": 0.36443148688046645,
+"vad_overlap_frac": 0.6875685557586839
+},
+{
+"clip": "whisper_tts_q__2830-3980-0031.wav",
+"cond": "whisper_tts_q",
+"recall": 0.0,
+"emitted": false,
+"n_units": 0,
+"unit_words": [],
+"delay_end_s": null,
+"delay_start_s": null,
+"unit_lat_s": [],
+"vad_segments": [],
+"text": "",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.0,
+"text_ideal": "Why do they not invade the Catholic provinces and preach their doctrine to godless princes, bishops and doctors, as we have done by the help of God",
+"text_agc": "Why do they not invade the Catholic provinces and preach their doctrine to godless princes, bishops and doctors, as we have done by the help of God",
+"text_vad": "",
+"speech_level_in_dbfs": -42.044385777743464,
+"speech_level_after_agc_dbfs": -23.52746690433213,
+"gain_at_start_db": 0.594039797782898,
+"gain_at_end_db": 20.8358097076416,
+"vad_pmax_in_speech": 0.34234893321990967,
+"vad_frac_above_05": 0.0,
+"vad_overlap_frac": 0.0
+},
+{
+"clip": "whisper_tts_mus__2830-3980-0031.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.14814814814814814,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+4
+],
+"delay_end_s": -8.98,
+"delay_start_s": 1.96,
+"unit_lat_s": [
+0.548
+],
+"vad_segments": [
+[
+2.22,
+2.91
+]
+],
+"text": "Do they not invade",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.14814814814814814,
+"text_ideal": "Why do they not invade the Catholic provinces and preach their doctrine to godless princes, bishops and doctors, as we have done by the help of God",
+"text_agc": "Why do they not invade the Catholic provinces and preach their doctrine to godless princes, bishops and doctors, as we have done by the help of God",
+"text_vad": "Do they not invade",
+"speech_level_in_dbfs": -31.977317730628645,
+"speech_level_after_agc_dbfs": -21.93614818265384,
+"gain_at_start_db": 8.660768508911133,
+"gain_at_end_db": 15.120650291442871,
+"vad_pmax_in_speech": 0.9252040982246399,
+"vad_frac_above_05": 0.04956268221574344,
+"vad_overlap_frac": 0.06343692870201097
+},
+{
+"clip": "whisper_tts__3575-170457-0047.wav",
+"cond": "whisper_tts",
+"recall": 0.95,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+10,
+10
+],
+"delay_end_s": 0.54,
+"delay_start_s": 4.539999999999999,
+"unit_lat_s": [
+0.6557142857142857,
+0.5120000000000005
+],
+"vad_segments": [
+[
+1.45,
+7.81
+]
+],
+"text": "Abby had lived with them for ten or twelve years and was as Charlotte expressed it one of the family",
+"recall_ideal": 1.0,
+"recall_agc": 0.95,
+"recall_vad": 0.95,
+"text_ideal": "Tabby had lived with them for ten or twelve years and was as Charlotte expressed it one of the family",
+"text_agc": "Tabby had lived with them for ten or twelve years and was as Charlotte expressed at one of the family",
+"text_vad": "Abby had lived with them for ten or twelve years and was as Charlotte expressed it one of the family",
+"speech_level_in_dbfs": -30.017750522512074,
+"speech_level_after_agc_dbfs": -22.380572998353898,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 10.220209121704102,
+"vad_pmax_in_speech": 0.9999979734420776,
+"vad_frac_above_05": 0.9343434343434344,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_q__3575-170457-0047.wav",
+"cond": "whisper_tts_q",
+"recall": 0.95,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+10,
+10
+],
+"delay_end_s": 0.5799999999999992,
+"delay_start_s": 4.539999999999999,
+"unit_lat_s": [
+0.6557142857142857,
+0.5199999999999996
+],
+"vad_segments": [
+[
+1.45,
+7.84
+]
+],
+"text": "Abby had lived with them for ten or twelve years and was as Charlotte expressed it one of the family",
+"recall_ideal": 1.0,
+"recall_agc": 0.95,
+"recall_vad": 0.95,
+"text_ideal": "Tabby had lived with them for ten or twelve years and was as Charlotte expressed it one of the family",
+"text_agc": "Tabby had lived with them for ten or twelve years and was as Charlotte expressed at one of the family",
+"text_vad": "Abby had lived with them for ten or twelve years and was as Charlotte expressed it one of the family",
+"speech_level_in_dbfs": -42.06392375868038,
+"speech_level_after_agc_dbfs": -24.07720108455407,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 20.227073669433594,
+"vad_pmax_in_speech": 0.9999942779541016,
+"vad_frac_above_05": 0.9393939393939394,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_mus__3575-170457-0047.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.95,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+10,
+10
+],
+"delay_end_s": 0.54,
+"delay_start_s": 4.119999999999999,
+"unit_lat_s": [
+0.5774285714285714,
+0.5440000000000005
+],
+"vad_segments": [
+[
+1.58,
+7.78
+]
+],
+"text": "Abby had lived with them for ten or twelve years and was as Charlotte expressed it one of the family",
+"recall_ideal": 1.0,
+"recall_agc": 0.9,
+"recall_vad": 0.95,
+"text_ideal": "Tabby had lived with them for ten or twelve years and was as Charlotte expressed it one of the family",
+"text_agc": "Tabby had lived with them for ten or twelve years and was a Charlotte expressed at one of the family",
+"text_vad": "Abby had lived with them for ten or twelve years and was as Charlotte expressed it one of the family",
+"speech_level_in_dbfs": -32.1330515942113,
+"speech_level_after_agc_dbfs": -21.962895592946374,
+"gain_at_start_db": 12.033895492553711,
+"gain_at_end_db": 10.411791801452637,
+"vad_pmax_in_speech": 0.9994003176689148,
+"vad_frac_above_05": 0.8636363636363636,
+"vad_overlap_frac": 0.9869426751592355
+},
+{
+"clip": "whisper_tts__4507-16021-0040.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+6
+],
+"delay_end_s": 0.5499999999999998,
+"delay_start_s": 3.38,
+"unit_lat_s": [
+0.5279999999999996
+],
+"vad_segments": [
+[
+1.58,
+4.35
+]
+],
+"text": "One thinks one hears Hydras talking",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "One thinks one hears Hydras talking",
+"text_agc": "One thinks one hears Hydras talking",
+"text_vad": "One thinks one hears Hydras talking",
+"speech_level_in_dbfs": -29.999433622208667,
+"speech_level_after_agc_dbfs": -23.538638360814623,
+"gain_at_start_db": 0.594039797782898,
+"gain_at_end_db": 11.007630348205566,
+"vad_pmax_in_speech": 0.9999704957008362,
+"vad_frac_above_05": 0.9111111111111111,
+"vad_overlap_frac": 0.9724381625441695
+},
+{
+"clip": "whisper_tts_q__4507-16021-0040.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+6
+],
+"delay_end_s": 0.5699999999999994,
+"delay_start_s": 3.3999999999999995,
+"unit_lat_s": [
+0.5479999999999992
+],
+"vad_segments": [
+[
+1.55,
+4.35
+]
+],
+"text": "One thinks one hears Hydras talking",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "One thinks one hears Hydras talking",
+"text_agc": "One thinks one hears Hydras talking",
+"text_vad": "One thinks one hears Hydras talking",
+"speech_level_in_dbfs": -42.02743377948928,
+"speech_level_after_agc_dbfs": -25.8530235329135,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 21.73301124572754,
+"vad_pmax_in_speech": 0.9999597072601318,
+"vad_frac_above_05": 0.9222222222222223,
+"vad_overlap_frac": 0.9837455830388692
+},
+{
+"clip": "whisper_tts_mus__4507-16021-0040.wav",
+"cond": "whisper_tts_mus",
+"recall": 1.0,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+6
+],
+"delay_end_s": 0.9899999999999993,
+"delay_start_s": 3.8199999999999994,
+"unit_lat_s": [
+0.6159999999999997
+],
+"vad_segments": [
+[
+1.51,
+4.7
+]
+],
+"text": "One thinks one hears Hydras talking",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "One thinks one hears Hydras talking",
+"text_agc": "One thinks one hears Hydras talking",
+"text_vad": "One thinks one hears Hydras talking",
+"speech_level_in_dbfs": -32.19984501387795,
+"speech_level_after_agc_dbfs": -22.217743539067097,
+"gain_at_start_db": 12.024328231811523,
+"gain_at_end_db": 11.576663970947266,
+"vad_pmax_in_speech": 0.9995449781417847,
+"vad_frac_above_05": 0.9333333333333333,
+"vad_overlap_frac": 0.9950530035335688
+},
+{
+"clip": "whisper_tts__4992-23283-0009.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+11,
+13
+],
+"delay_end_s": 0.5300000000000011,
+"delay_start_s": 5.3,
+"unit_lat_s": [
+0.5599999999999996,
+0.5240000000000009
+],
+"vad_segments": [
+[
+1.61,
+6.24
+],
+[
+6.92,
+11.3
+]
+],
+"text": "Oh my lord, cried Miss Woodley with a most forcible accent You are the last person on Earth she would pardon me for entrusting",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "Oh my lord! cried Miss Woodley with a most forcible accent. You are the last person on earth she would pardon me for entrusting",
+"text_agc": "Oh my lord! cried Miss Woodley with a most forcible accent. You are the last person on earth she would pardon me for entrusting",
+"text_vad": "Oh my lord, cried Miss Woodley with a most forcible accent You are the last person on Earth she would pardon me for entrusting",
+"speech_level_in_dbfs": -29.999498805877995,
+"speech_level_after_agc_dbfs": -22.505652509760566,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 9.406187057495117,
+"vad_pmax_in_speech": 0.9999963045120239,
+"vad_frac_above_05": 0.8208469055374593,
+"vad_overlap_frac": 0.9191011235955057
+},
+{
+"clip": "whisper_tts_q__4992-23283-0009.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+11,
+13
+],
+"delay_end_s": 0.5500000000000007,
+"delay_start_s": 5.319999999999999,
+"unit_lat_s": [
+0.5799999999999992,
+0.5440000000000005
+],
+"vad_segments": [
+[
+1.61,
+6.24
+],
+[
+6.92,
+11.3
+]
+],
+"text": "Oh my lord, cried Miss Woodley with a most forcible accent You are the last person on Earth she would pardon me for entrusting",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "Oh my lord, cried Miss Woodley with a most forcible accent. You are the last person on earth she would pardon me for entrusting",
+"text_agc": "Oh my lord! cried Miss Woodley with a most forcible accent. You are the last person on earth she would pardon me for entrusting",
+"text_vad": "Oh my lord, cried Miss Woodley with a most forcible accent You are the last person on Earth she would pardon me for entrusting",
+"speech_level_in_dbfs": -42.05463698128248,
+"speech_level_after_agc_dbfs": -23.77212718431671,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 20.508426666259766,
+"vad_pmax_in_speech": 0.999992311000824,
+"vad_frac_above_05": 0.8078175895765473,
+"vad_overlap_frac": 0.9191011235955057
+},
+{
+"clip": "whisper_tts_mus__4992-23283-0009.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.9583333333333334,
+"emitted": true,
+"n_units": 3,
+"unit_words": [
+3,
+7,
+13
+],
+"delay_end_s": 0.6300000000000008,
+"delay_start_s": 1.6800000000000002,
+"unit_lat_s": [
+0.524,
+0.6159999999999997,
+0.5920000000000005
+],
+"vad_segments": [
+[
+1.64,
+2.66
+],
+[
+3.37,
+6.3
+],
+[
+7.05,
+11.33
+]
+],
+"text": "Oh my lord Miss Woodley with a most forcible accent You are the last person on Earth she would pardon me for entrusting",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.9583333333333334,
+"text_ideal": "Oh my lord! cried Miss Woodley with a most forcible accent. You are the last person on earth she would pardon me for entrusting",
+"text_agc": "Oh my lord! cried Miss Woodley with a most forcible accent. You are the last person on earth she would pardon me for entrusting",
+"text_vad": "Oh my lord Miss Woodley with a most forcible accent You are the last person on Earth she would pardon me for entrusting",
+"speech_level_in_dbfs": -32.377221480959314,
+"speech_level_after_agc_dbfs": -22.95038185016939,
+"gain_at_start_db": 10.295166015625,
+"gain_at_end_db": 9.948750495910645,
+"vad_pmax_in_speech": 0.9959380626678467,
+"vad_frac_above_05": 0.5830618892508144,
+"vad_overlap_frac": 0.8363636363636363
+},
+{
+"clip": "whisper_tts__7021-85628-0005.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+6,
+9
+],
+"delay_end_s": 0.5199999999999996,
+"delay_start_s": 2.32,
+"unit_lat_s": [
+0.556,
+0.524
+],
+"vad_segments": [
+[
+1.51,
+3.26
+],
+[
+3.75,
+5.7
+]
+],
+"text": "Seeing that I am so fine I may as well go and visit the king",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "Seeing that I am so fine, I may as well go and visit the King",
+"text_agc": "Seeing that I am so fine, I may as well go and visit the King",
+"text_vad": "Seeing that I am so fine I may as well go and visit the king",
+"speech_level_in_dbfs": -30.02823460759979,
+"speech_level_after_agc_dbfs": -22.2703829862507,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 9.427210807800293,
+"vad_pmax_in_speech": 0.9999918341636658,
+"vad_frac_above_05": 0.7969924812030075,
+"vad_overlap_frac": 0.8790476190476189
+},
+{
+"clip": "whisper_tts_q__7021-85628-0005.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+6,
+9
+],
+"delay_end_s": 0.5199999999999996,
+"delay_start_s": 2.22,
+"unit_lat_s": [
+0.6160000000000001,
+0.524
+],
+"vad_segments": [
+[
+1.51,
+3.1
+],
+[
+3.75,
+5.7
+]
+],
+"text": "Seeing that I am so fine I may as well go and visit the king",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "Seeing that I am so fine, I may as well go and visit the king",
+"text_agc": "Seeing that I am so fine, I may as well go and visit the King",
+"text_vad": "Seeing that I am so fine I may as well go and visit the king",
+"speech_level_in_dbfs": -42.18997281289198,
+"speech_level_after_agc_dbfs": -25.03746504281726,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 19.75347900390625,
+"vad_pmax_in_speech": 0.9999861121177673,
+"vad_frac_above_05": 0.6466165413533834,
+"vad_overlap_frac": 0.8409523809523809
+},
+{
+"clip": "whisper_tts_mus__7021-85628-0005.wav",
+"cond": "whisper_tts_mus",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+6,
+9
+],
+"delay_end_s": 0.5799999999999992,
+"delay_start_s": 2.16,
+"unit_lat_s": [
+0.5880000000000001,
+0.5519999999999996
+],
+"vad_segments": [
+[
+1.42,
+3.07
+],
+[
+3.59,
+5.73
+]
+],
+"text": "Seeing that I am so fine I may as well go and visit the King",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "Seeing that I am so fine, I may as well go and visit the king",
+"text_agc": "Seeing that I am so fine, I may as well go and visit the King",
+"text_vad": "Seeing that I am so fine I may as well go and visit the King",
+"speech_level_in_dbfs": -30.55955185136389,
+"speech_level_after_agc_dbfs": -21.846124029135396,
+"gain_at_start_db": 20.25092315673828,
+"gain_at_end_db": 8.665742874145508,
+"vad_pmax_in_speech": 0.9999507069587708,
+"vad_frac_above_05": 0.7819548872180451,
+"vad_overlap_frac": 0.8757142857142857
+},
+{
+"clip": "whisper_tts__8230-279154-0036.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+5
+],
+"delay_end_s": 0.5699999999999998,
+"delay_start_s": 2.76,
+"unit_lat_s": [
+0.5159999999999996
+],
+"vad_segments": [
+[
+1.42,
+3.74
+]
+],
+"text": "A further stage is recognition",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "A further stage is recognition",
+"text_agc": "A further stage is recognition",
+"text_vad": "A further stage is recognition",
+"speech_level_in_dbfs": -29.999987900689376,
+"speech_level_after_agc_dbfs": -23.84165502331253,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 12.256688117980957,
+"vad_pmax_in_speech": 0.9999980926513672,
+"vad_frac_above_05": 0.9571428571428572,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_q__8230-279154-0036.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+5
+],
+"delay_end_s": 0.7099999999999995,
+"delay_start_s": 2.8999999999999995,
+"unit_lat_s": [
+0.5599999999999996
+],
+"vad_segments": [
+[
+1.42,
+3.84
+]
+],
+"text": "A further stage is recognition",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "A further stage is recognition",
+"text_agc": "A further stage is recognition",
+"text_vad": "A further stage is recognition",
+"speech_level_in_dbfs": -42.03427557812419,
+"speech_level_after_agc_dbfs": -30.025474322316192,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 21.60344886779785,
+"vad_pmax_in_speech": 0.9999962449073792,
+"vad_frac_above_05": 0.9142857142857143,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_mus__8230-279154-0036.wav",
+"cond": "whisper_tts_mus",
+"recall": 1.0,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+5
+],
+"delay_end_s": 0.77,
+"delay_start_s": 2.96,
+"unit_lat_s": [
+0.5880000000000001
+],
+"vad_segments": [
+[
+1.42,
+3.87
+]
+],
+"text": "A further stage is recognition",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "A further stage is recognition",
+"text_agc": "A further stage is recognition",
+"text_vad": "A further stage is recognition",
+"speech_level_in_dbfs": -32.093659350968494,
+"speech_level_after_agc_dbfs": -21.85169117420274,
+"gain_at_start_db": 11.3753662109375,
+"gain_at_end_db": 11.696318626403809,
+"vad_pmax_in_speech": 0.9999745488166809,
+"vad_frac_above_05": 0.9428571428571428,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts__fx00.wav",
+"cond": "whisper_tts",
+"recall": 0.8823529411764706,
+"emitted": true,
+"n_units": 3,
+"unit_words": [
+1,
+6,
+8
+],
+"delay_end_s": 0.5,
+"delay_start_s": 1.42,
+"unit_lat_s": [
+0.552,
+0.8674999999999997,
+0.7720000000000002
+],
+"vad_segments": [
+[
+1.55,
+2.37
+],
+[
+3.05,
+8.13
+]
+],
+"text": "Quilter The Apostle of the middle classes and we are glad to welcome His Gospel",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.8823529411764706,
+"text_ideal": "Mister Quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+"text_agc": "Mister Quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+"text_vad": "Quilter The Apostle of the middle classes and we are glad to welcome His Gospel",
+"speech_level_in_dbfs": -29.999673241000924,
+"speech_level_after_agc_dbfs": -22.755065075930084,
+"gain_at_start_db": 0.594039797782898,
+"gain_at_end_db": 8.74914836883545,
+"vad_pmax_in_speech": 0.955054521560669,
+"vad_frac_above_05": 0.4377880184331797,
+"vad_overlap_frac": 0.8550724637681159
+},
+{
+"clip": "whisper_tts_q__fx00.wav",
+"cond": "whisper_tts_q",
+"recall": 0.9411764705882353,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+8,
+8
+],
+"delay_end_s": 0.5,
+"delay_start_s": 5.199999999999999,
+"unit_lat_s": [
+1.0308000000000002,
+0.5800000000000001
+],
+"vad_segments": [
+[
+1.55,
+8.32
+]
+],
+"text": "Quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.9411764705882353,
+"text_ideal": "Mister Quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+"text_agc": "Mister Quilter is the Apostle of the middle classes and we are glad to welcome his gospel",
+"text_vad": "Quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+"speech_level_in_dbfs": -42.042734829432604,
+"speech_level_after_agc_dbfs": -24.28167581940013,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 19.338821411132812,
+"vad_pmax_in_speech": 0.994628369808197,
+"vad_frac_above_05": 0.783410138248848,
+"vad_overlap_frac": 0.9817391304347826
+},
+{
+"clip": "whisper_tts_mus__fx00.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.23529411764705882,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+4
+],
+"delay_end_s": -4.000000000000001,
+"delay_start_s": 2.8999999999999995,
+"unit_lat_s": [
+0.5919999999999996
+],
+"vad_segments": [
+[
+1.55,
+2.02
+],
+[
+3.05,
+3.81
+]
+],
+"text": "The Apostle of the",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.23529411764705882,
+"text_ideal": "Mister Quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+"text_agc": "Mister Quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+"text_vad": "The Apostle of the",
+"speech_level_in_dbfs": -32.22479718059459,
+"speech_level_after_agc_dbfs": -21.900842995194296,
+"gain_at_start_db": 11.37631893157959,
+"gain_at_end_db": 10.344135284423828,
+"vad_pmax_in_speech": 0.9003723859786987,
+"vad_frac_above_05": 0.1152073732718894,
+"vad_overlap_frac": 0.17797101449275354
+},
+{
+"clip": "whisper_tts__fx01.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+10
+],
+"delay_end_s": 0.5299999999999994,
+"delay_start_s": 5.4799999999999995,
+"unit_lat_s": [
+0.5159999999999991
+],
+"vad_segments": [
+[
+1.51,
+6.46
+]
+],
+"text": "Nor is Mister Quilter's manner less interesting than his matter",
+"recall_ideal": 0.8181818181818182,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "Nor is Mister Quilters' manner less interesting than his matter",
+"text_agc": "Nor is Mister Quilter's manner less interesting than his matter",
+"text_vad": "Nor is Mister Quilter's manner less interesting than his matter",
+"speech_level_in_dbfs": -29.999223817816343,
+"speech_level_after_agc_dbfs": -22.822807274879548,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 12.511162757873535,
+"vad_pmax_in_speech": 0.9999836087226868,
+"vad_frac_above_05": 0.8333333333333334,
+"vad_overlap_frac": 0.9971717171717172
+},
+{
+"clip": "whisper_tts_q__fx01.wav",
+"cond": "whisper_tts_q",
+"recall": 0.9090909090909091,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+1,
+8
+],
+"delay_end_s": 0.5299999999999994,
+"delay_start_s": 0.8399999999999999,
+"unit_lat_s": [
+0.5159999999999998,
+0.5159999999999991
+],
+"vad_segments": [
+[
+1.51,
+1.82
+],
+[
+2.19,
+6.46
+]
+],
+"text": "Nor Mister Quilter's manner less interesting than his matter",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.9090909090909091,
+"text_ideal": "Nor is Mister Quilter's manner less interesting than his matter",
+"text_agc": "Nor is Mister Quilter's manner less interesting than his matter",
+"text_vad": "Nor Mister Quilter's manner less interesting than his matter",
+"speech_level_in_dbfs": -42.016663838659085,
+"speech_level_after_agc_dbfs": -25.304854087809776,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 22.410524368286133,
+"vad_pmax_in_speech": 0.9999624490737915,
+"vad_frac_above_05": 0.8012820512820513,
+"vad_overlap_frac": 0.924040404040404
+},
+{
+"clip": "whisper_tts_mus__fx01.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.45454545454545453,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+5
+],
+"delay_end_s": -0.5500000000000007,
+"delay_start_s": 4.3999999999999995,
+"unit_lat_s": [
+0.6839999999999993
+],
+"vad_segments": [
+[
+2.92,
+5.22
+]
+],
+"text": "Manner less interesting than his",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.45454545454545453,
+"text_ideal": "Nor is Mister Quilter's manner less interesting than his matter",
+"text_agc": "Nor is Mister Quilter's manner less interesting than his matter",
+"text_vad": "Manner less interesting than his",
+"speech_level_in_dbfs": -32.77966542774692,
+"speech_level_after_agc_dbfs": -21.884983386178376,
+"gain_at_start_db": 13.346420288085938,
+"gain_at_end_db": 10.325285911560059,
+"vad_pmax_in_speech": 0.8573606014251709,
+"vad_frac_above_05": 0.23717948717948717,
+"vad_overlap_frac": 0.4634343434343434
+},
+{
+"clip": "whisper_tts__fx02.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 3,
+"unit_words": [
+13,
+6,
+13
+],
+"delay_end_s": 0.5299999999999994,
+"delay_start_s": 5.6,
+"unit_lat_s": [
+0.7518421052631581,
+0.5519999999999996,
+0.5279999999999987
+],
+"vad_segments": [
+[
+1.39,
+8.77
+],
+[
+9.23,
+14.59
+]
+],
+"text": "He tells us that at this festive season of the year with Christmas and roast beef looming before us Similes drawn from eating and its results occur most readily to the mind",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "He tells us that at this festive season of the year with Christmas and roast beef looming before us, similes drawn from eating and its results occur most readily to the mind",
+"text_agc": "He tells us that at this festive season of the year with Christmas and roast beef looming before us, similes drawn from eating and its results occur most readily to the mind",
+"text_vad": "He tells us that at this festive season of the year with Christmas and roast beef looming before us Similes drawn from eating and its results occur most readily to the mind",
+"speech_level_in_dbfs": -30.007721508444526,
+"speech_level_after_agc_dbfs": -22.312107086308274,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 10.135842323303223,
+"vad_pmax_in_speech": 0.999997615814209,
+"vad_frac_above_05": 0.9097560975609756,
+"vad_overlap_frac": 0.9650114591291064
+},
+{
+"clip": "whisper_tts_q__fx02.wav",
+"cond": "whisper_tts_q",
+"recall": 0.96875,
+"emitted": true,
+"n_units": 3,
+"unit_words": [
+12,
+6,
+13
+],
+"delay_end_s": 0.5499999999999989,
+"delay_start_s": 5.64,
+"unit_lat_s": [
+0.7838356164383562,
+0.5519999999999996,
+0.5479999999999983
+],
+"vad_segments": [
+[
+1.42,
+8.77
+],
+[
+9.23,
+14.59
+]
+],
+"text": "Tells us that at this festive season of the year with Christmas and roast beef looming before us Similes drawn from eating and its results occur most readily to the mind",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.96875,
+"text_ideal": "He tells us that at this festive season of the year with Christmas and roast beef looming before us, similes drawn from eating and its results occur most readily to the mind",
+"text_agc": "He tells us that at this festive season of the year with Christmas and roast beef looming before us, similes drawn from eating and its results occur most readily to the mind",
+"text_vad": "Tells us that at this festive season of the year with Christmas and roast beef looming before us Similes drawn from eating and its results occur most readily to the mind",
+"speech_level_in_dbfs": -42.045675923035844,
+"speech_level_after_agc_dbfs": -23.56750909537439,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 20.754192352294922,
+"vad_pmax_in_speech": 0.999995231628418,
+"vad_frac_above_05": 0.9,
+"vad_overlap_frac": 0.9650114591291064
+},
+{
+"clip": "whisper_tts_mus__fx02.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.65625,
+"emitted": true,
+"n_units": 4,
+"unit_words": [
+13,
+6,
+4,
+6
+],
+"delay_end_s": 0.10999999999999943,
+"delay_start_s": 6.199999999999999,
+"unit_lat_s": [
+1.163333333333333,
+0.6839999999999993,
+0.6559999999999988,
+0.6839999999999993
+],
+"vad_segments": [
+[
+1.42,
+8.58
+],
+[
+9.42,
+10.94
+],
+[
+11.5,
+14.02
+]
+],
+"text": "He tells us that at this festive season of the year with Christmas and roast beef rooming before us Emily strongly from eating Results took her most red light",
+"recall_ideal": 0.8125,
+"recall_agc": 0.875,
+"recall_vad": 0.65625,
+"text_ideal": "He tells us that at this festive season of the year with Christmas and roast beef running before us, similes drawn for meeting and its results occur most readily routinely",
+"text_agc": "He tells us that at this festive season of the year with Christmas and roast beef rooming before us, similes drawn from eating and its results occur most readily routinely",
+"text_vad": "He tells us that at this festive season of the year with Christmas and roast beef rooming before us Emily strongly from eating Results took her most red light",
+"speech_level_in_dbfs": -32.184855089958255,
+"speech_level_after_agc_dbfs": -21.716656317609477,
+"gain_at_start_db": 12.53892993927002,
+"gain_at_end_db": 11.004525184631348,
+"vad_pmax_in_speech": 0.9998644590377808,
+"vad_frac_above_05": 0.7073170731707317,
+"vad_overlap_frac": 0.849503437738732
+},
+{
+"clip": "whisper_tts__fx03.wav",
+"cond": "whisper_tts",
+"recall": 0.92,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+13,
+10
+],
+"delay_end_s": 0.5199999999999996,
+"delay_start_s": 5.699999999999999,
+"unit_lat_s": [
+0.5198181818181817,
+0.5199999999999996
+],
+"vad_segments": [
+[
+1.48,
+9.44
+]
+],
+"text": "Yes grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of Rocky Ithaca",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.92,
+"text_ideal": "He has grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of rocky Ithaca",
+"text_agc": "He has grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of rocky Ithaca",
+"text_vad": "Yes grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of Rocky Ithaca",
+"speech_level_in_dbfs": -29.99948713361734,
+"speech_level_after_agc_dbfs": -22.46109232314549,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 10.598956108093262,
+"vad_pmax_in_speech": 0.9999923706054688,
+"vad_frac_above_05": 0.896,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_q__fx03.wav",
+"cond": "whisper_tts_q",
+"recall": 0.92,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+13,
+10
+],
+"delay_end_s": 0.5199999999999996,
+"delay_start_s": 5.699999999999999,
+"unit_lat_s": [
+0.5198181818181817,
+0.5199999999999996
+],
+"vad_segments": [
+[
+1.48,
+9.44
+]
+],
+"text": "Yes grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of Rocky Ithaca",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.92,
+"text_ideal": "He has grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of rocky Ithaca",
+"text_agc": "He has grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of rocky Ithaca",
+"text_vad": "Yes grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of Rocky Ithaca",
+"speech_level_in_dbfs": -42.05756078562423,
+"speech_level_after_agc_dbfs": -24.085171419069727,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 21.56952667236328,
+"vad_pmax_in_speech": 0.999984860420227,
+"vad_frac_above_05": 0.892,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_mus__fx03.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.44,
+"emitted": true,
+"n_units": 3,
+"unit_words": [
+1,
+4,
+8
+],
+"delay_end_s": 0.1999999999999975,
+"delay_start_s": 1.2600000000000002,
+"unit_lat_s": [
+0.552,
+0.6559999999999997,
+0.6159999999999997
+],
+"vad_segments": [
+[
+1.71,
+2.21
+],
+[
+4.59,
+5.98
+],
+[
+6.6,
+9.02
+]
+],
+"text": "Gri Really Greek after all Discover in it a little of Rocky Ithaca",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.44,
+"text_ideal": "He has grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of Rocky Ithaca",
+"text_agc": "He has grave doubts whether Sir Frederick Leighton's work is really Greek after all and can discover in it but little of Rocky Ithaca",
+"text_vad": "Gri Really Greek after all Discover in it a little of Rocky Ithaca",
+"speech_level_in_dbfs": -32.191992552083036,
+"speech_level_after_agc_dbfs": -21.779914789242966,
+"gain_at_start_db": 11.16175365447998,
+"gain_at_end_db": 11.236973762512207,
+"vad_pmax_in_speech": 0.9030836820602417,
+"vad_frac_above_05": 0.236,
+"vad_overlap_frac": 0.5443324937027707
+},
+{
+"clip": "whisper_tts__fx04.wav",
+"cond": "whisper_tts",
+"recall": 0.8450704225352113,
+"emitted": true,
+"n_units": 6,
+"unit_words": [
+7,
+14,
+17,
+4,
+19,
+6
+],
+"delay_end_s": 0.5199999999999996,
+"delay_start_s": 3.96,
+"unit_lat_s": [
+0.790826086956522,
+0.5239999999999991,
+0.19416494845360788,
+0.5239999999999974,
+0.18285436893203766,
+0.5119999999999969
+],
+"vad_segments": [
+[
+1.42,
+9.86
+],
+[
+10.44,
+17.38
+],
+[
+17.96,
+25.41
+]
+],
+"text": "Else pictures are a sort of upguards, and Adam paintings and masons' exquisite idols are as national as a jingo poem Mister Burke at Foster's landscape's smile at one much in the same way that Mister Carker used to flash his teeth And Mister John Collier gives his sitter a cheerful slap on the back before he says like a shampooer in a Turkish bath next man",
+"recall_ideal": 0.8450704225352113,
+"recall_agc": 0.8450704225352113,
+"recall_vad": 0.8450704225352113,
+"text_ideal": "Lunel's pictures are a sort of upguards, an Adam paintings and masons' exquisite idols are as national as a jingo poem. Mister Burkett Foster's landscape's smile at one much in the same way that Mister Carker used to flash his teeth, and Mister John Collier gives his sitter a cheerful slap on the back. Before he says like a shampooer in a Turkish bath next man",
+"text_agc": "Lone's pictures are a sort of upguards, an Adam paintings and masons' exquisite idols are as national as a jingo poem. Mister Burkett Foster's landscape's smile at one much in the same way that Mister Carker used to flash his teeth and Mister John Collier gives his sitter a cheerful slap on the back. Before he says like a shampooer in a Turkish bath next man",
+"text_vad": "Else pictures are a sort of upguards, and Adam paintings and masons' exquisite idols are as national as a jingo poem Mister Burke at Foster's landscape's smile at one much in the same way that Mister Carker used to flash his teeth And Mister John Collier gives his sitter a cheerful slap on the back before he says like a shampooer in a Turkish bath next man",
+"speech_level_in_dbfs": -30.010504237362348,
+"speech_level_after_agc_dbfs": -22.11375085578048,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 9.443297386169434,
+"vad_pmax_in_speech": 0.9999991655349731,
+"vad_frac_above_05": 0.8596256684491979,
+"vad_overlap_frac": 0.9509623430962344
+},
+{
+"clip": "whisper_tts_q__fx04.wav",
+"cond": "whisper_tts_q",
+"recall": 0.9014084507042254,
+"emitted": true,
+"n_units": 6,
+"unit_words": [
+8,
+14,
+7,
+13,
+19,
+6
+],
+"delay_end_s": 0.5600000000000023,
+"delay_start_s": 4.06,
+"unit_lat_s": [
+1.110666666666667,
+0.5440000000000005,
+0.5519999999999996,
+0.5559999999999974,
+0.18285436893203766,
+0.5519999999999996
+],
+"vad_segments": [
+[
+1.51,
+9.86
+],
+[
+10.44,
+13.41
+],
+[
+13.8,
+17.34
+],
+[
+17.96,
+25.41
+]
+],
+"text": "Els pictures are a sort of up guards, and Adam paintings and mason's exquisite idols are as national as a jingo poem Mister Burkett Foster's landscape smile at one Much in the same way that Mister Carker used to flash his teeth And Mister John Collier gives his sitter a cheerful slap on the back before he says like a shampooer in a Turkish bath next man",
+"recall_ideal": 0.8591549295774648,
+"recall_agc": 0.8591549295774648,
+"recall_vad": 0.9014084507042254,
+"text_ideal": "Ponell's pictures are a sort of upguards, and Adam paintings and masons' exquisite idols are as national as a jingo poem. Mister Burkett Foster's landscape smile at one much in the same way that Mister Carker used to flash his teeth, and Mister John Collier gives his sitter a cheerful slap on the back. Before he says like a shampooer in a Turkish bath next man",
+"text_agc": "Punel's pictures are a sort of upguards, and Adam paintings and masons' exquisite idols are as national as a jingo poem. Mister Burkett Foster's landscape smile at one much in the same way that Mister Carker used to flash his teeth, and Mister John Collier gives his sitter a cheerful slap on the back. Before he says like a shampooer in a Turkish bath next man",
+"text_vad": "Els pictures are a sort of up guards, and Adam paintings and mason's exquisite idols are as national as a jingo poem Mister Burkett Foster's landscape smile at one Much in the same way that Mister Carker used to flash his teeth And Mister John Collier gives his sitter a cheerful slap on the back before he says like a shampooer in a Turkish bath next man",
+"speech_level_in_dbfs": -42.11303686297221,
+"speech_level_after_agc_dbfs": -23.498719910473838,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 20.397197723388672,
+"vad_pmax_in_speech": 0.9999980330467224,
+"vad_frac_above_05": 0.8475935828877005,
+"vad_overlap_frac": 0.9325523012552301
+},
+{
+"clip": "whisper_tts_mus__fx04.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.6197183098591549,
+"emitted": true,
+"n_units": 4,
+"unit_words": [
+11,
+16,
+13,
+12
+],
+"delay_end_s": 0.46000000000000085,
+"delay_start_s": 11.219999999999999,
+"unit_lat_s": [
+0.717485714285715,
+0.8770384615384614,
+0.6759999999999984,
+0.5799999999999983
+],
+"vad_segments": [
+[
+6.44,
+21.18
+],
+[
+22.22,
+25.28
+]
+],
+"text": "Beatles are as national as a jingle poem. Mister Burke fosters landscape smile at one much in the same way Mister Carker used to flash his teeth, and Mister John Collier gives his sitter a cheerful slap on the back He says like a shampoo or in a Turkish bath makes man",
+"recall_ideal": 0.7464788732394366,
+"recall_agc": 0.7323943661971831,
+"recall_vad": 0.6197183098591549,
+"text_ideal": "Those pictures are sort of upwards, and atom paintings and masons' exquisite beatles are as national as a jingo poem. Mister Burke had fosters landscape's smile at one, much in the same way Mister Parker used to flash his teeth, and Mister John Collier gives his sitter a cheerful slap on the back before he says like a shampoo in a Turkish bag makes man",
+"text_agc": "Those pictures are sort of upwards, and atom paintings and masons' exquisite beatles are as national as a jingo poem. Mister Burke had fosters landscape's smile at one, much in the same light Mister Parker used to flash his teeth, and Mister John Collier gives his sitter a cheerful slap on the back before he says like a shampoo in a Turkish bag makes man",
+"text_vad": "Beatles are as national as a jingle poem. Mister Burke fosters landscape smile at one much in the same way Mister Carker used to flash his teeth, and Mister John Collier gives his sitter a cheerful slap on the back He says like a shampoo or in a Turkish bath makes man",
+"speech_level_in_dbfs": -32.537422056713076,
+"speech_level_after_agc_dbfs": -21.727803036954864,
+"gain_at_start_db": 10.646185874938965,
+"gain_at_end_db": 11.473103523254395,
+"vad_pmax_in_speech": 0.999393105506897,
+"vad_frac_above_05": 0.6189839572192514,
+"vad_overlap_frac": 0.744937238493724
+},
+{
+"clip": "whisper_tts__fx05.wav",
+"cond": "whisper_tts",
+"recall": 0.8888888888888888,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+13,
+4
+],
+"delay_end_s": 0.5300000000000011,
+"delay_start_s": 5.699999999999999,
+"unit_lat_s": [
+0.27556626506024084,
+0.516
+],
+"vad_segments": [
+[
+1.48,
+8.38
+]
+],
+"text": "Is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"recall_ideal": 0.9444444444444444,
+"recall_agc": 0.9444444444444444,
+"recall_vad": 0.8888888888888888,
+"text_ideal": "It is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"text_agc": "It is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"text_vad": "Is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"speech_level_in_dbfs": -30.028666764430003,
+"speech_level_after_agc_dbfs": -22.193029638976473,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 10.989471435546875,
+"vad_pmax_in_speech": 0.999997079372406,
+"vad_frac_above_05": 0.9398148148148148,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts_q__fx05.wav",
+"cond": "whisper_tts_q",
+"recall": 0.8333333333333334,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+12,
+4
+],
+"delay_end_s": 0.5700000000000003,
+"delay_start_s": 5.76,
+"unit_lat_s": [
+0.2857000000000003,
+0.5239999999999991
+],
+"vad_segments": [
+[
+1.55,
+8.42
+]
+],
+"text": "Obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"recall_ideal": 0.9444444444444444,
+"recall_agc": 0.9444444444444444,
+"recall_vad": 0.8333333333333334,
+"text_ideal": "It is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"text_agc": "It is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"text_vad": "Obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"speech_level_in_dbfs": -42.1680817556867,
+"speech_level_after_agc_dbfs": -24.125592341537043,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 21.645183563232422,
+"vad_pmax_in_speech": 0.9999914169311523,
+"vad_frac_above_05": 0.9212962962962963,
+"vad_overlap_frac": 0.9933042212518195
+},
+{
+"clip": "whisper_tts_mus__fx05.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.8888888888888888,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+13,
+4
+],
+"delay_end_s": 0.5899999999999981,
+"delay_start_s": 5.699999999999999,
+"unit_lat_s": [
+0.27556626506024084,
+0.5439999999999987
+],
+"vad_segments": [
+[
+1.48,
+8.42
+]
+],
+"text": "Is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"recall_ideal": 0.9444444444444444,
+"recall_agc": 0.9444444444444444,
+"recall_vad": 0.8888888888888888,
+"text_ideal": "It is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"text_agc": "It is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"text_vad": "Is obviously unnecessary for us to point out how luminous these criticisms are, how delicate an expression",
+"speech_level_in_dbfs": -32.2072353966584,
+"speech_level_after_agc_dbfs": -22.420088999531515,
+"gain_at_start_db": 13.818042755126953,
+"gain_at_end_db": 5.911366939544678,
+"vad_pmax_in_speech": 0.9998496174812317,
+"vad_frac_above_05": 0.9768518518518519,
+"vad_overlap_frac": 1.0
+},
+{
+"clip": "whisper_tts__fx06.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+6,
+6
+],
+"delay_end_s": 0.0699999999999994,
+"delay_start_s": 2.9399999999999995,
+"unit_lat_s": [
+0.9143749999999997,
+0.5519999999999996
+],
+"vad_segments": [
+[
+1.51,
+6.05
+]
+],
+"text": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"text_agc": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"text_vad": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"speech_level_in_dbfs": -29.999476260339577,
+"speech_level_after_agc_dbfs": -23.150547440706344,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 12.678450584411621,
+"vad_pmax_in_speech": 0.9999954104423523,
+"vad_frac_above_05": 0.8616352201257862,
+"vad_overlap_frac": 0.9013916500994035
+},
+{
+"clip": "whisper_tts_q__fx06.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+6,
+6
+],
+"delay_end_s": 0.0699999999999994,
+"delay_start_s": 2.9399999999999995,
+"unit_lat_s": [
+0.9143749999999997,
+0.5199999999999996
+],
+"vad_segments": [
+[
+1.51,
+6.08
+]
+],
+"text": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"text_agc": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"text_vad": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"speech_level_in_dbfs": -42.04271869577607,
+"speech_level_after_agc_dbfs": -26.18143351638914,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 21.508176803588867,
+"vad_pmax_in_speech": 0.9999916553497314,
+"vad_frac_above_05": 0.8679245283018868,
+"vad_overlap_frac": 0.9077534791252484
+},
+{
+"clip": "whisper_tts_mus__fx06.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.9166666666666666,
+"emitted": true,
+"n_units": 1,
+"unit_words": [
+11
+],
+"delay_end_s": 0.4299999999999997,
+"delay_start_s": 5.46,
+"unit_lat_s": [
+0.6239999999999997
+],
+"vad_segments": [
+[
+1.58,
+6.34
+]
+],
+"text": "The general principles of art, Mister Quilter writes with equal lucidity",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.9166666666666666,
+"text_ideal": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"text_agc": "On the general principles of art, Mister Quilter writes with equal lucidity",
+"text_vad": "The general principles of art, Mister Quilter writes with equal lucidity",
+"speech_level_in_dbfs": -32.440497261733256,
+"speech_level_after_agc_dbfs": -21.84529424774892,
+"gain_at_start_db": 11.47844123840332,
+"gain_at_end_db": 11.959494590759277,
+"vad_pmax_in_speech": 0.9999118447303772,
+"vad_frac_above_05": 0.89937106918239,
+"vad_overlap_frac": 0.945924453280318
+},
+{
+"clip": "whisper_tts__fx07.wav",
+"cond": "whisper_tts",
+"recall": 0.8947368421052632,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+10,
+8
+],
+"delay_end_s": 0.4800000000000004,
+"delay_start_s": 6.959999999999999,
+"unit_lat_s": [
+0.5239999999999991,
+0.5600000000000005
+],
+"vad_segments": [
+[
+2.63,
+7.94
+],
+[
+8.43,
+11.68
+]
+],
+"text": "Canyony tells us is of a different quality to mathematics And finish in art is adding more fact",
+"recall_ideal": 0.8947368421052632,
+"recall_agc": 0.8947368421052632,
+"recall_vad": 0.8947368421052632,
+"text_ideal": "Tingy tells us is of a different quality to mathematics and finish in art is adding more fact",
+"text_agc": "Tingy tells us is of a different quality to mathematics and finish in art is adding more fact",
+"text_vad": "Canyony tells us is of a different quality to mathematics And finish in art is adding more fact",
+"speech_level_in_dbfs": -29.999533021247757,
+"speech_level_after_agc_dbfs": -22.398097840125352,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 12.123299598693848,
+"vad_pmax_in_speech": 0.9999741315841675,
+"vad_frac_above_05": 0.6677018633540373,
+"vad_overlap_frac": 0.8339181286549707
+},
+{
+"clip": "whisper_tts_q__fx07.wav",
+"cond": "whisper_tts_q",
+"recall": 0.8947368421052632,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+10,
+8
+],
+"delay_end_s": 0.4399999999999995,
+"delay_start_s": 6.959999999999999,
+"unit_lat_s": [
+0.5239999999999991,
+0.5199999999999996
+],
+"vad_segments": [
+[
+2.63,
+7.94
+],
+[
+8.43,
+11.68
+]
+],
+"text": "Thingy tells us is of a different quality to mathematics And finish in art is adding more fact",
+"recall_ideal": 0.8947368421052632,
+"recall_agc": 0.8947368421052632,
+"recall_vad": 0.8947368421052632,
+"text_ideal": "Paintingy tells us is of a different quality to mathematics and finish in art is adding more fact",
+"text_agc": "Tingy tells us is of a different quality to mathematics and finish in art is adding more fact",
+"text_vad": "Thingy tells us is of a different quality to mathematics And finish in art is adding more fact",
+"speech_level_in_dbfs": -42.073458917397346,
+"speech_level_after_agc_dbfs": -23.666829257024105,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 19.75042724609375,
+"vad_pmax_in_speech": 0.9999762177467346,
+"vad_frac_above_05": 0.65527950310559,
+"vad_overlap_frac": 0.8339181286549707
+},
+{
+"clip": "whisper_tts_mus__fx07.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.0,
+"emitted": false,
+"n_units": 0,
+"unit_words": [],
+"delay_end_s": null,
+"delay_start_s": null,
+"unit_lat_s": [],
+"vad_segments": [],
+"text": "",
+"recall_ideal": 0.7368421052631579,
+"recall_agc": 0.7894736842105263,
+"recall_vad": 0.0,
+"text_ideal": "Tony tells us is having a different quality to mathematics and finishing art is adding more fact",
+"text_agc": "Tony tells us is of a different quality to mathematics and finishing art is adding more fact",
+"text_vad": "",
+"speech_level_in_dbfs": -32.44600933718032,
+"speech_level_after_agc_dbfs": -21.79580365377284,
+"gain_at_start_db": 10.222870826721191,
+"gain_at_end_db": 12.928543090820312,
+"vad_pmax_in_speech": 0.12144908308982849,
+"vad_frac_above_05": 0.0,
+"vad_overlap_frac": 0.0
+},
+{
+"clip": "whisper_tts__fx08.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+8,
+3
+],
+"delay_end_s": 0.5199999999999996,
+"delay_start_s": 3.92,
+"unit_lat_s": [
+0.6866382978723404,
+0.5279999999999996
+],
+"vad_segments": [
+[
+1.39,
+6.27
+]
+],
+"text": "As for etchings, they are of two kinds, British and foreign",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "As for etchings, they are of two kinds, British and foreign",
+"text_agc": "As for etchings, they are of two kinds, British and foreign",
+"text_vad": "As for etchings, they are of two kinds, British and foreign",
+"speech_level_in_dbfs": -29.99960869328031,
+"speech_level_after_agc_dbfs": -22.724698377789053,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 12.015865325927734,
+"vad_pmax_in_speech": 0.999995231628418,
+"vad_frac_above_05": 0.8874172185430463,
+"vad_overlap_frac": 0.998326359832636
+},
+{
+"clip": "whisper_tts_q__fx08.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 2,
+"unit_words": [
+8,
+3
+],
+"delay_end_s": 0.5199999999999996,
+"delay_start_s": 3.92,
+"unit_lat_s": [
+0.6866382978723404,
+0.5279999999999996
+],
+"vad_segments": [
+[
+1.39,
+6.27
+]
+],
+"text": "As for etchings, they are of two kinds, British and foreign",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 1.0,
+"text_ideal": "As for etchings, they are of two kinds, British and foreign",
+"text_agc": "As for etchings, they are of two kinds, British and foreign",
+"text_vad": "As for etchings, they are of two kinds, British and foreign",
+"speech_level_in_dbfs": -41.99206868207188,
+"speech_level_after_agc_dbfs": -24.72500021759052,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 22.061758041381836,
+"vad_pmax_in_speech": 0.9999929666519165,
+"vad_frac_above_05": 0.8874172185430463,
+"vad_overlap_frac": 0.998326359832636
+},
+{
+"clip": "whisper_tts_mus__fx08.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.8181818181818182,
+"emitted": true,
+"n_units": 3,
+"unit_words": [
+1,
+6,
+2
+],
+"delay_end_s": 0.09999999999999964,
+"delay_start_s": 1.6800000000000002,
+"unit_lat_s": [
+0.5880000000000001,
+0.9422857142857142,
+0.6200000000000001
+],
+"vad_segments": [
+[
+1.71,
+2.59
+],
+[
+3.08,
+5.76
+]
+],
+"text": "Etchings They are of two kinds, British and foreign",
+"recall_ideal": 1.0,
+"recall_agc": 1.0,
+"recall_vad": 0.8181818181818182,
+"text_ideal": "As for etchings, they are of two kinds, British and foreign",
+"text_agc": "As for etchings, they are of two kinds, British and foreign",
+"text_vad": "Etchings They are of two kinds, British and foreign",
+"speech_level_in_dbfs": -31.83746360230169,
+"speech_level_after_agc_dbfs": -21.745786933707944,
+"gain_at_start_db": 11.609282493591309,
+"gain_at_end_db": 5.133649826049805,
+"vad_pmax_in_speech": 0.9960140585899353,
+"vad_frac_above_05": 0.5695364238410596,
+"vad_overlap_frac": 0.7456066945606692
+},
+{
+"clip": "whisper_tts__fx09.wav",
+"cond": "whisper_tts",
+"recall": 1.0,
+"emitted": true,
+"n_units": 5,
+"unit_words": [
+13,
+6,
+8,
+15,
+1
+],
+"delay_end_s": 0.5700000000000003,
+"delay_start_s": 6.319999999999999,
+"unit_lat_s": [
+1.2804081632653057,
+0.5440000000000005,
+0.5479999999999983,
+0.9122666666666639,
+0.5120000000000005
+],
+"vad_segments": [
+[
+1.55,
+9.22
+],
+[
+9.71,
+12.99
+],
+[
+13.58,
+20.45
+]
+],
+"text": "He laments most bitterly the divorce that has been made between decorative art and what we usually call pictures makes the customary appeal to the last judgment And reminds us that in the great days of art Michael Angelo was the furnishing upholsterer",
+"recall_ideal": 0.9534883720930233,
+"recall_agc": 0.9534883720930233,
+"recall_vad": 1.0,
+"text_ideal": "Heal immense most bitterly the divorce that has been made between decorative art and what we usually call pictures makes the customary appeal to the last judgment and reminds us that in the great days of art, Michael Angelo was the furnishing upholsterer",
+"text_agc": "Heal a man's most bitterly the divorce that has been made between decorative art and what we usually call pictures makes the customary appeal to the last judgment and reminds us that in the great days of art, Michael Angelo was the furnishing upholsterer",
+"text_vad": "He laments most bitterly the divorce that has been made between decorative art and what we usually call pictures makes the customary appeal to the last judgment And reminds us that in the great days of art Michael Angelo was the furnishing upholsterer",
+"speech_level_in_dbfs": -29.99996291405461,
+"speech_level_after_agc_dbfs": -22.26587875860021,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 16.853111267089844,
+"vad_pmax_in_speech": 0.9999994039535522,
+"vad_frac_above_05": 0.856418918918919,
+"vad_overlap_frac": 0.9406034939121228
+},
+{
+"clip": "whisper_tts_q__fx09.wav",
+"cond": "whisper_tts_q",
+"recall": 1.0,
+"emitted": true,
+"n_units": 5,
+"unit_words": [
+13,
+6,
+8,
+15,
+1
+],
+"delay_end_s": 0.5700000000000003,
+"delay_start_s": 6.319999999999999,
+"unit_lat_s": [
+1.2804081632653057,
+0.5800000000000001,
+0.5479999999999983,
+0.9122666666666639,
+0.5440000000000005
+],
+"vad_segments": [
+[
+1.55,
+9.12
+],
+[
+9.71,
+12.99
+],
+[
+13.58,
+20.42
+]
+],
+"text": "He laments most bitterly the divorce that has been made between decorative art and what we usually call pictures makes the customary appeal to the last judgment And reminds us that in the great days of art Michael Angelo was the furnishing upholsterer",
+"recall_ideal": 0.9534883720930233,
+"recall_agc": 0.9534883720930233,
+"recall_vad": 1.0,
+"text_ideal": "Heal immense most bitterly the divorce that has been made between decorative art and what we usually call pictures makes the customary appeal to the last judgment and reminds us that in the great days of art, Michael Angelo was the furnishing upholsterer",
+"text_agc": "Heal a man's most bitterly the divorce that has been made between decorative art and what we usually call pictures makes the customary appeal to the last judgment and reminds us that in the great days of art, Michael Angelo was the furnishing upholsterer",
+"text_vad": "He laments most bitterly the divorce that has been made between decorative art and what we usually call pictures makes the customary appeal to the last judgment And reminds us that in the great days of art Michael Angelo was the furnishing upholsterer",
+"speech_level_in_dbfs": -42.006816176932674,
+"speech_level_after_agc_dbfs": -23.818304389643224,
+"gain_at_start_db": 0.0,
+"gain_at_end_db": 25.127676010131836,
+"vad_pmax_in_speech": 0.999998927116394,
+"vad_frac_above_05": 0.8378378378378378,
+"vad_overlap_frac": 0.9355214399152991
+},
+{
+"clip": "whisper_tts_mus__fx09.wav",
+"cond": "whisper_tts_mus",
+"recall": 0.4186046511627907,
+"emitted": true,
+"n_units": 4,
+"unit_words": [
+2,
+6,
+8,
+4
+],
+"delay_end_s": 0.39000000000000057,
+"delay_start_s": 2.22,
+"unit_lat_s": [
+0.552,
+0.6199999999999992,
+0.6079999999999988,
+0.620000000000001
+],
+"vad_segments": [
+[
+2.28,
+3.17
+],
+[
+3.98,
+6.24
+],
+[
+6.83,
+7.07
+],
+[
+7.5,
+12.99
+],
+[
+15.43,
+15.62
+],
+[
+18.22,
+20.16
+]
+],
+"text": "Most bitterly That has been made between decorative makes the customary appeal to the last judgment Furnishing of the strawberry",
+"recall_ideal": 0.8837209302325582,
+"recall_agc": 0.8604651162790697,
+"recall_vad": 0.4186046511627907,
+"text_ideal": "Human's most bitterly the divorce that has been made between decorative thought and what we usually call pictures makes the customary appeal to the last judgment and reminds us that in the great days of art, Michael Angela was the furnishing of historyr",
+"text_agc": "Human's most bitterly the divorce that has been made between decorative thought and what we usually call pictures makes the customary appeal to the Lord's judgment and reminds us that in the great days of art, Michael Angela was the furnishing of the history",
+"text_vad": "Most bitterly That has been made between decorative makes the customary appeal to the last judgment Furnishing of the strawberry",
+"speech_level_in_dbfs": -32.425182556350386,
+"speech_level_after_agc_dbfs": -21.644021106185363,
+"gain_at_start_db": 11.045305252075195,
+"gain_at_end_db": 12.772384643554688,
+"vad_pmax_in_speech": 0.9640064239501953,
+"vad_frac_above_05": 0.3564189189189189,
+"vad_overlap_frac": 0.5829539438856539
+}
+]

@@ -1,0 +1,23 @@
+[project]
+name = "spike-habla-baja"
+version = "0.1.0"
+description = "Spike S7: habla baja, susurrada o alargada y «vosotros» (spec 002, FR-013 a FR-015)"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "instanttraductor",
+    "numpy>=2.5.3",
+    "scipy>=1.14",
+    "soundfile>=0.14.0",
+    "jiwer>=4.0.0",
+    "whisper-normalizer>=0.1.15",
+    "httpx>=0.28",
+    "filelock>=3.16",
+]
+
+[tool.uv]
+# Es un conjunto de scripts sueltos, no un paquete instalable. Importa los módulos de src/ (solo lectura).
+package = false
+
+[tool.uv.sources]
+instanttraductor = { path = "../..", editable = true }
