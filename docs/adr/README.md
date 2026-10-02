@@ -17,6 +17,8 @@ Cada decisión relevante de arquitectura o tecnología queda en un fichero `NNNN
 | [0009](0009-aprobaciones-delegadas.md) | Aprobaciones delegadas en el orquestador | Aceptada | 2026-10-01 |
 | [0010](0010-captura-propia-y-exclusion.md) | Captura por proceso con implementación propia y reglas de exclusión | Aceptada | 2026-10-01 |
 | [0011](0011-traduccion-7b-con-reserva.md) | Traducción con Hy-MT2-7B, reserva 1.8B y glosario de España | Aceptada | 2026-10-01 |
+| [0012](0012-escuchar-la-app-elegida.md) | Escuchar solo la aplicación elegida (captura INCLUDE) y filtro de idioma | Propuesta | 2026-10-02 |
+| [0013](0013-reconocimiento-por-idioma.md) | Reconocimiento de voz por idioma elegido (en, ja, zh, ko) | Propuesta | 2026-10-02 |
 
 ## Plantilla
 
