@@ -16,6 +16,9 @@
  36 P | Crew, stand by for the jump.
       Equipo, prepárense para el salto.
    -> Equipo, preparaos para el salto.  ['imp-refl']
+ 48 P | Good morning, everyone, take a seat.
+      Buenos días a todos, tomen asiento.
+   -> Buenos días a todos, tomad asiento.  ['imp']
  60 P | Welcome, everyone, please stay close together.
       Bienvenidos a todos, por favor quedense juntos.
    -> Bienvenidos a todos, por favor quedaos juntos.  ['imp-refl']
@@ -31,6 +34,9 @@
  90 P | Welcome back, folks, are you ready to play?
       Bienvenidos de nuevo, ¿están listos para jugar?
    -> Bienvenidos de nuevo, ¿estáis listos para jugar?  ['pres']
+ 92 P | Don't look at the audience!
+      ¡No miren al público!
+   -> ¡No miréis al público!  ['subj']
  93 P | Give it up for our contestants, everybody!
       ¡Aplaudan a nuestros concursantes, todos!
    -> ¡Aplaudid a nuestros concursantes, todos!  ['imp']
@@ -52,6 +58,9 @@
 115 P | You have your orders, now move out.
       Tienen sus órdenes, ahora salgan.
    -> Tenéis vuestras órdenes, ahora salid.  ['imp', 'pres']
+117 P | Don't fire until I give the signal.
+      No disparen hasta que yo dé la señal.
+   -> No disparéis hasta que yo dé la señal.  ['subj']
 118 P | Keep your heads down and stay together.
       Mantengan la cabeza baja y permanezcan juntos.
    -> Mantened la cabeza baja y permaneced juntos.  ['imp']

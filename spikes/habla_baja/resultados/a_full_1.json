@@ -88,5 +88,35 @@
   "fa_samples": [],
   "wall_s": 697.8046477000462,
   "asr_misses": 63128
+ },
+ "0.25/0.10": {
+  "n_hard": 180,
+  "hard_translated": 88.88888888888889,
+  "hard_recall": 86.70955733249393,
+  "easy_translated": 100.0,
+  "easy_recall": 96.21934897162735,
+  "by_cond": {
+   "after_loud": 100.0,
+   "hesitate": 100.0,
+   "mus_b": 95.0,
+   "mus_c": 90.0,
+   "mus_d": 65.0,
+   "n20": 100.0,
+   "reverb": 100.0,
+   "whisper_mus": 70.0,
+   "whisper_q": 100.0,
+   "whisper_tts": 100.0,
+   "whisper_tts_mus": 80.0
+  },
+  "delay_p50": 0.5999999999999996,
+  "delay_p95": 1.4999999999999991,
+  "units_per_clip": 3.368181818181818,
+  "pct_units_le3": 14.84480431848853,
+  "fa_units": 0,
+  "fa_segments": 1,
+  "fa_speech_s": 0.3100000000000591,
+  "fa_samples": [],
+  "wall_s": 901.5897106999764,
+  "asr_misses": 85464
  }
 }
