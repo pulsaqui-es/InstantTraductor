@@ -272,6 +272,7 @@ class AppEntry:
     targets: list[ProcInfo] = field(default_factory=list)  # procesos raíz (uno por instancia)
     sessions: list[SessionInfo] = field(default_factory=list)
     uncovered: list[int] = field(default_factory=list)  # emisores que ningún objetivo cubre
+    captured: float | None = None  # RMS de un sondeo corto INCLUDE (None si no se sondeó)
 
     @property
     def peak(self) -> float:

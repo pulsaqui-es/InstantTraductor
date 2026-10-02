@@ -14,12 +14,15 @@ import json
 import time
 
 import common as c
+from discord_sesiones import Probe
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--peak-window", type=float, default=1.0, help="segundos de sondeo del pico (máximo)")
     ap.add_argument("--detalle", action="store_true", help="muestra cada sesión (PID emisor, endpoint...)")
+    ap.add_argument("--sin-sondeo", action="store_true", help="no abre capturas INCLUDE cortas (solo medidor)")
+    ap.add_argument("--sondeo", type=float, default=0.6, help="segundos de sondeo INCLUDE por app que suena")
     ap.add_argument("--json", action="store_true", help="salida JSON (para otros scripts)")
     ap.add_argument("--incluir-propias", action="store_true", help="no oculta la app ni su padre")
     args = ap.parse_args()
@@ -34,6 +37,18 @@ def main() -> None:
             s.refresh_peak()
         time.sleep(0.05)
     apps, notes = c.build_apps(sessions, hide_own=not args.incluir_propias)
+    # Sondeo corto con INCLUDE: el medidor de una sesión puede copiar la mezcla del endpoint (Discord, medido), así
+    # que «suena» se decide por lo que entrega la captura (RMS >= -80 dBFS), no solo por el medidor.
+    probe_rms: dict[str, float] = {}
+    if not args.sin_sondeo:
+        probes = {a.key: [Probe(t) for t in a.targets] for a in apps if a.sounding or a.state == 1}
+        time.sleep(args.sondeo)
+        for key, plist in probes.items():
+            probe_rms[key] = max(pr.take()[0] for pr in plist)
+            for pr in plist:
+                pr.stop()
+        for a in apps:
+            a.captured = probe_rms.get(a.key)
 
     if args.json:
         print(
@@ -49,6 +64,7 @@ def main() -> None:
                         "session_pids": [s.pid for s in a.sessions],
                         "peak": a.peak,
                         "sounding": a.sounding,
+                        "captured_rms": a.captured,
                         "endpoints": a.endpoints,
                     }
                     for i, a in enumerate(apps, 1)
@@ -69,13 +85,22 @@ def main() -> None:
     print()
     print("Aplicaciones con sesión de audio:")
     for i, a in enumerate(apps, 1):
-        flag = "SUENA " if a.sounding else "      "
+        if a.captured is not None:
+            if a.captured >= 1e-3:  # -60 dBFS de RMS: una voz normal queda muy por encima
+                flag = "SUENA"
+            elif a.captured >= 1e-4:
+                flag = "muy bajo"
+            else:
+                flag = "¿medidor?" if a.sounding else ""
+        else:
+            flag = "suena?" if a.sounding else "      "
+        cap = f" INCLUDE {c.db(a.captured):6.1f} dBFS" if a.captured is not None else ""
         state = c.STATE_NAMES.get(a.state, "?")
         pids = ",".join(str(t.pid) for t in a.targets)
         warn = f"  [!] emisores sin cubrir: {a.uncovered}" if a.uncovered else ""
         print(
-            f" {i:2d}. {flag}{c.app_label(a):<42s} pico {a.peak:6.4f} ({c.db(a.peak):6.1f} dBFS)  "
-            f"{state:<9s} objetivo PID {pids}{warn}"
+            f" {i:2d}. {flag:<10s}{c.app_label(a):<30s} pico {a.peak:6.4f} ({c.db(a.peak):6.1f} dBFS)  "
+            f"{state:<9s}{cap}  objetivo PID {pids}{warn}"
         )
         if args.detalle:
             print(f"       imagen: {a.exe or '(sin acceso)'}" + (f"  AUMID: {a.aumid}" if a.aumid else ""))
