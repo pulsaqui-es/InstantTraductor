@@ -266,6 +266,60 @@ COMPONENTS: Final[tuple[Component, ...]] = (
             ),
         ),
     ),
+    # Componentes de la feature 002 (research R9, ADR-0013). Fuente: los repositorios de Hugging Face de
+    # sherpa-onnx, con la revisión fijada y solo los ficheros que usa cada motor. sha256 y tamaños
+    # verificados el 2026-10-02 contra los modelos del spike S5 (spikes/idiomas/fetch_models.py).
+    # x-asr-zh (X-ASR-zh-en 960 ms streaming, punct, int8, Apache-2.0) queda pendiente: solo existe como
+    # tar.bz2 de la release «asr-models» de sherpa-onnx y el instalador no extrae tar.bz2.
+    Component(
+        component_id="sensevoice-small",
+        name="SenseVoice-Small (reconocimiento de voz ja/ko)",
+        version="int8 (2024-07-17)",
+        kind="modelo",
+        # El LICENSE del repo apunta a MODEL_LICENSE de FunASR (v1.1, leída el 2026-10-02): permite el
+        # uso personal, exige atribución y conservar el nombre del modelo; sin restricción territorial.
+        license="FunASR Model License v1.1",
+        install_dir="models/sensevoice-small",
+        hf_repo_id="csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17",
+        hf_revision="2365baeacb507f821a0c8120fcee3d484dba7a07",
+        allow_patterns=("model.int8.onnx", "tokens.txt", "LICENSE"),
+        files=(
+            ComponentFile(
+                "model.int8.onnx",
+                "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+                239_233_841,
+            ),
+            ComponentFile(
+                "tokens.txt", "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc", 315_894
+            ),
+            ComponentFile("LICENSE", "221c6df10b0931a5629adad671ea48fb7747e034c414b6d2bfa275bc3dd4ea17", 71),
+        ),
+    ),
+    Component(
+        component_id="whisper-base-lid",
+        name="Whisper base (detección de idioma)",
+        version="base int8 (2024-10-02)",
+        kind="modelo",
+        # El repositorio de OpenAI (código y pesos) es MIT; la tarjeta de openai/whisper-base en Hugging
+        # Face dice Apache-2.0. Cualquiera de las dos vale para uso personal (leído el 2026-10-02).
+        license="MIT",
+        install_dir="models/whisper-base-lid",
+        hf_repo_id="csukuangfj/sherpa-onnx-whisper-base",
+        hf_revision="bb53ee204431c90d314c1cc08d28d23e5b7927cc",
+        allow_patterns=("base-encoder.int8.onnx", "base-decoder.int8.onnx"),
+        files=(
+            ComponentFile(
+                "base-encoder.int8.onnx",
+                "0b8fb1304b6109976038efff5ace81720e00386f3ff6b54ee8c75291ca0a1e11",
+                29_120_534,
+            ),
+            ComponentFile(
+                "base-decoder.int8.onnx",
+                "9759d217388a01b3a4c7c15533201067b48ae819c4daafc8624e64b9409dc02d",
+                130_672_026,
+            ),
+        ),
+    ),
     Component(
         component_id="silero-vad",
         name="Silero VAD (detección de voz)",
