@@ -49,6 +49,17 @@ def _validate(policy: DelayPolicy) -> None:
         )
 
 
+def speed_for_lag(policy: DelayPolicy, lag_s: float) -> float:
+    """Velocidad de la política para un retraso: 1,0 hasta el primer umbral, lineal hasta `max_speed` en el
+    segundo y `max_speed` a partir de ahí (FR-012)."""
+    if not math.isfinite(lag_s) or lag_s <= policy.accelerate_after_s:
+        return 1.0
+    if lag_s >= policy.concise_after_s:
+        return policy.max_speed
+    fraction = (lag_s - policy.accelerate_after_s) / (policy.concise_after_s - policy.accelerate_after_s)
+    return min(policy.max_speed, 1.0 + (policy.max_speed - 1.0) * fraction)
+
+
 class ThresholdDelayController:
     """`DelayController` por umbrales: velocidad lineal, resumen con histéresis y descarte."""
 

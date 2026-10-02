@@ -76,6 +76,7 @@ from instanttraductor.contracts import (
     Clock,
     DelayController,
     DelayDecision,
+    DelayPolicy,
     GlossaryEntry,
     Outcome,
     PlaybackEvent,
@@ -90,6 +91,7 @@ from instanttraductor.contracts import (
     UtteranceRecord,
     VoiceRef,
 )
+from instanttraductor.pipeline.delay import speed_for_lag
 
 __all__ = [
     "CANCELLED_REASON",
@@ -105,6 +107,8 @@ __all__ = [
 
 logger = logging.getLogger(__name__)
 
+#: Lo que se suma al retraso previsto al traducir: la traducción y el primer audio de la voz (≈ 0,5 s).
+PREDICTION_MARGIN_S: Final = 0.5
 LAG_SAMPLE_INTERVAL_S: Final = 0.5  # una muestra de retraso cada 0,5 s (contracts/informe.md)
 DROP_REASON_LAG: Final = "retraso excesivo"  # FR-014: descartada por la política de retraso
 STOP_REASON: Final = "parada"  # lo pendiente al detener la sesión
@@ -279,6 +283,7 @@ class Scheduler:
         las últimas `context_utterances` frases **ya pronunciadas**, de la más antigua a la más reciente.
         Devuelve `None` si no hay nada pendiente o si el planificador está parado.
         """
+        pending_audio = self._sink_pending_seconds()  # fuera del cerrojo: el sink tiene el suyo
         with self._lock:
             if self._stopped:
                 return None
@@ -287,6 +292,12 @@ class Scheduler:
                 return None
             phrase.state = UnitState.TRANSLATING
             phrase.mode = self._decision.mode
+            # Retraso previsto (validación de la 002): lo que ya espera la frase más el audio pendiente en el
+            # sink, que tiene que sonar antes. Si eso ya pasa del umbral de resumir, se resume desde ahora.
+            policy = self._policy()
+            predicted = max(0.0, self._clock.now() - phrase.unit.t_end) + pending_audio + PREDICTION_MARGIN_S
+            if policy is not None and policy.allow_concise and predicted > policy.concise_after_s:
+                phrase.mode = TranslationMode.CONCISE
             phrase.mt_started_at = self._clock.now()
             return TranslationRequest(
                 unit=phrase.unit,
@@ -370,17 +381,33 @@ class Scheduler:
                     self._on_cancelled_locked(phrase)
         self._deliver()
 
+    def _policy(self) -> DelayPolicy | None:
+        """La política del controlador, si la expone (`ThresholdDelayController` sí)."""
+        return getattr(self._delay_controller, "policy", None)
+
+    def _sink_pending_seconds(self) -> float:
+        try:
+            return max(0.0, float(self._sink.pending_seconds()))
+        except Exception:  # un sink raro no debe tumbar al planificador
+            return 0.0
+
     def refresh_speed(self, unit_id: int) -> float:
         """Velocidad de la frase justo antes de sintetizarla (FR-012).
 
         Es la mayor entre la que se fijó al traducirla y la de la última decisión de retraso, y queda anotada
         para el informe. 1,0 si la frase ya no está abierta.
         """
+        pending_audio = self._sink_pending_seconds()  # fuera del cerrojo: el sink tiene el suyo
         with self._lock:
             phrase = self._open.get(unit_id)
             if phrase is None:
                 return 1.0
-            phrase.speed = max(phrase.speed, self._decision.speed)
+            speed = max(phrase.speed, self._decision.speed)
+            policy = self._policy()
+            if policy is not None:
+                predicted = max(0.0, self._clock.now() - phrase.unit.t_end) + pending_audio
+                speed = max(speed, speed_for_lag(policy, predicted))
+            phrase.speed = speed
             return phrase.speed
 
     @property
