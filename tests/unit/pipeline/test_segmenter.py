@@ -50,9 +50,16 @@ class TestPauseClauseSegmenterContract(SegmenterContract):
 # --------------------------------------------------------------------------------------------------
 
 
-def make(max_untranslated_s: float = 6.0) -> tuple[PauseClauseSegmenter, ManualClock]:
+def make(
+    max_untranslated_s: float = 6.0, *, min_tail_words: int = 1
+) -> tuple[PauseClauseSegmenter, ManualClock]:
+    """Segmentador de prueba. Por defecto con cola mínima 1 (la mecánica de cortes de la 001); la cola mínima
+    de la spec 002 se prueba en `TestMinimumTail`."""
     clock = ManualClock()
-    return PauseClauseSegmenter(clock, max_untranslated_s=max_untranslated_s), clock
+    segmenter = PauseClauseSegmenter(
+        clock, max_untranslated_s=max_untranslated_s, min_tail_words=min_tail_words
+    )
+    return segmenter, clock
 
 
 def utterance(
@@ -609,3 +616,41 @@ def test_random_streams_cover_the_text_once_and_respect_the_time_limit(seed: int
             f"seed {seed}: la unidad {unit.unit_id} es muy larga"
         )
         assert words_of(unit.source_text), "texto vacío"
+
+
+class TestMinimumTail:
+    """Spec 002, R7: no se corta por cláusula si detrás quedarían menos de 4 palabras."""
+
+    def test_the_default_minimum_tail_is_four_words(self) -> None:
+        from instanttraductor.pipeline.segmenter import MIN_TAIL_WORDS
+
+        assert MIN_TAIL_WORDS == 4
+        segmenter = PauseClauseSegmenter(ManualClock())
+        units = [
+            u
+            for batch in feed(
+                segmenter, utterance("I really did not want to go there, she said sadly", 0.0, 4.0)
+            )
+            for u in batch
+        ]
+        assert texts(units) == ["I really did not want to go there, she said sadly"]
+
+    def test_a_long_enough_tail_still_cuts_at_the_comma(self) -> None:
+        segmenter, _ = make(min_tail_words=4)
+        events = utterance("I really did not want to go there, but we had no other choice", 0.0, 5.0)
+        units = [u for batch in feed(segmenter, events) for u in batch]
+        assert texts(units) == ["I really did not want to go there,", "but we had no other choice"]
+
+    def test_with_partials_the_cut_waits_for_the_tail(self) -> None:
+        segmenter, _ = make(min_tail_words=4)
+        events = utterance("I really did not want to go there, but we had no other choice", 0.0, 5.0)
+        produced = feed(segmenter, events)
+        first_cut = next(i for i, batch in enumerate(produced) if batch)
+        # La coma está en la palabra 8; el corte no sale hasta que hay al menos 4 palabras estables detrás.
+        partial = events[first_cut]
+        assert isinstance(partial, AsrEvent)
+        assert len(partial.text.split()) >= 8 + 4
+
+    def test_the_minimum_tail_must_be_positive(self) -> None:
+        with pytest.raises(ValueError):
+            PauseClauseSegmenter(ManualClock(), min_tail_words=0)

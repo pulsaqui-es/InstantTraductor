@@ -10,6 +10,10 @@ VAD y FINAL del ASR tras el vaciado) y devuelve unidades de traducción:
   conjunción (`CLAUSE_CONJUNCTIONS`) si el fragmento tiene al menos `MIN_CLAUSE_WORDS` (6) palabras. La coma
   ha de estar en una palabra estable y la conjunción, además, no ser la última palabra del texto. Esas
   unidades llevan `is_sentence_end=False`.
+- **Cola mínima** (spec 002, R7): no se corta si detrás quedarían menos de `MIN_TAIL_WORDS` (4) palabras;
+  con el parcial, el corte espera a que las haya. Evita unidades de 1 a 3 palabras («she said sadly») que se
+  traducen mal (spike S7: del 14,5 % al 8,2 %). En japonés y chino no hay espacios, así que no hay cortes de
+  cláusula: la unidad es el segmento del VAD o el corte forzado.
 - **Corte forzado.** Si el habla sin traducir supera `max_untranslated_s` (6 s por defecto), se corta en la
   última palabra completa estable (FR-004, FR-005). Se mide en el reloj de audio, desde el final de la unidad
   anterior (o desde el inicio del segmento) hasta el final del audio que lleva el último parcial.
@@ -44,6 +48,7 @@ from instanttraductor.contracts import (
 )
 
 MIN_CLAUSE_WORDS: Final = 6  # palabras mínimas de un fragmento para cortarlo en una coma o conjunción
+MIN_TAIL_WORDS: Final = 4  # palabras mínimas que deben quedar tras un corte de cláusula (spec 002, R7)
 CLAUSE_CONJUNCTIONS: Final = frozenset({"and", "but", "because", "so", "which", "when", "while", "if"})
 MIN_UNIT_S: Final = 0.05  # una unidad dura al menos esto: `t_start < t_end` siempre
 _WORD_PUNCTUATION: Final = ".,;:!?\"'()"
@@ -65,13 +70,18 @@ def _stable_words(text: str, stable_len: int) -> int:
 class PauseClauseSegmenter:
     """`Segmenter` por pausas del VAD, cláusulas (coma o conjunción) y límite de habla sin traducir."""
 
-    def __init__(self, clock: Clock, *, max_untranslated_s: float = 6.0) -> None:
+    def __init__(
+        self, clock: Clock, *, max_untranslated_s: float = 6.0, min_tail_words: int = MIN_TAIL_WORDS
+    ) -> None:
         if not 0.0 < max_untranslated_s < math.inf:
             raise ValueError(
                 f"max_untranslated_s debe ser un número positivo; recibido: {max_untranslated_s}."
             )
+        if min_tail_words < 1:
+            raise ValueError(f"min_tail_words debe ser al menos 1; recibido: {min_tail_words}.")
         self._clock = clock
         self._max_untranslated_s = max_untranslated_s
+        self._min_tail_words = min_tail_words
         self._next_unit_id = 0
         self._last_unit_end = -math.inf  # fin de la última unidad emitida: la siguiente no empieza antes
         self._vad_end_t: float | None = None  # `SPEECH_END` del enunciado en curso, a la espera de su FINAL
@@ -151,12 +161,16 @@ class PauseClauseSegmenter:
         words = self._words
         max_cut = limit - 1 if final else limit
         for i in range(start, limit):
+            cut = None
             # Antes de una conjunción, con una palabra detrás (si no, se quedaría sola).
             if i - start >= MIN_CLAUSE_WORDS and i < len(words) - 1 and _is_conjunction(words[i]):
-                return i
+                cut = i
             # Tras una coma.
-            if words[i].endswith(",") and i + 1 - start >= MIN_CLAUSE_WORDS and i + 1 <= max_cut:
-                return i + 1
+            elif words[i].endswith(",") and i + 1 - start >= MIN_CLAUSE_WORDS and i + 1 <= max_cut:
+                cut = i + 1
+            # Cola mínima: detrás deben quedar `min_tail_words` palabras (con el parcial pueden llegar más).
+            if cut is not None and len(words) - cut >= self._min_tail_words:
+                return cut
         return None
 
     # ------------------------------------------------------------------ unidades
