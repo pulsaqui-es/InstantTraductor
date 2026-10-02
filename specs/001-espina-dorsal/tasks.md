@@ -423,7 +423,7 @@ description: "Lista de tareas de la feature 001-espina-dorsal"
   - `tests/fixtures/calidad/generate_quality_set.py` sintetiza en inglés 50 frases del corpus de S2 con Qwen3-TTS y una referencia inglesa de LibriVox de dominio público;
   - se pasa `archivo` y el humano revisa `traduccion.srt` (objetivo: ≥ 85 % buenas);
   - resultados en `validacion.md`.
-- [ ] T047 Convergencia y revisión (depends on T034, T039, T044, T046):
+- [X] T047 Convergencia y revisión (depends on T034, T039, T044, T046):
   - `/speckit-converge` hasta «Converged»;
   - agente `revisor` (Opus) sobre `main..001-espina-dorsal`;
   - corregir los hallazgos GRAVE y MEDIO.
