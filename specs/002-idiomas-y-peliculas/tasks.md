@@ -192,7 +192,7 @@
 
 ## Phase 8: Polish & Cross-Cutting Concerns
 
-- [ ] T032 README: idiomas, `--app` y `--elegir-app`, Discord y los nuevos componentes con sus licencias.
+- [X] T032 README: idiomas, `--app` y `--elegir-app`, Discord y los nuevos componentes con sus licencias.
 - [ ] T033 `/speckit-converge`, revisión con el agente `revisor` (Opus), registrar el hito, merge a main y tag `v0.2.0`.
 
 ---

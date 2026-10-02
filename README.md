@@ -2,7 +2,7 @@
 
 Traductor simultáneo para Windows: lo que suena en el PC (una serie, una película, un vídeo) se oye casi en tiempo real hablado en **español de España**, por encima del audio original, que no se toca.
 
-- Idioma de origen: **inglés**. Japonés y chino llegarán más adelante ([hoja de ruta](docs/hoja-de-ruta.md)).
+- Idiomas de origen: **inglés, japonés, chino (mandarín) y coreano**, elegidos a mano ([hoja de ruta](docs/hoja-de-ruta.md)).
 - **100 % local**: reconocimiento de voz, traducción y voz se ejecutan en tu PC. No hay cuentas, servicios de pago ni envío de audio a internet.
 - Uso personal.
 
@@ -40,9 +40,22 @@ uv run instanttraductor directo --mostrar-texto
 
 Si el retraso se acumula, la voz acelera hasta 1,25×. Si no basta, resume la frase y, como último recurso, descarta las pendientes más antiguas y lo avisa.
 
+### Idioma y aplicación que se escucha
+```powershell
+uv run instanttraductor idioma --elegir ja        # idioma de origen guardado: en, ja, zh o ko
+uv run instanttraductor directo --idioma ko       # otro idioma solo para esta sesión
+uv run instanttraductor directo --elegir-app      # elige de una lista la app de la película (se guarda)
+uv run instanttraductor directo --app chrome      # esa app solo en esta sesión
+uv run instanttraductor directo --todo-el-pc      # todo lo que suena, como en la 0.1
+uv run instanttraductor apps                      # qué aplicaciones están sonando
+```
+- **Escuchar solo la app de la película** deja fuera Discord, llamadas y notificaciones. Si la app se cierra o se reinicia, la terminal pone «esperando a…» y la traducción sigue sola cuando vuelve a sonar.
+- **Filtro de idioma:** lo que no está en el idioma elegido no se traduce. Así, si ves una película compartida por Discord mientras habláis en español en la llamada, solo se traduce la película.
+- **No se pueden separar** las pestañas de un mismo navegador, ni una conversación en el mismo idioma que la película si llegan por el mismo programa.
+
 ### Un fichero
 ```powershell
-uv run instanttraductor archivo pelicula.mkv
+uv run instanttraductor archivo pelicula.mkv            # --idioma ja|zh|ko si no es inglés
 ```
 Procesa a ritmo real, igual que en directo, y deja en `pelicula_es\` (o en `--salida DIR`):
 - `voz_es.wav`: la voz en español alineada con el original;
@@ -71,7 +84,7 @@ Las voces vienen incluidas: Lucía (por defecto), Clara, dos voces humanas graba
 | 6 | El equipo no cumple los requisitos |
 
 ## Cómo funciona
-Captura del audio del PC, excepto el de la propia app (*process loopback* de WASAPI) → detección de voz (Silero) → reconocimiento en streaming (Nemotron, en CPU) → traducción (Hy-MT2 7B con `llama-server`, con glosario de España y el modelo 1.8B de reserva si falta VRAM) → voz (Qwen3-TTS) → reproducción.
+Captura de la app elegida o de todo el PC, excepto la propia app (*process loopback* de WASAPI) → detección de voz (Silero) → reconocimiento del idioma elegido, en CPU (Nemotron para inglés, X-ASR para chino, SenseVoice para japonés y coreano) → filtro de idioma (Whisper base, CPU) → traducción (Hy-MT2 7B con `llama-server`, con glosario de España y el modelo 1.8B de reserva si falta VRAM) → voz (Qwen3-TTS) → reproducción.
 
 Detalles en [docs/arquitectura.md](docs/arquitectura.md) y en las decisiones de [docs/adr/](docs/adr/).
 
@@ -83,6 +96,9 @@ Detalles en [docs/arquitectura.md](docs/arquitectura.md) y en las decisiones de 
 | llama.cpp (`llama-server`) | MIT |
 | Hy-MT2-7B y 1.8B (traducción) | Apache-2.0 |
 | Nemotron Speech Streaming EN 0.6B (reconocimiento) | NVIDIA Open Model License |
+| X-ASR-zh-en (reconocimiento en chino) | Apache-2.0 |
+| SenseVoice-Small (reconocimiento en japonés y coreano) | FunASR Model License v1.1 (atribución) |
+| Whisper base (filtro de idioma) | MIT |
 | Silero VAD | MIT |
 | Qwen3-TTS-12Hz-0.6B-Base (voz) | Apache-2.0 |
 | Voces Lucía y Clara | Apache-2.0 (diseñadas con VoxCPM2; audio sintético) |
