@@ -2,6 +2,20 @@
 
 Registro cronológico del proyecto, con lo más reciente arriba. El formato y las reglas están en la skill `registrar-hito`.
 
+## 2026-10-02 — Spikes de la 002 y ADR-0012/0013 aprobados
+- **Hecho:**
+  - tres investigaciones (`docs/investigacion/2026-10-02-*`) y tres spikes integrados en `002-idiomas-y-peliculas`:
+    - S5, idiomas: X-ASR (zh), SenseVoice (ja/ko), filtro de idioma con Whisper base y Hy-MT2 para ja/zh/ko;
+    - S6, captura de la app elegida con INCLUDE en Chrome, Edge y Discord;
+    - S7, habla baja: el problema real es la voz bajo la música, no el volumen; «vosotros» del 50 % al 74-81 %.
+- **Decidido (humano):**
+  - ADR-0012: escuchar la app elegida, más filtro de idioma;
+  - ADR-0013: un reconocedor por idioma en CPU;
+  - objetivo de «vosotros»: ≥ 80 % y «ustedes» ≤ 2 % (antes 95 %, que no es alcanzable);
+  - las películas se ven a menudo compartidas por Discord, con la llamada en el mismo programa.
+- **Pendiente con el humano:** medir con `discord_sesiones.py` si la emisión y la llamada de Discord salen por procesos distintos.
+- **Siguiente:** `/speckit-plan` de la 002.
+
 ## 2026-10-02 — Alcance de la 002: idiomas elegidos a mano
 - **Decidido (humano):**
   - el idioma de origen se elige a mano (inglés, japonés, chino y coreano) y entra en la 002: un reconocedor ligero por idioma, sin detectar el idioma, con menos consumo y menos espera;

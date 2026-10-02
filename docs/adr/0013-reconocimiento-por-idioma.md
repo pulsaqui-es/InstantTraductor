@@ -1,6 +1,6 @@
 # ADR-0013: Reconocimiento de voz por idioma elegido (en, ja, zh, ko)
 
-- Estado: Propuesta
+- Estado: Aceptada (aprobada por el humano el 2026-10-02)
 - Fecha: 2026-10-02
 - Decide: humano, a propuesta del orquestador tras el spike S5
 

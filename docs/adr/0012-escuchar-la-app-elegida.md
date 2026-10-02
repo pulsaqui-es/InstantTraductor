@@ -1,6 +1,6 @@
 # ADR-0012: Escuchar solo la aplicación elegida (captura INCLUDE) y filtro de idioma
 
-- Estado: Propuesta
+- Estado: Aceptada (aprobada por el humano el 2026-10-02)
 - Fecha: 2026-10-02
 - Decide: humano, a propuesta del orquestador tras el spike S6
 
