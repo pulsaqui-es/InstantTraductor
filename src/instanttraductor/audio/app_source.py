@@ -187,12 +187,12 @@ class AppLoopbackSource:
             if self._started or self._stopped:
                 return
             self._started = True
-        self._origin = self._clock.now()
         self._notify_state()
         try:
             self._watch_once()
         except Exception:
             logger.exception("Falló la primera búsqueda de la app")
+        self._origin = self._clock.now()  # el reloj de audio empieza al arrancar el bombeo, no al abrir
         for name, target in (("app-bombeo", self._pump_loop), ("app-vigilante", self._watch_loop)):
             thread = threading.Thread(target=target, name=name, daemon=True)
             self._threads.append(thread)
