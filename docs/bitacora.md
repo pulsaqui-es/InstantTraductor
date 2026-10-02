@@ -2,6 +2,13 @@
 
 Registro cronológico del proyecto, con lo más reciente arriba. El formato y las reglas están en la skill `registrar-hito`.
 
+## 2026-10-02 — Alcance de la 002: idiomas elegidos a mano
+- **Decidido (humano):**
+  - el idioma de origen se elige a mano (inglés, japonés, chino y coreano) y entra en la 002: un reconocedor ligero por idioma, sin detectar el idioma, con menos consumo y menos espera;
+  - la detección automática queda como opción en la 004;
+  - el coreano entra en el alcance.
+- **Siguiente:** rama `002-idiomas-y-peliculas`, `/speckit-specify` e investigación de reconocedores ja/zh/ko y de la captura por app.
+
 ## 2026-10-02 — Spec 001 cerrada: versión 0.1.0
 - **Hecho:**
   - olas 2 y 3 integradas (reproducción, autotest y eco; modo archivo; instalador y voces);
