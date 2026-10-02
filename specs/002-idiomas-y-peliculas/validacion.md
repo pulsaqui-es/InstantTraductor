@@ -53,7 +53,7 @@ Corpus FLEURS de S5 (lectura continua, de 11 a 12 min por idioma, con música a 
 *Pendiente:* medirlo con diálogo real (anime, serie coreana) con el humano, antes de decidir si hace falta más (umbrales o resumen más agresivo para ja/ko).
 
 ## SC-002 Calidad ja/zh/ko
-- Hojas de revisión: `%LOCALAPPDATA%\InstantTraductor\calidadevision_{ja,zh,ko}.txt`. Cada frase con su referencia (es_419 de FLEURS) y lo que dijo la app.
+- Hojas de revisión: `%LOCALAPPDATA%\InstantTraductor\calidad\revision_{ja,zh,ko}.txt`. Cada frase con su referencia (es_419 de FLEURS) y lo que dijo la app.
 - Primera lectura del orquestador: en ja hay varias frases con el sentido cambiado (errores del reconocedor y cortes forzados a 6 s). Si no llega al 85 %, la alternativa prevista es Parakeet-ja (R2).
 - *Pendiente: juicio del humano.*
 
