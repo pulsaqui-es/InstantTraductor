@@ -21,6 +21,8 @@ dependencies = [
     "filelock",
     "httpx>=0.28",
     "pyarrow>=25.0.1",
+    "tomli-w>=1.2.0",
+    "sacrebleu>=2.6.0",
 ]
 
 [tool.uv]

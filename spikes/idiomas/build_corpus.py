@@ -27,7 +27,8 @@ from idiomas.audio import (
     noise,
     speech_rms_db,
 )
-from idiomas.paths import CORPUS_MANIFEST, FLEURS, LANGS, corpus_dir, music_dir
+from idiomas.paths import CORPUS_MANIFEST, FLEURS, LANGS, corpus_dir, music_dir, silero_model_path
+from idiomas.vad import FRAME, FRAME_S, SileroOnnx
 
 N_PHRASES = 50
 N_LID = 30
@@ -65,7 +66,23 @@ def decode(row: dict) -> np.ndarray:
     return (x * (0.95 / peak) if peak > 0.95 else x).astype(np.float32)
 
 
+def silero_span(model: SileroOnnx, x: np.ndarray, thr: float = 0.5) -> tuple[float, float] | None:
+    """Primera y última trama con probabilidad de habla de Silero >= ``thr`` (s).
+
+    Es el «fin real del habla» de las latencias: en FLEURS el oráculo por energía de S3 falla en grabaciones con ruido
+    (llega a marcar el fin varios segundos antes), así que se usa la probabilidad de Silero sobre el clip limpio.
+    """
+    model.reset()
+    n = len(x) // FRAME
+    probs = np.array([model.prob(x[i * FRAME : (i + 1) * FRAME]) for i in range(n)])
+    idx = np.flatnonzero(probs >= thr)
+    if idx.size == 0:
+        return None
+    return float(idx[0] * FRAME_S), float((idx[-1] + 1) * FRAME_S)
+
+
 def main() -> None:
+    silero = SileroOnnx(silero_model_path())
     rng = np.random.default_rng(SEED)
     root = corpus_dir()
     splits = {lang: load_split(lang) for lang in ("ja", "zh", "ko", "es", "en")}
@@ -96,6 +113,7 @@ def main() -> None:
             x = decode(row)
             sf.write(root / "clean" / lang / f"{sid}.wav", x, SAMPLE_RATE, subtype="PCM_16")
             ivs = energy_speech_intervals(x)
+            span = silero_span(silero, x)
             start = cursor
             parts.append(x)
             cursor += len(x)
@@ -110,8 +128,10 @@ def main() -> None:
                     "duration": round(len(x) / SAMPLE_RATE, 2),
                     "start": round(start / SAMPLE_RATE, 3),
                     "end": round(cursor / SAMPLE_RATE, 3),
-                    "speech_start": round(start / SAMPLE_RATE + ivs[0][0], 3) if ivs else None,
-                    "speech_end": round(start / SAMPLE_RATE + ivs[-1][1], 3) if ivs else None,
+                    "speech_start": round(start / SAMPLE_RATE + span[0], 3) if span else None,
+                    "speech_end": round(start / SAMPLE_RATE + span[1], 3) if span else None,
+                    "energy_start": round(start / SAMPLE_RATE + ivs[0][0], 3) if ivs else None,
+                    "energy_end": round(start / SAMPLE_RATE + ivs[-1][1], 3) if ivs else None,
                     "speech_intervals": [[round(start / SAMPLE_RATE + a, 3), round(start / SAMPLE_RATE + b, 3)] for a, b in ivs],
                 }
             )

@@ -48,7 +48,7 @@
   "ja": {
    "fleurs": "ja_jp",
    "duration": 741.8,
-   "speech_level_db": -23.0,
+   "speech_level_db": -23.4,
    "items": [
     {
      "id": 1666,
@@ -60,8 +60,10 @@
      "duration": 13.56,
      "start": 1.0,
      "end": 14.56,
-     "speech_start": 4.73,
-     "speech_end": 10.875,
+     "speech_start": 4.744,
+     "speech_end": 10.952,
+     "energy_start": 4.73,
+     "energy_end": 10.875,
      "speech_intervals": [
       [
        4.73,
@@ -79,8 +81,10 @@
      "duration": 17.82,
      "start": 16.563,
      "end": 34.383,
-     "speech_start": 17.243,
-     "speech_end": 31.368,
+     "speech_start": 20.627,
+     "speech_end": 31.443,
+     "energy_start": 17.243,
+     "energy_end": 31.368,
      "speech_intervals": [
       [
        17.243,
@@ -110,8 +114,10 @@
      "duration": 10.5,
      "start": 36.277,
      "end": 46.777,
-     "speech_start": 38.907,
-     "speech_end": 45.772,
+     "speech_start": 38.933,
+     "speech_end": 45.877,
+     "energy_start": 38.907,
+     "energy_end": 45.772,
      "speech_intervals": [
       [
        38.907,
@@ -133,8 +139,10 @@
      "duration": 15.9,
      "start": 48.5,
      "end": 64.4,
-     "speech_start": 53.65,
-     "speech_end": 59.615,
+     "speech_start": 53.748,
+     "speech_end": 59.7,
+     "energy_start": 53.65,
+     "energy_end": 59.615,
      "speech_intervals": [
       [
        53.65,
@@ -152,8 +160,10 @@
      "duration": 9.36,
      "start": 65.827,
      "end": 75.187,
-     "speech_start": 67.847,
-     "speech_end": 72.782,
+     "speech_start": 67.939,
+     "speech_end": 72.803,
+     "energy_start": 67.847,
+     "energy_end": 72.782,
      "speech_intervals": [
       [
        67.847,
@@ -171,8 +181,10 @@
      "duration": 10.2,
      "start": 76.487,
      "end": 86.687,
-     "speech_start": 78.557,
-     "speech_end": 83.952,
+     "speech_start": 78.567,
+     "speech_end": 84.007,
+     "energy_start": 78.557,
+     "energy_end": 83.952,
      "speech_intervals": [
       [
        78.557,
@@ -191,7 +203,9 @@
      "start": 88.471,
      "end": 100.411,
      "speech_start": 89.751,
-     "speech_end": 90.226,
+     "speech_end": 98.359,
+     "energy_start": 89.751,
+     "energy_end": 90.226,
      "speech_intervals": [
       [
        89.751,
@@ -210,7 +224,9 @@
      "start": 101.967,
      "end": 111.867,
      "speech_start": 104.047,
-     "speech_end": 109.352,
+     "speech_end": 109.487,
+     "energy_start": 104.047,
+     "energy_end": 109.352,
      "speech_intervals": [
       [
        104.047,
@@ -228,8 +244,10 @@
      "duration": 11.7,
      "start": 113.55,
      "end": 125.25,
-     "speech_start": 114.9,
-     "speech_end": 124.265,
+     "speech_start": 114.894,
+     "speech_end": 124.366,
+     "energy_start": 114.9,
+     "energy_end": 124.265,
      "speech_intervals": [
       [
        114.9,
@@ -263,8 +281,10 @@
      "duration": 19.08,
      "start": 126.583,
      "end": 145.663,
-     "speech_start": 127.213,
-     "speech_end": 143.788,
+     "speech_start": 127.735,
+     "speech_end": 143.831,
+     "energy_start": 127.213,
+     "energy_end": 143.788,
      "speech_intervals": [
       [
        127.213,
@@ -282,8 +302,10 @@
      "duration": 13.86,
      "start": 147.288,
      "end": 161.148,
-     "speech_start": 147.928,
-     "speech_end": 160.963,
+     "speech_start": 147.96,
+     "speech_end": 161.048,
+     "energy_start": 147.928,
+     "energy_end": 160.963,
      "speech_intervals": [
       [
        147.928,
@@ -309,8 +331,10 @@
      "duration": 13.62,
      "start": 162.531,
      "end": 176.151,
-     "speech_start": 162.851,
-     "speech_end": 175.836,
+     "speech_start": 165.539,
+     "speech_end": 173.347,
+     "energy_start": 162.851,
+     "energy_end": 175.836,
      "speech_intervals": [
       [
        162.851,
@@ -336,8 +360,10 @@
      "duration": 10.62,
      "start": 177.565,
      "end": 188.185,
-     "speech_start": 178.945,
-     "speech_end": 185.7,
+     "speech_start": 179.261,
+     "speech_end": 185.821,
+     "energy_start": 178.945,
+     "energy_end": 185.7,
      "speech_intervals": [
       [
        178.945,
@@ -355,8 +381,10 @@
      "duration": 12.18,
      "start": 189.947,
      "end": 202.127,
-     "speech_start": 192.037,
-     "speech_end": 200.802,
+     "speech_start": 192.091,
+     "speech_end": 200.859,
+     "energy_start": 192.037,
+     "energy_end": 200.802,
      "speech_intervals": [
       [
        192.037,
@@ -382,8 +410,10 @@
      "duration": 13.74,
      "start": 203.773,
      "end": 217.513,
-     "speech_start": 207.173,
-     "speech_end": 214.278,
+     "speech_start": 207.613,
+     "speech_end": 214.333,
+     "energy_start": 207.173,
+     "energy_end": 214.278,
      "speech_intervals": [
       [
        207.173,
@@ -405,8 +435,10 @@
      "duration": 13.62,
      "start": 219.287,
      "end": 232.907,
-     "speech_start": 220.837,
-     "speech_end": 230.202,
+     "speech_start": 220.823,
+     "speech_end": 230.871,
+     "energy_start": 220.837,
+     "energy_end": 230.202,
      "speech_intervals": [
       [
        220.837,
@@ -444,8 +476,10 @@
      "duration": 8.88,
      "start": 235.101,
      "end": 243.981,
-     "speech_start": 238.101,
-     "speech_end": 238.376,
+     "speech_start": 236.701,
+     "speech_end": 242.141,
+     "energy_start": 238.101,
+     "energy_end": 238.376,
      "speech_intervals": [
       [
        238.101,
@@ -463,8 +497,10 @@
      "duration": 7.14,
      "start": 245.355,
      "end": 252.495,
-     "speech_start": 247.085,
-     "speech_end": 250.16,
+     "speech_start": 246.987,
+     "speech_end": 250.411,
+     "energy_start": 247.085,
+     "energy_end": 250.16,
      "speech_intervals": [
       [
        247.085,
@@ -486,8 +522,10 @@
      "duration": 13.98,
      "start": 254.373,
      "end": 268.353,
-     "speech_start": 256.323,
-     "speech_end": 263.658,
+     "speech_start": 256.293,
+     "speech_end": 266.149,
+     "energy_start": 256.323,
+     "energy_end": 263.658,
      "speech_intervals": [
       [
        256.323,
@@ -517,8 +555,10 @@
      "duration": 12.36,
      "start": 270.53,
      "end": 282.89,
-     "speech_start": 271.42,
-     "speech_end": 281.455,
+     "speech_start": 271.394,
+     "speech_end": 281.57,
+     "energy_start": 271.42,
+     "energy_end": 281.455,
      "speech_intervals": [
       [
        271.42,
@@ -556,8 +596,10 @@
      "duration": 13.8,
      "start": 284.523,
      "end": 298.323,
-     "speech_start": 286.553,
-     "speech_end": 295.518,
+     "speech_start": 286.859,
+     "speech_end": 295.627,
+     "energy_start": 286.553,
+     "energy_end": 295.518,
      "speech_intervals": [
       [
        286.553,
@@ -575,8 +617,10 @@
      "duration": 11.82,
      "start": 300.25,
      "end": 312.07,
-     "speech_start": 302.6,
-     "speech_end": 311.615,
+     "speech_start": 302.618,
+     "speech_end": 308.474,
+     "energy_start": 302.6,
+     "energy_end": 311.615,
      "speech_intervals": [
       [
        302.6,
@@ -598,8 +642,10 @@
      "duration": 8.1,
      "start": 313.695,
      "end": 321.795,
-     "speech_start": 315.115,
-     "speech_end": 319.87,
+     "speech_start": 315.583,
+     "speech_end": 319.967,
+     "energy_start": 315.115,
+     "energy_end": 319.87,
      "speech_intervals": [
       [
        315.115,
@@ -617,8 +663,10 @@
      "duration": 16.8,
      "start": 323.557,
      "end": 340.357,
-     "speech_start": 325.757,
-     "speech_end": 335.372,
+     "speech_start": 325.733,
+     "speech_end": 338.149,
+     "energy_start": 325.757,
+     "energy_end": 335.372,
      "speech_intervals": [
       [
        325.757,
@@ -660,8 +708,10 @@
      "duration": 14.22,
      "start": 342.369,
      "end": 356.589,
-     "speech_start": 345.589,
-     "speech_end": 353.654,
+     "speech_start": 345.889,
+     "speech_end": 353.729,
+     "energy_start": 345.589,
+     "energy_end": 353.654,
      "speech_intervals": [
       [
        345.589,
@@ -679,8 +729,10 @@
      "duration": 9.06,
      "start": 358.654,
      "end": 367.714,
-     "speech_start": 360.194,
-     "speech_end": 365.759,
+     "speech_start": 360.19,
+     "speech_end": 366.142,
+     "energy_start": 360.194,
+     "energy_end": 365.759,
      "speech_intervals": [
       [
        360.194,
@@ -710,8 +762,10 @@
      "duration": 20.7,
      "start": 369.759,
      "end": 390.459,
-     "speech_start": 369.759,
-     "speech_end": 387.044,
+     "speech_start": 372.671,
+     "speech_end": 387.135,
+     "energy_start": 369.759,
+     "energy_end": 387.044,
      "speech_intervals": [
       [
        369.759,
@@ -753,8 +807,10 @@
      "duration": 17.76,
      "start": 392.207,
      "end": 409.967,
-     "speech_start": 397.027,
-     "speech_end": 397.682,
+     "speech_start": 394.255,
+     "speech_end": 407.951,
+     "energy_start": 397.027,
+     "energy_end": 397.682,
      "speech_intervals": [
       [
        397.027,
@@ -772,8 +828,10 @@
      "duration": 9.12,
      "start": 411.894,
      "end": 421.014,
-     "speech_start": 414.064,
-     "speech_end": 418.569,
+     "speech_start": 414.294,
+     "speech_end": 418.646,
+     "energy_start": 414.064,
+     "energy_end": 418.569,
      "speech_intervals": [
       [
        414.064,
@@ -791,8 +849,10 @@
      "duration": 11.22,
      "start": 423.084,
      "end": 434.304,
-     "speech_start": 425.064,
-     "speech_end": 432.269,
+     "speech_start": 425.1,
+     "speech_end": 432.396,
+     "energy_start": 425.064,
+     "energy_end": 432.269,
      "speech_intervals": [
       [
        425.064,
@@ -810,8 +870,10 @@
      "duration": 9.84,
      "start": 435.613,
      "end": 445.453,
-     "speech_start": 436.823,
-     "speech_end": 443.258,
+     "speech_start": 437.309,
+     "speech_end": 443.325,
+     "energy_start": 436.823,
+     "energy_end": 443.258,
      "speech_intervals": [
       [
        436.823,
@@ -833,8 +895,10 @@
      "duration": 11.22,
      "start": 447.439,
      "end": 458.659,
-     "speech_start": 449.789,
-     "speech_end": 458.004,
+     "speech_start": 449.903,
+     "speech_end": 455.439,
+     "energy_start": 449.789,
+     "energy_end": 458.004,
      "speech_intervals": [
       [
        449.789,
@@ -857,7 +921,9 @@
      "start": 460.53,
      "end": 473.61,
      "speech_start": 462.45,
-     "speech_end": 470.245,
+     "speech_end": 471.122,
+     "energy_start": 462.45,
+     "energy_end": 470.245,
      "speech_intervals": [
       [
        462.45,
@@ -895,8 +961,10 @@
      "duration": 9.24,
      "start": 475.75,
      "end": 484.99,
-     "speech_start": 478.0,
-     "speech_end": 480.095,
+     "speech_start": 477.446,
+     "speech_end": 483.238,
+     "energy_start": 478.0,
+     "energy_end": 480.095,
      "speech_intervals": [
       [
        478.0,
@@ -918,8 +986,10 @@
      "duration": 15.06,
      "start": 486.401,
      "end": 501.461,
-     "speech_start": 489.831,
-     "speech_end": 500.606,
+     "speech_start": 489.857,
+     "speech_end": 497.697,
+     "energy_start": 489.831,
+     "energy_end": 500.606,
      "speech_intervals": [
       [
        489.831,
@@ -945,8 +1015,10 @@
      "duration": 12.54,
      "start": 503.111,
      "end": 515.651,
-     "speech_start": 505.521,
-     "speech_end": 505.906,
+     "speech_start": 505.383,
+     "speech_end": 513.703,
+     "energy_start": 505.521,
+     "energy_end": 505.906,
      "speech_intervals": [
       [
        505.521,
@@ -964,8 +1036,10 @@
      "duration": 18.66,
      "start": 517.565,
      "end": 536.225,
-     "speech_start": 520.415,
-     "speech_end": 534.44,
+     "speech_start": 520.413,
+     "speech_end": 534.525,
+     "energy_start": 520.415,
+     "energy_end": 534.44,
      "speech_intervals": [
       [
        520.415,
@@ -999,8 +1073,10 @@
      "duration": 13.08,
      "start": 537.467,
      "end": 550.547,
-     "speech_start": 539.577,
-     "speech_end": 547.562,
+     "speech_start": 539.579,
+     "speech_end": 548.571,
+     "energy_start": 539.577,
+     "energy_end": 547.562,
      "speech_intervals": [
       [
        539.577,
@@ -1038,8 +1114,10 @@
      "duration": 13.14,
      "start": 551.896,
      "end": 565.036,
-     "speech_start": 554.016,
-     "speech_end": 554.171,
+     "speech_start": 554.008,
+     "speech_end": 563.032,
+     "energy_start": 554.016,
+     "energy_end": 554.171,
      "speech_intervals": [
       [
        554.016,
@@ -1057,8 +1135,10 @@
      "duration": 10.86,
      "start": 567.101,
      "end": 577.961,
-     "speech_start": 568.871,
-     "speech_end": 575.506,
+     "speech_start": 569.213,
+     "speech_end": 575.613,
+     "energy_start": 568.871,
+     "energy_end": 575.506,
      "speech_intervals": [
       [
        568.871,
@@ -1076,8 +1156,10 @@
      "duration": 20.1,
      "start": 579.833,
      "end": 599.933,
-     "speech_start": 582.813,
-     "speech_end": 591.458,
+     "speech_start": 581.785,
+     "speech_end": 597.977,
+     "energy_start": 582.813,
+     "energy_end": 591.458,
      "speech_intervals": [
       [
        582.813,
@@ -1103,8 +1185,10 @@
      "duration": 10.56,
      "start": 601.61,
      "end": 612.17,
-     "speech_start": 603.23,
-     "speech_end": 603.875,
+     "speech_start": 603.21,
+     "speech_end": 609.93,
+     "energy_start": 603.23,
+     "energy_end": 603.875,
      "speech_intervals": [
       [
        603.23,
@@ -1122,8 +1206,10 @@
      "duration": 11.58,
      "start": 613.621,
      "end": 625.201,
-     "speech_start": 614.891,
-     "speech_end": 622.876,
+     "speech_start": 615.253,
+     "speech_end": 622.933,
+     "energy_start": 614.891,
+     "energy_end": 622.876,
      "speech_intervals": [
       [
        614.891,
@@ -1145,8 +1231,10 @@
      "duration": 20.64,
      "start": 627.145,
      "end": 647.785,
-     "speech_start": 628.115,
-     "speech_end": 646.56,
+     "speech_start": 629.385,
+     "speech_end": 646.441,
+     "energy_start": 628.115,
+     "energy_end": 646.56,
      "speech_intervals": [
       [
        628.115,
@@ -1192,8 +1280,10 @@
      "duration": 24.48,
      "start": 649.022,
      "end": 673.502,
-     "speech_start": 654.152,
-     "speech_end": 669.637,
+     "speech_start": 654.174,
+     "speech_end": 669.662,
+     "energy_start": 654.152,
+     "energy_end": 669.637,
      "speech_intervals": [
       [
        654.152,
@@ -1219,8 +1309,10 @@
      "duration": 12.6,
      "start": 675.062,
      "end": 687.662,
-     "speech_start": 677.062,
-     "speech_end": 683.077,
+     "speech_start": 676.982,
+     "speech_end": 685.718,
+     "energy_start": 677.062,
+     "energy_end": 683.077,
      "speech_intervals": [
       [
        677.062,
@@ -1246,8 +1338,10 @@
      "duration": 11.58,
      "start": 689.061,
      "end": 700.641,
-     "speech_start": 690.691,
-     "speech_end": 698.336,
+     "speech_start": 691.045,
+     "speech_end": 698.437,
+     "energy_start": 690.691,
+     "energy_end": 698.336,
      "speech_intervals": [
       [
        690.691,
@@ -1265,8 +1359,10 @@
      "duration": 14.34,
      "start": 702.815,
      "end": 717.155,
-     "speech_start": 705.265,
-     "speech_end": 705.6,
+     "speech_start": 705.087,
+     "speech_end": 715.039,
+     "energy_start": 705.265,
+     "energy_end": 705.6,
      "speech_intervals": [
       [
        705.265,
@@ -1284,8 +1380,10 @@
      "duration": 9.3,
      "start": 719.328,
      "end": 728.628,
-     "speech_start": 720.448,
-     "speech_end": 726.353,
+     "speech_start": 720.768,
+     "speech_end": 726.432,
+     "energy_start": 720.448,
+     "energy_end": 726.353,
      "speech_intervals": [
       [
        720.448,
@@ -1303,8 +1401,10 @@
      "duration": 8.04,
      "start": 729.842,
      "end": 737.882,
-     "speech_start": 731.002,
-     "speech_end": 736.607,
+     "speech_start": 731.026,
+     "speech_end": 736.722,
+     "energy_start": 731.002,
+     "energy_end": 736.607,
      "speech_intervals": [
       [
        731.002,
@@ -1321,7 +1421,7 @@
   "zh": {
    "fleurs": "cmn_hans_cn",
    "duration": 658.7,
-   "speech_level_db": -22.7,
+   "speech_level_db": -22.8,
    "items": [
     {
      "id": 1666,
@@ -1333,8 +1433,10 @@
      "duration": 8.16,
      "start": 1.0,
      "end": 9.16,
-     "speech_start": 2.1,
-     "speech_end": 8.245,
+     "speech_start": 2.088,
+     "speech_end": 8.328,
+     "energy_start": 2.1,
+     "energy_end": 8.245,
      "speech_intervals": [
       [
        2.1,
@@ -1356,8 +1458,10 @@
      "duration": 15.64,
      "start": 10.491,
      "end": 26.131,
-     "speech_start": 11.881,
-     "speech_end": 23.336,
+     "speech_start": 11.899,
+     "speech_end": 23.419,
+     "energy_start": 11.881,
+     "energy_end": 23.336,
      "speech_intervals": [
       [
        11.881,
@@ -1387,8 +1491,10 @@
      "duration": 8.88,
      "start": 27.689,
      "end": 36.569,
-     "speech_start": 29.579,
-     "speech_end": 34.624,
+     "speech_start": 29.609,
+     "speech_end": 34.697,
+     "energy_start": 29.579,
+     "energy_end": 34.624,
      "speech_intervals": [
       [
        29.579,
@@ -1410,8 +1516,10 @@
      "duration": 10.5,
      "start": 38.398,
      "end": 48.898,
-     "speech_start": 39.978,
-     "speech_end": 47.163,
+     "speech_start": 40.094,
+     "speech_end": 47.326,
+     "energy_start": 39.978,
+     "energy_end": 47.163,
      "speech_intervals": [
       [
        39.978,
@@ -1433,8 +1541,10 @@
      "duration": 6.66,
      "start": 50.42,
      "end": 57.08,
-     "speech_start": 51.66,
-     "speech_end": 55.725,
+     "speech_start": 51.668,
+     "speech_end": 55.828,
+     "energy_start": 51.66,
+     "energy_end": 55.725,
      "speech_intervals": [
       [
        51.66,
@@ -1456,8 +1566,10 @@
      "duration": 6.9,
      "start": 58.657,
      "end": 65.557,
-     "speech_start": 59.327,
-     "speech_end": 64.782,
+     "speech_start": 59.329,
+     "speech_end": 64.897,
+     "energy_start": 59.327,
+     "energy_end": 64.782,
      "speech_intervals": [
       [
        59.327,
@@ -1475,8 +1587,10 @@
      "duration": 8.22,
      "start": 67.506,
      "end": 75.726,
-     "speech_start": 68.316,
-     "speech_end": 74.911,
+     "speech_start": 68.37,
+     "speech_end": 74.962,
+     "energy_start": 68.316,
+     "energy_end": 74.911,
      "speech_intervals": [
       [
        68.316,
@@ -1494,8 +1608,10 @@
      "duration": 11.14,
      "start": 77.561,
      "end": 88.701,
-     "speech_start": 79.881,
-     "speech_end": 86.916,
+     "speech_start": 79.929,
+     "speech_end": 86.969,
+     "energy_start": 79.881,
+     "energy_end": 86.916,
      "speech_intervals": [
       [
        79.881,
@@ -1517,8 +1633,10 @@
      "duration": 7.26,
      "start": 90.291,
      "end": 97.551,
-     "speech_start": 91.591,
-     "speech_end": 96.796,
+     "speech_start": 91.635,
+     "speech_end": 96.851,
+     "energy_start": 91.591,
+     "energy_end": 96.796,
      "speech_intervals": [
       [
        91.591,
@@ -1536,8 +1654,10 @@
      "duration": 21.96,
      "start": 99.335,
      "end": 121.295,
-     "speech_start": 102.865,
-     "speech_end": 119.52,
+     "speech_start": 102.887,
+     "speech_end": 119.623,
+     "energy_start": 102.865,
+     "energy_end": 119.52,
      "speech_intervals": [
       [
        102.865,
@@ -1575,8 +1695,10 @@
      "duration": 16.92,
      "start": 123.083,
      "end": 140.003,
-     "speech_start": 128.303,
-     "speech_end": 136.638,
+     "speech_start": 128.331,
+     "speech_end": 136.811,
+     "energy_start": 128.303,
+     "energy_end": 136.638,
      "speech_intervals": [
       [
        128.303,
@@ -1606,8 +1728,10 @@
      "duration": 11.58,
      "start": 142.173,
      "end": 153.753,
-     "speech_start": 143.223,
-     "speech_end": 151.858,
+     "speech_start": 143.741,
+     "speech_end": 151.933,
+     "energy_start": 143.223,
+     "energy_end": 151.858,
      "speech_intervals": [
       [
        143.223,
@@ -1633,8 +1757,10 @@
      "duration": 12.9,
      "start": 155.176,
      "end": 168.076,
-     "speech_start": 157.826,
-     "speech_end": 164.231,
+     "speech_start": 157.864,
+     "speech_end": 164.328,
+     "energy_start": 157.826,
+     "energy_end": 164.231,
      "speech_intervals": [
       [
        157.826,
@@ -1656,8 +1782,10 @@
      "duration": 8.1,
      "start": 169.35,
      "end": 177.45,
-     "speech_start": 170.079,
-     "speech_end": 176.595,
+     "speech_start": 170.085,
+     "speech_end": 176.71,
+     "energy_start": 170.079,
+     "energy_end": 176.595,
      "speech_intervals": [
       [
        170.079,
@@ -1679,8 +1807,10 @@
      "duration": 15.22,
      "start": 178.946,
      "end": 194.166,
-     "speech_start": 183.146,
-     "speech_end": 190.371,
+     "speech_start": 183.202,
+     "speech_end": 190.402,
+     "energy_start": 183.146,
+     "energy_end": 190.371,
      "speech_intervals": [
       [
        183.146,
@@ -1702,8 +1832,10 @@
      "duration": 8.22,
      "start": 196.11,
      "end": 204.33,
-     "speech_start": 196.69,
-     "speech_end": 203.495,
+     "speech_start": 197.038,
+     "speech_end": 203.598,
+     "energy_start": 196.69,
+     "energy_end": 203.495,
      "speech_intervals": [
       [
        196.69,
@@ -1721,8 +1853,10 @@
      "duration": 8.08,
      "start": 205.874,
      "end": 213.954,
-     "speech_start": 206.994,
-     "speech_end": 211.409,
+     "speech_start": 207.314,
+     "speech_end": 211.442,
+     "energy_start": 206.994,
+     "energy_end": 211.409,
      "speech_intervals": [
       [
        206.994,
@@ -1740,8 +1874,10 @@
      "duration": 9.18,
      "start": 215.662,
      "end": 224.842,
-     "speech_start": 218.162,
-     "speech_end": 221.787,
+     "speech_start": 218.19,
+     "speech_end": 221.646,
+     "energy_start": 218.162,
+     "energy_end": 221.787,
      "speech_intervals": [
       [
        218.162,
@@ -1759,8 +1895,10 @@
      "duration": 15.68,
      "start": 226.533,
      "end": 242.213,
-     "speech_start": 228.593,
-     "speech_end": 239.878,
+     "speech_start": 228.613,
+     "speech_end": 239.909,
+     "energy_start": 228.593,
+     "energy_end": 239.878,
      "speech_intervals": [
       [
        228.593,
@@ -1790,8 +1928,10 @@
      "duration": 7.8,
      "start": 243.585,
      "end": 251.385,
-     "speech_start": 244.775,
-     "speech_end": 249.9,
+     "speech_start": 244.801,
+     "speech_end": 249.985,
+     "energy_start": 244.775,
+     "energy_end": 249.9,
      "speech_intervals": [
       [
        244.775,
@@ -1813,8 +1953,10 @@
      "duration": 13.38,
      "start": 253.483,
      "end": 266.863,
-     "speech_start": 255.323,
-     "speech_end": 264.858,
+     "speech_start": 255.339,
+     "speech_end": 264.971,
+     "energy_start": 255.323,
+     "energy_end": 264.858,
      "speech_intervals": [
       [
        255.323,
@@ -1840,8 +1982,10 @@
      "duration": 7.92,
      "start": 268.144,
      "end": 276.064,
-     "speech_start": 269.374,
-     "speech_end": 274.109,
+     "speech_start": 269.392,
+     "speech_end": 274.192,
+     "energy_start": 269.374,
+     "energy_end": 274.109,
      "speech_intervals": [
       [
        269.374,
@@ -1863,8 +2007,10 @@
      "duration": 7.68,
      "start": 277.332,
      "end": 285.012,
-     "speech_start": 279.532,
-     "speech_end": 283.197,
+     "speech_start": 279.572,
+     "speech_end": 283.252,
+     "energy_start": 279.532,
+     "energy_end": 283.197,
      "speech_intervals": [
       [
        279.532,
@@ -1886,8 +2032,10 @@
      "duration": 15.92,
      "start": 286.646,
      "end": 302.566,
-     "speech_start": 289.666,
-     "speech_end": 299.721,
+     "speech_start": 289.686,
+     "speech_end": 299.83,
+     "energy_start": 289.666,
+     "energy_end": 299.721,
      "speech_intervals": [
       [
        289.666,
@@ -1918,7 +2066,9 @@
      "start": 303.957,
      "end": 321.037,
      "speech_start": 307.797,
-     "speech_end": 317.102,
+     "speech_end": 317.237,
+     "energy_start": 307.797,
+     "energy_end": 317.102,
      "speech_intervals": [
       [
        307.797,
@@ -1960,8 +2110,10 @@
      "duration": 14.12,
      "start": 322.409,
      "end": 336.529,
-     "speech_start": 325.759,
-     "speech_end": 331.984,
+     "speech_start": 325.769,
+     "speech_end": 332.041,
+     "energy_start": 325.759,
+     "energy_end": 331.984,
      "speech_intervals": [
       [
        325.759,
@@ -1991,8 +2143,10 @@
      "duration": 18.12,
      "start": 338.591,
      "end": 356.711,
-     "speech_start": 340.881,
-     "speech_end": 354.506,
+     "speech_start": 340.895,
+     "speech_end": 354.559,
+     "energy_start": 340.881,
+     "energy_end": 354.506,
      "speech_intervals": [
       [
        340.881,
@@ -2030,8 +2184,10 @@
      "duration": 12.36,
      "start": 358.145,
      "end": 370.505,
-     "speech_start": 358.755,
-     "speech_end": 369.7,
+     "speech_start": 359.233,
+     "speech_end": 369.761,
+     "energy_start": 358.755,
+     "energy_end": 369.7,
      "speech_intervals": [
       [
        358.755,
@@ -2061,8 +2217,10 @@
      "duration": 11.78,
      "start": 372.068,
      "end": 383.848,
-     "speech_start": 374.878,
-     "speech_end": 381.603,
+     "speech_start": 374.884,
+     "speech_end": 381.508,
+     "energy_start": 374.878,
+     "energy_end": 381.603,
      "speech_intervals": [
       [
        374.878,
@@ -2088,8 +2246,10 @@
      "duration": 13.86,
      "start": 385.561,
      "end": 399.421,
-     "speech_start": 388.321,
-     "speech_end": 398.496,
+     "speech_start": 388.345,
+     "speech_end": 398.553,
+     "energy_start": 388.321,
+     "energy_end": 398.496,
      "speech_intervals": [
       [
        388.321,
@@ -2115,8 +2275,10 @@
      "duration": 10.22,
      "start": 401.089,
      "end": 411.309,
-     "speech_start": 402.449,
-     "speech_end": 408.594,
+     "speech_start": 402.465,
+     "speech_end": 408.673,
+     "energy_start": 402.449,
+     "energy_end": 408.594,
      "speech_intervals": [
       [
        402.449,
@@ -2142,8 +2304,10 @@
      "duration": 14.12,
      "start": 413.012,
      "end": 427.132,
-     "speech_start": 418.372,
-     "speech_end": 422.937,
+     "speech_start": 418.388,
+     "speech_end": 423.028,
+     "energy_start": 418.372,
+     "energy_end": 422.937,
      "speech_intervals": [
       [
        418.372,
@@ -2165,8 +2329,10 @@
      "duration": 18.0,
      "start": 428.825,
      "end": 446.825,
-     "speech_start": 434.155,
-     "speech_end": 443.52,
+     "speech_start": 429.209,
+     "speech_end": 443.353,
+     "energy_start": 434.155,
+     "energy_end": 443.52,
      "speech_intervals": [
       [
        434.155,
@@ -2196,8 +2362,10 @@
      "duration": 7.98,
      "start": 448.709,
      "end": 456.689,
-     "speech_start": 449.689,
-     "speech_end": 455.794,
+     "speech_start": 449.669,
+     "speech_end": 455.909,
+     "energy_start": 449.689,
+     "energy_end": 455.794,
      "speech_intervals": [
       [
        449.689,
@@ -2219,8 +2387,10 @@
      "duration": 8.58,
      "start": 457.936,
      "end": 466.516,
-     "speech_start": 459.436,
-     "speech_end": 465.431,
+     "speech_start": 459.44,
+     "speech_end": 465.52,
+     "energy_start": 459.436,
+     "energy_end": 465.431,
      "speech_intervals": [
       [
        459.436,
@@ -2246,8 +2416,10 @@
      "duration": 15.74,
      "start": 468.446,
      "end": 484.186,
-     "speech_start": 471.186,
-     "speech_end": 480.271,
+     "speech_start": 471.198,
+     "speech_end": 480.35,
+     "energy_start": 471.186,
+     "energy_end": 480.271,
      "speech_intervals": [
       [
        471.186,
@@ -2273,8 +2445,10 @@
      "duration": 6.84,
      "start": 485.902,
      "end": 492.742,
-     "speech_start": 486.402,
-     "speech_end": 491.897,
+     "speech_start": 486.51,
+     "speech_end": 491.982,
+     "energy_start": 486.402,
+     "energy_end": 491.897,
      "speech_intervals": [
       [
        486.402,
@@ -2292,8 +2466,10 @@
      "duration": 15.0,
      "start": 494.214,
      "end": 509.214,
-     "speech_start": 497.574,
-     "speech_end": 505.969,
+     "speech_start": 497.606,
+     "speech_end": 506.086,
+     "energy_start": 497.574,
+     "energy_end": 505.969,
      "speech_intervals": [
       [
        497.574,
@@ -2319,8 +2495,10 @@
      "duration": 11.22,
      "start": 511.214,
      "end": 522.434,
-     "speech_start": 512.574,
-     "speech_end": 520.549,
+     "speech_start": 512.622,
+     "speech_end": 520.622,
+     "energy_start": 512.574,
+     "energy_end": 520.549,
      "speech_intervals": [
       [
        512.574,
@@ -2350,8 +2528,10 @@
      "duration": 7.92,
      "start": 524.568,
      "end": 532.488,
-     "speech_start": 525.398,
-     "speech_end": 531.763,
+     "speech_start": 525.528,
+     "speech_end": 531.736,
+     "energy_start": 525.398,
+     "energy_end": 531.763,
      "speech_intervals": [
       [
        525.398,
@@ -2369,8 +2549,10 @@
      "duration": 17.34,
      "start": 533.916,
      "end": 551.256,
-     "speech_start": 535.526,
-     "speech_end": 548.741,
+     "speech_start": 535.548,
+     "speech_end": 548.828,
+     "energy_start": 535.526,
+     "energy_end": 548.741,
      "speech_intervals": [
       [
        535.526,
@@ -2400,8 +2582,10 @@
      "duration": 8.46,
      "start": 552.663,
      "end": 561.123,
-     "speech_start": 553.333,
-     "speech_end": 560.248,
+     "speech_start": 553.367,
+     "speech_end": 560.343,
+     "energy_start": 553.333,
+     "energy_end": 560.248,
      "speech_intervals": [
       [
        553.333,
@@ -2431,8 +2615,10 @@
      "duration": 15.68,
      "start": 562.327,
      "end": 578.007,
-     "speech_start": 564.837,
-     "speech_end": 575.092,
+     "speech_start": 564.855,
+     "speech_end": 575.159,
+     "energy_start": 564.837,
+     "energy_end": 575.092,
      "speech_intervals": [
       [
        564.837,
@@ -2458,8 +2644,10 @@
      "duration": 9.12,
      "start": 579.3,
      "end": 588.42,
-     "speech_start": 579.97,
-     "speech_end": 587.535,
+     "speech_start": 580.1,
+     "speech_end": 587.588,
+     "energy_start": 579.97,
+     "energy_end": 587.535,
      "speech_intervals": [
       [
        579.97,
@@ -2481,8 +2669,10 @@
      "duration": 14.64,
      "start": 590.566,
      "end": 605.206,
-     "speech_start": 591.116,
-     "speech_end": 604.431,
+     "speech_start": 591.142,
+     "speech_end": 604.486,
+     "energy_start": 591.116,
+     "energy_end": 604.431,
      "speech_intervals": [
       [
        591.116,
@@ -2512,8 +2702,10 @@
      "duration": 7.92,
      "start": 607.243,
      "end": 615.163,
-     "speech_start": 608.053,
-     "speech_end": 614.348,
+     "speech_start": 608.171,
+     "speech_end": 614.443,
+     "energy_start": 608.053,
+     "energy_end": 614.348,
      "speech_intervals": [
       [
        608.053,
@@ -2531,8 +2723,10 @@
      "duration": 13.98,
      "start": 617.288,
      "end": 631.268,
-     "speech_start": 618.348,
-     "speech_end": 629.733,
+     "speech_start": 618.376,
+     "speech_end": 630.44,
+     "energy_start": 618.348,
+     "energy_end": 629.733,
      "speech_intervals": [
       [
        618.348,
@@ -2574,8 +2768,10 @@
      "duration": 7.74,
      "start": 632.73,
      "end": 640.47,
-     "speech_start": 633.43,
-     "speech_end": 639.665,
+     "speech_start": 633.434,
+     "speech_end": 639.77,
+     "energy_start": 633.43,
+     "energy_end": 639.665,
      "speech_intervals": [
       [
        633.43,
@@ -2597,8 +2793,10 @@
      "duration": 6.78,
      "start": 641.75,
      "end": 648.53,
-     "speech_start": 642.38,
-     "speech_end": 647.585,
+     "speech_start": 642.518,
+     "speech_end": 647.702,
+     "energy_start": 642.38,
+     "energy_end": 647.585,
      "speech_intervals": [
       [
        642.38,
@@ -2616,8 +2814,10 @@
      "duration": 4.74,
      "start": 650.667,
      "end": 655.407,
-     "speech_start": 651.237,
-     "speech_end": 654.582,
+     "speech_start": 651.307,
+     "speech_end": 654.635,
+     "energy_start": 651.237,
+     "energy_end": 654.582,
      "speech_intervals": [
       [
        651.237,
@@ -2642,8 +2842,10 @@
      "duration": 9.96,
      "start": 1.0,
      "end": 10.96,
-     "speech_start": 2.25,
-     "speech_end": 8.835,
+     "speech_start": 2.312,
+     "speech_end": 8.904,
+     "energy_start": 2.25,
+     "energy_end": 8.835,
      "speech_intervals": [
       [
        2.25,
@@ -2665,8 +2867,10 @@
      "duration": 17.46,
      "start": 12.218,
      "end": 29.678,
-     "speech_start": 14.528,
-     "speech_end": 26.903,
+     "speech_start": 14.554,
+     "speech_end": 26.97,
+     "energy_start": 14.528,
+     "energy_end": 26.903,
      "speech_intervals": [
       [
        14.528,
@@ -2692,8 +2896,10 @@
      "duration": 10.38,
      "start": 31.72,
      "end": 42.1,
-     "speech_start": 32.69,
-     "speech_end": 39.685,
+     "speech_start": 32.712,
+     "speech_end": 39.752,
+     "energy_start": 32.69,
+     "energy_end": 39.685,
      "speech_intervals": [
       [
        32.69,
@@ -2715,8 +2921,10 @@
      "duration": 15.6,
      "start": 43.378,
      "end": 58.978,
-     "speech_start": 46.568,
-     "speech_end": 55.863,
+     "speech_start": 46.642,
+     "speech_end": 55.954,
+     "energy_start": 46.568,
+     "energy_end": 55.863,
      "speech_intervals": [
       [
        46.568,
@@ -2742,8 +2950,10 @@
      "duration": 14.46,
      "start": 60.678,
      "end": 75.138,
-     "speech_start": 64.238,
-     "speech_end": 72.003,
+     "speech_start": 64.294,
+     "speech_end": 71.974,
+     "energy_start": 64.238,
+     "energy_end": 72.003,
      "speech_intervals": [
       [
        64.238,
@@ -2769,8 +2979,10 @@
      "duration": 11.22,
      "start": 77.277,
      "end": 88.497,
-     "speech_start": 79.057,
-     "speech_end": 87.042,
+     "speech_start": 79.069,
+     "speech_end": 87.165,
+     "energy_start": 79.057,
+     "energy_end": 87.042,
      "speech_intervals": [
       [
        79.057,
@@ -2796,8 +3008,10 @@
      "duration": 11.04,
      "start": 89.911,
      "end": 100.951,
-     "speech_start": 91.301,
-     "speech_end": 98.436,
+     "speech_start": 91.319,
+     "speech_end": 98.519,
+     "energy_start": 91.301,
+     "energy_end": 98.436,
      "speech_intervals": [
       [
        91.301,
@@ -2815,8 +3029,10 @@
      "duration": 12.48,
      "start": 102.501,
      "end": 114.981,
-     "speech_start": 104.481,
-     "speech_end": 112.286,
+     "speech_start": 104.613,
+     "speech_end": 112.357,
+     "energy_start": 104.481,
+     "energy_end": 112.286,
      "speech_intervals": [
       [
        104.481,
@@ -2842,8 +3058,10 @@
      "duration": 13.2,
      "start": 116.58,
      "end": 129.78,
-     "speech_start": 118.81,
-     "speech_end": 127.185,
+     "speech_start": 118.884,
+     "speech_end": 127.172,
+     "energy_start": 118.81,
+     "energy_end": 127.185,
      "speech_intervals": [
       [
        118.81,
@@ -2869,8 +3087,10 @@
      "duration": 24.06,
      "start": 131.405,
      "end": 155.465,
-     "speech_start": 133.405,
-     "speech_end": 152.75,
+     "speech_start": 133.421,
+     "speech_end": 152.813,
+     "energy_start": 133.405,
+     "energy_end": 152.75,
      "speech_intervals": [
       [
        133.405,
@@ -2904,8 +3124,10 @@
      "duration": 9.36,
      "start": 157.489,
      "end": 166.849,
-     "speech_start": 158.949,
-     "speech_end": 165.784,
+     "speech_start": 158.961,
+     "speech_end": 165.937,
+     "energy_start": 158.949,
+     "energy_end": 165.784,
      "speech_intervals": [
       [
        158.949,
@@ -2927,8 +3149,10 @@
      "duration": 8.16,
      "start": 168.271,
      "end": 176.431,
-     "speech_start": 169.761,
-     "speech_end": 175.696,
+     "speech_start": 169.775,
+     "speech_end": 175.823,
+     "energy_start": 169.761,
+     "energy_end": 175.696,
      "speech_intervals": [
       [
        169.761,
@@ -2946,8 +3170,10 @@
      "duration": 12.36,
      "start": 178.006,
      "end": 190.366,
-     "speech_start": 180.046,
-     "speech_end": 187.841,
+     "speech_start": 180.214,
+     "speech_end": 187.862,
+     "energy_start": 180.046,
+     "energy_end": 187.841,
      "speech_intervals": [
       [
        180.046,
@@ -2969,8 +3195,10 @@
      "duration": 9.0,
      "start": 191.849,
      "end": 200.849,
-     "speech_start": 194.049,
-     "speech_end": 198.324,
+     "speech_start": 194.185,
+     "speech_end": 198.377,
+     "energy_start": 194.049,
+     "energy_end": 198.324,
      "speech_intervals": [
       [
        194.049,
@@ -2988,8 +3216,10 @@
      "duration": 15.72,
      "start": 202.074,
      "end": 217.794,
-     "speech_start": 205.434,
-     "speech_end": 214.849,
+     "speech_start": 205.466,
+     "speech_end": 214.906,
+     "energy_start": 205.434,
+     "energy_end": 214.849,
      "speech_intervals": [
       [
        205.434,
@@ -3011,8 +3241,10 @@
      "duration": 9.12,
      "start": 219.534,
      "end": 228.654,
-     "speech_start": 221.004,
-     "speech_end": 227.109,
+     "speech_start": 221.038,
+     "speech_end": 227.246,
+     "energy_start": 221.004,
+     "energy_end": 227.109,
      "speech_intervals": [
       [
        221.004,
@@ -3034,8 +3266,10 @@
      "duration": 8.16,
      "start": 230.521,
      "end": 238.681,
-     "speech_start": 231.601,
-     "speech_end": 236.406,
+     "speech_start": 231.577,
+     "speech_end": 236.473,
+     "energy_start": 231.601,
+     "energy_end": 236.406,
      "speech_intervals": [
       [
        231.601,
@@ -3053,8 +3287,10 @@
      "duration": 6.3,
      "start": 240.221,
      "end": 246.521,
-     "speech_start": 241.241,
-     "speech_end": 244.216,
+     "speech_start": 241.277,
+     "speech_end": 244.285,
+     "energy_start": 241.241,
+     "energy_end": 244.216,
      "speech_intervals": [
       [
        241.241,
@@ -3072,8 +3308,10 @@
      "duration": 8.94,
      "start": 247.858,
      "end": 256.798,
-     "speech_start": 248.948,
-     "speech_end": 255.943,
+     "speech_start": 249.01,
+     "speech_end": 256.082,
+     "energy_start": 248.948,
+     "energy_end": 255.943,
      "speech_intervals": [
       [
        248.948,
@@ -3099,8 +3337,10 @@
      "duration": 10.92,
      "start": 258.923,
      "end": 269.843,
-     "speech_start": 261.333,
-     "speech_end": 266.868,
+     "speech_start": 261.451,
+     "speech_end": 266.955,
+     "energy_start": 261.333,
+     "energy_end": 266.868,
      "speech_intervals": [
       [
        261.333,
@@ -3122,8 +3362,10 @@
      "duration": 15.3,
      "start": 271.885,
      "end": 287.185,
-     "speech_start": 273.575,
-     "speech_end": 285.44,
+     "speech_start": 273.581,
+     "speech_end": 285.549,
+     "energy_start": 273.575,
+     "energy_end": 285.44,
      "speech_intervals": [
       [
        273.575,
@@ -3145,8 +3387,10 @@
      "duration": 8.64,
      "start": 289.073,
      "end": 297.713,
-     "speech_start": 290.313,
-     "speech_end": 295.358,
+     "speech_start": 290.321,
+     "speech_end": 295.409,
+     "energy_start": 290.313,
+     "energy_end": 295.358,
      "speech_intervals": [
       [
        290.313,
@@ -3168,8 +3412,10 @@
      "duration": 5.88,
      "start": 299.419,
      "end": 305.299,
-     "speech_start": 300.179,
-     "speech_end": 303.794,
+     "speech_start": 300.123,
+     "speech_end": 304.539,
+     "energy_start": 300.179,
+     "energy_end": 303.794,
      "speech_intervals": [
       [
        300.179,
@@ -3191,8 +3437,10 @@
      "duration": 16.56,
      "start": 306.516,
      "end": 323.076,
-     "speech_start": 307.636,
-     "speech_end": 320.521,
+     "speech_start": 307.7,
+     "speech_end": 320.596,
+     "energy_start": 307.636,
+     "energy_end": 320.521,
      "speech_intervals": [
       [
        307.636,
@@ -3218,8 +3466,10 @@
      "duration": 10.08,
      "start": 325.112,
      "end": 335.192,
-     "speech_start": 326.402,
-     "speech_end": 332.867,
+     "speech_start": 326.424,
+     "speech_end": 332.952,
+     "energy_start": 326.402,
+     "energy_end": 332.867,
      "speech_intervals": [
       [
        326.402,
@@ -3237,8 +3487,10 @@
      "duration": 8.82,
      "start": 336.519,
      "end": 345.339,
-     "speech_start": 337.639,
-     "speech_end": 343.094,
+     "speech_start": 337.671,
+     "speech_end": 343.175,
+     "energy_start": 337.639,
+     "energy_end": 343.094,
      "speech_intervals": [
       [
        337.639,
@@ -3260,8 +3512,10 @@
      "duration": 14.76,
      "start": 347.207,
      "end": 361.967,
-     "speech_start": 348.297,
-     "speech_end": 359.542,
+     "speech_start": 348.327,
+     "speech_end": 359.623,
+     "energy_start": 348.297,
+     "energy_end": 359.542,
      "speech_intervals": [
       [
        348.297,
@@ -3283,8 +3537,10 @@
      "duration": 14.16,
      "start": 364.162,
      "end": 378.322,
-     "speech_start": 365.032,
-     "speech_end": 377.097,
+     "speech_start": 365.026,
+     "speech_end": 377.218,
+     "energy_start": 365.032,
+     "energy_end": 377.097,
      "speech_intervals": [
       [
        365.032,
@@ -3310,8 +3566,10 @@
      "duration": 9.9,
      "start": 379.548,
      "end": 389.448,
-     "speech_start": 380.898,
-     "speech_end": 386.983,
+     "speech_start": 380.924,
+     "speech_end": 387.036,
+     "energy_start": 380.898,
+     "energy_end": 386.983,
      "speech_intervals": [
       [
        380.898,
@@ -3329,8 +3587,10 @@
      "duration": 12.48,
      "start": 391.219,
      "end": 403.699,
-     "speech_start": 392.429,
-     "speech_end": 401.464,
+     "speech_start": 392.499,
+     "speech_end": 401.555,
+     "energy_start": 392.429,
+     "energy_end": 401.464,
      "speech_intervals": [
       [
        392.429,
@@ -3352,8 +3612,10 @@
      "duration": 13.26,
      "start": 405.808,
      "end": 419.068,
-     "speech_start": 408.078,
-     "speech_end": 416.293,
+     "speech_start": 408.144,
+     "speech_end": 416.368,
+     "energy_start": 408.078,
+     "energy_end": 416.293,
      "speech_intervals": [
       [
        408.078,
@@ -3383,8 +3645,10 @@
      "duration": 11.1,
      "start": 421.064,
      "end": 432.164,
-     "speech_start": 423.524,
-     "speech_end": 429.409,
+     "speech_start": 423.624,
+     "speech_end": 429.448,
+     "energy_start": 423.524,
+     "energy_end": 429.409,
      "speech_intervals": [
       [
        423.524,
@@ -3402,8 +3666,10 @@
      "duration": 10.8,
      "start": 433.512,
      "end": 444.312,
-     "speech_start": 434.892,
-     "speech_end": 442.197,
+     "speech_start": 434.92,
+     "speech_end": 442.28,
+     "energy_start": 434.892,
+     "energy_end": 442.197,
      "speech_intervals": [
       [
        434.892,
@@ -3425,8 +3691,10 @@
      "duration": 13.08,
      "start": 446.045,
      "end": 459.125,
-     "speech_start": 449.015,
-     "speech_end": 456.48,
+     "speech_start": 449.053,
+     "speech_end": 456.605,
+     "energy_start": 449.015,
+     "energy_end": 456.48,
      "speech_intervals": [
       [
        449.015,
@@ -3448,8 +3716,10 @@
      "duration": 12.84,
      "start": 460.328,
      "end": 473.168,
-     "speech_start": 461.358,
-     "speech_end": 470.803,
+     "speech_start": 461.384,
+     "speech_end": 470.856,
+     "energy_start": 461.358,
+     "energy_end": 470.803,
      "speech_intervals": [
       [
        461.358,
@@ -3479,8 +3749,10 @@
      "duration": 18.36,
      "start": 474.58,
      "end": 492.94,
-     "speech_start": 478.34,
-     "speech_end": 490.185,
+     "speech_start": 478.388,
+     "speech_end": 490.132,
+     "energy_start": 478.34,
+     "energy_end": 490.185,
      "speech_intervals": [
       [
        478.34,
@@ -3514,8 +3786,10 @@
      "duration": 17.46,
      "start": 494.323,
      "end": 511.783,
-     "speech_start": 496.333,
-     "speech_end": 507.488,
+     "speech_start": 496.403,
+     "speech_end": 507.571,
+     "energy_start": 496.333,
+     "energy_end": 507.488,
      "speech_intervals": [
       [
        496.333,
@@ -3541,8 +3815,10 @@
      "duration": 13.56,
      "start": 513.21,
      "end": 526.77,
-     "speech_start": 515.35,
-     "speech_end": 524.165,
+     "speech_start": 515.354,
+     "speech_end": 524.218,
+     "energy_start": 515.35,
+     "energy_end": 524.165,
      "speech_intervals": [
       [
        515.35,
@@ -3568,8 +3844,10 @@
      "duration": 17.88,
      "start": 528.423,
      "end": 546.303,
-     "speech_start": 531.353,
-     "speech_end": 543.338,
+     "speech_start": 531.463,
+     "speech_end": 543.431,
+     "energy_start": 531.353,
+     "energy_end": 543.338,
      "speech_intervals": [
       [
        531.353,
@@ -3603,8 +3881,10 @@
      "duration": 7.02,
      "start": 547.958,
      "end": 554.978,
-     "speech_start": 548.688,
-     "speech_end": 553.793,
+     "speech_start": 548.694,
+     "speech_end": 554.23,
+     "energy_start": 548.688,
+     "energy_end": 553.793,
      "speech_intervals": [
       [
        548.688,
@@ -3622,8 +3902,10 @@
      "duration": 18.54,
      "start": 557.098,
      "end": 575.638,
-     "speech_start": 558.818,
-     "speech_end": 574.083,
+     "speech_start": 558.794,
+     "speech_end": 574.218,
+     "energy_start": 558.818,
+     "energy_end": 574.083,
      "speech_intervals": [
       [
        558.818,
@@ -3657,8 +3939,10 @@
      "duration": 12.3,
      "start": 577.269,
      "end": 589.569,
-     "speech_start": 579.709,
-     "speech_end": 585.804,
+     "speech_start": 579.893,
+     "speech_end": 585.845,
+     "energy_start": 579.709,
+     "energy_end": 585.804,
      "speech_intervals": [
       [
        579.709,
@@ -3680,8 +3964,10 @@
      "duration": 18.36,
      "start": 591.726,
      "end": 610.086,
-     "speech_start": 594.336,
-     "speech_end": 607.061,
+     "speech_start": 594.414,
+     "speech_end": 607.118,
+     "energy_start": 594.336,
+     "energy_end": 607.061,
      "speech_intervals": [
       [
        594.336,
@@ -3711,8 +3997,10 @@
      "duration": 13.8,
      "start": 611.729,
      "end": 625.529,
-     "speech_start": 613.209,
-     "speech_end": 623.474,
+     "speech_start": 613.201,
+     "speech_end": 623.537,
+     "energy_start": 613.209,
+     "energy_end": 623.474,
      "speech_intervals": [
       [
        613.209,
@@ -3734,8 +4022,10 @@
      "duration": 17.88,
      "start": 627.031,
      "end": 644.911,
-     "speech_start": 628.391,
-     "speech_end": 642.496,
+     "speech_start": 628.407,
+     "speech_end": 642.583,
+     "energy_start": 628.391,
+     "energy_end": 642.496,
      "speech_intervals": [
       [
        628.391,
@@ -3765,8 +4055,10 @@
      "duration": 11.58,
      "start": 646.944,
      "end": 658.524,
-     "speech_start": 649.164,
-     "speech_end": 655.709,
+     "speech_start": 649.184,
+     "speech_end": 655.776,
+     "energy_start": 649.164,
+     "energy_end": 655.709,
      "speech_intervals": [
       [
        649.164,
@@ -3788,8 +4080,10 @@
      "duration": 12.48,
      "start": 660.472,
      "end": 672.952,
-     "speech_start": 662.742,
-     "speech_end": 670.527,
+     "speech_start": 662.776,
+     "speech_end": 670.52,
+     "energy_start": 662.742,
+     "energy_end": 670.527,
      "speech_intervals": [
       [
        662.742,
@@ -3815,8 +4109,10 @@
      "duration": 9.96,
      "start": 674.172,
      "end": 684.132,
-     "speech_start": 675.632,
-     "speech_end": 681.957,
+     "speech_start": 675.644,
+     "speech_end": 682.012,
+     "energy_start": 675.632,
+     "energy_end": 681.957,
      "speech_intervals": [
       [
        675.632,
@@ -3834,8 +4130,10 @@
      "duration": 12.24,
      "start": 686.262,
      "end": 698.502,
-     "speech_start": 688.462,
-     "speech_end": 695.567,
+     "speech_start": 688.534,
+     "speech_end": 695.638,
+     "energy_start": 688.462,
+     "energy_end": 695.567,
      "speech_intervals": [
       [
        688.462,
@@ -3861,8 +4159,10 @@
      "duration": 4.68,
      "start": 700.394,
      "end": 705.074,
-     "speech_start": 701.034,
-     "speech_end": 704.349,
+     "speech_start": 701.098,
+     "speech_end": 704.394,
+     "energy_start": 701.034,
+     "energy_end": 704.349,
      "speech_intervals": [
       [
        701.034,
