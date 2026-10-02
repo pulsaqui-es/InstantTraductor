@@ -17,6 +17,7 @@ Reloj: el de audio. `clock.now()` = fin del último chunk alimentado, es decir, 
 from __future__ import annotations
 
 import hashlib
+import os
 import pickle
 import time
 from collections import deque
@@ -33,8 +34,39 @@ from instanttraductor.contracts import AsrEvent, AudioChunk, TranslationUnit, Va
 from instanttraductor.pipeline.segmenter import PauseClauseSegmenter
 from instanttraductor.vad.silero import FRAME_SAMPLES, SileroOnnx, SileroVad
 
+import instanttraductor.pipeline.segmenter as _segmod
+
+_CONJ = _segmod.CLAUSE_CONJUNCTIONS
 CHUNK = 320  # 20 ms, como la captura
 PRE_ROLL_S = 0.5  # `PRE_ROLL_S` de session.py
+
+
+class TailAwareSegmenter(PauseClauseSegmenter):
+    """Variante del segmentador: no corta en una cláusula si tras el corte quedarían menos de `min_tail` palabras.
+
+    Con el texto parcial, el corte espera a que haya `min_tail` palabras detrás; con el FINAL, si el resto es más corto,
+    no se corta y la última unidad sale entera. Evita unidades de 1 a 3 palabras («she said sadly») que se traducen mal.
+    """
+
+    def __init__(self, clock: Any, *, max_untranslated_s: float = 6.0, min_tail: int = 4) -> None:
+        super().__init__(clock, max_untranslated_s=max_untranslated_s)
+        self._min_tail = min_tail
+
+    def _clause_cut(self, limit: int, *, final: bool) -> int | None:  # type: ignore[override]
+        from instanttraductor.pipeline import segmenter as seg
+
+        start = self._n_emitted
+        words = self._words
+        max_cut = limit - 1 if final else limit
+        for i in range(start, limit):
+            cut = None
+            if i - start >= seg.MIN_CLAUSE_WORDS and i < len(words) - 1 and seg._is_conjunction(words[i]):
+                cut = i
+            elif words[i].endswith(",") and i + 1 - start >= seg.MIN_CLAUSE_WORDS and i + 1 <= max_cut:
+                cut = i + 1
+            if cut is not None and len(words) - cut >= self._min_tail:
+                return cut
+        return None
 
 
 class AudioClock:
@@ -203,7 +235,14 @@ class CachingAsr:
 
     def save(self) -> None:
         if self._persist:
-            tmp = self.CACHE_FILE.with_suffix(".tmp")
+            if self.CACHE_FILE.exists():  # otro proceso puede haber guardado aciertos nuevos: se fusionan
+                try:
+                    merged = pickle.loads(self.CACHE_FILE.read_bytes())
+                    merged.update(self.cache)
+                    self.cache = merged
+                except Exception:
+                    pass
+            tmp = self.CACHE_FILE.with_suffix(f".{os.getpid()}.tmp")
             tmp.write_bytes(pickle.dumps(self.cache))
             tmp.replace(self.CACHE_FILE)
 
@@ -236,6 +275,9 @@ class ChainConfig:
     vad_persist_frames: int = 4
     # Segmentador
     max_untranslated_s: float = 6.0
+    seg_min_clause_words: int = 6  # MIN_CLAUSE_WORDS de pipeline/segmenter.py
+    seg_conjunctions: bool = True  # False: solo se corta en comas
+    seg_min_tail: int = 0  # palabras mínimas que deben quedar tras un corte de cláusula (0 = como hoy)
 
     def agc_key(self) -> tuple:
         return (
@@ -251,7 +293,7 @@ class ChainConfig:
     def label(self) -> str:
         return (
             f"agc[{'on' if self.agc else 'off'} t{self.agc_target_dbfs:g} r{self.agc_release_s:g} "
-            f"max{self.agc_max_gain_db:g}] vad[{self.vad_threshold:g}/{self.vad_neg_threshold:g} "
+            f"max{self.agc_max_gain_db:g}] seg[{self.seg_min_clause_words}{'c' if self.seg_conjunctions else ''}] vad[{self.vad_threshold:g}/{self.vad_neg_threshold:g} "
             f"s{self.vad_min_silence_ms:g} sm{self.vad_smooth}"
             + (f" pers{self.vad_persist_threshold:g}x{self.vad_persist_frames}" if self.vad_persist_threshold else "")
             + "]"
@@ -359,7 +401,15 @@ class ChainRunner:
         )
         asr = self.asr
         asr.reset()
-        segmenter = PauseClauseSegmenter(clock, max_untranslated_s=cfg.max_untranslated_s)
+        import instanttraductor.pipeline.segmenter as segmod
+
+        segmod.MIN_CLAUSE_WORDS = cfg.seg_min_clause_words  # parámetro de módulo: se fija por ejecución
+        segmod.CLAUSE_CONJUNCTIONS = _CONJ if cfg.seg_conjunctions else frozenset()
+        segmenter: PauseClauseSegmenter = (
+            TailAwareSegmenter(clock, max_untranslated_s=cfg.max_untranslated_s, min_tail=cfg.seg_min_tail)
+            if cfg.seg_min_tail
+            else PauseClauseSegmenter(clock, max_untranslated_s=cfg.max_untranslated_s)
+        )
         res = ChainResult()
         if keep_audio:
             res.agc_audio, res.gains_db, res.probs = agc_audio, gains, probs

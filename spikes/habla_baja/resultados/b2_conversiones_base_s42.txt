@@ -1,0 +1,81 @@
+  1 P | Grab your sleeping bags and follow me.
+      Tomen sus sacos de dormir y síganme.
+   -> Tomad vuestros sacos de dormir y seguidme.  ['imp', 'imp-clit']
+  5 P | Sit down and I'll hand out the marshmallows.
+      Siéntense y yo repartiré los malvaviscos.
+   -> Sentaos y yo repartiré los malvaviscos.  ['imp-refl']
+  6 P | Open your books to page twelve.
+      Abren vuestros libros en la página doce.
+   -> Abrid vuestros libros en la página doce.  ['imp-from-pres']
+ 15 P | Stop fighting, you two!
+      ¡Dejen de pelear, ustedes dos!
+   -> ¡Dejad de pelear, vosotros dos!  ['imp', 'pron']
+ 18 P | Are you guys coming with me?
+      ¿Vienen ustedes conmigo?
+   -> ¿Venís vosotros conmigo?  ['pres', 'pron']
+ 36 P | Crew, stand by for the jump.
+      Equipo, prepárense para el salto.
+   -> Equipo, preparaos para el salto.  ['imp-refl']
+ 60 P | Welcome, everyone, please stay close together.
+      Bienvenidos a todos, por favor quedense juntos.
+   -> Bienvenidos a todos, por favor quedaos juntos.  ['imp-refl']
+ 78 P | Please sit down, both of you.
+      Por favor, siéntense los dos.
+   -> Por favor, sentaos los dos.  ['imp-refl']
+ 79 P | Do you have any questions about the treatment?
+      ¿Tienen alguna pregunta sobre el tratamiento?
+   -> ¿Tenéis alguna pregunta sobre el tratamiento?  ['pres']
+ 84 P | Gather round, friends, and hear my tale!
+      Reúnanse, amigos, y escuchen mi historia.
+   -> Reuníos, amigos, y escuchad mi historia.  ['imp', 'imp-refl']
+ 90 P | Welcome back, folks, are you ready to play?
+      Bienvenidos de nuevo, ¿están listos para jugar?
+   -> Bienvenidos de nuevo, ¿estáis listos para jugar?  ['pres']
+ 93 P | Give it up for our contestants, everybody!
+      ¡Aplaudan a nuestros concursantes, todos!
+   -> ¡Aplaudid a nuestros concursantes, todos!  ['imp']
+ 96 P | Did you guys see the mess in the kitchen?
+      ¿Vieron el desorden en la cocina?
+   -> ¿Visteis el desorden en la cocina?  ['pret']
+102 P | Ladies and gentlemen, please fasten your seat belts.
+      Señoras y señores, por favor, abróchense los cinturones de seguridad.
+   -> Señoras y señores, por favor, abrochaos los cinturones de seguridad.  ['imp-refl']
+107 P | Have a nice trip, everyone.
+      Que tengan un buen viaje, todos.
+   -> Que tengáis un buen viaje, todos.  ['subj']
+109 P | Pack your bags and let's go.
+      Empaquen sus cosas y vámonos.
+   -> Empacad vuestras cosas y vámonos.  ['imp']
+114 P | Soldiers, listen carefully.
+      Soldados, escuchen con atención.
+   -> Soldados, escuchad con atención.  ['imp']
+115 P | You have your orders, now move out.
+      Tienen sus órdenes, ahora salgan.
+   -> Tenéis vuestras órdenes, ahora salid.  ['imp', 'pres']
+118 P | Keep your heads down and stay together.
+      Mantengan la cabeza baja y permanezcan juntos.
+   -> Mantened la cabeza baja y permaneced juntos.  ['imp']
+121 P | Today you're going to see something crazy.
+      Hoy van a ver algo increíble.
+   -> Hoy vais a ver algo increíble.  ['pres']
+138 P | Move back, all of you!
+      ¡Retrocedan, todos!
+   -> ¡Retroceded, todos!  ['imp']
+154 P | Help yourselves to the drinks.
+      Sírvanse las bebidas ustedes mismos.
+   -> Servíos las bebidas vosotros mismos.  ['imp-refl', 'pron']
+156 P | Sit down and buckle up, kids.
+      Siéntense y abróchense los cinturones, niños.
+   -> Sentaos y abrochaos los cinturones, niños.  ['imp-refl']
+167 P | Stay for dessert, you can't leave yet.
+      Quédense a tomar el postre, aún no pueden irse.
+   -> Quedaos a tomar el postre, aún no podéis irse.  ['imp-refl', 'pres']
+204 F | Ladies and gentlemen of the court, please be seated.
+      Señoras y señores del tribunal, por favor, tomen asiento.
+   -> Señoras y señores del tribunal, por favor, tomad asiento.  ['imp']
+206 F | Gentlemen, you may now proceed to the hall.
+      Señores, ahora pueden pasar al salón.
+   -> Señores, ahora podéis pasar al salón.  ['pres']
+207 F | My lords, will you stand with me?
+      Mis señores, ¿estarán a mi lado?
+   -> Mis señores, ¿estaréis a mi lado?  ['tense']

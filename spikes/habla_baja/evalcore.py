@@ -83,6 +83,7 @@ def clip_metrics(runner: ChainRunner, item: dict, cfg: ChainConfig, samples: np.
         "unit_words": [len(u.source_text.split()) for u in res.units],
         "delay_end_s": (last_ready - t1) if last_ready is not None else None,
         "delay_start_s": (first_ready - t0) if first_ready is not None else None,
+        "unit_lat_s": [u.ready_at - u.t_end for u in res.units],
         "vad_segments": [(round(a, 2), round(b, 2)) for a, b in res.vad_segments],
         "text": text,
     }

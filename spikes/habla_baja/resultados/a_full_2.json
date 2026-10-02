@@ -1,0 +1,62 @@
+{
+ "0.40/0.25 sm3": {
+  "n_hard": 180,
+  "hard_translated": 85.55555555555556,
+  "hard_recall": 82.4967470724478,
+  "easy_translated": 100.0,
+  "easy_recall": 94.77550471924437,
+  "by_cond": {
+   "after_loud": 100.0,
+   "hesitate": 100.0,
+   "mus_b": 90.0,
+   "mus_c": 85.0,
+   "mus_d": 65.0,
+   "n20": 100.0,
+   "reverb": 100.0,
+   "whisper_mus": 60.0,
+   "whisper_q": 100.0,
+   "whisper_tts": 100.0,
+   "whisper_tts_mus": 70.0
+  },
+  "delay_p50": 0.5999999999999996,
+  "delay_p95": 1.4900000000000002,
+  "units_per_clip": 2.8045454545454547,
+  "pct_units_le3": 16.85575364667747,
+  "fa_units": 0,
+  "fa_segments": 0,
+  "fa_speech_s": 0.0,
+  "fa_samples": [],
+  "wall_s": 431.8463149999734,
+  "asr_misses": 63232
+ },
+ "0.30/0.15 sil700": {
+  "n_hard": 180,
+  "hard_translated": 89.44444444444444,
+  "hard_recall": 85.78749502811115,
+  "easy_translated": 100.0,
+  "easy_recall": 96.35502319970527,
+  "by_cond": {
+   "after_loud": 100.0,
+   "hesitate": 100.0,
+   "mus_b": 95.0,
+   "mus_c": 90.0,
+   "mus_d": 65.0,
+   "n20": 100.0,
+   "reverb": 100.0,
+   "whisper_mus": 75.0,
+   "whisper_q": 100.0,
+   "whisper_tts": 100.0,
+   "whisper_tts_mus": 80.0
+  },
+  "delay_p50": 0.77,
+  "delay_p95": 1.4999999999999991,
+  "units_per_clip": 3.3,
+  "pct_units_le3": 14.18732782369146,
+  "fa_units": 0,
+  "fa_segments": 1,
+  "fa_speech_s": 0.21400000000005548,
+  "fa_samples": [],
+  "wall_s": 1183.8787051999243,
+  "asr_misses": 114893
+ }
+}
