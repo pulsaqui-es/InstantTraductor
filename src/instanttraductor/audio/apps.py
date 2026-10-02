@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import contextlib
 import ctypes
+import functools
 import logging
 import math
 import os
@@ -54,6 +55,8 @@ __all__ = [
     "ProcessInspector",
     "SessionEnumerator",
     "SystemProcessTable",
+    "app_session_peaks",
+    "enumerate_audio_sessions",
     "find_app",
     "list_audio_apps",
     "resolve_root",
@@ -300,8 +303,12 @@ def _com_scope() -> Iterator[None]:
             comtypes.CoUninitialize()
 
 
-def enumerate_audio_sessions() -> list[AudioSession]:
-    """Sesiones de render de TODOS los endpoints activos, no solo el predeterminado (250-340 ms)."""
+def enumerate_audio_sessions(*, peak_window_s: float = 0.0) -> list[AudioSession]:
+    """Sesiones de render de TODOS los endpoints activos, no solo el predeterminado (250-340 ms).
+
+    `peak_window_s`: durante ese tiempo se vuelve a leer el medidor de cada sesión y se guarda el máximo (el
+    medidor es instantáneo: una app que suena a ráfagas puede dar 0 en una sola lectura).
+    """
     import comtypes
     from pycaw.pycaw import (
         AudioUtilities,
@@ -310,7 +317,7 @@ def enumerate_audio_sessions() -> list[AudioSession]:
         IAudioSessionManager2,
     )
 
-    sessions: list[AudioSession] = []
+    found: list[tuple[str, int, int, bool, float, Any]] = []  # endpoint, PID, estado, sistema, pico, medidor
     with _com_scope():
         enumerator = AudioUtilities.GetDeviceEnumerator()
         collection = enumerator.EnumAudioEndpoints(_E_RENDER, _DEVICE_STATE_ACTIVE)
@@ -332,11 +339,18 @@ def enumerate_audio_sessions() -> list[AudioSession]:
                     pid = ctl.GetProcessId()
                     state = ctl.GetState()
                     system = ctl.IsSystemSoundsSession() == 0  # S_OK = sesión de sonidos del sistema
-                    peak = float(ctl.QueryInterface(IAudioMeterInformation).GetPeakValue())
+                    meter = ctl.QueryInterface(IAudioMeterInformation)
+                    peak = float(meter.GetPeakValue())
                 except comtypes.COMError:
                     continue
-                sessions.append(AudioSession(name, pid, state, peak, system))
-    return sessions
+                found.append((name, pid, state, system, peak, meter))
+        end = time.perf_counter() + peak_window_s
+        while time.perf_counter() < end:
+            time.sleep(0.05)
+            for index, (name, pid, state, system, peak, meter) in enumerate(found):
+                with contextlib.suppress(comtypes.COMError):
+                    found[index] = (name, pid, state, system, max(peak, float(meter.GetPeakValue())), meter)
+    return [AudioSession(name, pid, state, peak, system) for name, pid, state, system, peak, _ in found]
 
 
 def _probe_include(pids: Sequence[int], seconds: float) -> dict[int, float]:
@@ -517,3 +531,22 @@ def resolve_root(exe_path: str, *, table: ProcessTable | None = None) -> AppIden
     """Identidad actual (PID y `create_time`) del proceso raíz más antiguo de la app, o None si no está."""
     roots = (table or SystemProcessTable()).find_roots(exe_path)
     return min(roots, key=lambda r: r.create_time) if roots else None
+
+
+def app_session_peaks(
+    exe_path: str,
+    *,
+    enumerate_sessions: SessionEnumerator | None = None,
+    inspector: ProcessInspector | None = None,
+) -> tuple[float, float]:
+    """(pico de las sesiones de esa app, pico máximo de las de todas las demás), en una ventana corta.
+
+    Es la sonda del aviso «suena pero llega silencio» de `AppLoopbackSource`: el medidor de la sesión es
+    independiente de la captura INCLUDE. Se ocultan las mismas sesiones que en `list_audio_apps`.
+    """
+    sessions = (enumerate_sessions or functools.partial(enumerate_audio_sessions, peak_window_s=0.15))()
+    groups = _group_sessions(sessions, inspector or SystemProcessTable())
+    wanted = norm_path(exe_path)
+    mine = max((s.peak for g in groups if norm_path(g.exe) == wanted for s in g.sessions), default=0.0)
+    others = max((s.peak for g in groups if norm_path(g.exe) != wanted for s in g.sessions), default=0.0)
+    return mine, others

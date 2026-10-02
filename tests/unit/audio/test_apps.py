@@ -23,6 +23,7 @@ from instanttraductor.audio.apps import (
     AudioSession,
     ProcessInfo,
     SystemProcessTable,
+    app_session_peaks,
     file_description,
     find_app,
     list_audio_apps,
@@ -510,3 +511,36 @@ def test_the_fake_enumerator_and_identity_helpers_fit_the_real_types() -> None:
     identity = app(CHROME)
     assert isinstance(identity, AppIdentity)
     assert FakeAppEnumerator()(probe_s=0.0) == []
+
+
+class TestSessionPeaks:
+    def test_separates_the_peak_of_the_app_from_the_peak_of_all_the_others(self) -> None:
+        inspector = FakeInspector()
+        inspector.add(1000, CHROME)
+        inspector.add(1100, DISCORD)
+        inspector.add(1200, FFPLAY)
+        sessions = [
+            session(1000, peak=0.02),
+            session(1000, endpoint="Auriculares", peak=0.05),
+            session(1100, peak=0.01),
+            session(1200, peak=0.2, system=True),  # las del sistema no cuentan
+            session(ME, peak=0.9),  # ni la propia app
+        ]
+        peaks = app_session_peaks(CHROME, enumerate_sessions=lambda: sessions, inspector=inspector)
+        assert peaks == (0.05, 0.01)
+
+    def test_an_app_without_sessions_has_peak_zero(self) -> None:
+        inspector = FakeInspector()
+        inspector.add(1100, DISCORD)
+        peaks = app_session_peaks(
+            CHROME.upper(), enumerate_sessions=lambda: [session(1100, peak=0.3)], inspector=inspector
+        )
+        assert peaks == (0.0, 0.3)
+
+    def test_the_path_is_compared_without_distinguishing_case(self) -> None:
+        inspector = FakeInspector()
+        inspector.add(1000, CHROME)
+        peaks = app_session_peaks(
+            CHROME.lower(), enumerate_sessions=lambda: [session(1000, peak=0.4)], inspector=inspector
+        )
+        assert peaks == (0.4, 0.0)
