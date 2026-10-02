@@ -1,0 +1,134 @@
+{
+ "parakeet_ja": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 0,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.03172442317008972,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.003906643334000061
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 0,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.14437150955200195,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.003896774822108758
+  }
+ },
+ "sensevoice": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 0,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.03172442317008972,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.0038345284946262837
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 0,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.14437150955200195,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.003913678507475803
+  }
+ },
+ "nemotron35_bp1": {
+  "fuerte": {
+   "raw_decode": {
+    "chunks": 0,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.03172442317008972,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -22.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.003932147339219228
+  },
+  "fondo": {
+   "raw_decode": {
+    "chunks": 0,
+    "chunks_with_text": 0,
+    "chars": 0,
+    "examples": []
+   },
+   "vad": {
+    "max_prob": 0.14437150955200195,
+    "frames_over_0.5_pct": 0.0,
+    "frames_over_0.3_pct": 0.0
+   },
+   "level_dbfs": -32.0,
+   "vad_segments": 0,
+   "finals_with_text": 0,
+   "finals_per_10min": 0.0,
+   "seg_seconds": 0.0,
+   "events": [],
+   "texts": [],
+   "rtf": 0.0038969114938906084
+  }
+ }
+}

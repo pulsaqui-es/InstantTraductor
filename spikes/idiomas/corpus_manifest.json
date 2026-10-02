@@ -1,0 +1,5253 @@
+{
+ "source": "google/fleurs (test), CC BY 4.0, https://huggingface.co/datasets/google/fleurs",
+ "seed": 20261002,
+ "music_snr_db": 10.0,
+ "music": [
+  {
+   "file": "track1.wav",
+   "title": "File:Alexander Borodin - In The Steppes Of Central Asia.ogg",
+   "url": "https://commons.wikimedia.org/wiki/File:Alexander_Borodin_-_In_The_Steppes_Of_Central_Asia.ogg",
+   "license": "CC0",
+   "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "artist": "Musopen Symphony Orchestra",
+   "credit": "This work comes from the non profit U.S. organization Musopen where it is available at the following link: https://musopen.org/music/681-in-the-steppes-of-central-asia/ The Musopen website requires all uploaders to \"represent and warrant that content uploaded to the site is in the public domain\" (see FAQ #4). Musopen's own works (\"Musopen Materials\" and \"Musopen Service\", not user content or public domain content), are fully copyrighted and may not be used freely as stated in their Terms and Conditions of Use. (OGG from https://archive.org/details/MusopenCollectionAsFlac)",
+   "seconds": 458.2
+  },
+  {
+   "file": "track2.wav",
+   "title": "File:Antonin Dvorak - symphony no. 9 in e minor 'from the new world', op. 95 - ii. largo.ogg",
+   "url": "https://commons.wikimedia.org/wiki/File:Antonin_Dvorak_-_symphony_no._9_in_e_minor_%27from_the_new_world%27,_op._95_-_ii._largo.ogg",
+   "license": "Public domain",
+   "license_url": null,
+   "artist": "Antonín Dvořák",
+   "credit": "This work comes from the non profit U.S. organization Musopen where it is available at the following link: http://www.musopen.com The Musopen website requires all uploaders to \"represent and warrant that content uploaded to the site is in the public domain\" (see FAQ #4). Musopen's own works (\"Musopen Materials\" and \"Musopen Service\", not user content or public domain content), are fully copyrighted and may not be used freely as stated in their Terms and Conditions of Use.",
+   "seconds": 694.5
+  },
+  {
+   "file": "track3.wav",
+   "title": "File:Antonin Dvorak - symphony no. 9 in e minor 'from the new world', op. 95 - iv. allegro con fuoco.ogg",
+   "url": "https://commons.wikimedia.org/wiki/File:Antonin_Dvorak_-_symphony_no._9_in_e_minor_%27from_the_new_world%27,_op._95_-_iv._allegro_con_fuoco.ogg",
+   "license": "Public domain",
+   "license_url": null,
+   "artist": "Antonin Dvorak (composer)",
+   "credit": "This work comes from the non profit U.S. organization Musopen where it is available at the following link: http://www.musopen.com The Musopen website requires all uploaders to \"represent and warrant that content uploaded to the site is in the public domain\" (see FAQ #4). Musopen's own works (\"Musopen Materials\" and \"Musopen Service\", not user content or public domain content), are fully copyrighted and may not be used freely as stated in their Terms and Conditions of Use.",
+   "seconds": 702.9
+  },
+  {
+   "file": "track4.wav",
+   "title": "File:Albinoni, Concerto for Oboe and Strings No. 2 in D minor, Op. 9, I. Allegro e con presto.ogg",
+   "url": "https://commons.wikimedia.org/wiki/File:Albinoni,_Concerto_for_Oboe_and_Strings_No._2_in_D_minor,_Op._9,_I._Allegro_e_con_presto.ogg",
+   "license": "CC0",
+   "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "artist": "?",
+   "credit": "This work comes from the non profit U.S. organization Musopen where it is available at the following link: http://www.musopen.org/music/piece/825 The Musopen website requires all uploaders to \"represent and warrant that content uploaded to the site is in the public domain\" (see FAQ #4). Musopen's own works (\"Musopen Materials\" and \"Musopen Service\", not user content or public domain content), are fully copyrighted and may not be used freely as stated in their Terms and Conditions of Use.",
+   "seconds": 229.6
+  }
+ ],
+ "phrases": {
+  "ja": {
+   "fleurs": "ja_jp",
+   "duration": 741.8,
+   "speech_level_db": -23.4,
+   "items": [
+    {
+     "id": 1666,
+     "ref": "自国以外の政府からの助言を参考にしてもかいまいませんが、そのような助言はその国の国民向けのものです。",
+     "ref_norm_fleurs": "自国以外の政府からの助言を参考にしてもかいまいませんが そのような助言はその国の国民向けのものです",
+     "ref_es": "Es posible que quiera consultar las recomendaciones de otros gobiernos, pero están pensadas para sus propios ciudadanos.",
+     "ref_en": "You may also wish to consult the advice of governments other than your own, but their advice is designed for their citizens.",
+     "gender": 0,
+     "duration": 13.56,
+     "start": 1.0,
+     "end": 14.56,
+     "speech_start": 4.744,
+     "speech_end": 10.952,
+     "energy_start": 4.73,
+     "energy_end": 10.875,
+     "speech_intervals": [
+      [
+       4.73,
+       10.875
+      ]
+     ]
+    },
+    {
+     "id": 1667,
+     "ref": "一般的に言えば、管理職がかつての仲間を率いることになった場合、2とおりの行動が現れる可能性があります。1つは「仲間の1人」のままでいようとする行動です。",
+     "ref_norm_fleurs": "一般的に言えば 管理職がかつての仲間を率いることになった場合 2とおりの行動が現れる可能性があります 1つは 仲間の1人 のままでいようとする行動です",
+     "ref_es": "En general, pueden darse dos tipos de comportamiento cuando los gerentes comienzan a liderar a sus antiguos compañeros. De un lado del espectro, está el intento de continuar siendo «uno de los muchachos» (o muchachas).",
+     "ref_en": "Generally speaking, two behaviors can emerge as managers begin to lead their former peers. One end of the spectrum is trying to remain “one of the guys” (or gals).",
+     "gender": 0,
+     "duration": 17.82,
+     "start": 16.563,
+     "end": 34.383,
+     "speech_start": 20.627,
+     "speech_end": 31.443,
+     "energy_start": 17.243,
+     "energy_end": 31.368,
+     "speech_intervals": [
+      [
+       17.243,
+       17.398
+      ],
+      [
+       20.623,
+       24.928
+      ],
+      [
+       25.163,
+       27.828
+      ],
+      [
+       28.153,
+       31.368
+      ]
+     ]
+    },
+    {
+     "id": 1674,
+     "ref": "1分間で沸騰する地域もあれば、沸騰するまでに何分もかかる地域もあります。",
+     "ref_norm_fleurs": "1分間で沸騰する地域もあれば 沸騰するまでに何分もかかる地域もあります",
+     "ref_es": "En algunos, lugares basta con hervir agua durante un minuto, en otros, son necesarios varios más.",
+     "ref_en": "In some areas boiling water for a minute is enough, in others several minutes are needed.",
+     "gender": 1,
+     "duration": 10.5,
+     "start": 36.277,
+     "end": 46.777,
+     "speech_start": 38.933,
+     "speech_end": 45.877,
+     "energy_start": 38.907,
+     "energy_end": 45.772,
+     "speech_intervals": [
+      [
+       38.907,
+       41.492
+      ],
+      [
+       42.167,
+       45.772
+      ]
+     ]
+    },
+    {
+     "id": 1675,
+     "ref": "すべての名詞は、「あなた」を指す単語Sieと同様に、文の途中であっても常に大文字で始まります。",
+     "ref_norm_fleurs": "すべての名詞は あなた を指す単語sieと同様に 文の途中であっても常に大文字で始まります",
+     "ref_es": "Todos los sustantivos, así como el vocablo Sie para significar 'usted', llevan siempre su letra inicial mayúscula, aunque estén ubicados en el medio de la oración.",
+     "ref_en": "All nouns, alongside the word Sie for you, always begin with a capital letter, even in the middle of a sentence.",
+     "gender": 0,
+     "duration": 15.9,
+     "start": 48.5,
+     "end": 64.4,
+     "speech_start": 53.748,
+     "speech_end": 59.7,
+     "energy_start": 53.65,
+     "energy_end": 59.615,
+     "speech_intervals": [
+      [
+       53.65,
+       59.615
+      ]
+     ]
+    },
+    {
+     "id": 1687,
+     "ref": "棲み分けと組み換えは、世代ごとに2つのプールの間を行き来しながら変異をシャッフルします。",
+     "ref_norm_fleurs": "棲み分けと組み換えは 世代ごとに2つのプールの間を行き来しながら変異をシャッフルします",
+     "ref_es": "La segregación y la recombinación barajan la variación entre uno y otro generación tras generación.",
+     "ref_en": "Segregation and recombination shuffle variation back and forth between the two pools with each generation.",
+     "gender": 0,
+     "duration": 9.36,
+     "start": 65.827,
+     "end": 75.187,
+     "speech_start": 67.939,
+     "speech_end": 72.803,
+     "energy_start": 67.847,
+     "energy_end": 72.782,
+     "speech_intervals": [
+      [
+       67.847,
+       72.782
+      ]
+     ]
+    },
+    {
+     "id": 1691,
+     "ref": "一部の路線では大企業は自社機を持っているが、それ以外の路線や小規模企業では問題があった。",
+     "ref_norm_fleurs": "一部の路線では大企業は自社機を持っているが それ以外の路線や小規模企業では問題があった",
+     "ref_es": "Las compañías grandes tienen sus propios aviones en algunas rutas, pero hubo un problema para las empresas más pequeñas y otras rutas.",
+     "ref_en": "On some routes, the larger companies have their own planes, but for other routes and smaller firms there was a problem.",
+     "gender": 0,
+     "duration": 10.2,
+     "start": 76.487,
+     "end": 86.687,
+     "speech_start": 78.567,
+     "speech_end": 84.007,
+     "energy_start": 78.557,
+     "energy_end": 83.952,
+     "speech_intervals": [
+      [
+       78.557,
+       83.952
+      ]
+     ]
+    },
+    {
+     "id": 1696,
+     "ref": "その大学の研究者たちによれば、この2つの化合物は、互いに反応して腎臓の機能を阻害しうる結晶を形成します。",
+     "ref_norm_fleurs": "その大学の研究者たちによれば この2つの化合物は 互いに反応して腎臓の機能を阻害しうる結晶を形成します",
+     "ref_es": "Los investigadores indicaron que los dos compuestos reaccionan entre sí para dar lugar a cristales que pueden obstruir la función renal.",
+     "ref_en": "The two compounds react with one another to form crystals that may block kidney function, researchers at the university said.",
+     "gender": 0,
+     "duration": 11.94,
+     "start": 88.471,
+     "end": 100.411,
+     "speech_start": 89.751,
+     "speech_end": 98.359,
+     "energy_start": 89.751,
+     "energy_end": 90.226,
+     "speech_intervals": [
+      [
+       89.751,
+       90.226
+      ]
+     ]
+    },
+    {
+     "id": 1702,
+     "ref": "わずか2週間でアメリカ軍と自由フランス軍は南フランスを解放し、ドイツに向かっていました。",
+     "ref_norm_fleurs": "わずか2週間でアメリカ軍と自由フランス軍は南フランスを解放し ドイツに向かっていました",
+     "ref_es": "En apenas dos semanas, las fuerzas norteamericanas y las de la Francia Libre habían logrado la liberación del sur de Francia y seguían rumbo a Alemania.",
+     "ref_en": "In just two weeks the Americans and Free French forces had liberated southern France and were turning towards Germany.",
+     "gender": 0,
+     "duration": 9.9,
+     "start": 101.967,
+     "end": 111.867,
+     "speech_start": 104.047,
+     "speech_end": 109.487,
+     "energy_start": 104.047,
+     "energy_end": 109.352,
+     "speech_intervals": [
+      [
+       104.047,
+       109.352
+      ]
+     ]
+    },
+    {
+     "id": 1704,
+     "ref": "砂漠の砂による脅威から保護するため、1990年には危険な世界遺産のリストに追加されました。",
+     "ref_norm_fleurs": "砂漠の砂による脅威から保護するため 1990年には危険な世界遺産のリストに追加されました",
+     "ref_es": "En 1990, fue incorporado al listado de lugares del patrimonio de la humanidad en riesgo, producto de la amenaza de las arenas del desierto.",
+     "ref_en": "In 1990, it was added to the list of world heritage sites in danger, due to the threat of desert sands.",
+     "gender": 1,
+     "duration": 11.7,
+     "start": 113.55,
+     "end": 125.25,
+     "speech_start": 114.894,
+     "speech_end": 124.366,
+     "energy_start": 114.9,
+     "energy_end": 124.265,
+     "speech_intervals": [
+      [
+       114.9,
+       116.445
+      ],
+      [
+       116.73,
+       119.155
+      ],
+      [
+       119.51,
+       120.555
+      ],
+      [
+       120.82,
+       122.145
+      ],
+      [
+       122.54,
+       124.265
+      ]
+     ]
+    },
+    {
+     "id": 1716,
+     "ref": "芸能ニュースサイトTMZによると、写真家はセプルベダ大通りの反対車線に車を停め、道路を渡って進む前に警察の検問を写真に収めようとしたため、交通規制をしていたカリフォルニア州ハイウェイパトロールの警察官が横断して戻るように2回も命じたそうです。",
+     "ref_norm_fleurs": "芸能ニュースサイトtmzによると 写真家はセプルベダ大通りの反対車線に車を停め 道路を渡って進む前に警察の検問を写真に収めようとしたため 交通規制をしていたカリフォルニア州ハイウェイパトロールの警察官が横断して戻るように2回も命じたそうです",
+     "ref_es": "Según la página web de noticias de entretenimiento TMZ, el fotógrafo detuvo el vehículo del lado contrario del bulevar Sepulveda e intentó tomar fotografías de la parada policial antes de cruzar la calle y seguir, lo que causó que el agente de la patrulla caminera de California que realizaba la detención de vehículos le diera dos veces la orden de volver a cruzar.",
+     "ref_en": "Entertainment news website TMZ understands the photographer stopped his vehicle on the other side of Sepulveda Boulevard and attempted to take pictures of the police stop before crossing the road and continuing, prompting the California Highway Patrol police officer conducting the traffic stop to order him back across, twice.",
+     "gender": 0,
+     "duration": 19.08,
+     "start": 126.583,
+     "end": 145.663,
+     "speech_start": 127.735,
+     "speech_end": 143.831,
+     "energy_start": 127.213,
+     "energy_end": 143.788,
+     "speech_intervals": [
+      [
+       127.213,
+       143.788
+      ]
+     ]
+    },
+    {
+     "id": 1718,
+     "ref": "骨董品について普遍的な定義はありません。税務署によっては、100年以上前のものを骨董品と定義しています。",
+     "ref_norm_fleurs": "骨董品について普遍的な定義はありません 税務署によっては 100年以上前のものを骨董品と定義しています",
+     "ref_es": "No ha un criterio universal que determine cuándo un bien manufacturado puede ser considerado una antigüedad. Algunas agencias impositivas tienen establecido que los objetos de más de 100 años son antigüedades.",
+     "ref_en": "There is no universal definition for which manufactured items are antiques. Some tax agencies define goods older than 100 years as antiques.",
+     "gender": 1,
+     "duration": 13.86,
+     "start": 147.288,
+     "end": 161.148,
+     "speech_start": 147.96,
+     "speech_end": 161.048,
+     "energy_start": 147.928,
+     "energy_end": 160.963,
+     "speech_intervals": [
+      [
+       147.928,
+       149.203
+      ],
+      [
+       150.068,
+       152.433
+      ],
+      [
+       155.198,
+       160.963
+      ]
+     ]
+    },
+    {
+     "id": 1719,
+     "ref": "悪天候とは、物理的被害、深刻な社会的混乱、人命に関わる被害につながりうる危険な気象現象の総称です。",
+     "ref_norm_fleurs": "悪天候とは 物理的被害 深刻な社会的混乱 人命に関わる被害につながりうる危険な気象現象の総称です",
+     "ref_es": "El término clima severo refiere, en general, a cualquier fenómeno climático riesgoso que sea capaz de provocar daños, alteraciones sociales graves o la muerte de personas.",
+     "ref_en": "Severe weather is the generic term for any dangerous weather phenomenon with the potential to cause damage, serious social disruption, or loss of human life.",
+     "gender": 0,
+     "duration": 13.62,
+     "start": 162.531,
+     "end": 176.151,
+     "speech_start": 165.539,
+     "speech_end": 173.347,
+     "energy_start": 162.851,
+     "energy_end": 175.836,
+     "speech_intervals": [
+      [
+       162.851,
+       163.066
+      ],
+      [
+       165.171,
+       173.226
+      ],
+      [
+       175.611,
+       175.836
+      ]
+     ]
+    },
+    {
+     "id": 1734,
+     "ref": "科学者たちは、暗黒物質は、通常の物質と同じように他の暗黒物質にも影響を与えていると結論づけました。",
+     "ref_norm_fleurs": "科学者たちは 暗黒物質は 通常の物質と同じように他の暗黒物質にも影響を与えていると結論づけました",
+     "ref_es": "Los expertos llegaron a la conclusión de que las materias oscuras se afectan entre sí al igual que lo hace la materia regular.",
+     "ref_en": "The scientists were able to conclude that the dark matter affect other dark matter in the same way regular matter does.",
+     "gender": 0,
+     "duration": 10.62,
+     "start": 177.565,
+     "end": 188.185,
+     "speech_start": 179.261,
+     "speech_end": 185.821,
+     "energy_start": 178.945,
+     "energy_end": 185.7,
+     "speech_intervals": [
+      [
+       178.945,
+       185.7
+      ]
+     ]
+    },
+    {
+     "id": 1737,
+     "ref": "ライオンは最も社交的なネコ科の動物であり、プライドと呼ばれる大集団で生活しています。",
+     "ref_norm_fleurs": "ライオンは最も社交的なネコ科の動物であり プライドと呼ばれる大集団で生活しています",
+     "ref_es": "Los leones son los felinos que más socializan y su vida transcurre dentro de grupos de gran tamaño denominados manadas.",
+     "ref_en": "Lions are the most social cats, living in large groups called prides.",
+     "gender": 1,
+     "duration": 12.18,
+     "start": 189.947,
+     "end": 202.127,
+     "speech_start": 192.091,
+     "speech_end": 200.859,
+     "energy_start": 192.037,
+     "energy_end": 200.802,
+     "speech_intervals": [
+      [
+       192.037,
+       195.622
+      ],
+      [
+       195.947,
+       197.372
+      ],
+      [
+       198.397,
+       200.802
+      ]
+     ]
+    },
+    {
+     "id": 1738,
+     "ref": "また、水の中に入ってくるものは何でも攻撃し、ティラノサウルスのような巨大な恐竜も敵わないでしょう。",
+     "ref_norm_fleurs": "また 水の中に入ってくるものは何でも攻撃し ティラノサウルスのような巨大な恐竜も敵わないでしょう",
+     "ref_es": "Atacaba también a cualquier criatura que entrara en el agua: ni siquiera un dinosaurio tan enorme como el T. Rex era una amenaza para él.",
+     "ref_en": "It also attacked anything that entered the water; even a giant dinosaur such as T. rex would be no match for it.",
+     "gender": 0,
+     "duration": 13.74,
+     "start": 203.773,
+     "end": 217.513,
+     "speech_start": 207.613,
+     "speech_end": 214.333,
+     "energy_start": 207.173,
+     "energy_end": 214.278,
+     "speech_intervals": [
+      [
+       207.173,
+       207.338
+      ],
+      [
+       207.593,
+       214.278
+      ]
+     ]
+    },
+    {
+     "id": 1745,
+     "ref": "植物は自然環境にあるときに最も見栄えがするのですから、「1本だけ」ならと標本に持ち帰りたい誘惑に負けないでください。",
+     "ref_norm_fleurs": "植物は自然環境にあるときに最も見栄えがするのですから 1本だけ ならと標本に持ち帰りたい誘惑に負けないでください",
+     "ref_es": "Las plantas lucen mejor cuando están en un entorno natural, por eso, resista la tentación de arrancar «tan solo un» espécimen.",
+     "ref_en": "Plants look their best when in a natural environment, so resist the temptation to remove even \"just one\" specimen.",
+     "gender": 0,
+     "duration": 13.62,
+     "start": 219.287,
+     "end": 232.907,
+     "speech_start": 220.823,
+     "speech_end": 230.871,
+     "energy_start": 220.837,
+     "energy_end": 230.202,
+     "speech_intervals": [
+      [
+       220.837,
+       221.422
+      ],
+      [
+       221.777,
+       222.612
+      ],
+      [
+       224.257,
+       224.432
+      ],
+      [
+       226.117,
+       226.712
+      ],
+      [
+       227.427,
+       229.282
+      ],
+      [
+       229.837,
+       230.202
+      ]
+     ]
+    },
+    {
+     "id": 1750,
+     "ref": "この発見はまた、鳥類の羽毛の進化について探るための手がかりとなるものでした。",
+     "ref_norm_fleurs": "この発見はまた 鳥類の羽毛の進化について探るための手がかりとなるものでした",
+     "ref_es": "Asimismo, el hallazgo permite comprender mejor la evolución de las plumas de las aves.",
+     "ref_en": "The find also grants insight into the evolution of feathers in birds.",
+     "gender": 0,
+     "duration": 8.88,
+     "start": 235.101,
+     "end": 243.981,
+     "speech_start": 236.701,
+     "speech_end": 242.141,
+     "energy_start": 238.101,
+     "energy_end": 238.376,
+     "speech_intervals": [
+      [
+       238.101,
+       238.376
+      ]
+     ]
+    },
+    {
+     "id": 1772,
+     "ref": "そのため、単にラベルとして表記が追加されがちです。",
+     "ref_norm_fleurs": "そのため 単にラベルとして表記が追加されがちです",
+     "ref_es": "Por tanto, es probable que la anotación haya sido agregada tan solo como un rótulo.",
+     "ref_en": "So, it is likely that the notation was added simply as a label.",
+     "gender": 0,
+     "duration": 7.14,
+     "start": 245.355,
+     "end": 252.495,
+     "speech_start": 246.987,
+     "speech_end": 250.411,
+     "energy_start": 247.085,
+     "energy_end": 250.16,
+     "speech_intervals": [
+      [
+       247.085,
+       247.49
+      ],
+      [
+       247.755,
+       250.16
+      ]
+     ]
+    },
+    {
+     "id": 1780,
+     "ref": "クンダリーニヨガは、ヨガのポーズ、呼吸、マントラ、ムードラなどを組み合わせてクンダリーニ（自己の魂）の覚醒を目指すものです。",
+     "ref_norm_fleurs": "クンダリーニヨガは ヨガのポーズ 呼吸 マントラ ムードラなどを組み合わせてクンダリーニ自己の魂の覚醒を目指すものです",
+     "ref_es": "En Kundalini Yoga, la energía Kundalini (iluminación) se activa con posiciones de yoga, prácticas de respiración, mantras o visualizaciones.",
+     "ref_en": "With Kundalini Yoga the Kundalini energy (enlightenment energy) is awakened through yoga postures, breathing exercises, mantras and visualizations.",
+     "gender": 0,
+     "duration": 13.98,
+     "start": 254.373,
+     "end": 268.353,
+     "speech_start": 256.293,
+     "speech_end": 266.149,
+     "energy_start": 256.323,
+     "energy_end": 263.658,
+     "speech_intervals": [
+      [
+       256.323,
+       256.788
+      ],
+      [
+       260.023,
+       260.278
+      ],
+      [
+       262.283,
+       262.818
+      ],
+      [
+       263.473,
+       263.658
+      ]
+     ]
+    },
+    {
+     "id": 1781,
+     "ref": "マダガスカルは群を抜いて最大の島であり、野生生物の生息地としては独自の大陸です。",
+     "ref_norm_fleurs": "マダガスカルは群を抜いて最大の島であり 野生生物の生息地としては独自の大陸です",
+     "ref_es": "Madagascar es, por mucho, la más grande y un continente en sí mismo si hablamos de vida silvestre.",
+     "ref_en": "Madagascar is by far the biggest, and a continent on its own when it comes to wildlife.",
+     "gender": 1,
+     "duration": 12.36,
+     "start": 270.53,
+     "end": 282.89,
+     "speech_start": 271.394,
+     "speech_end": 281.57,
+     "energy_start": 271.42,
+     "energy_end": 281.455,
+     "speech_intervals": [
+      [
+       271.42,
+       272.615
+      ],
+      [
+       272.85,
+       273.825
+      ],
+      [
+       274.36,
+       275.815
+      ],
+      [
+       276.24,
+       278.135
+      ],
+      [
+       278.42,
+       279.005
+      ],
+      [
+       279.64,
+       281.455
+      ]
+     ]
+    },
+    {
+     "id": 1806,
+     "ref": "最も被害が大きかった頃の公害は現在とは問題の種類が異なり、都市部や学校の校庭で発生していたため、現代の問題よりも身近なものでした。",
+     "ref_norm_fleurs": "最も被害が大きかった頃の公害は現在とは問題の種類が異なり 都市部や学校の校庭で発生していたため 現代の問題よりも身近なものでした",
+     "ref_es": "Dado que, en su auge, la contaminación lumínica no era un problema de gran magnitud como lo es hoy, es frecuente encontrarlos en ciudades o en campus, siendo de más fácil acceso que aquellos que se construyen en los tiempos modernos.",
+     "ref_en": "As light pollution in their heyday was not the kind of problem it is today, they are usually located in cities or at campuses, easier to reach than those built in modern times.",
+     "gender": 0,
+     "duration": 13.8,
+     "start": 284.523,
+     "end": 298.323,
+     "speech_start": 286.859,
+     "speech_end": 295.627,
+     "energy_start": 286.553,
+     "energy_end": 295.518,
+     "speech_intervals": [
+      [
+       286.553,
+       295.518
+      ]
+     ]
+    },
+    {
+     "id": 1821,
+     "ref": "脳病理と行動の相関関係は、科学者たちの研究を裏付けるものです。",
+     "ref_norm_fleurs": "脳病理と行動の相関関係は 科学者たちの研究を裏付けるものです",
+     "ref_es": "El correlato existente entre la patología cerebral y la conducta contribuye a la investigación de los científicos.",
+     "ref_en": "The correlation between brain pathology and behaviour supports scientists in their research.",
+     "gender": 0,
+     "duration": 11.82,
+     "start": 300.25,
+     "end": 312.07,
+     "speech_start": 302.618,
+     "speech_end": 308.474,
+     "energy_start": 302.6,
+     "energy_end": 311.615,
+     "speech_intervals": [
+      [
+       302.6,
+       308.415
+      ],
+      [
+       311.46,
+       311.615
+      ]
+     ]
+    },
+    {
+     "id": 1827,
+     "ref": "地殻の厚さは、手前側が約70 km、奥側が約100 kmです。",
+     "ref_norm_fleurs": "地殻の厚さは 手前側が約70 km 奥側が約100 kmです",
+     "ref_es": "La corteza tiene un espesor de unos 70 km en el lado cercano y de 100 km en el lejano.",
+     "ref_en": "The crust is about 70 km thick on the near side and 100 km thick on the far side.",
+     "gender": 0,
+     "duration": 8.1,
+     "start": 313.695,
+     "end": 321.795,
+     "speech_start": 315.583,
+     "speech_end": 319.967,
+     "energy_start": 315.115,
+     "energy_end": 319.87,
+     "speech_intervals": [
+      [
+       315.115,
+       319.87
+      ]
+     ]
+    },
+    {
+     "id": 1833,
+     "ref": "哲学者のアリストテレスは、万物は4つの要素のうち1つ以上を混合した物で構成されているという理論を唱えました。4つの要素とは、土、水、空気、火です。",
+     "ref_norm_fleurs": "哲学者のアリストテレスは 万物は4つの要素のうち1つ以上を混合した物で構成されているという理論を唱えました 4つの要素とは 土 水 空気 火です",
+     "ref_es": "El filósofo Aristóteles desarrolló la teoría de que todo está formado por una combinación de uno o varios de cuatro elementos: tierra, agua, aire y fuego.",
+     "ref_en": "Aristotle, a philosopher, theorised that everything is made up of a mixture of one or more of four elements. They were earth, water, air, and fire.",
+     "gender": 0,
+     "duration": 16.8,
+     "start": 323.557,
+     "end": 340.357,
+     "speech_start": 325.733,
+     "speech_end": 338.149,
+     "energy_start": 325.757,
+     "energy_end": 335.372,
+     "speech_intervals": [
+      [
+       325.757,
+       326.072
+      ],
+      [
+       326.767,
+       327.042
+      ],
+      [
+       327.787,
+       328.052
+      ],
+      [
+       328.877,
+       329.112
+      ],
+      [
+       329.737,
+       330.122
+      ],
+      [
+       331.937,
+       332.152
+      ],
+      [
+       335.147,
+       335.372
+      ]
+     ]
+    },
+    {
+     "id": 1834,
+     "ref": "また、北側に行くなら世界的に有名なマリア像の聖地であるファティマの聖母の聖域（神社）を訪れましょう。",
+     "ref_norm_fleurs": "また 北側に行くなら世界的に有名なマリア像の聖地であるファティマの聖母の聖域神社を訪れましょう",
+     "ref_es": "También debe visitar, hacia el norte, el gran Santuario de Nuestra Señora de Fátima (Santuario) que es un sitio donde hubo apariciones de la Virgen María, famosas en todo el mundo.",
+     "ref_en": "Also to the north visit the great Sanctuary of Our Lady of Fatima (Shrine), a place of worldwide famous Marian apparitions.",
+     "gender": 0,
+     "duration": 14.22,
+     "start": 342.369,
+     "end": 356.589,
+     "speech_start": 345.889,
+     "speech_end": 353.729,
+     "energy_start": 345.589,
+     "energy_end": 353.654,
+     "speech_intervals": [
+      [
+       345.589,
+       353.654
+      ]
+     ]
+    },
+    {
+     "id": 1844,
+     "ref": "月面は岩石と塵でできています。月の外層は地殻と呼ばれています。",
+     "ref_norm_fleurs": "月面は岩石と塵でできています 月の外層は地殻と呼ばれています",
+     "ref_es": "La superficie de la luna se compone de rocas y polvo y su capa exterior se denomina corteza.",
+     "ref_en": "The surface of the Moon is made of rocks and dust. The outer layer of the Moon is called the crust.",
+     "gender": 0,
+     "duration": 9.06,
+     "start": 358.654,
+     "end": 367.714,
+     "speech_start": 360.19,
+     "speech_end": 366.142,
+     "energy_start": 360.194,
+     "energy_end": 365.759,
+     "speech_intervals": [
+      [
+       360.194,
+       361.079
+      ],
+      [
+       361.624,
+       362.259
+      ],
+      [
+       363.464,
+       364.249
+      ],
+      [
+       364.994,
+       365.759
+      ]
+     ]
+    },
+    {
+     "id": 1862,
+     "ref": "NextGenは、航空機が短距離路線を飛行し、毎年数百万ガロンの燃料を節約し、二酸化炭素の排出量を削減できるようにするシステムだとFAAは主張しています。",
+     "ref_norm_fleurs": "nextgenは 航空機が短距離路線を飛行し 毎年数百万ガロンの燃料を節約し 二酸化炭素の排出量を削減できるようにするシステムだとfaaは主張しています",
+     "ref_es": "NextGen es un sistema que, según afirma la Administración Federal de Aviación, reduciría las distancias de las rutas aéreas, lo cual ahorraría millones de galones de combustible por año, así como las emisiones de carbono.",
+     "ref_en": "NextGen is a system the FAA claims would allow aircraft to fly shorter routes and save millions of gallons of fuel each year and cut carbon emissions.",
+     "gender": 0,
+     "duration": 20.7,
+     "start": 369.759,
+     "end": 390.459,
+     "speech_start": 372.671,
+     "speech_end": 387.135,
+     "energy_start": 369.759,
+     "energy_end": 387.044,
+     "speech_intervals": [
+      [
+       369.759,
+       370.334
+      ],
+      [
+       372.669,
+       373.744
+      ],
+      [
+       374.229,
+       375.064
+      ],
+      [
+       375.849,
+       377.414
+      ],
+      [
+       377.919,
+       380.804
+      ],
+      [
+       381.169,
+       384.834
+      ],
+      [
+       385.239,
+       387.044
+      ]
+     ]
+    },
+    {
+     "id": 1864,
+     "ref": "キルヒネル夫人は、アルゼンチン劇場で大統領選に出馬するという意向を表明しました。2005年にブエノスアイレス州の代表団の一員として上院選への出馬を表明したのもこの劇場でした。",
+     "ref_norm_fleurs": "キルヒネル夫人は アルゼンチン劇場で大統領選に出馬するという意向を表明しました 2005年にブエノスアイレス州の代表団の一員として上院選への出馬を表明したのもこの劇場でした",
+     "ref_es": "El Teatro Argentino fue el lugar donde la señora Kirchner anunció su intención de candidatearse como presidenta; este es el mismo sitio donde inició su campaña para el senado en el año 2005, en representación de la provincia de Buenos Aires.",
+     "ref_en": "Mrs. Kirchner announced her intention to run for president at the Argentine Theatre, the same location she used to start her 2005 campaign for the Senate as member of the Buenos Aires province delegation.",
+     "gender": 0,
+     "duration": 17.76,
+     "start": 392.207,
+     "end": 409.967,
+     "speech_start": 394.255,
+     "speech_end": 407.951,
+     "energy_start": 397.027,
+     "energy_end": 397.682,
+     "speech_intervals": [
+      [
+       397.027,
+       397.682
+      ]
+     ]
+    },
+    {
+     "id": 1879,
+     "ref": "さらに新しいものが登場したら、キーボードはどうなるのだろうかと思ってしまいます。",
+     "ref_norm_fleurs": "さらに新しいものが登場したら キーボードはどうなるのだろうかと思ってしまいます",
+     "ref_es": "Solo queda preguntarse qué será del teclado cuando surja algo más nuevo.",
+     "ref_en": "One can only wonder what the keyboard will become when something newer comes along.",
+     "gender": 0,
+     "duration": 9.12,
+     "start": 411.894,
+     "end": 421.014,
+     "speech_start": 414.294,
+     "speech_end": 418.646,
+     "energy_start": 414.064,
+     "energy_end": 418.569,
+     "speech_intervals": [
+      [
+       414.064,
+       418.569
+      ]
+     ]
+    },
+    {
+     "id": 1883,
+     "ref": "橋下の上方空間は15メートルです。2011年8月に竣工し、2017年3月まで開通しませんでした。",
+     "ref_norm_fleurs": "橋下の上方空間は15メートルです 2011年8月に竣工し 2017年3月まで開通しませんでした",
+     "ref_es": "Debajo del puente hay un espacio libre de 15 metros y, si bien su construcción fue terminada en agosto de 2011, no se habilitó para el tránsito sino hasta marzo de 2017.",
+     "ref_en": "The vertical clearance under the bridge is 15 meters. Construction was completed in August 2011, it didn't open to traffic until March 2017.",
+     "gender": 0,
+     "duration": 11.22,
+     "start": 423.084,
+     "end": 434.304,
+     "speech_start": 425.1,
+     "speech_end": 432.396,
+     "energy_start": 425.064,
+     "energy_end": 432.269,
+     "speech_intervals": [
+      [
+       425.064,
+       432.269
+      ]
+     ]
+    },
+    {
+     "id": 1886,
+     "ref": "古代の文化や部族は、乳、毛、肉、皮を簡手に入れやすいヤギを飼い始めました。",
+     "ref_norm_fleurs": "古代の文化や部族は 乳 毛 肉 皮を簡手に入れやすいヤギを飼い始めました",
+     "ref_es": "Con el propósito de obtener fácilmente su leche, pelo, carne y cuero, los pueblos y tribus antiguos empezaron a quedarse con ellos.",
+     "ref_en": "Ancient cultures and tribes began to keep them for easy access to milk, hair, meat, and skins.",
+     "gender": 0,
+     "duration": 9.84,
+     "start": 435.613,
+     "end": 445.453,
+     "speech_start": 437.309,
+     "speech_end": 443.325,
+     "energy_start": 436.823,
+     "energy_end": 443.258,
+     "speech_intervals": [
+      [
+       436.823,
+       439.518
+      ],
+      [
+       439.843,
+       443.258
+      ]
+     ]
+    },
+    {
+     "id": 1887,
+     "ref": "その病院に勤務しながら、リギンズは余暇を利用して早産についての研究を始めました。",
+     "ref_norm_fleurs": "その病院に勤務しながら リギンズは余暇を利用して早産についての研究を始めました",
+     "ref_es": "Liggins comenzó sus investigaciones sobre el parto prematuro en su tiempo libre, mientras trabajaba en el hospital.",
+     "ref_en": "While he was working at the hospital Liggins began to investigate premature labor during his spare time.",
+     "gender": 0,
+     "duration": 11.22,
+     "start": 447.439,
+     "end": 458.659,
+     "speech_start": 449.903,
+     "speech_end": 455.439,
+     "energy_start": 449.789,
+     "energy_end": 458.004,
+     "speech_intervals": [
+      [
+       449.789,
+       455.334
+      ],
+      [
+       457.849,
+       458.004
+      ]
+     ]
+    },
+    {
+     "id": 1929,
+     "ref": "第2セットでは、デル・ポトロが序盤から優位でしたが、6-6に追いつかれた後、またもやタイブレークが必要となりました。",
+     "ref_norm_fleurs": "第2セットでは デル ポトロが序盤から優位でしたが 6-6に追いつかれた後 またもやタイブレークが必要となりました",
+     "ref_es": "Si bien Del Potro detentó una ventaja inicial en el segundo set, esto también quedó sujeto a desempate después de alcanzar el 6-6.",
+     "ref_en": "Del Potro had the early advantage in the second set, but this too required a tie break after reaching 6-6.",
+     "gender": 0,
+     "duration": 13.08,
+     "start": 460.53,
+     "end": 473.61,
+     "speech_start": 462.45,
+     "speech_end": 471.122,
+     "energy_start": 462.45,
+     "energy_end": 470.245,
+     "speech_intervals": [
+      [
+       462.45,
+       463.185
+      ],
+      [
+       463.53,
+       464.065
+      ],
+      [
+       464.56,
+       465.855
+      ],
+      [
+       466.4,
+       467.665
+      ],
+      [
+       468.64,
+       469.005
+      ],
+      [
+       469.27,
+       470.245
+      ]
+     ]
+    },
+    {
+     "id": 1935,
+     "ref": "しかし、そうではありませんでした。裏面に何か書かれていますが宝の地図ではありませんでした。",
+     "ref_norm_fleurs": "しかし そうではありませんでした 裏面に何か書かれていますが宝の地図ではありませんでした",
+     "ref_es": "No obstante, eso no es cierto. Si bien el reverso del documento contiene algo escrito, no se trata de un mapa de un tesoro.",
+     "ref_en": "However, that is not true. Although there is something written on the back of the document, it is not a treasure map.",
+     "gender": 0,
+     "duration": 9.24,
+     "start": 475.75,
+     "end": 484.99,
+     "speech_start": 477.446,
+     "speech_end": 483.238,
+     "energy_start": 478.0,
+     "energy_end": 480.095,
+     "speech_intervals": [
+      [
+       478.0,
+       478.205
+      ],
+      [
+       479.54,
+       480.095
+      ]
+     ]
+    },
+    {
+     "id": 1938,
+     "ref": "病院では、感染管理手順書に従い、他人への感染の可能性を防ぐために患者を隔離するなどの措置をとっています。",
+     "ref_norm_fleurs": "病院では 感染管理手順書に従い 他人への感染の可能性を防ぐために患者を隔離するなどの措置をとっています",
+     "ref_es": "El hospital ha respetado el protocolo de control de infecciones, incluido el distanciamiento del paciente de los demás para prevenir posibles infecciones.",
+     "ref_en": "The hospital has followed protocol for infection control, including separating the patient from others to prevent possible infection of others.",
+     "gender": 0,
+     "duration": 15.06,
+     "start": 486.401,
+     "end": 501.461,
+     "speech_start": 489.857,
+     "speech_end": 497.697,
+     "energy_start": 489.831,
+     "energy_end": 500.606,
+     "speech_intervals": [
+      [
+       489.831,
+       497.636
+      ],
+      [
+       499.511,
+       499.686
+      ],
+      [
+       499.931,
+       500.606
+      ]
+     ]
+    },
+    {
+     "id": 1939,
+     "ref": "革命後は職業も公募制になって男性全員に応募資格があり、最も意欲があって勝ち抜いた者が職に就けるようになりました。",
+     "ref_norm_fleurs": "革命後は職業も公募制になって男性全員に応募資格があり 最も意欲があって勝ち抜いた者が職に就けるようになりました",
+     "ref_es": "Asimismo, luego de la Revolución, los puestos estuvieron abiertos a todos los candidatos masculinos, lo que permitió el éxito de los más ambiciosos y prestigiosos.",
+     "ref_en": "Also after the Revolution occupations were open to all male applicants allowing the most ambitious and successful to succeed.",
+     "gender": 0,
+     "duration": 12.54,
+     "start": 503.111,
+     "end": 515.651,
+     "speech_start": 505.383,
+     "speech_end": 513.703,
+     "energy_start": 505.521,
+     "energy_end": 505.906,
+     "speech_intervals": [
+      [
+       505.521,
+       505.906
+      ]
+     ]
+    },
+    {
+     "id": 1943,
+     "ref": "緊張度が低いほど、よりポジティブな生命力が生まれます。誰にでも絶対的な平和と満足感を見い出す潜在的な能力が備わっています。",
+     "ref_norm_fleurs": "緊張度が低いほど よりポジティブな生命力が生まれます 誰にでも絶対的な平和と満足感を見い出す潜在的な能力が備わっています",
+     "ref_es": "Cuanto más baja sea la tensión, más positiva es la fuerza de la vida con la que contemos. Cada uno de nosotros tiene el potencial de hallar paz y dicha absolutas.",
+     "ref_en": "The lower the tension, the more positive the life force present. Every person has the potential to find absolute peace and contentment.",
+     "gender": 1,
+     "duration": 18.66,
+     "start": 517.565,
+     "end": 536.225,
+     "speech_start": 520.413,
+     "speech_end": 534.525,
+     "energy_start": 520.415,
+     "energy_end": 534.44,
+     "speech_intervals": [
+      [
+       520.415,
+       521.57
+      ],
+      [
+       521.845,
+       524.33
+      ],
+      [
+       525.035,
+       528.92
+      ],
+      [
+       530.305,
+       531.07
+      ],
+      [
+       531.695,
+       534.44
+      ]
+     ]
+    },
+    {
+     "id": 1944,
+     "ref": "これらはたまに混雑する家族向けのビーチで、海岸にはさまざまな店舗が並んでいます。安全に泳ぐことができます。",
+     "ref_norm_fleurs": "これらはたまに混雑する家族向けのビーチで 海岸にはさまざまな店舗が並んでいます 安全に泳ぐことができます",
+     "ref_es": "Estas son playas familiares, en ocasiones muy concurridas, con numerosas y variadas tiendas disponibles sobre la cosa. También son seguras para nadar.",
+     "ref_en": "These are sometimes-crowded family beaches with a good range of shops lining the shore. Swimming is safe.",
+     "gender": 0,
+     "duration": 13.08,
+     "start": 537.467,
+     "end": 550.547,
+     "speech_start": 539.579,
+     "speech_end": 548.571,
+     "energy_start": 539.577,
+     "energy_end": 547.562,
+     "speech_intervals": [
+      [
+       539.577,
+       539.962
+      ],
+      [
+       540.247,
+       540.812
+      ],
+      [
+       541.837,
+       542.622
+      ],
+      [
+       543.627,
+       543.932
+      ],
+      [
+       544.357,
+       544.672
+      ],
+      [
+       546.847,
+       547.562
+      ]
+     ]
+    },
+    {
+     "id": 1954,
+     "ref": "彼らの規律あるディフェンス、ボールハンドリングのスキル、そして優れたチームワークは傑出しており、このチームが勝者であることは明らかだった。",
+     "ref_norm_fleurs": "彼らの規律あるディフェンス ボールハンドリングのスキル そして優れたチームワークは傑出しており このチームが勝者であることは明らかだった",
+     "ref_es": "Su defensa disciplinada, sus habilidades de manejo del balón y el excelente trabajo en equipo los llevaron a destacarse y quedó claro que este era el equipo a derrotar.",
+     "ref_en": "Their disciplined defence, ball handling skills and excellent team work made them stand out and it was clear that this was the team to beat.",
+     "gender": 0,
+     "duration": 13.14,
+     "start": 551.896,
+     "end": 565.036,
+     "speech_start": 554.008,
+     "speech_end": 563.032,
+     "energy_start": 554.016,
+     "energy_end": 554.171,
+     "speech_intervals": [
+      [
+       554.016,
+       554.171
+      ]
+     ]
+    },
+    {
+     "id": 1959,
+     "ref": "それでも、当局からのアドバイスを受け、すべての標識を守り、安全上の警告に細心の注意を払いましょう。",
+     "ref_norm_fleurs": "それでも 当局からのアドバイスを受け すべての標識を守り 安全上の警告に細心の注意を払いましょう",
+     "ref_es": "De todas formas, acepte los consejos de las autoridades, respete todas las señales y ponga especial atención en las alertas de seguridad.",
+     "ref_en": "Still, take advice from authorities, obey all signs, and pay close attention to safety warnings.",
+     "gender": 0,
+     "duration": 10.86,
+     "start": 567.101,
+     "end": 577.961,
+     "speech_start": 569.213,
+     "speech_end": 575.613,
+     "energy_start": 568.871,
+     "energy_end": 575.506,
+     "speech_intervals": [
+      [
+       568.871,
+       575.506
+      ]
+     ]
+    },
+    {
+     "id": 1961,
+     "ref": "社会化の重要性を示すために用いられる最も一般的な方法の1つは、育児放棄、不運、または故意の虐待によって、成長過程で大人によって社会への適応が阻まれた子供たちの数少ない不幸な事例を取りあげることです。",
+     "ref_norm_fleurs": "社会化の重要性を示すために用いられる最も一般的な方法の1つは 育児放棄 不運 または故意の虐待によって 成長過程で大人によって社会への適応が阻まれた子供たちの数少ない不幸な事例を取りあげることです",
+     "ref_es": "Uno de los mecanismos más comúnmente usados para graficar la importancia de sociabilizar es analizar los pocos y lamentables casos de niños que, por negligencia, desgracia o abuso intencional, no fueron socializados por adultos durante su crecimiento.",
+     "ref_en": "One of the most common methods used to illustrate the importance of socialization is to draw upon the few unfortunate cases of children who were, through neglect, misfortune, or wilful abuse, not socialized by adults while they were growing up.",
+     "gender": 0,
+     "duration": 20.1,
+     "start": 579.833,
+     "end": 599.933,
+     "speech_start": 581.785,
+     "speech_end": 597.977,
+     "energy_start": 582.813,
+     "energy_end": 591.458,
+     "speech_intervals": [
+      [
+       582.813,
+       583.098
+      ],
+      [
+       587.463,
+       587.678
+      ],
+      [
+       591.163,
+       591.458
+      ]
+     ]
+    },
+    {
+     "id": 1962,
+     "ref": "pH レベルは、検査した化学物質に含まれる水素イオン（pHのH）の量で示されます。",
+     "ref_norm_fleurs": "ph レベルは 検査した化学物質に含まれる水素イオンphのhの量で示されます",
+     "ref_es": "El número de iones de hidrógeno (la H en pH) presentes en el producto químico analizado determina su nivel de pH.",
+     "ref_en": "The pH level is indicated by the amount of Hydrogen (the H in pH) ions in the tested chemical.",
+     "gender": 0,
+     "duration": 10.56,
+     "start": 601.61,
+     "end": 612.17,
+     "speech_start": 603.21,
+     "speech_end": 609.93,
+     "energy_start": 603.23,
+     "energy_end": 603.875,
+     "speech_intervals": [
+      [
+       603.23,
+       603.875
+      ]
+     ]
+    },
+    {
+     "id": 1963,
+     "ref": "湿った衣類にはアイロンをかけると乾きやすくなります。多くのホテルでは、部屋にアイロンとアイロン台がなくても頼めば貸し出してくれます。",
+     "ref_norm_fleurs": "湿った衣類にはアイロンをかけると乾きやすくなります 多くのホテルでは 部屋にアイロンとアイロン台がなくても頼めば貸し出してくれます",
+     "ref_es": "Planchar la ropa cuando aún está húmeda puede ayudar a secarla. Muchos hoteles cuentan con plancha y una tabla para prestar a los viajeros, incluso si uno no se encuentra en la habitación.",
+     "ref_en": "Ironing damp clothes can help them dry. Many hotels have an iron and ironing board available for loan, even if one is not present in the room.",
+     "gender": 0,
+     "duration": 11.58,
+     "start": 613.621,
+     "end": 625.201,
+     "speech_start": 615.253,
+     "speech_end": 622.933,
+     "energy_start": 614.891,
+     "energy_end": 622.876,
+     "speech_intervals": [
+      [
+       614.891,
+       618.106
+      ],
+      [
+       618.391,
+       622.876
+      ]
+     ]
+    },
+    {
+     "id": 1969,
+     "ref": "主な被写体を配置すべき最も効果的な位置は、画像を縦横3分の1ずつに分割した線の交点に囲まれた部分（例を参照）とされます。",
+     "ref_norm_fleurs": "主な被写体を配置すべき最も効果的な位置は 画像を縦横3分の1ずつに分割した線の交点に囲まれた部分例を参照とされます",
+     "ref_es": "Indica que la posición más efectiva donde colocar el objeto central es la intersección que se forma entre las líneas horizontales y verticales que dividen la imagen en tercios (ver ejemplo).",
+     "ref_en": "It states that the most effective place for the main subject is at the intersection of lines dividing the image into thirds vertically and horizontally (see example).",
+     "gender": 1,
+     "duration": 20.64,
+     "start": 627.145,
+     "end": 647.785,
+     "speech_start": 629.385,
+     "speech_end": 646.441,
+     "energy_start": 628.115,
+     "energy_end": 646.56,
+     "speech_intervals": [
+      [
+       628.115,
+       628.31
+      ],
+      [
+       629.355,
+       630.75
+      ],
+      [
+       631.115,
+       633.94
+      ],
+      [
+       634.435,
+       638.21
+      ],
+      [
+       638.625,
+       640.11
+      ],
+      [
+       641.225,
+       642.07
+      ],
+      [
+       642.355,
+       646.14
+      ],
+      [
+       646.385,
+       646.56
+      ]
+     ]
+    },
+    {
+     "id": 1983,
+     "ref": "文明という言葉は、市民を意味するラテン語の形容詞civilisから来ており、市民を意味するラテン語の名詞civis、都市や都市国家を意味し、何らかの形で社会の規模を定義するcivitasという名詞に関係しています。",
+     "ref_norm_fleurs": "文明という言葉は 市民を意味するラテン語の形容詞civilisから来ており 市民を意味するラテン語の名詞civis 都市や都市国家を意味し 何らかの形で社会の規模を定義するcivitasという名詞に関係しています",
+     "ref_es": "El término civilización deriva del latín civilis, que quiere decir civil, y se relaciona tanto con la palabra civis, del mismo idioma, que significa ciudadano, como con civitas, que cuyo significado es ciudad o ciudad estado y que, además, determina de algún modo el tamaño de la sociedad.",
+     "ref_en": "The word civilization comes from the Latin civilis, meaning civil, related to the Latin civis, meaning citizen, and civitas, meaning city or city-state, and that also somehow defines the size of the society.",
+     "gender": 0,
+     "duration": 24.48,
+     "start": 649.022,
+     "end": 673.502,
+     "speech_start": 654.174,
+     "speech_end": 669.662,
+     "energy_start": 654.152,
+     "energy_end": 669.637,
+     "speech_intervals": [
+      [
+       654.152,
+       659.327
+      ],
+      [
+       659.682,
+       662.307
+      ],
+      [
+       663.002,
+       669.637
+      ]
+     ]
+    },
+    {
+     "id": 1991,
+     "ref": "ヨーロッパ史において経済的に豊かで強大な力を持つようになったカトリック教会に、この時代には厳しい目が向けられるようになっていました。",
+     "ref_norm_fleurs": "ヨーロッパ史において経済的に豊かで強大な力を持つようになったカトリック教会に この時代には厳しい目が向けられるようになっていました",
+     "ref_es": "Durante esta fase de la historia de Europa, la iglesia católica, que había acumulado riqueza y poder, fue cuestionada.",
+     "ref_en": "During this period of European history, the Catholic Church, which had become rich and powerful, came under scrutiny.",
+     "gender": 0,
+     "duration": 12.6,
+     "start": 675.062,
+     "end": 687.662,
+     "speech_start": 676.982,
+     "speech_end": 685.718,
+     "energy_start": 677.062,
+     "energy_end": 683.077,
+     "speech_intervals": [
+      [
+       677.062,
+       677.437
+      ],
+      [
+       678.372,
+       678.597
+      ],
+      [
+       682.822,
+       683.077
+      ]
+     ]
+    },
+    {
+     "id": 1999,
+     "ref": "1960年代を通して、ブレジンスキーはジョン・F・ケネディの顧問を務め、その後リンドン・B・ジョンソン政権でも活躍しました。",
+     "ref_norm_fleurs": "1960年代を通して ブレジンスキーはジョン f ケネディの顧問を務め その後リンドン b ジョンソン政権でも活躍しました",
+     "ref_es": "Durante los años 60, Brzezinski trabajó para John F. Kennedy en el puesto de asesor y, posteriormente, para el gobierno de Lyndon B. Johnson.",
+     "ref_en": "Throughout 1960s, Brzezinski worked for John F. Kennedy as his advisor and then the Lyndon B. Johnson administration.",
+     "gender": 0,
+     "duration": 11.58,
+     "start": 689.061,
+     "end": 700.641,
+     "speech_start": 691.045,
+     "speech_end": 698.437,
+     "energy_start": 690.691,
+     "energy_end": 698.336,
+     "speech_intervals": [
+      [
+       690.691,
+       698.336
+      ]
+     ]
+    },
+    {
+     "id": 2001,
+     "ref": "旅行計画に影響を及ぼすことがあるので、旅行者の方々には、旅先の地域に影響を及ぼしうる悪天候のリスクを認識することを強くお勧めします。",
+     "ref_norm_fleurs": "旅行計画に影響を及ぼすことがあるので 旅行者の方々には 旅先の地域に影響を及ぼしうる悪天候のリスクを認識することを強くお勧めします",
+     "ref_es": "Se recomienda enfáticamente a los viajeros que se informen sobre cualquier riesgo de clima extremo en el área que visitan, dado que ello puede afectar sus planes de viaje.",
+     "ref_en": "Travellers are strongly advised to be aware of any risk of severe weather affecting their area as they may affect any travel plans.",
+     "gender": 0,
+     "duration": 14.34,
+     "start": 702.815,
+     "end": 717.155,
+     "speech_start": 705.087,
+     "speech_end": 715.039,
+     "energy_start": 705.265,
+     "energy_end": 705.6,
+     "speech_intervals": [
+      [
+       705.265,
+       705.6
+      ]
+     ]
+    },
+    {
+     "id": 2002,
+     "ref": "プレイヤーは空中で端末を動かすことで、ビデオゲームでアクションや動きをコントロールできるようになります。",
+     "ref_norm_fleurs": "プレイヤーは空中で端末を動かすことで ビデオゲームでアクションや動きをコントロールできるようになります",
+     "ref_es": "Esto permitirá a los jugadores controlar las acciones y los movimientos en los videojuegos, a través del movimiento del dispositivo por el aire.",
+     "ref_en": "This will allow players to control actions and movements in video games by moving the device through the air.",
+     "gender": 0,
+     "duration": 9.3,
+     "start": 719.328,
+     "end": 728.628,
+     "speech_start": 720.768,
+     "speech_end": 726.432,
+     "energy_start": 720.448,
+     "energy_end": 726.353,
+     "speech_intervals": [
+      [
+       720.448,
+       726.353
+      ]
+     ]
+    },
+    {
+     "id": 2005,
+     "ref": "しかし、現在も鳥の外観は多くの点で恐竜に似ています。",
+     "ref_norm_fleurs": "しかし 現在も鳥の外観は多くの点で恐竜に似ています",
+     "ref_es": "Sin embargo, hay muchas características en las aves que todavía las asemejan a los dinosaurios.",
+     "ref_en": "But there are a lot of things about birds that still look like a dinosaur.",
+     "gender": 1,
+     "duration": 8.04,
+     "start": 729.842,
+     "end": 737.882,
+     "speech_start": 731.026,
+     "speech_end": 736.722,
+     "energy_start": 731.002,
+     "energy_end": 736.607,
+     "speech_intervals": [
+      [
+       731.002,
+       732.387
+      ],
+      [
+       732.722,
+       736.607
+      ]
+     ]
+    }
+   ]
+  },
+  "zh": {
+   "fleurs": "cmn_hans_cn",
+   "duration": 658.7,
+   "speech_level_db": -22.8,
+   "items": [
+    {
+     "id": 1666,
+     "ref": "你也可以咨询除贵国以外其他政府的建议，但他们的建议是为他们的公民而制定的。",
+     "ref_norm_fleurs": "你 也 可 以 咨 询 除 贵 国 以 外 其 他 政 府 的 建 议 但 他 们 的 建 议 是 为 他 们 的 公 民 而 制 定 的",
+     "ref_es": "Es posible que quiera consultar las recomendaciones de otros gobiernos, pero están pensadas para sus propios ciudadanos.",
+     "ref_en": "You may also wish to consult the advice of governments other than your own, but their advice is designed for their citizens.",
+     "gender": 1,
+     "duration": 8.16,
+     "start": 1.0,
+     "end": 9.16,
+     "speech_start": 2.088,
+     "speech_end": 8.328,
+     "energy_start": 2.1,
+     "energy_end": 8.245,
+     "speech_intervals": [
+      [
+       2.1,
+       3.075
+      ],
+      [
+       3.35,
+       8.245
+      ]
+     ]
+    },
+    {
+     "id": 1667,
+     "ref": "一般来说，当管理者开始领导过去的同事时，会出现两种行为。一种情况是，他们会努力与团队成员保持“亲密关系”。",
+     "ref_norm_fleurs": "一 般 来 说 当 管 理 者 开 始 领 导 过 去 的 同 事 时 会 出 现 两 种 行 为 一 种 情 况 是 他 们 会 努 力 与 团 队 成 员 保 持 亲 密 关 系",
+     "ref_es": "En general, pueden darse dos tipos de comportamiento cuando los gerentes comienzan a liderar a sus antiguos compañeros. De un lado del espectro, está el intento de continuar siendo «uno de los muchachos» (o muchachas).",
+     "ref_en": "Generally speaking, two behaviors can emerge as managers begin to lead their former peers. One end of the spectrum is trying to remain “one of the guys” (or gals).",
+     "gender": 0,
+     "duration": 15.64,
+     "start": 10.491,
+     "end": 26.131,
+     "speech_start": 11.899,
+     "speech_end": 23.419,
+     "energy_start": 11.881,
+     "energy_end": 23.336,
+     "speech_intervals": [
+      [
+       11.881,
+       15.556
+      ],
+      [
+       15.791,
+       17.076
+      ],
+      [
+       18.171,
+       19.266
+      ],
+      [
+       19.961,
+       23.336
+      ]
+     ]
+    },
+    {
+     "id": 1674,
+     "ref": "在某些地区，水煮一分钟就足够了，在其他地区则需要几分钟的时间。",
+     "ref_norm_fleurs": "在 某 些 地 区 水 煮 一 分 钟 就 足 够 了 在 其 他 地 区 则 需 要 几 分 钟 的 时 间",
+     "ref_es": "En algunos, lugares basta con hervir agua durante un minuto, en otros, son necesarios varios más.",
+     "ref_en": "In some areas boiling water for a minute is enough, in others several minutes are needed.",
+     "gender": 0,
+     "duration": 8.88,
+     "start": 27.689,
+     "end": 36.569,
+     "speech_start": 29.609,
+     "speech_end": 34.697,
+     "energy_start": 29.579,
+     "energy_end": 34.624,
+     "speech_intervals": [
+      [
+       29.579,
+       30.404
+      ],
+      [
+       30.719,
+       34.624
+      ]
+     ]
+    },
+    {
+     "id": 1675,
+     "ref": "除去表示您的“Sie”之外的所有名词都应以大写字母开头，即使在句子中间也应如此。",
+     "ref_norm_fleurs": "除 去 表 示 您 的 sie 之 外 的 所 有 名 词 都 应 以 大 写 字 母 开 头 即 使 在 句 子 中 间 也 应 如 此",
+     "ref_es": "Todos los sustantivos, así como el vocablo Sie para significar 'usted', llevan siempre su letra inicial mayúscula, aunque estén ubicados en el medio de la oración.",
+     "ref_en": "All nouns, alongside the word Sie for you, always begin with a capital letter, even in the middle of a sentence.",
+     "gender": 0,
+     "duration": 10.5,
+     "start": 38.398,
+     "end": 48.898,
+     "speech_start": 40.094,
+     "speech_end": 47.326,
+     "energy_start": 39.978,
+     "energy_end": 47.163,
+     "speech_intervals": [
+      [
+       39.978,
+       44.673
+      ],
+      [
+       45.238,
+       47.163
+      ]
+     ]
+    },
+    {
+     "id": 1687,
+     "ref": "由于分离和重组，变异在每一代的两个库之间来回变动。",
+     "ref_norm_fleurs": "由 于 分 离 和 重 组 变 异 在 每 一 代 的 两 个 库 之 间 来 回 变 动",
+     "ref_es": "La segregación y la recombinación barajan la variación entre uno y otro generación tras generación.",
+     "ref_en": "Segregation and recombination shuffle variation back and forth between the two pools with each generation.",
+     "gender": 0,
+     "duration": 6.66,
+     "start": 50.42,
+     "end": 57.08,
+     "speech_start": 51.668,
+     "speech_end": 55.828,
+     "energy_start": 51.66,
+     "energy_end": 55.725,
+     "speech_intervals": [
+      [
+       51.66,
+       52.785
+      ],
+      [
+       53.2,
+       55.725
+      ]
+     ]
+    },
+    {
+     "id": 1691,
+     "ref": "在某些航线上，大型公司有自己的飞机，但对于其他航线和小公司来说，就有问题了。",
+     "ref_norm_fleurs": "在 某 些 航 线 上 大 型 公 司 有 自 己 的 飞 机 但 对 于 其 他 航 线 和 小 公 司 来 说 就 有 问 题 了",
+     "ref_es": "Las compañías grandes tienen sus propios aviones en algunas rutas, pero hubo un problema para las empresas más pequeñas y otras rutas.",
+     "ref_en": "On some routes, the larger companies have their own planes, but for other routes and smaller firms there was a problem.",
+     "gender": 1,
+     "duration": 6.9,
+     "start": 58.657,
+     "end": 65.557,
+     "speech_start": 59.329,
+     "speech_end": 64.897,
+     "energy_start": 59.327,
+     "energy_end": 64.782,
+     "speech_intervals": [
+      [
+       59.327,
+       64.782
+      ]
+     ]
+    },
+    {
+     "id": 1696,
+     "ref": "该大学的研究人员表示，这两种化合物相互作用形成的晶体可能会造成肾脏功能障碍。",
+     "ref_norm_fleurs": "该 大 学 的 研 究 人 员 表 示 这 两 种 化 合 物 相 互 作 用 形 成 的 晶 体 可 能 会 造 成 肾 脏 功 能 障 碍",
+     "ref_es": "Los investigadores indicaron que los dos compuestos reaccionan entre sí para dar lugar a cristales que pueden obstruir la función renal.",
+     "ref_en": "The two compounds react with one another to form crystals that may block kidney function, researchers at the university said.",
+     "gender": 1,
+     "duration": 8.22,
+     "start": 67.506,
+     "end": 75.726,
+     "speech_start": 68.37,
+     "speech_end": 74.962,
+     "energy_start": 68.316,
+     "energy_end": 74.911,
+     "speech_intervals": [
+      [
+       68.316,
+       74.911
+      ]
+     ]
+    },
+    {
+     "id": 1702,
+     "ref": "仅仅两个星期，美国和自由法国的军队就解放了法国南部，并转向德国。",
+     "ref_norm_fleurs": "仅 仅 两 个 星 期 美 国 和 自 由 法 国 的 军 队 就 解 放 了 法 国 南 部 并 转 向 德 国",
+     "ref_es": "En apenas dos semanas, las fuerzas norteamericanas y las de la Francia Libre habían logrado la liberación del sur de Francia y seguían rumbo a Alemania.",
+     "ref_en": "In just two weeks the Americans and Free French forces had liberated southern France and were turning towards Germany.",
+     "gender": 0,
+     "duration": 11.14,
+     "start": 77.561,
+     "end": 88.701,
+     "speech_start": 79.929,
+     "speech_end": 86.969,
+     "energy_start": 79.881,
+     "energy_end": 86.916,
+     "speech_intervals": [
+      [
+       79.881,
+       84.956
+      ],
+      [
+       85.461,
+       86.916
+      ]
+     ]
+    },
+    {
+     "id": 1704,
+     "ref": "1990 年，由于沙漠的威胁，它被列入了濒危世界遗产名录。",
+     "ref_norm_fleurs": "1990 年 由 于 沙 漠 的 威 胁 它 被 列 入 了 濒 危 世 界 遗 产 名 录",
+     "ref_es": "En 1990, fue incorporado al listado de lugares del patrimonio de la humanidad en riesgo, producto de la amenaza de las arenas del desierto.",
+     "ref_en": "In 1990, it was added to the list of world heritage sites in danger, due to the threat of desert sands.",
+     "gender": 1,
+     "duration": 7.26,
+     "start": 90.291,
+     "end": 97.551,
+     "speech_start": 91.635,
+     "speech_end": 96.851,
+     "energy_start": 91.591,
+     "energy_end": 96.796,
+     "speech_intervals": [
+      [
+       91.591,
+       96.796
+      ]
+     ]
+    },
+    {
+     "id": 1716,
+     "ref": "娱乐新闻网站TMZ了解到，该名摄影师在Sepulveda大道的另一侧停车，开始拍摄警察的拦截，并在横穿马路后继续拍照，促使进行交通拦截的加州公路巡警两次停下手中工作，命令他回到对面。",
+     "ref_norm_fleurs": "娱 乐 新 闻 网 站 tmz 了 解 到 该 名 摄 影 师 在 sepulveda 大 道 的 另 一 侧 停 车 开 始 拍 摄 警 察 的 拦 截 并 在 横 穿 马 路 后 继 续 拍 照 促 使 进 行 交 通 拦 截 的 加 州 公 路 巡 警 两 次 停 下 手 中 工 作 命 令 他 回 到 对 面",
+     "ref_es": "Según la página web de noticias de entretenimiento TMZ, el fotógrafo detuvo el vehículo del lado contrario del bulevar Sepulveda e intentó tomar fotografías de la parada policial antes de cruzar la calle y seguir, lo que causó que el agente de la patrulla caminera de California que realizaba la detención de vehículos le diera dos veces la orden de volver a cruzar.",
+     "ref_en": "Entertainment news website TMZ understands the photographer stopped his vehicle on the other side of Sepulveda Boulevard and attempted to take pictures of the police stop before crossing the road and continuing, prompting the California Highway Patrol police officer conducting the traffic stop to order him back across, twice.",
+     "gender": 0,
+     "duration": 21.96,
+     "start": 99.335,
+     "end": 121.295,
+     "speech_start": 102.887,
+     "speech_end": 119.623,
+     "energy_start": 102.865,
+     "energy_end": 119.52,
+     "speech_intervals": [
+      [
+       102.865,
+       104.87
+      ],
+      [
+       105.275,
+       108.87
+      ],
+      [
+       109.315,
+       110.89
+      ],
+      [
+       111.435,
+       113.08
+      ],
+      [
+       113.565,
+       117.96
+      ],
+      [
+       118.445,
+       119.52
+      ]
+     ]
+    },
+    {
+     "id": 1718,
+     "ref": "对于哪些加工物品是古董，没有统一的定义。一些税务机构将 100 年以上的物品定义为古董。",
+     "ref_norm_fleurs": "对 于 哪 些 加 工 物 品 是 古 董 没 有 统 一 的 定 义 一 些 税 务 机 构 将 100 年 以 上 的 物 品 定 义 为 古 董",
+     "ref_es": "No ha un criterio universal que determine cuándo un bien manufacturado puede ser considerado una antigüedad. Algunas agencias impositivas tienen establecido que los objetos de más de 100 años son antigüedades.",
+     "ref_en": "There is no universal definition for which manufactured items are antiques. Some tax agencies define goods older than 100 years as antiques.",
+     "gender": 0,
+     "duration": 16.92,
+     "start": 123.083,
+     "end": 140.003,
+     "speech_start": 128.331,
+     "speech_end": 136.811,
+     "energy_start": 128.303,
+     "energy_end": 136.638,
+     "speech_intervals": [
+      [
+       128.303,
+       131.908
+      ],
+      [
+       132.283,
+       133.488
+      ],
+      [
+       134.023,
+       135.498
+      ],
+      [
+       135.783,
+       136.638
+      ]
+     ]
+    },
+    {
+     "id": 1719,
+     "ref": "恶劣天气是任何危险天气现象的总称；这种天气会造成破坏、严重社会混乱或人员伤亡。",
+     "ref_norm_fleurs": "恶 劣 天 气 是 任 何 危 险 天 气 现 象 的 总 称 这 种 天 气 会 造 成 破 坏 严 重 社 会 混 乱 或 人 员 伤 亡",
+     "ref_es": "El término clima severo refiere, en general, a cualquier fenómeno climático riesgoso que sea capaz de provocar daños, alteraciones sociales graves o la muerte de personas.",
+     "ref_en": "Severe weather is the generic term for any dangerous weather phenomenon with the potential to cause damage, serious social disruption, or loss of human life.",
+     "gender": 0,
+     "duration": 11.58,
+     "start": 142.173,
+     "end": 153.753,
+     "speech_start": 143.741,
+     "speech_end": 151.933,
+     "energy_start": 143.223,
+     "energy_end": 151.858,
+     "speech_intervals": [
+      [
+       143.223,
+       143.428
+      ],
+      [
+       143.703,
+       146.668
+      ],
+      [
+       147.643,
+       151.858
+      ]
+     ]
+    },
+    {
+     "id": 1734,
+     "ref": "科学家们可以得出结论，暗物质对其他暗物质的影响方式与普通物质相同。",
+     "ref_norm_fleurs": "科 学 家 们 可 以 得 出 结 论 暗 物 质 对 其 他 暗 物 质 的 影 响 方 式 与 普 通 物 质 相 同",
+     "ref_es": "Los expertos llegaron a la conclusión de que las materias oscuras se afectan entre sí al igual que lo hace la materia regular.",
+     "ref_en": "The scientists were able to conclude that the dark matter affect other dark matter in the same way regular matter does.",
+     "gender": 0,
+     "duration": 12.9,
+     "start": 155.176,
+     "end": 168.076,
+     "speech_start": 157.864,
+     "speech_end": 164.328,
+     "energy_start": 157.826,
+     "energy_end": 164.231,
+     "speech_intervals": [
+      [
+       157.826,
+       159.781
+      ],
+      [
+       160.016,
+       164.231
+      ]
+     ]
+    },
+    {
+     "id": 1737,
+     "ref": "狮子是群居属性最明显的猫科动物，生活在称为狮群的大型群体中。",
+     "ref_norm_fleurs": "狮 子 是 群 居 属 性 最 明 显 的 猫 科 动 物 生 活 在 称 为 狮 群 的 大 型 群 体 中",
+     "ref_es": "Los leones son los felinos que más socializan y su vida transcurre dentro de grupos de gran tamaño denominados manadas.",
+     "ref_en": "Lions are the most social cats, living in large groups called prides.",
+     "gender": 1,
+     "duration": 8.1,
+     "start": 169.35,
+     "end": 177.45,
+     "speech_start": 170.085,
+     "speech_end": 176.71,
+     "energy_start": 170.079,
+     "energy_end": 176.595,
+     "speech_intervals": [
+      [
+       170.079,
+       171.215
+      ],
+      [
+       171.46,
+       176.595
+      ]
+     ]
+    },
+    {
+     "id": 1738,
+     "ref": "它会攻击任何进入水中的东西；即使像霸王龙之类的巨型恐龙也不是它的对手。",
+     "ref_norm_fleurs": "它 会 攻 击 任 何 进 入 水 中 的 东 西 即 使 像 霸 王 龙 之 类 的 巨 型 恐 龙 也 不 是 它 的 对 手",
+     "ref_es": "Atacaba también a cualquier criatura que entrara en el agua: ni siquiera un dinosaurio tan enorme como el T. Rex era una amenaza para él.",
+     "ref_en": "It also attacked anything that entered the water; even a giant dinosaur such as T. rex would be no match for it.",
+     "gender": 0,
+     "duration": 15.22,
+     "start": 178.946,
+     "end": 194.166,
+     "speech_start": 183.202,
+     "speech_end": 190.402,
+     "energy_start": 183.146,
+     "energy_end": 190.371,
+     "speech_intervals": [
+      [
+       183.146,
+       185.561
+      ],
+      [
+       186.286,
+       190.371
+      ]
+     ]
+    },
+    {
+     "id": 1745,
+     "ref": "植物在自然环境中状态最好。因此要抵住诱惑，不去摘掉植物，哪怕“只是一株”。",
+     "ref_norm_fleurs": "植 物 在 自 然 环 境 中 状 态 最 好 因 此 要 抵 住 诱 惑 不 去 摘 掉 植 物 哪 怕 只 是 一 株",
+     "ref_es": "Las plantas lucen mejor cuando están en un entorno natural, por eso, resista la tentación de arrancar «tan solo un» espécimen.",
+     "ref_en": "Plants look their best when in a natural environment, so resist the temptation to remove even \"just one\" specimen.",
+     "gender": 1,
+     "duration": 8.22,
+     "start": 196.11,
+     "end": 204.33,
+     "speech_start": 197.038,
+     "speech_end": 203.598,
+     "energy_start": 196.69,
+     "energy_end": 203.495,
+     "speech_intervals": [
+      [
+       196.69,
+       203.495
+      ]
+     ]
+    },
+    {
+     "id": 1750,
+     "ref": "这一发现也有助于深入了解鸟类羽毛的进化。",
+     "ref_norm_fleurs": "这 一 发 现 也 有 助 于 深 入 了 解 鸟 类 羽 毛 的 进 化",
+     "ref_es": "Asimismo, el hallazgo permite comprender mejor la evolución de las plumas de las aves.",
+     "ref_en": "The find also grants insight into the evolution of feathers in birds.",
+     "gender": 0,
+     "duration": 8.08,
+     "start": 205.874,
+     "end": 213.954,
+     "speech_start": 207.314,
+     "speech_end": 211.442,
+     "energy_start": 206.994,
+     "energy_end": 211.409,
+     "speech_intervals": [
+      [
+       206.994,
+       211.409
+      ]
+     ]
+    },
+    {
+     "id": 1772,
+     "ref": "因此，很可能这个符号只是作为一个标签添加的。",
+     "ref_norm_fleurs": "因 此 很 可 能 这 个 符 号 只 是 作 为 一 个 标 签 添 加 的",
+     "ref_es": "Por tanto, es probable que la anotación haya sido agregada tan solo como un rótulo.",
+     "ref_en": "So, it is likely that the notation was added simply as a label.",
+     "gender": 0,
+     "duration": 9.18,
+     "start": 215.662,
+     "end": 224.842,
+     "speech_start": 218.19,
+     "speech_end": 221.646,
+     "energy_start": 218.162,
+     "energy_end": 221.787,
+     "speech_intervals": [
+      [
+       218.162,
+       221.787
+      ]
+     ]
+    },
+    {
+     "id": 1780,
+     "ref": "在昆达里尼瑜伽中，昆达里尼能量（启迪能量）通过瑜伽姿势、呼吸练习、念语和视觉形象被唤醒。",
+     "ref_norm_fleurs": "在 昆 达 里 尼 瑜 伽 中 昆 达 里 尼 能 量 启 迪 能 量 通 过 瑜 伽 姿 势 呼 吸 练 习 念 语 和 视 觉 形 象 被 唤 醒",
+     "ref_es": "En Kundalini Yoga, la energía Kundalini (iluminación) se activa con posiciones de yoga, prácticas de respiración, mantras o visualizaciones.",
+     "ref_en": "With Kundalini Yoga the Kundalini energy (enlightenment energy) is awakened through yoga postures, breathing exercises, mantras and visualizations.",
+     "gender": 0,
+     "duration": 15.68,
+     "start": 226.533,
+     "end": 242.213,
+     "speech_start": 228.613,
+     "speech_end": 239.909,
+     "energy_start": 228.593,
+     "energy_end": 239.878,
+     "speech_intervals": [
+      [
+       228.593,
+       233.738
+      ],
+      [
+       234.073,
+       236.728
+      ],
+      [
+       237.123,
+       238.898
+      ],
+      [
+       239.133,
+       239.878
+      ]
+     ]
+    },
+    {
+     "id": 1781,
+     "ref": "马达加斯加是目前为止最大的岛屿，对野生动物来说还是一片独立的大陆。",
+     "ref_norm_fleurs": "马 达 加 斯 加 是 目 前 为 止 最 大 的 岛 屿 对 野 生 动 物 来 说 还 是 一 片 独 立 的 大 陆",
+     "ref_es": "Madagascar es, por mucho, la más grande y un continente en sí mismo si hablamos de vida silvestre.",
+     "ref_en": "Madagascar is by far the biggest, and a continent on its own when it comes to wildlife.",
+     "gender": 0,
+     "duration": 7.8,
+     "start": 243.585,
+     "end": 251.385,
+     "speech_start": 244.801,
+     "speech_end": 249.985,
+     "energy_start": 244.775,
+     "energy_end": 249.9,
+     "speech_intervals": [
+      [
+       244.775,
+       247.12
+      ],
+      [
+       247.485,
+       249.9
+      ]
+     ]
+    },
+    {
+     "id": 1806,
+     "ref": "由于在其全盛时期的光污染还不像现在这么严重，所以天文台通常建立在城区或校园内，比现代修建的天文台更容易到达。",
+     "ref_norm_fleurs": "由 于 在 其 全 盛 时 期 的 光 污 染 还 不 像 现 在 这 么 严 重 所 以 天 文 台 通 常 建 立 在 城 区 或 校 园 内 比 现 代 修 建 的 天 文 台 更 容 易 到 达",
+     "ref_es": "Dado que, en su auge, la contaminación lumínica no era un problema de gran magnitud como lo es hoy, es frecuente encontrarlos en ciudades o en campus, siendo de más fácil acceso que aquellos que se construyen en los tiempos modernos.",
+     "ref_en": "As light pollution in their heyday was not the kind of problem it is today, they are usually located in cities or at campuses, easier to reach than those built in modern times.",
+     "gender": 0,
+     "duration": 13.38,
+     "start": 253.483,
+     "end": 266.863,
+     "speech_start": 255.339,
+     "speech_end": 264.971,
+     "energy_start": 255.323,
+     "energy_end": 264.858,
+     "speech_intervals": [
+      [
+       255.323,
+       258.818
+      ],
+      [
+       259.183,
+       262.158
+      ],
+      [
+       262.673,
+       264.858
+      ]
+     ]
+    },
+    {
+     "id": 1821,
+     "ref": "大脑病理和行为之间的相关性可以为科学家们的研究提供支持。",
+     "ref_norm_fleurs": "大 脑 病 理 和 行 为 之 间 的 相 关 性 可 以 为 科 学 家 们 的 研 究 提 供 支 持",
+     "ref_es": "El correlato existente entre la patología cerebral y la conducta contribuye a la investigación de los científicos.",
+     "ref_en": "The correlation between brain pathology and behaviour supports scientists in their research.",
+     "gender": 0,
+     "duration": 7.92,
+     "start": 268.144,
+     "end": 276.064,
+     "speech_start": 269.392,
+     "speech_end": 274.192,
+     "energy_start": 269.374,
+     "energy_end": 274.109,
+     "speech_intervals": [
+      [
+       269.374,
+       271.859
+      ],
+      [
+       272.194,
+       274.109
+      ]
+     ]
+    },
+    {
+     "id": 1827,
+     "ref": "地壳近侧厚约 70 公里，远侧厚约 100 公里。",
+     "ref_norm_fleurs": "地 壳 近 侧 厚 约 70 公 里 远 侧 厚 约 100 公 里",
+     "ref_es": "La corteza tiene un espesor de unos 70 km en el lado cercano y de 100 km en el lejano.",
+     "ref_en": "The crust is about 70 km thick on the near side and 100 km thick on the far side.",
+     "gender": 0,
+     "duration": 7.68,
+     "start": 277.332,
+     "end": 285.012,
+     "speech_start": 279.572,
+     "speech_end": 283.252,
+     "energy_start": 279.532,
+     "energy_end": 283.197,
+     "speech_intervals": [
+      [
+       279.532,
+       281.457
+      ],
+      [
+       281.772,
+       283.197
+      ]
+     ]
+    },
+    {
+     "id": 1833,
+     "ref": "哲学家亚里士多德提出一种理论，即任何事物都是由土、水、空气和火四种元素中的一种或多种组成的。",
+     "ref_norm_fleurs": "哲 学 家 亚 里 士 多 德 提 出 一 种 理 论 即 任 何 事 物 都 是 由 土 水 空 气 和 火 四 种 元 素 中 的 一 种 或 多 种 组 成 的",
+     "ref_es": "El filósofo Aristóteles desarrolló la teoría de que todo está formado por una combinación de uno o varios de cuatro elementos: tierra, agua, aire y fuego.",
+     "ref_en": "Aristotle, a philosopher, theorised that everything is made up of a mixture of one or more of four elements. They were earth, water, air, and fire.",
+     "gender": 0,
+     "duration": 15.92,
+     "start": 286.646,
+     "end": 302.566,
+     "speech_start": 289.686,
+     "speech_end": 299.83,
+     "energy_start": 289.666,
+     "energy_end": 299.721,
+     "speech_intervals": [
+      [
+       289.666,
+       293.141
+      ],
+      [
+       293.726,
+       294.621
+      ],
+      [
+       295.266,
+       298.141
+      ],
+      [
+       298.476,
+       299.721
+      ]
+     ]
+    },
+    {
+     "id": 1834,
+     "ref": "也可以到北部参观法蒂玛圣母院（圣地），它是举世闻名的圣母玛丽亚显现之地。",
+     "ref_norm_fleurs": "也 可 以 到 北 部 参 观 法 蒂 玛 圣 母 院 圣 地 它 是 举 世 闻 名 的 圣 母 玛 丽 亚 显 现 之 地",
+     "ref_es": "También debe visitar, hacia el norte, el gran Santuario de Nuestra Señora de Fátima (Santuario) que es un sitio donde hubo apariciones de la Virgen María, famosas en todo el mundo.",
+     "ref_en": "Also to the north visit the great Sanctuary of Our Lady of Fatima (Shrine), a place of worldwide famous Marian apparitions.",
+     "gender": 0,
+     "duration": 17.08,
+     "start": 303.957,
+     "end": 321.037,
+     "speech_start": 307.797,
+     "speech_end": 317.237,
+     "energy_start": 307.797,
+     "energy_end": 317.102,
+     "speech_intervals": [
+      [
+       307.797,
+       309.682
+      ],
+      [
+       310.157,
+       310.972
+      ],
+      [
+       311.247,
+       311.442
+      ],
+      [
+       311.827,
+       312.252
+      ],
+      [
+       312.827,
+       314.452
+      ],
+      [
+       314.737,
+       315.832
+      ],
+      [
+       316.277,
+       317.102
+      ]
+     ]
+    },
+    {
+     "id": 1844,
+     "ref": "月球的表面由岩石和灰尘组成。月球的外层叫做地壳。",
+     "ref_norm_fleurs": "月 球 的 表 面 由 岩 石 和 灰 尘 组 成 月 球 的 外 层 叫 做 地 壳",
+     "ref_es": "La superficie de la luna se compone de rocas y polvo y su capa exterior se denomina corteza.",
+     "ref_en": "The surface of the Moon is made of rocks and dust. The outer layer of the Moon is called the crust.",
+     "gender": 0,
+     "duration": 14.12,
+     "start": 322.409,
+     "end": 336.529,
+     "speech_start": 325.769,
+     "speech_end": 332.041,
+     "energy_start": 325.759,
+     "energy_end": 331.984,
+     "speech_intervals": [
+      [
+       325.759,
+       328.324
+      ],
+      [
+       328.789,
+       330.364
+      ],
+      [
+       331.069,
+       331.284
+      ],
+      [
+       331.749,
+       331.984
+      ]
+     ]
+    },
+    {
+     "id": 1862,
+     "ref": "美国联邦航空局 (FAA) 称，新一代航空运输系统 (NextGen) 可以使飞机缩短飞行航线，每年节省数百万加仑的燃料，并减少碳排放。",
+     "ref_norm_fleurs": "美 国 联 邦 航 空 局 faa 称 新 一 代 航 空 运 输 系 统 nextgen 可 以 使 飞 机 缩 短 飞 行 航 线 每 年 节 省 数 百 万 加 仑 的 燃 料 并 减 少 碳 排 放",
+     "ref_es": "NextGen es un sistema que, según afirma la Administración Federal de Aviación, reduciría las distancias de las rutas aéreas, lo cual ahorraría millones de galones de combustible por año, así como las emisiones de carbono.",
+     "ref_en": "NextGen is a system the FAA claims would allow aircraft to fly shorter routes and save millions of gallons of fuel each year and cut carbon emissions.",
+     "gender": 0,
+     "duration": 18.12,
+     "start": 338.591,
+     "end": 356.711,
+     "speech_start": 340.895,
+     "speech_end": 354.559,
+     "energy_start": 340.881,
+     "energy_end": 354.506,
+     "speech_intervals": [
+      [
+       340.881,
+       343.566
+      ],
+      [
+       344.111,
+       345.776
+      ],
+      [
+       346.141,
+       346.746
+      ],
+      [
+       347.181,
+       349.436
+      ],
+      [
+       350.041,
+       353.476
+      ],
+      [
+       353.861,
+       354.506
+      ]
+     ]
+    },
+    {
+     "id": 1864,
+     "ref": "基什内尔女士在阿根廷大剧院宣布她有意参加总统竞选，2005 年也是在这里，她作为布宜诺斯艾利斯省代表开始竞选参议员。",
+     "ref_norm_fleurs": "基 什 内 尔 女 士 在 阿 根 廷 大 剧 院 宣 布 她 有 意 参 加 总 统 竞 选 2005 年 也 是 在 这 里 她 作 为 布 宜 诺 斯 艾 利 斯 省 代 表 开 始 竞 选 参 议 员",
+     "ref_es": "El Teatro Argentino fue el lugar donde la señora Kirchner anunció su intención de candidatearse como presidenta; este es el mismo sitio donde inició su campaña para el senado en el año 2005, en representación de la provincia de Buenos Aires.",
+     "ref_en": "Mrs. Kirchner announced her intention to run for president at the Argentine Theatre, the same location she used to start her 2005 campaign for the Senate as member of the Buenos Aires province delegation.",
+     "gender": 1,
+     "duration": 12.36,
+     "start": 358.145,
+     "end": 370.505,
+     "speech_start": 359.233,
+     "speech_end": 369.761,
+     "energy_start": 358.755,
+     "energy_end": 369.7,
+     "speech_intervals": [
+      [
+       358.755,
+       358.91
+      ],
+      [
+       359.155,
+       363.49
+      ],
+      [
+       363.725,
+       366.05
+      ],
+      [
+       366.415,
+       369.7
+      ]
+     ]
+    },
+    {
+     "id": 1879,
+     "ref": "人们只能猜测，当更新的产品出现时，键盘的结局会是怎样。",
+     "ref_norm_fleurs": "人 们 只 能 猜 测 当 更 新 的 产 品 出 现 时 键 盘 的 结 局 会 是 怎 样",
+     "ref_es": "Solo queda preguntarse qué será del teclado cuando surja algo más nuevo.",
+     "ref_en": "One can only wonder what the keyboard will become when something newer comes along.",
+     "gender": 0,
+     "duration": 11.78,
+     "start": 372.068,
+     "end": 383.848,
+     "speech_start": 374.884,
+     "speech_end": 381.508,
+     "energy_start": 374.878,
+     "energy_end": 381.603,
+     "speech_intervals": [
+      [
+       374.878,
+       377.663
+      ],
+      [
+       378.148,
+       380.093
+      ],
+      [
+       381.398,
+       381.603
+      ]
+     ]
+    },
+    {
+     "id": 1883,
+     "ref": "桥下垂直净空 15 米。该项目于 2011 年 8 月完工，但直到 2017 年 3 月才开始通车。",
+     "ref_norm_fleurs": "桥 下 垂 直 净 空 15 米 该 项 目 于 2011 年 8 月 完 工 但 直 到 2017 年 3 月 才 开 始 通 车",
+     "ref_es": "Debajo del puente hay un espacio libre de 15 metros y, si bien su construcción fue terminada en agosto de 2011, no se habilitó para el tránsito sino hasta marzo de 2017.",
+     "ref_en": "The vertical clearance under the bridge is 15 meters. Construction was completed in August 2011, it didn't open to traffic until March 2017.",
+     "gender": 0,
+     "duration": 13.86,
+     "start": 385.561,
+     "end": 399.421,
+     "speech_start": 388.345,
+     "speech_end": 398.553,
+     "energy_start": 388.321,
+     "energy_end": 398.496,
+     "speech_intervals": [
+      [
+       388.321,
+       393.276
+      ],
+      [
+       393.971,
+       396.896
+      ],
+      [
+       397.881,
+       398.496
+      ]
+     ]
+    },
+    {
+     "id": 1886,
+     "ref": "古代文明和部落开始驯养它们，食用和使用它们的奶、肉、毛和皮。",
+     "ref_norm_fleurs": "古 代 文 明 和 部 落 开 始 驯 养 它 们 食 用 和 使 用 它 们 的 奶 肉 毛 和 皮",
+     "ref_es": "Con el propósito de obtener fácilmente su leche, pelo, carne y cuero, los pueblos y tribus antiguos empezaron a quedarse con ellos.",
+     "ref_en": "Ancient cultures and tribes began to keep them for easy access to milk, hair, meat, and skins.",
+     "gender": 0,
+     "duration": 10.22,
+     "start": 401.089,
+     "end": 411.309,
+     "speech_start": 402.465,
+     "speech_end": 408.673,
+     "energy_start": 402.449,
+     "energy_end": 408.594,
+     "speech_intervals": [
+      [
+       402.449,
+       404.984
+      ],
+      [
+       405.319,
+       406.924
+      ],
+      [
+       407.159,
+       408.594
+      ]
+     ]
+    },
+    {
+     "id": 1887,
+     "ref": "利金斯 (Liggins) 在医院工作时，开始在业余时间研究早产。",
+     "ref_norm_fleurs": "利 金 斯 liggins 在 医 院 工 作 时 开 始 在 业 余 时 间 研 究 早 产",
+     "ref_es": "Liggins comenzó sus investigaciones sobre el parto prematuro en su tiempo libre, mientras trabajaba en el hospital.",
+     "ref_en": "While he was working at the hospital Liggins began to investigate premature labor during his spare time.",
+     "gender": 0,
+     "duration": 14.12,
+     "start": 413.012,
+     "end": 427.132,
+     "speech_start": 418.388,
+     "speech_end": 423.028,
+     "energy_start": 418.372,
+     "energy_end": 422.937,
+     "speech_intervals": [
+      [
+       418.372,
+       420.047
+      ],
+      [
+       420.672,
+       422.937
+      ]
+     ]
+    },
+    {
+     "id": 1929,
+     "ref": "德尔·波特罗（Del Potro）在第二盘刚开局时就占上风，但在比分达到 6-6 后就得进行抢七大战。",
+     "ref_norm_fleurs": "德 尔 波 特 罗 del potro 在 第 二 盘 刚 开 局 时 就 占 上 风 但 在 比 分 达 到 6-6 后 就 得 进 行 抢 七 大 战",
+     "ref_es": "Si bien Del Potro detentó una ventaja inicial en el segundo set, esto también quedó sujeto a desempate después de alcanzar el 6-6.",
+     "ref_en": "Del Potro had the early advantage in the second set, but this too required a tie break after reaching 6-6.",
+     "gender": 0,
+     "duration": 18.0,
+     "start": 428.825,
+     "end": 446.825,
+     "speech_start": 429.209,
+     "speech_end": 443.353,
+     "energy_start": 434.155,
+     "energy_end": 443.52,
+     "speech_intervals": [
+      [
+       434.155,
+       434.58
+      ],
+      [
+       434.955,
+       438.37
+      ],
+      [
+       439.375,
+       441.13
+      ],
+      [
+       441.525,
+       443.52
+      ]
+     ]
+    },
+    {
+     "id": 1935,
+     "ref": "然而事实并非如此。虽然这份文件的背面写了一些东西，但并是不一份藏宝图。",
+     "ref_norm_fleurs": "然 而 事 实 并 非 如 此 虽 然 这 份 文 件 的 背 面 写 了 一 些 东 西 但 并 是 不 一 份 藏 宝 图",
+     "ref_es": "No obstante, eso no es cierto. Si bien el reverso del documento contiene algo escrito, no se trata de un mapa de un tesoro.",
+     "ref_en": "However, that is not true. Although there is something written on the back of the document, it is not a treasure map.",
+     "gender": 1,
+     "duration": 7.98,
+     "start": 448.709,
+     "end": 456.689,
+     "speech_start": 449.669,
+     "speech_end": 455.909,
+     "energy_start": 449.689,
+     "energy_end": 455.794,
+     "speech_intervals": [
+      [
+       449.689,
+       451.244
+      ],
+      [
+       451.489,
+       455.794
+      ]
+     ]
+    },
+    {
+     "id": 1938,
+     "ref": "医院遵循了感染控制规定，包括把患者与他人隔离，以防感染到其他人。",
+     "ref_norm_fleurs": "医 院 遵 循 了 感 染 控 制 规 定 包 括 把 患 者 与 他 人 隔 离 以 防 感 染 到 其 他 人",
+     "ref_es": "El hospital ha respetado el protocolo de control de infecciones, incluido el distanciamiento del paciente de los demás para prevenir posibles infecciones.",
+     "ref_en": "The hospital has followed protocol for infection control, including separating the patient from others to prevent possible infection of others.",
+     "gender": 0,
+     "duration": 8.58,
+     "start": 457.936,
+     "end": 466.516,
+     "speech_start": 459.44,
+     "speech_end": 465.52,
+     "energy_start": 459.436,
+     "energy_end": 465.431,
+     "speech_intervals": [
+      [
+       459.436,
+       460.601
+      ],
+      [
+       461.026,
+       462.061
+      ],
+      [
+       462.326,
+       465.431
+      ]
+     ]
+    },
+    {
+     "id": 1939,
+     "ref": "此外，在革命之后，官职面向全体男性开放申请，这使得最有抱负、最成功之人有机会飞黄腾达。",
+     "ref_norm_fleurs": "此 外 在 革 命 之 后 官 职 面 向 全 体 男 性 开 放 申 请 这 使 得 最 有 抱 负 最 成 功 之 人 有 机 会 飞 黄 腾 达",
+     "ref_es": "Asimismo, luego de la Revolución, los puestos estuvieron abiertos a todos los candidatos masculinos, lo que permitió el éxito de los más ambiciosos y prestigiosos.",
+     "ref_en": "Also after the Revolution occupations were open to all male applicants allowing the most ambitious and successful to succeed.",
+     "gender": 0,
+     "duration": 15.74,
+     "start": 468.446,
+     "end": 484.186,
+     "speech_start": 471.198,
+     "speech_end": 480.35,
+     "energy_start": 471.186,
+     "energy_end": 480.271,
+     "speech_intervals": [
+      [
+       471.186,
+       472.841
+      ],
+      [
+       473.316,
+       475.831
+      ],
+      [
+       476.636,
+       480.271
+      ]
+     ]
+    },
+    {
+     "id": 1943,
+     "ref": "压力越小，生命力就表现得越积极。每个人都有可能找到绝对的平静和满足。",
+     "ref_norm_fleurs": "压 力 越 小 生 命 力 就 表 现 得 越 积 极 每 个 人 都 有 可 能 找 到 绝 对 的 平 静 和 满 足",
+     "ref_es": "Cuanto más baja sea la tensión, más positiva es la fuerza de la vida con la que contemos. Cada uno de nosotros tiene el potencial de hallar paz y dicha absolutas.",
+     "ref_en": "The lower the tension, the more positive the life force present. Every person has the potential to find absolute peace and contentment.",
+     "gender": 1,
+     "duration": 6.84,
+     "start": 485.902,
+     "end": 492.742,
+     "speech_start": 486.51,
+     "speech_end": 491.982,
+     "energy_start": 486.402,
+     "energy_end": 491.897,
+     "speech_intervals": [
+      [
+       486.402,
+       491.897
+      ]
+     ]
+    },
+    {
+     "id": 1944,
+     "ref": "这些海滩有时挤满了度假的家庭，沿岸排列着各种各样的商店。 游泳很安全。",
+     "ref_norm_fleurs": "这 些 海 滩 有 时 挤 满 了 度 假 的 家 庭 沿 岸 排 列 着 各 种 各 样 的 商 店 游 泳 很 安 全",
+     "ref_es": "Estas son playas familiares, en ocasiones muy concurridas, con numerosas y variadas tiendas disponibles sobre la cosa. También son seguras para nadar.",
+     "ref_en": "These are sometimes-crowded family beaches with a good range of shops lining the shore. Swimming is safe.",
+     "gender": 0,
+     "duration": 15.0,
+     "start": 494.214,
+     "end": 509.214,
+     "speech_start": 497.606,
+     "speech_end": 506.086,
+     "energy_start": 497.574,
+     "energy_end": 505.969,
+     "speech_intervals": [
+      [
+       497.574,
+       500.519
+      ],
+      [
+       501.694,
+       504.379
+      ],
+      [
+       504.864,
+       505.969
+      ]
+     ]
+    },
+    {
+     "id": 1954,
+     "ref": "他们因其严格防守、控球技术和出色的团队合作脱颖而出。很显然，这是一支无往不胜的球队。",
+     "ref_norm_fleurs": "他 们 因 其 严 格 防 守 控 球 技 术 和 出 色 的 团 队 合 作 脱 颖 而 出 很 显 然 这 是 一 支 无 往 不 胜 的 球 队",
+     "ref_es": "Su defensa disciplinada, sus habilidades de manejo del balón y el excelente trabajo en equipo los llevaron a destacarse y quedó claro que este era el equipo a derrotar.",
+     "ref_en": "Their disciplined defence, ball handling skills and excellent team work made them stand out and it was clear that this was the team to beat.",
+     "gender": 0,
+     "duration": 11.22,
+     "start": 511.214,
+     "end": 522.434,
+     "speech_start": 512.622,
+     "speech_end": 520.622,
+     "energy_start": 512.574,
+     "energy_end": 520.549,
+     "speech_intervals": [
+      [
+       512.574,
+       514.949
+      ],
+      [
+       515.384,
+       517.419
+      ],
+      [
+       517.884,
+       518.389
+      ],
+      [
+       518.754,
+       520.549
+      ]
+     ]
+    },
+    {
+     "id": 1959,
+     "ref": "尽管如此，还是要听从有关部门的建议，遵守所有的标志并密切注意安全警告。",
+     "ref_norm_fleurs": "尽 管 如 此 还 是 要 听 从 有 关 部 门 的 建 议 遵 守 所 有 的 标 志 并 密 切 注 意 安 全 警 告",
+     "ref_es": "De todas formas, acepte los consejos de las autoridades, respete todas las señales y ponga especial atención en las alertas de seguridad.",
+     "ref_en": "Still, take advice from authorities, obey all signs, and pay close attention to safety warnings.",
+     "gender": 1,
+     "duration": 7.92,
+     "start": 524.568,
+     "end": 532.488,
+     "speech_start": 525.528,
+     "speech_end": 531.736,
+     "energy_start": 525.398,
+     "energy_end": 531.763,
+     "speech_intervals": [
+      [
+       525.398,
+       531.763
+      ]
+     ]
+    },
+    {
+     "id": 1961,
+     "ref": "要说明社会化的重要性，最常用的方法之一是利用少数不幸儿童的案例。这些儿童由于被忽视、遭遇不幸或遭到故意虐待，在成长过程中没有在成年人的帮助下实现社会化。",
+     "ref_norm_fleurs": "要 说 明 社 会 化 的 重 要 性 最 常 用 的 方 法 之 一 是 利 用 少 数 不 幸 儿 童 的 案 例 这 些 儿 童 由 于 被 忽 视 遭 遇 不 幸 或 遭 到 故 意 虐 待 在 成 长 过 程 中 没 有 在 成 年 人 的 帮 助 下 实 现 社 会 化",
+     "ref_es": "Uno de los mecanismos más comúnmente usados para graficar la importancia de sociabilizar es analizar los pocos y lamentables casos de niños que, por negligencia, desgracia o abuso intencional, no fueron socializados por adultos durante su crecimiento.",
+     "ref_en": "One of the most common methods used to illustrate the importance of socialization is to draw upon the few unfortunate cases of children who were, through neglect, misfortune, or wilful abuse, not socialized by adults while they were growing up.",
+     "gender": 0,
+     "duration": 17.34,
+     "start": 533.916,
+     "end": 551.256,
+     "speech_start": 535.548,
+     "speech_end": 548.828,
+     "energy_start": 535.526,
+     "energy_end": 548.741,
+     "speech_intervals": [
+      [
+       535.526,
+       537.081
+      ],
+      [
+       537.586,
+       540.651
+      ],
+      [
+       541.156,
+       544.701
+      ],
+      [
+       545.186,
+       548.741
+      ]
+     ]
+    },
+    {
+     "id": 1962,
+     "ref": "pH 值以被测化学品中的氢（pH 中的 H）离子数量表示。",
+     "ref_norm_fleurs": "ph 值 以 被 测 化 学 品 中 的 氢 ph 中 的 h 离 子 数 量 表 示",
+     "ref_es": "El número de iones de hidrógeno (la H en pH) presentes en el producto químico analizado determina su nivel de pH.",
+     "ref_en": "The pH level is indicated by the amount of Hydrogen (the H in pH) ions in the tested chemical.",
+     "gender": 1,
+     "duration": 8.46,
+     "start": 552.663,
+     "end": 561.123,
+     "speech_start": 553.367,
+     "speech_end": 560.343,
+     "energy_start": 553.333,
+     "energy_end": 560.248,
+     "speech_intervals": [
+      [
+       553.333,
+       554.908
+      ],
+      [
+       555.243,
+       558.438
+      ],
+      [
+       558.823,
+       559.258
+      ],
+      [
+       559.533,
+       560.248
+      ]
+     ]
+    },
+    {
+     "id": 1963,
+     "ref": "熨烫潮湿的衣服可以帮助其变干。即便房间并没有熨斗和熨衣板，但是许多酒店提供出借服务。",
+     "ref_norm_fleurs": "熨 烫 潮 湿 的 衣 服 可 以 帮 助 其 变 干 即 便 房 间 并 没 有 熨 斗 和 熨 衣 板 但 是 许 多 酒 店 提 供 出 借 服 务",
+     "ref_es": "Planchar la ropa cuando aún está húmeda puede ayudar a secarla. Muchos hoteles cuentan con plancha y una tabla para prestar a los viajeros, incluso si uno no se encuentra en la habitación.",
+     "ref_en": "Ironing damp clothes can help them dry. Many hotels have an iron and ironing board available for loan, even if one is not present in the room.",
+     "gender": 0,
+     "duration": 15.68,
+     "start": 562.327,
+     "end": 578.007,
+     "speech_start": 564.855,
+     "speech_end": 575.159,
+     "energy_start": 564.837,
+     "energy_end": 575.092,
+     "speech_intervals": [
+      [
+       564.837,
+       568.352
+      ],
+      [
+       568.857,
+       571.572
+      ],
+      [
+       572.347,
+       575.092
+      ]
+     ]
+    },
+    {
+     "id": 1969,
+     "ref": "它指出，对主体来说最有效的位置是将图像垂直和水平分为三部分的线的交叉点（见示例）。",
+     "ref_norm_fleurs": "它 指 出 对 主 体 来 说 最 有 效 的 位 置 是 将 图 像 垂 直 和 水 平 分 为 三 部 分 的 线 的 交 叉 点 见 示 例",
+     "ref_es": "Indica que la posición más efectiva donde colocar el objeto central es la intersección que se forma entre las líneas horizontales y verticales que dividen la imagen en tercios (ver ejemplo).",
+     "ref_en": "It states that the most effective place for the main subject is at the intersection of lines dividing the image into thirds vertically and horizontally (see example).",
+     "gender": 1,
+     "duration": 9.12,
+     "start": 579.3,
+     "end": 588.42,
+     "speech_start": 580.1,
+     "speech_end": 587.588,
+     "energy_start": 579.97,
+     "energy_end": 587.535,
+     "speech_intervals": [
+      [
+       579.97,
+       583.425
+      ],
+      [
+       583.71,
+       587.535
+      ]
+     ]
+    },
+    {
+     "id": 1983,
+     "ref": "“文明”一词来自拉丁语“civilis”（意为“公民的”），与拉丁语\"civis\"（意为“公民”）及\"civitas\"（意为“城市”或“城邦”）都有关，这也以某种方式定义了社会的规模。",
+     "ref_norm_fleurs": " 文明”一词来自拉丁语 civilis”意为 公民的”与拉丁语\"civis\"意为 公民”及\"civitas\"意为 城市”或 城邦”都有关这也以某种方式定义了社会的规模",
+     "ref_es": "El término civilización deriva del latín civilis, que quiere decir civil, y se relaciona tanto con la palabra civis, del mismo idioma, que significa ciudadano, como con civitas, que cuyo significado es ciudad o ciudad estado y que, además, determina de algún modo el tamaño de la sociedad.",
+     "ref_en": "The word civilization comes from the Latin civilis, meaning civil, related to the Latin civis, meaning citizen, and civitas, meaning city or city-state, and that also somehow defines the size of the society.",
+     "gender": 1,
+     "duration": 14.64,
+     "start": 590.566,
+     "end": 605.206,
+     "speech_start": 591.142,
+     "speech_end": 604.486,
+     "energy_start": 591.116,
+     "energy_end": 604.431,
+     "speech_intervals": [
+      [
+       591.116,
+       592.081
+      ],
+      [
+       592.386,
+       594.011
+      ],
+      [
+       594.416,
+       597.281
+      ],
+      [
+       597.546,
+       604.431
+      ]
+     ]
+    },
+    {
+     "id": 1991,
+     "ref": "在欧洲历史上的这段时期，已然富有而强大起来的天主教会受到了密切监督。",
+     "ref_norm_fleurs": "在 欧 洲 历 史 上 的 这 段 时 期 已 然 富 有 而 强 大 起 来 的 天 主 教 会 受 到 了 密 切 监 督",
+     "ref_es": "Durante esta fase de la historia de Europa, la iglesia católica, que había acumulado riqueza y poder, fue cuestionada.",
+     "ref_en": "During this period of European history, the Catholic Church, which had become rich and powerful, came under scrutiny.",
+     "gender": 1,
+     "duration": 7.92,
+     "start": 607.243,
+     "end": 615.163,
+     "speech_start": 608.171,
+     "speech_end": 614.443,
+     "energy_start": 608.053,
+     "energy_end": 614.348,
+     "speech_intervals": [
+      [
+       608.053,
+       614.348
+      ]
+     ]
+    },
+    {
+     "id": 1999,
+     "ref": "20 世纪 60 年代，布热津斯基先是为约翰·福特·肯尼迪效力，担任他的顾问，后来又为林登·贝恩斯·约翰逊政府工作。",
+     "ref_norm_fleurs": "20 世 纪 60 年 代 布 热 津 斯 基 先 是 为 约 翰 福 特 肯 尼 迪 效 力 担 任 他 的 顾 问 后 来 又 为 林 登 贝 恩 斯 约 翰 逊 政 府 工 作",
+     "ref_es": "Durante los años 60, Brzezinski trabajó para John F. Kennedy en el puesto de asesor y, posteriormente, para el gobierno de Lyndon B. Johnson.",
+     "ref_en": "Throughout 1960s, Brzezinski worked for John F. Kennedy as his advisor and then the Lyndon B. Johnson administration.",
+     "gender": 1,
+     "duration": 13.98,
+     "start": 617.288,
+     "end": 631.268,
+     "speech_start": 618.376,
+     "speech_end": 630.44,
+     "energy_start": 618.348,
+     "energy_end": 629.733,
+     "speech_intervals": [
+      [
+       618.348,
+       619.623
+      ],
+      [
+       620.258,
+       621.173
+      ],
+      [
+       621.498,
+       622.803
+      ],
+      [
+       623.058,
+       624.203
+      ],
+      [
+       624.748,
+       626.773
+      ],
+      [
+       627.008,
+       627.373
+      ],
+      [
+       627.878,
+       629.733
+      ]
+     ]
+    },
+    {
+     "id": 2001,
+     "ref": "强烈建议旅客注意所在地的恶劣天气风险，它们可能会影响旅行计划。",
+     "ref_norm_fleurs": "强 烈 建 议 旅 客 注 意 所 在 地 的 恶 劣 天 气 风 险 它 们 可 能 会 影 响 旅 行 计 划",
+     "ref_es": "Se recomienda enfáticamente a los viajeros que se informen sobre cualquier riesgo de clima extremo en el área que visitan, dado que ello puede afectar sus planes de viaje.",
+     "ref_en": "Travellers are strongly advised to be aware of any risk of severe weather affecting their area as they may affect any travel plans.",
+     "gender": 1,
+     "duration": 7.74,
+     "start": 632.73,
+     "end": 640.47,
+     "speech_start": 633.434,
+     "speech_end": 639.77,
+     "energy_start": 633.43,
+     "energy_end": 639.665,
+     "speech_intervals": [
+      [
+       633.43,
+       634.285
+      ],
+      [
+       634.59,
+       639.665
+      ]
+     ]
+    },
+    {
+     "id": 2002,
+     "ref": "它让玩家可以通过在空中移动设备来控制电子游戏中的运动和操作。",
+     "ref_norm_fleurs": "它 让 玩 家 可 以 通 过 在 空 中 移 动 设 备 来 控 制 电 子 游 戏 中 的 运 动 和 操 作",
+     "ref_es": "Esto permitirá a los jugadores controlar las acciones y los movimientos en los videojuegos, a través del movimiento del dispositivo por el aire.",
+     "ref_en": "This will allow players to control actions and movements in video games by moving the device through the air.",
+     "gender": 1,
+     "duration": 6.78,
+     "start": 641.75,
+     "end": 648.53,
+     "speech_start": 642.518,
+     "speech_end": 647.702,
+     "energy_start": 642.38,
+     "energy_end": 647.585,
+     "speech_intervals": [
+      [
+       642.38,
+       647.585
+      ]
+     ]
+    },
+    {
+     "id": 2005,
+     "ref": "但鸟类还是有很多地方跟恐龙相似。",
+     "ref_norm_fleurs": "但 鸟 类 还 是 有 很 多 地 方 跟 恐 龙 相 似",
+     "ref_es": "Sin embargo, hay muchas características en las aves que todavía las asemejan a los dinosaurios.",
+     "ref_en": "But there are a lot of things about birds that still look like a dinosaur.",
+     "gender": 1,
+     "duration": 4.74,
+     "start": 650.667,
+     "end": 655.407,
+     "speech_start": 651.307,
+     "speech_end": 654.635,
+     "energy_start": 651.237,
+     "energy_end": 654.582,
+     "speech_intervals": [
+      [
+       651.237,
+       654.582
+      ]
+     ]
+    }
+   ]
+  },
+  "ko": {
+   "fleurs": "ko_kr",
+   "duration": 708.4,
+   "speech_level_db": -22.5,
+   "items": [
+    {
+     "id": 1666,
+     "ref": "자신의 의견이 아닌 정부의 의견을 듣고 싶을 수도 있지만, 각국 정부의 조언들은 자국민에 맞춰져 있다.",
+     "ref_norm_fleurs": "자신의 의견이 아닌 정부의 의견을 듣고 싶을 수도 있지만 각국 정부의 조언들은 자국민에 맞춰져 있다",
+     "ref_es": "Es posible que quiera consultar las recomendaciones de otros gobiernos, pero están pensadas para sus propios ciudadanos.",
+     "ref_en": "You may also wish to consult the advice of governments other than your own, but their advice is designed for their citizens.",
+     "gender": 1,
+     "duration": 9.96,
+     "start": 1.0,
+     "end": 10.96,
+     "speech_start": 2.312,
+     "speech_end": 8.904,
+     "energy_start": 2.25,
+     "energy_end": 8.835,
+     "speech_intervals": [
+      [
+       2.25,
+       5.525
+      ],
+      [
+       5.88,
+       8.835
+      ]
+     ]
+    },
+    {
+     "id": 1667,
+     "ref": "\"일반적으로 두 가지 행동은 관리자가 이전 동료를 이끌기 시작하면서 나타날 수 있습니다. 스페트럼의 한쪽 끝에서 \"\"직원 중 한 사람\"\"으로 남으려고 노력합니다.\"",
+     "ref_norm_fleurs": "\"일반적으로 두 가지 행동은 관리자가 이전 동료를 이끌기 시작하면서 나타날 수 있습니다. 스페트럼의 한쪽 끝에서 \"직원 중 한 사람\"\"으로 남으려고 노력합니다.",
+     "ref_es": "En general, pueden darse dos tipos de comportamiento cuando los gerentes comienzan a liderar a sus antiguos compañeros. De un lado del espectro, está el intento de continuar siendo «uno de los muchachos» (o muchachas).",
+     "ref_en": "Generally speaking, two behaviors can emerge as managers begin to lead their former peers. One end of the spectrum is trying to remain “one of the guys” (or gals).",
+     "gender": 0,
+     "duration": 17.46,
+     "start": 12.218,
+     "end": 29.678,
+     "speech_start": 14.554,
+     "speech_end": 26.97,
+     "energy_start": 14.528,
+     "energy_end": 26.903,
+     "speech_intervals": [
+      [
+       14.528,
+       20.863
+      ],
+      [
+       21.608,
+       23.393
+      ],
+      [
+       23.858,
+       26.903
+      ]
+     ]
+    },
+    {
+     "id": 1674,
+     "ref": "일부 지역에서는 1분간 물을 끓이는 것으로 충분하다. 다른 지역에서는 수 분 동안 물을 끓일 필요가 있다.",
+     "ref_norm_fleurs": "일부 지역에서는 1분간 물을 끓이는 것으로 충분하다 다른 지역에서는 수 분 동안 물을 끓일 필요가 있다",
+     "ref_es": "En algunos, lugares basta con hervir agua durante un minuto, en otros, son necesarios varios más.",
+     "ref_en": "In some areas boiling water for a minute is enough, in others several minutes are needed.",
+     "gender": 1,
+     "duration": 10.38,
+     "start": 31.72,
+     "end": 42.1,
+     "speech_start": 32.712,
+     "speech_end": 39.752,
+     "energy_start": 32.69,
+     "energy_end": 39.685,
+     "speech_intervals": [
+      [
+       32.69,
+       36.235
+      ],
+      [
+       36.75,
+       39.685
+      ]
+     ]
+    },
+    {
+     "id": 1675,
+     "ref": "당신이라는 의미의 Sie라는 단어와 함께 쓰이는 모든 명사는 문장의 중간에서도 항상 대문자로 시작된다.",
+     "ref_norm_fleurs": "당신이라는 의미의 sie라는 단어와 함께 쓰이는 모든 명사는 문장의 중간에서도 항상 대문자로 시작된다",
+     "ref_es": "Todos los sustantivos, así como el vocablo Sie para significar 'usted', llevan siempre su letra inicial mayúscula, aunque estén ubicados en el medio de la oración.",
+     "ref_en": "All nouns, alongside the word Sie for you, always begin with a capital letter, even in the middle of a sentence.",
+     "gender": 0,
+     "duration": 15.6,
+     "start": 43.378,
+     "end": 58.978,
+     "speech_start": 46.642,
+     "speech_end": 55.954,
+     "energy_start": 46.568,
+     "energy_end": 55.863,
+     "speech_intervals": [
+      [
+       46.568,
+       47.873
+      ],
+      [
+       48.118,
+       51.743
+      ],
+      [
+       52.398,
+       55.863
+      ]
+     ]
+    },
+    {
+     "id": 1687,
+     "ref": "분리 및 재조합은 각 세대마다 두 유전자풀 사이에서 일어난 변이를 이리저리 뒤섞습니다.",
+     "ref_norm_fleurs": "분리 및 재조합은 각 세대마다 두 유전자풀 사이에서 일어난 변이를 이리저리 뒤섞습니다",
+     "ref_es": "La segregación y la recombinación barajan la variación entre uno y otro generación tras generación.",
+     "ref_en": "Segregation and recombination shuffle variation back and forth between the two pools with each generation.",
+     "gender": 0,
+     "duration": 14.46,
+     "start": 60.678,
+     "end": 75.138,
+     "speech_start": 64.294,
+     "speech_end": 71.974,
+     "energy_start": 64.238,
+     "energy_end": 72.003,
+     "speech_intervals": [
+      [
+       64.238,
+       65.693
+      ],
+      [
+       66.088,
+       69.933
+      ],
+      [
+       70.358,
+       72.003
+      ]
+     ]
+    },
+    {
+     "id": 1691,
+     "ref": "대기업은 일부 항로에서 자사 소속 항공기를 사용합니다만 그밖에 다른 항로이거나 소기업이라면 문제가 있습니다.",
+     "ref_norm_fleurs": "대기업은 일부 항로에서 자사 소속 항공기를 사용합니다만 그밖에 다른 항로이거나 소기업이라면 문제가 있습니다",
+     "ref_es": "Las compañías grandes tienen sus propios aviones en algunas rutas, pero hubo un problema para las empresas más pequeñas y otras rutas.",
+     "ref_en": "On some routes, the larger companies have their own planes, but for other routes and smaller firms there was a problem.",
+     "gender": 0,
+     "duration": 11.22,
+     "start": 77.277,
+     "end": 88.497,
+     "speech_start": 79.069,
+     "speech_end": 87.165,
+     "energy_start": 79.057,
+     "energy_end": 87.042,
+     "speech_intervals": [
+      [
+       79.057,
+       80.662
+      ],
+      [
+       81.177,
+       83.252
+      ],
+      [
+       83.747,
+       87.042
+      ]
+     ]
+    },
+    {
+     "id": 1696,
+     "ref": "대학 연구진은 두 화합물이 서로 반응하여 결정을 형성하고 이는 신장의 기능을 차단할 수 있다고 밝혔다.",
+     "ref_norm_fleurs": "대학 연구진은 두 화합물이 서로 반응하여 결정을 형성하고 이는 신장의 기능을 차단할 수 있다고 밝혔다",
+     "ref_es": "Los investigadores indicaron que los dos compuestos reaccionan entre sí para dar lugar a cristales que pueden obstruir la función renal.",
+     "ref_en": "The two compounds react with one another to form crystals that may block kidney function, researchers at the university said.",
+     "gender": 1,
+     "duration": 11.04,
+     "start": 89.911,
+     "end": 100.951,
+     "speech_start": 91.319,
+     "speech_end": 98.519,
+     "energy_start": 91.301,
+     "energy_end": 98.436,
+     "speech_intervals": [
+      [
+       91.301,
+       98.436
+      ]
+     ]
+    },
+    {
+     "id": 1702,
+     "ref": "겨우 2주 만에 미군과 자유 프랑스군은 프랑스 남부를 해방시키고 독일로 진격 방향을 틀고 있었다.",
+     "ref_norm_fleurs": "겨우 2주 만에 미군과 자유 프랑스군은 프랑스 남부를 해방시키고 독일로 진격 방향을 틀고 있었다",
+     "ref_es": "En apenas dos semanas, las fuerzas norteamericanas y las de la Francia Libre habían logrado la liberación del sur de Francia y seguían rumbo a Alemania.",
+     "ref_en": "In just two weeks the Americans and Free French forces had liberated southern France and were turning towards Germany.",
+     "gender": 0,
+     "duration": 12.48,
+     "start": 102.501,
+     "end": 114.981,
+     "speech_start": 104.613,
+     "speech_end": 112.357,
+     "energy_start": 104.481,
+     "energy_end": 112.286,
+     "speech_intervals": [
+      [
+       104.481,
+       107.476
+      ],
+      [
+       107.841,
+       109.546
+      ],
+      [
+       109.961,
+       112.286
+      ]
+     ]
+    },
+    {
+     "id": 1704,
+     "ref": "사막 모래의 영향으로 인해, 1990년 팀북투는 위험에 처한 세계 문화유산 목록에 추가되었습니다.",
+     "ref_norm_fleurs": "사막 모래의 영향으로 인해 1990년 팀북투는 위험에 처한 세계 문화유산 목록에 추가되었습니다",
+     "ref_es": "En 1990, fue incorporado al listado de lugares del patrimonio de la humanidad en riesgo, producto de la amenaza de las arenas del desierto.",
+     "ref_en": "In 1990, it was added to the list of world heritage sites in danger, due to the threat of desert sands.",
+     "gender": 0,
+     "duration": 13.2,
+     "start": 116.58,
+     "end": 129.78,
+     "speech_start": 118.884,
+     "speech_end": 127.172,
+     "energy_start": 118.81,
+     "energy_end": 127.185,
+     "speech_intervals": [
+      [
+       118.81,
+       120.635
+      ],
+      [
+       121.03,
+       123.205
+      ],
+      [
+       123.59,
+       127.185
+      ]
+     ]
+    },
+    {
+     "id": 1716,
+     "ref": "연예 뉴스 웹사이트인 TMZ는 사진사가 세풀베다 대로 맞은편에 차를 세워 두고, 길을 건너기 전에 계속해서 경찰서 사진을 찍으려 시도하였으며, 이에 교통정리를 하던 캘리포니아 고속도로 경찰이 두 번이나 물러나도록 명령했던 것에 대해 시인하였습니다.",
+     "ref_norm_fleurs": "연예 뉴스 웹사이트인 tmz는 사진사가 세풀베다 대로 맞은편에 차를 세워 두고 길을 건너기 전에 계속해서 경찰서 사진을 찍으려 시도하였으며 이에 교통정리를 하던 캘리포니아 고속도로 경찰이 두 번이나 물러나도록 명령했던 것에 대해 시인하였습니다",
+     "ref_es": "Según la página web de noticias de entretenimiento TMZ, el fotógrafo detuvo el vehículo del lado contrario del bulevar Sepulveda e intentó tomar fotografías de la parada policial antes de cruzar la calle y seguir, lo que causó que el agente de la patrulla caminera de California que realizaba la detención de vehículos le diera dos veces la orden de volver a cruzar.",
+     "ref_en": "Entertainment news website TMZ understands the photographer stopped his vehicle on the other side of Sepulveda Boulevard and attempted to take pictures of the police stop before crossing the road and continuing, prompting the California Highway Patrol police officer conducting the traffic stop to order him back across, twice.",
+     "gender": 0,
+     "duration": 24.06,
+     "start": 131.405,
+     "end": 155.465,
+     "speech_start": 133.421,
+     "speech_end": 152.813,
+     "energy_start": 133.405,
+     "energy_end": 152.75,
+     "speech_intervals": [
+      [
+       133.405,
+       135.61
+      ],
+      [
+       136.205,
+       139.39
+      ],
+      [
+       140.065,
+       144.4
+      ],
+      [
+       144.955,
+       148.61
+      ],
+      [
+       149.045,
+       152.75
+      ]
+     ]
+    },
+    {
+     "id": 1718,
+     "ref": "골동품에 대한 보편적인 정의는 존재하지 않습니다. 몇 조세국에서는 100년 이상 오래된 제품을 골동품으로 분류합니다.",
+     "ref_norm_fleurs": "골동품에 대한 보편적인 정의는 존재하지 않습니다 몇 조세국에서는 100년 이상 오래된 제품을 골동품으로 분류합니다",
+     "ref_es": "No ha un criterio universal que determine cuándo un bien manufacturado puede ser considerado una antigüedad. Algunas agencias impositivas tienen establecido que los objetos de más de 100 años son antigüedades.",
+     "ref_en": "There is no universal definition for which manufactured items are antiques. Some tax agencies define goods older than 100 years as antiques.",
+     "gender": 0,
+     "duration": 9.36,
+     "start": 157.489,
+     "end": 166.849,
+     "speech_start": 158.961,
+     "speech_end": 165.937,
+     "energy_start": 158.949,
+     "energy_end": 165.784,
+     "speech_intervals": [
+      [
+       158.949,
+       161.604
+      ],
+      [
+       161.939,
+       165.784
+      ]
+     ]
+    },
+    {
+     "id": 1719,
+     "ref": "악천후는 피해, 심각한 사회 혼란 또는 인명 손실을 초래할 수 있는 위험한 기상 현상의 총칭이다.",
+     "ref_norm_fleurs": "악천후는 피해 심각한 사회 혼란 또는 인명 손실을 초래할 수 있는 위험한 기상 현상의 총칭이다",
+     "ref_es": "El término clima severo refiere, en general, a cualquier fenómeno climático riesgoso que sea capaz de provocar daños, alteraciones sociales graves o la muerte de personas.",
+     "ref_en": "Severe weather is the generic term for any dangerous weather phenomenon with the potential to cause damage, serious social disruption, or loss of human life.",
+     "gender": 0,
+     "duration": 8.16,
+     "start": 168.271,
+     "end": 176.431,
+     "speech_start": 169.775,
+     "speech_end": 175.823,
+     "energy_start": 169.761,
+     "energy_end": 175.696,
+     "speech_intervals": [
+      [
+       169.761,
+       175.696
+      ]
+     ]
+    },
+    {
+     "id": 1734,
+     "ref": "과학자들은 암흑물질이 일반 물질과 같은 방식으로 다른 암흑물질에 영향을 준다고 결론지었습니다.",
+     "ref_norm_fleurs": "과학자들은 암흑물질이 일반 물질과 같은 방식으로 다른 암흑물질에 영향을 준다고 결론지었습니다",
+     "ref_es": "Los expertos llegaron a la conclusión de que las materias oscuras se afectan entre sí al igual que lo hace la materia regular.",
+     "ref_en": "The scientists were able to conclude that the dark matter affect other dark matter in the same way regular matter does.",
+     "gender": 0,
+     "duration": 12.36,
+     "start": 178.006,
+     "end": 190.366,
+     "speech_start": 180.214,
+     "speech_end": 187.862,
+     "energy_start": 180.046,
+     "energy_end": 187.841,
+     "speech_intervals": [
+      [
+       180.046,
+       184.131
+      ],
+      [
+       184.526,
+       187.841
+      ]
+     ]
+    },
+    {
+     "id": 1737,
+     "ref": "사자는 무리 지어 사는 가장 사회적인 고양이과 동물입니다.",
+     "ref_norm_fleurs": "사자는 무리 지어 사는 가장 사회적인 고양이과 동물입니다",
+     "ref_es": "Los leones son los felinos que más socializan y su vida transcurre dentro de grupos de gran tamaño denominados manadas.",
+     "ref_en": "Lions are the most social cats, living in large groups called prides.",
+     "gender": 0,
+     "duration": 9.0,
+     "start": 191.849,
+     "end": 200.849,
+     "speech_start": 194.185,
+     "speech_end": 198.377,
+     "energy_start": 194.049,
+     "energy_end": 198.324,
+     "speech_intervals": [
+      [
+       194.049,
+       198.324
+      ]
+     ]
+    },
+    {
+     "id": 1738,
+     "ref": "이 동물은 물에 들어오는 모든 것 역시 공격했으며, 티라노사우르스처럼 거대한 공룡도 당해내지 못할 정도였습니다.",
+     "ref_norm_fleurs": "이 동물은 물에 들어오는 모든 것 역시 공격했으며 티라노사우르스처럼 거대한 공룡도 당해내지 못할 정도였습니다",
+     "ref_es": "Atacaba también a cualquier criatura que entrara en el agua: ni siquiera un dinosaurio tan enorme como el T. Rex era una amenaza para él.",
+     "ref_en": "It also attacked anything that entered the water; even a giant dinosaur such as T. rex would be no match for it.",
+     "gender": 0,
+     "duration": 15.72,
+     "start": 202.074,
+     "end": 217.794,
+     "speech_start": 205.466,
+     "speech_end": 214.906,
+     "energy_start": 205.434,
+     "energy_end": 214.849,
+     "speech_intervals": [
+      [
+       205.434,
+       209.239
+      ],
+      [
+       210.054,
+       214.849
+      ]
+     ]
+    },
+    {
+     "id": 1745,
+     "ref": "\"식물은 자연환경에서 가장 좋아 보이므로 \"\"딱 하나\"\"의 표본은 괜찮겠지 라는 유혹은 버려야 한다.\"",
+     "ref_norm_fleurs": "\"식물은 자연환경에서 가장 좋아 보이므로 \"딱 하나\"\"의 표본은 괜찮겠지 라는 유혹은 버려야 한다.",
+     "ref_es": "Las plantas lucen mejor cuando están en un entorno natural, por eso, resista la tentación de arrancar «tan solo un» espécimen.",
+     "ref_en": "Plants look their best when in a natural environment, so resist the temptation to remove even \"just one\" specimen.",
+     "gender": 0,
+     "duration": 9.12,
+     "start": 219.534,
+     "end": 228.654,
+     "speech_start": 221.038,
+     "speech_end": 227.246,
+     "energy_start": 221.004,
+     "energy_end": 227.109,
+     "speech_intervals": [
+      [
+       221.004,
+       223.659
+      ],
+      [
+       223.964,
+       227.109
+      ]
+     ]
+    },
+    {
+     "id": 1750,
+     "ref": "그러한 발견은 또한 조류에 있어서 깃털의 진화에 대한 통찰을 제공한다.",
+     "ref_norm_fleurs": "그러한 발견은 또한 조류에 있어서 깃털의 진화에 대한 통찰을 제공한다",
+     "ref_es": "Asimismo, el hallazgo permite comprender mejor la evolución de las plumas de las aves.",
+     "ref_en": "The find also grants insight into the evolution of feathers in birds.",
+     "gender": 1,
+     "duration": 8.16,
+     "start": 230.521,
+     "end": 238.681,
+     "speech_start": 231.577,
+     "speech_end": 236.473,
+     "energy_start": 231.601,
+     "energy_end": 236.406,
+     "speech_intervals": [
+      [
+       231.601,
+       236.406
+      ]
+     ]
+    },
+    {
+     "id": 1772,
+     "ref": "그래서 단순히 라벨로 표기했을 가능성이 높다.",
+     "ref_norm_fleurs": "그래서 단순히 라벨로 표기했을 가능성이 높다",
+     "ref_es": "Por tanto, es probable que la anotación haya sido agregada tan solo como un rótulo.",
+     "ref_en": "So, it is likely that the notation was added simply as a label.",
+     "gender": 1,
+     "duration": 6.3,
+     "start": 240.221,
+     "end": 246.521,
+     "speech_start": 241.277,
+     "speech_end": 244.285,
+     "energy_start": 241.241,
+     "energy_end": 244.216,
+     "speech_intervals": [
+      [
+       241.241,
+       244.216
+      ]
+     ]
+    },
+    {
+     "id": 1780,
+     "ref": "쿤달리니 요가를 하면 요가 자세, 호흡 운동, 만트라 및 시각화를 통해 쿤달리니 에너지(계몽 에너지)가 깨어납니다.",
+     "ref_norm_fleurs": "쿤달리니 요가를 하면 요가 자세 호흡 운동 만트라 및 시각화를 통해 쿤달리니 에너지계몽 에너지가 깨어납니다",
+     "ref_es": "En Kundalini Yoga, la energía Kundalini (iluminación) se activa con posiciones de yoga, prácticas de respiración, mantras o visualizaciones.",
+     "ref_en": "With Kundalini Yoga the Kundalini energy (enlightenment energy) is awakened through yoga postures, breathing exercises, mantras and visualizations.",
+     "gender": 0,
+     "duration": 8.94,
+     "start": 247.858,
+     "end": 256.798,
+     "speech_start": 249.01,
+     "speech_end": 256.082,
+     "energy_start": 248.948,
+     "energy_end": 255.943,
+     "speech_intervals": [
+      [
+       248.948,
+       250.423
+      ],
+      [
+       250.998,
+       252.383
+      ],
+      [
+       252.748,
+       255.943
+      ]
+     ]
+    },
+    {
+     "id": 1781,
+     "ref": "마다가스카르는 야생 동물에 관해서는 현재 가장 크고 독보적인 대륙이다.",
+     "ref_norm_fleurs": "마다가스카르는 야생 동물에 관해서는 현재 가장 크고 독보적인 대륙이다",
+     "ref_es": "Madagascar es, por mucho, la más grande y un continente en sí mismo si hablamos de vida silvestre.",
+     "ref_en": "Madagascar is by far the biggest, and a continent on its own when it comes to wildlife.",
+     "gender": 0,
+     "duration": 10.92,
+     "start": 258.923,
+     "end": 269.843,
+     "speech_start": 261.451,
+     "speech_end": 266.955,
+     "energy_start": 261.333,
+     "energy_end": 266.868,
+     "speech_intervals": [
+      [
+       261.333,
+       264.068
+      ],
+      [
+       264.333,
+       266.868
+      ]
+     ]
+    },
+    {
+     "id": 1806,
+     "ref": "이들의 시대에는 빛 공해가 오늘날과 같은 수준이 아니었기 때문에 이들은 오늘날의 관측대와 달리 도시나 캠퍼스와 같이 쉽게 접근할 수 있는 장소에 위치했습니다.",
+     "ref_norm_fleurs": "이들의 시대에는 빛 공해가 오늘날과 같은 수준이 아니었기 때문에 이들은 오늘날의 관측대와 달리 도시나 캠퍼스와 같이 쉽게 접근할 수 있는 장소에 위치했습니다",
+     "ref_es": "Dado que, en su auge, la contaminación lumínica no era un problema de gran magnitud como lo es hoy, es frecuente encontrarlos en ciudades o en campus, siendo de más fácil acceso que aquellos que se construyen en los tiempos modernos.",
+     "ref_en": "As light pollution in their heyday was not the kind of problem it is today, they are usually located in cities or at campuses, easier to reach than those built in modern times.",
+     "gender": 0,
+     "duration": 15.3,
+     "start": 271.885,
+     "end": 287.185,
+     "speech_start": 273.581,
+     "speech_end": 285.549,
+     "energy_start": 273.575,
+     "energy_end": 285.44,
+     "speech_intervals": [
+      [
+       273.575,
+       280.69
+      ],
+      [
+       281.145,
+       285.44
+      ]
+     ]
+    },
+    {
+     "id": 1821,
+     "ref": "뇌 병리와 행동 사이의 상관관계가 과학자들의 연구를 돕습니다.",
+     "ref_norm_fleurs": "뇌 병리와 행동 사이의 상관관계가 과학자들의 연구를 돕습니다",
+     "ref_es": "El correlato existente entre la patología cerebral y la conducta contribuye a la investigación de los científicos.",
+     "ref_en": "The correlation between brain pathology and behaviour supports scientists in their research.",
+     "gender": 1,
+     "duration": 8.64,
+     "start": 289.073,
+     "end": 297.713,
+     "speech_start": 290.321,
+     "speech_end": 295.409,
+     "energy_start": 290.313,
+     "energy_end": 295.358,
+     "speech_intervals": [
+      [
+       290.313,
+       292.948
+      ],
+      [
+       293.223,
+       295.358
+      ]
+     ]
+    },
+    {
+     "id": 1827,
+     "ref": "지각은 가까운 쪽이 약 70km, 먼 쪽이 약 100km 두께입니다.",
+     "ref_norm_fleurs": "지각은 가까운 쪽이 약 70km 먼 쪽이 약 100km 두께입니다",
+     "ref_es": "La corteza tiene un espesor de unos 70 km en el lado cercano y de 100 km en el lejano.",
+     "ref_en": "The crust is about 70 km thick on the near side and 100 km thick on the far side.",
+     "gender": 0,
+     "duration": 5.88,
+     "start": 299.419,
+     "end": 305.299,
+     "speech_start": 300.123,
+     "speech_end": 304.539,
+     "energy_start": 300.179,
+     "energy_end": 303.794,
+     "speech_intervals": [
+      [
+       300.179,
+       302.794
+      ],
+      [
+       303.119,
+       303.794
+      ]
+     ]
+    },
+    {
+     "id": 1833,
+     "ref": "철학자 아리스토텔레스(Aristotle)는 모든 물질이 네 가지 요소 중 하나 혹은 하나 이상의 요소와 혼합하여 구성되어 있다고 이론화했다. 그 네 가지 요소는 땅과 물과 공기와 불이었다.",
+     "ref_norm_fleurs": "철학자 아리스토텔레스aristotle는 모든 물질이 네 가지 요소 중 하나 혹은 하나 이상의 요소와 혼합하여 구성되어 있다고 이론화했다. 그 네 가지 요소는 땅과 물과 공기와 불이었다",
+     "ref_es": "El filósofo Aristóteles desarrolló la teoría de que todo está formado por una combinación de uno o varios de cuatro elementos: tierra, agua, aire y fuego.",
+     "ref_en": "Aristotle, a philosopher, theorised that everything is made up of a mixture of one or more of four elements. They were earth, water, air, and fire.",
+     "gender": 1,
+     "duration": 16.56,
+     "start": 306.516,
+     "end": 323.076,
+     "speech_start": 307.7,
+     "speech_end": 320.596,
+     "energy_start": 307.636,
+     "energy_end": 320.521,
+     "speech_intervals": [
+      [
+       307.636,
+       311.811
+      ],
+      [
+       312.186,
+       316.131
+      ],
+      [
+       316.726,
+       320.521
+      ]
+     ]
+    },
+    {
+     "id": 1834,
+     "ref": "또한 북쪽으로는 세계적으로 유명한 성모 발현 장소인 파티마 대성당(성지)이 있으니 방문해 보세요.",
+     "ref_norm_fleurs": "또한 북쪽으로는 세계적으로 유명한 성모 발현 장소인 파티마 대성당성지이 있으니 방문해 보세요",
+     "ref_es": "También debe visitar, hacia el norte, el gran Santuario de Nuestra Señora de Fátima (Santuario) que es un sitio donde hubo apariciones de la Virgen María, famosas en todo el mundo.",
+     "ref_en": "Also to the north visit the great Sanctuary of Our Lady of Fatima (Shrine), a place of worldwide famous Marian apparitions.",
+     "gender": 1,
+     "duration": 10.08,
+     "start": 325.112,
+     "end": 335.192,
+     "speech_start": 326.424,
+     "speech_end": 332.952,
+     "energy_start": 326.402,
+     "energy_end": 332.867,
+     "speech_intervals": [
+      [
+       326.402,
+       332.867
+      ]
+     ]
+    },
+    {
+     "id": 1844,
+     "ref": "\"달의 표면은 돌과 먼지로 이루어져 있는데, 달의 바깥층은 '크러스트(the crust)\"\"라고 불린다.\"",
+     "ref_norm_fleurs": "\"달의 표면은 돌과 먼지로 이루어져 있는데 달의 바깥층은 '크러스트the crust\"\"라고 불린다.",
+     "ref_es": "La superficie de la luna se compone de rocas y polvo y su capa exterior se denomina corteza.",
+     "ref_en": "The surface of the Moon is made of rocks and dust. The outer layer of the Moon is called the crust.",
+     "gender": 1,
+     "duration": 8.82,
+     "start": 336.519,
+     "end": 345.339,
+     "speech_start": 337.671,
+     "speech_end": 343.175,
+     "energy_start": 337.639,
+     "energy_end": 343.094,
+     "speech_intervals": [
+      [
+       337.639,
+       340.374
+      ],
+      [
+       340.709,
+       343.094
+      ]
+     ]
+    },
+    {
+     "id": 1862,
+     "ref": "FAA의 주장에 따르면 NextGen은 항공기가 더 짧은 노선을 비행해서 매년 수백만 갤런의 연료를 절약하고 탄소 배출을 줄일 수 있는 시스템입니다.",
+     "ref_norm_fleurs": "faa의 주장에 따르면 nextgen은 항공기가 더 짧은 노선을 비행해서 매년 수백만 갤런의 연료를 절약하고 탄소 배출을 줄일 수 있는 시스템입니다",
+     "ref_es": "NextGen es un sistema que, según afirma la Administración Federal de Aviación, reduciría las distancias de las rutas aéreas, lo cual ahorraría millones de galones de combustible por año, así como las emisiones de carbono.",
+     "ref_en": "NextGen is a system the FAA claims would allow aircraft to fly shorter routes and save millions of gallons of fuel each year and cut carbon emissions.",
+     "gender": 1,
+     "duration": 14.76,
+     "start": 347.207,
+     "end": 361.967,
+     "speech_start": 348.327,
+     "speech_end": 359.623,
+     "energy_start": 348.297,
+     "energy_end": 359.542,
+     "speech_intervals": [
+      [
+       348.297,
+       350.212
+      ],
+      [
+       350.647,
+       359.542
+      ]
+     ]
+    },
+    {
+     "id": 1864,
+     "ref": "키르치네르 여사는 2005년 부에노스아이레스 지방 대표단의 일원으로 상원 의원 선거운동을 시작할 때와 같은 장소인 아르헨티나 극장에서 대통령 출마 의사를 밝혔다.",
+     "ref_norm_fleurs": "키르치네르 여사는 2005년 부에노스아이레스 지방 대표단의 일원으로 상원 의원 선거운동을 시작할 때와 같은 장소인 아르헨티나 극장에서 대통령 출마 의사를 밝혔다",
+     "ref_es": "El Teatro Argentino fue el lugar donde la señora Kirchner anunció su intención de candidatearse como presidenta; este es el mismo sitio donde inició su campaña para el senado en el año 2005, en representación de la provincia de Buenos Aires.",
+     "ref_en": "Mrs. Kirchner announced her intention to run for president at the Argentine Theatre, the same location she used to start her 2005 campaign for the Senate as member of the Buenos Aires province delegation.",
+     "gender": 0,
+     "duration": 14.16,
+     "start": 364.162,
+     "end": 378.322,
+     "speech_start": 365.026,
+     "speech_end": 377.218,
+     "energy_start": 365.032,
+     "energy_end": 377.097,
+     "speech_intervals": [
+      [
+       365.032,
+       370.367
+      ],
+      [
+       371.012,
+       373.947
+      ],
+      [
+       374.242,
+       377.097
+      ]
+     ]
+    },
+    {
+     "id": 1879,
+     "ref": "사람들은 뭔가 새로운 것이 생긴다면, 키보드가 어떻게 될 것인지 궁금해하고 있을 뿐이다.",
+     "ref_norm_fleurs": "사람들은 뭔가 새로운 것이 생긴다면 키보드가 어떻게 될 것인지 궁금해하고 있을 뿐이다",
+     "ref_es": "Solo queda preguntarse qué será del teclado cuando surja algo más nuevo.",
+     "ref_en": "One can only wonder what the keyboard will become when something newer comes along.",
+     "gender": 1,
+     "duration": 9.9,
+     "start": 379.548,
+     "end": 389.448,
+     "speech_start": 380.924,
+     "speech_end": 387.036,
+     "energy_start": 380.898,
+     "energy_end": 386.983,
+     "speech_intervals": [
+      [
+       380.898,
+       386.983
+      ]
+     ]
+    },
+    {
+     "id": 1883,
+     "ref": "다리 밑 수직 간격은 15미터이며, 공사는 2011년 8월에 마무리되었으며, 해당 다리의 통행금지는 2017년 3월까지이다.",
+     "ref_norm_fleurs": "다리 밑 수직 간격은 15미터이며 공사는 2011년 8월에 마무리되었으며 해당 다리의 통행금지는 2017년 3월까지이다",
+     "ref_es": "Debajo del puente hay un espacio libre de 15 metros y, si bien su construcción fue terminada en agosto de 2011, no se habilitó para el tránsito sino hasta marzo de 2017.",
+     "ref_en": "The vertical clearance under the bridge is 15 meters. Construction was completed in August 2011, it didn't open to traffic until March 2017.",
+     "gender": 1,
+     "duration": 12.48,
+     "start": 391.219,
+     "end": 403.699,
+     "speech_start": 392.499,
+     "speech_end": 401.555,
+     "energy_start": 392.429,
+     "energy_end": 401.464,
+     "speech_intervals": [
+      [
+       392.429,
+       397.584
+      ],
+      [
+       397.989,
+       401.464
+      ]
+     ]
+    },
+    {
+     "id": 1886,
+     "ref": "고대 문명과 부족들은 우유, 털, 고기와 가죽을 손쉽게 이용하기 위해 그것들을 지키기 시작했다.",
+     "ref_norm_fleurs": "고대 문명과 부족들은 우유 털 고기와 가죽을 손쉽게 이용하기 위해 그것들을 지키기 시작했다",
+     "ref_es": "Con el propósito de obtener fácilmente su leche, pelo, carne y cuero, los pueblos y tribus antiguos empezaron a quedarse con ellos.",
+     "ref_en": "Ancient cultures and tribes began to keep them for easy access to milk, hair, meat, and skins.",
+     "gender": 0,
+     "duration": 13.26,
+     "start": 405.808,
+     "end": 419.068,
+     "speech_start": 408.144,
+     "speech_end": 416.368,
+     "energy_start": 408.078,
+     "energy_end": 416.293,
+     "speech_intervals": [
+      [
+       408.078,
+       410.363
+      ],
+      [
+       410.668,
+       411.033
+      ],
+      [
+       411.438,
+       414.083
+      ],
+      [
+       414.418,
+       416.293
+      ]
+     ]
+    },
+    {
+     "id": 1887,
+     "ref": "병원에서 일하는 동한 리긴스는 여가 시간에 조기 진통에 관해 조사하기 시작했다.",
+     "ref_norm_fleurs": "병원에서 일하는 동한 리긴스는 여가 시간에 조기 진통에 관해 조사하기 시작했다",
+     "ref_es": "Liggins comenzó sus investigaciones sobre el parto prematuro en su tiempo libre, mientras trabajaba en el hospital.",
+     "ref_en": "While he was working at the hospital Liggins began to investigate premature labor during his spare time.",
+     "gender": 0,
+     "duration": 11.1,
+     "start": 421.064,
+     "end": 432.164,
+     "speech_start": 423.624,
+     "speech_end": 429.448,
+     "energy_start": 423.524,
+     "energy_end": 429.409,
+     "speech_intervals": [
+      [
+       423.524,
+       429.409
+      ]
+     ]
+    },
+    {
+     "id": 1929,
+     "ref": "델 포트로가 2세트에서 먼저 어드밴티지를 얻었지만 6 대 6이 된 후 다시 타이 브레이크가 필요했다.",
+     "ref_norm_fleurs": "델 포트로가 2세트에서 먼저 어드밴티지를 얻었지만 6 대 6이 된 후 다시 타이 브레이크가 필요했다",
+     "ref_es": "Si bien Del Potro detentó una ventaja inicial en el segundo set, esto también quedó sujeto a desempate después de alcanzar el 6-6.",
+     "ref_en": "Del Potro had the early advantage in the second set, but this too required a tie break after reaching 6-6.",
+     "gender": 1,
+     "duration": 10.8,
+     "start": 433.512,
+     "end": 444.312,
+     "speech_start": 434.92,
+     "speech_end": 442.28,
+     "energy_start": 434.892,
+     "energy_end": 442.197,
+     "speech_intervals": [
+      [
+       434.892,
+       438.737
+      ],
+      [
+       439.042,
+       442.197
+      ]
+     ]
+    },
+    {
+     "id": 1935,
+     "ref": "하지만, 그것은 사실이 아닙니다. 서류 뒷면에 뭔가 적힌 게 있더라도, 이건 보물지도가 아닙니다.",
+     "ref_norm_fleurs": "하지만 그것은 사실이 아닙니다 서류 뒷면에 뭔가 적힌 게 있더라도 이건 보물지도가 아닙니다",
+     "ref_es": "No obstante, eso no es cierto. Si bien el reverso del documento contiene algo escrito, no se trata de un mapa de un tesoro.",
+     "ref_en": "However, that is not true. Although there is something written on the back of the document, it is not a treasure map.",
+     "gender": 0,
+     "duration": 13.08,
+     "start": 446.045,
+     "end": 459.125,
+     "speech_start": 449.053,
+     "speech_end": 456.605,
+     "energy_start": 449.015,
+     "energy_end": 456.48,
+     "speech_intervals": [
+      [
+       449.015,
+       451.13
+      ],
+      [
+       451.715,
+       456.48
+      ]
+     ]
+    },
+    {
+     "id": 1938,
+     "ref": "병원은 다른 사람들의 감염 가능성을 막기 위해 환자를 다른 사람들로부터 분리시키는 것을 포함하여 감염 통제 규직을 준수했다.",
+     "ref_norm_fleurs": "병원은 다른 사람들의 감염 가능성을 막기 위해 환자를 다른 사람들로부터 분리시키는 것을 포함하여 감염 통제 규직을 준수했다",
+     "ref_es": "El hospital ha respetado el protocolo de control de infecciones, incluido el distanciamiento del paciente de los demás para prevenir posibles infecciones.",
+     "ref_en": "The hospital has followed protocol for infection control, including separating the patient from others to prevent possible infection of others.",
+     "gender": 1,
+     "duration": 12.84,
+     "start": 460.328,
+     "end": 473.168,
+     "speech_start": 461.384,
+     "speech_end": 470.856,
+     "energy_start": 461.358,
+     "energy_end": 470.803,
+     "speech_intervals": [
+      [
+       461.358,
+       464.263
+      ],
+      [
+       464.568,
+       467.763
+      ],
+      [
+       468.068,
+       469.613
+      ],
+      [
+       470.068,
+       470.803
+      ]
+     ]
+    },
+    {
+     "id": 1939,
+     "ref": "또한 혁명 이후 직업들은 모든 남성 지원자에게 개방되어 가장 야망있고 성공 지향적인 사람들이 성공할 수 있는 길을 열어 주었습니다.",
+     "ref_norm_fleurs": "또한 혁명 이후 직업들은 모든 남성 지원자에게 개방되어 가장 야망있고 성공 지향적인 사람들이 성공할 수 있는 길을 열어 주었습니다",
+     "ref_es": "Asimismo, luego de la Revolución, los puestos estuvieron abiertos a todos los candidatos masculinos, lo que permitió el éxito de los más ambiciosos y prestigiosos.",
+     "ref_en": "Also after the Revolution occupations were open to all male applicants allowing the most ambitious and successful to succeed.",
+     "gender": 0,
+     "duration": 18.36,
+     "start": 474.58,
+     "end": 492.94,
+     "speech_start": 478.388,
+     "speech_end": 490.132,
+     "energy_start": 478.34,
+     "energy_end": 490.185,
+     "speech_intervals": [
+      [
+       478.34,
+       480.195
+      ],
+      [
+       480.71,
+       483.225
+      ],
+      [
+       483.69,
+       484.985
+      ],
+      [
+       485.29,
+       487.165
+      ],
+      [
+       487.5,
+       490.185
+      ]
+     ]
+    },
+    {
+     "id": 1943,
+     "ref": "긴장을 적게 할수록, 인생엔 긍정적인 에너지가 더 생겨날 것이다. 모든 사람은 절대적인 평화와 만족을 찾을 수 있는 능력을 지니고 있다.",
+     "ref_norm_fleurs": "긴장을 적게 할수록 인생엔 긍정적인 에너지가 더 생겨날 것이다 모든 사람은 절대적인 평화와 만족을 찾을 수 있는 능력을 지니고 있다",
+     "ref_es": "Cuanto más baja sea la tensión, más positiva es la fuerza de la vida con la que contemos. Cada uno de nosotros tiene el potencial de hallar paz y dicha absolutas.",
+     "ref_en": "The lower the tension, the more positive the life force present. Every person has the potential to find absolute peace and contentment.",
+     "gender": 0,
+     "duration": 17.46,
+     "start": 494.323,
+     "end": 511.783,
+     "speech_start": 496.403,
+     "speech_end": 507.571,
+     "energy_start": 496.333,
+     "energy_end": 507.488,
+     "speech_intervals": [
+      [
+       496.333,
+       497.848
+      ],
+      [
+       498.153,
+       501.518
+      ],
+      [
+       502.243,
+       507.488
+      ]
+     ]
+    },
+    {
+     "id": 1944,
+     "ref": "이들 해변은 대개 혼잡하지 않은 가족 해변으로, 해안가에는 다양한 상점이 늘어서 있습니다. 수영해도 안전한 곳입니다.",
+     "ref_norm_fleurs": "이들 해변은 대개 혼잡하지 않은 가족 해변으로 해안가에는 다양한 상점이 늘어서 있습니다 수영해도 안전한 곳입니다",
+     "ref_es": "Estas son playas familiares, en ocasiones muy concurridas, con numerosas y variadas tiendas disponibles sobre la cosa. También son seguras para nadar.",
+     "ref_en": "These are sometimes-crowded family beaches with a good range of shops lining the shore. Swimming is safe.",
+     "gender": 0,
+     "duration": 13.56,
+     "start": 513.21,
+     "end": 526.77,
+     "speech_start": 515.354,
+     "speech_end": 524.218,
+     "energy_start": 515.35,
+     "energy_end": 524.165,
+     "speech_intervals": [
+      [
+       515.35,
+       518.515
+      ],
+      [
+       519.04,
+       521.735
+      ],
+      [
+       522.35,
+       524.165
+      ]
+     ]
+    },
+    {
+     "id": 1954,
+     "ref": "잘 훈련된 수비 기술, 공 핸들링 기술 및 훌륭한 팀워크가 그들을 돋보이게 했고 이것으로 팀이 승리를 거머쥘 것이라는 사실은 누가 봐도 명백했습니다.",
+     "ref_norm_fleurs": "잘 훈련된 수비 기술 공 핸들링 기술 및 훌륭한 팀워크가 그들을 돋보이게 했고 이것으로 팀이 승리를 거머쥘 것이라는 사실은 누가 봐도 명백했습니다",
+     "ref_es": "Su defensa disciplinada, sus habilidades de manejo del balón y el excelente trabajo en equipo los llevaron a destacarse y quedó claro que este era el equipo a derrotar.",
+     "ref_en": "Their disciplined defence, ball handling skills and excellent team work made them stand out and it was clear that this was the team to beat.",
+     "gender": 0,
+     "duration": 17.88,
+     "start": 528.423,
+     "end": 546.303,
+     "speech_start": 531.463,
+     "speech_end": 543.431,
+     "energy_start": 531.353,
+     "energy_end": 543.338,
+     "speech_intervals": [
+      [
+       531.353,
+       532.988
+      ],
+      [
+       533.423,
+       534.658
+      ],
+      [
+       534.983,
+       537.988
+      ],
+      [
+       538.443,
+       541.388
+      ],
+      [
+       541.783,
+       543.338
+      ]
+     ]
+    },
+    {
+     "id": 1959,
+     "ref": "그래도 관계자의 조언을 듣고 모든 표지판을 지키고, 안전 경고에 세심한 주의를 기울여야 합니다.",
+     "ref_norm_fleurs": "그래도 관계자의 조언을 듣고 모든 표지판을 지키고 안전 경고에 세심한 주의를 기울여야 합니다",
+     "ref_es": "De todas formas, acepte los consejos de las autoridades, respete todas las señales y ponga especial atención en las alertas de seguridad.",
+     "ref_en": "Still, take advice from authorities, obey all signs, and pay close attention to safety warnings.",
+     "gender": 0,
+     "duration": 7.02,
+     "start": 547.958,
+     "end": 554.978,
+     "speech_start": 548.694,
+     "speech_end": 554.23,
+     "energy_start": 548.688,
+     "energy_end": 553.793,
+     "speech_intervals": [
+      [
+       548.688,
+       553.793
+      ]
+     ]
+    },
+    {
+     "id": 1961,
+     "ref": "사회화의 중요성을 보여주기 위해 사용되는 가장 일반적인 방법 중 하나는 성장하는 동안 방치, 불운, 또는 고의적인 학대 등의 이유로 어른들에 의한 사회화가 되지 않은 소수의 불행한 어린이들의 사례를 이용하는 것입니다.",
+     "ref_norm_fleurs": "사회화의 중요성을 보여주기 위해 사용되는 가장 일반적인 방법 중 하나는 성장하는 동안 방치 불운 또는 고의적인 학대 등의 이유로 어른들에 의한 사회화가 되지 않은 소수의 불행한 어린이들의 사례를 이용하는 것입니다",
+     "ref_es": "Uno de los mecanismos más comúnmente usados para graficar la importancia de sociabilizar es analizar los pocos y lamentables casos de niños que, por negligencia, desgracia o abuso intencional, no fueron socializados por adultos durante su crecimiento.",
+     "ref_en": "One of the most common methods used to illustrate the importance of socialization is to draw upon the few unfortunate cases of children who were, through neglect, misfortune, or wilful abuse, not socialized by adults while they were growing up.",
+     "gender": 0,
+     "duration": 18.54,
+     "start": 557.098,
+     "end": 575.638,
+     "speech_start": 558.794,
+     "speech_end": 574.218,
+     "energy_start": 558.818,
+     "energy_end": 574.083,
+     "speech_intervals": [
+      [
+       558.818,
+       563.283
+      ],
+      [
+       563.768,
+       565.333
+      ],
+      [
+       565.618,
+       566.263
+      ],
+      [
+       566.848,
+       568.413
+      ],
+      [
+       568.818,
+       574.083
+      ]
+     ]
+    },
+    {
+     "id": 1962,
+     "ref": "pH 레벨은 시험을 거친 화학 물질에서 수소(pH에서 H) 이온의 양으로 표시합니다.",
+     "ref_norm_fleurs": "ph 레벨은 시험을 거친 화학 물질에서 수소ph에서 h 이온의 양으로 표시합니다",
+     "ref_es": "El número de iones de hidrógeno (la H en pH) presentes en el producto químico analizado determina su nivel de pH.",
+     "ref_en": "The pH level is indicated by the amount of Hydrogen (the H in pH) ions in the tested chemical.",
+     "gender": 0,
+     "duration": 12.3,
+     "start": 577.269,
+     "end": 589.569,
+     "speech_start": 579.893,
+     "speech_end": 585.845,
+     "energy_start": 579.709,
+     "energy_end": 585.804,
+     "speech_intervals": [
+      [
+       579.709,
+       582.984
+      ],
+      [
+       583.449,
+       585.804
+      ]
+     ]
+    },
+    {
+     "id": 1963,
+     "ref": "젖은 옷을 다림질하는 것은 옷을 빨리 마르는 것을 도울 수 있다. 많은 호텔들은 객실에는 구비해 놓지 않더라도 대여가 가능한 다리마와 다리미판을 가지고",
+     "ref_norm_fleurs": "젖은 옷을 다림질하는 것은 옷을 빨리 마르는 것을 도울 수 있다 많은 호텔들은 객실에는 구비해 놓지 않더라도 대여가 가능한 다리마와 다리미판을 가지고",
+     "ref_es": "Planchar la ropa cuando aún está húmeda puede ayudar a secarla. Muchos hoteles cuentan con plancha y una tabla para prestar a los viajeros, incluso si uno no se encuentra en la habitación.",
+     "ref_en": "Ironing damp clothes can help them dry. Many hotels have an iron and ironing board available for loan, even if one is not present in the room.",
+     "gender": 0,
+     "duration": 18.36,
+     "start": 591.726,
+     "end": 610.086,
+     "speech_start": 594.414,
+     "speech_end": 607.118,
+     "energy_start": 594.336,
+     "energy_end": 607.061,
+     "speech_intervals": [
+      [
+       594.336,
+       596.181
+      ],
+      [
+       596.546,
+       599.281
+      ],
+      [
+       599.926,
+       603.291
+      ],
+      [
+       603.876,
+       607.061
+      ]
+     ]
+    },
+    {
+     "id": 1969,
+     "ref": "이 법칙은 주요 피사체를 위치시키기에 가장 효과적인 위치는 이미지를 수직과 수평으로 삼등분한 선들이 교차하는 점(예시 참조)이라고 명시한다.",
+     "ref_norm_fleurs": "이 법칙은 주요 피사체를 위치시키기에 가장 효과적인 위치는 이미지를 수직과 수평으로 삼등분한 선들이 교차하는 점예시 참조이라고 명시한다",
+     "ref_es": "Indica que la posición más efectiva donde colocar el objeto central es la intersección que se forma entre las líneas horizontales y verticales que dividen la imagen en tercios (ver ejemplo).",
+     "ref_en": "It states that the most effective place for the main subject is at the intersection of lines dividing the image into thirds vertically and horizontally (see example).",
+     "gender": 1,
+     "duration": 13.8,
+     "start": 611.729,
+     "end": 625.529,
+     "speech_start": 613.201,
+     "speech_end": 623.537,
+     "energy_start": 613.209,
+     "energy_end": 623.474,
+     "speech_intervals": [
+      [
+       613.209,
+       621.884
+      ],
+      [
+       622.319,
+       623.474
+      ]
+     ]
+    },
+    {
+     "id": 1983,
+     "ref": "문명이라는 단어는 '시민답다'를 뜻하는 라틴어 시빌리스(civilis), 시민을 뜻하는 라틴어 시비스(civis), 그리고 도시 혹은 도시 주를 뜻하는 라틴어 시비타스(citavas)에서 비롯된 것으로 사회의 규모를 정의합니다.",
+     "ref_norm_fleurs": "문명이라는 단어는 '시민답다'를 뜻하는 라틴어 시빌리스civilis 시민을 뜻하는 라틴어 시비스civis 그리고 도시 혹은 도시 주를 뜻하는 라틴어 시비타스citavas에서 비롯된 것으로 사회의 규모를 정의합니다",
+     "ref_es": "El término civilización deriva del latín civilis, que quiere decir civil, y se relaciona tanto con la palabra civis, del mismo idioma, que significa ciudadano, como con civitas, que cuyo significado es ciudad o ciudad estado y que, además, determina de algún modo el tamaño de la sociedad.",
+     "ref_en": "The word civilization comes from the Latin civilis, meaning civil, related to the Latin civis, meaning citizen, and civitas, meaning city or city-state, and that also somehow defines the size of the society.",
+     "gender": 1,
+     "duration": 17.88,
+     "start": 627.031,
+     "end": 644.911,
+     "speech_start": 628.407,
+     "speech_end": 642.583,
+     "energy_start": 628.391,
+     "energy_end": 642.496,
+     "speech_intervals": [
+      [
+       628.391,
+       632.346
+      ],
+      [
+       632.781,
+       634.926
+      ],
+      [
+       635.301,
+       640.336
+      ],
+      [
+       640.711,
+       642.496
+      ]
+     ]
+    },
+    {
+     "id": 1991,
+     "ref": "유럽 역사의 이 시기에 부유하고 강력해진 가톨릭교회는 철저한 조사를 받았습니다.",
+     "ref_norm_fleurs": "유럽 역사의 이 시기에 부유하고 강력해진 가톨릭교회는 철저한 조사를 받았습니다",
+     "ref_es": "Durante esta fase de la historia de Europa, la iglesia católica, que había acumulado riqueza y poder, fue cuestionada.",
+     "ref_en": "During this period of European history, the Catholic Church, which had become rich and powerful, came under scrutiny.",
+     "gender": 0,
+     "duration": 11.58,
+     "start": 646.944,
+     "end": 658.524,
+     "speech_start": 649.184,
+     "speech_end": 655.776,
+     "energy_start": 649.164,
+     "energy_end": 655.709,
+     "speech_intervals": [
+      [
+       649.164,
+       653.449
+      ],
+      [
+       653.844,
+       655.709
+      ]
+     ]
+    },
+    {
+     "id": 1999,
+     "ref": "1960년대에 걸쳐 브레진스키는 케네디의 고문으로 근무한 후 린든 존슨 행정부에서 근무했다.",
+     "ref_norm_fleurs": "1960년대에 걸쳐 브레진스키는 케네디의 고문으로 근무한 후 린든 존슨 행정부에서 근무했다",
+     "ref_es": "Durante los años 60, Brzezinski trabajó para John F. Kennedy en el puesto de asesor y, posteriormente, para el gobierno de Lyndon B. Johnson.",
+     "ref_en": "Throughout 1960s, Brzezinski worked for John F. Kennedy as his advisor and then the Lyndon B. Johnson administration.",
+     "gender": 0,
+     "duration": 12.48,
+     "start": 660.472,
+     "end": 672.952,
+     "speech_start": 662.776,
+     "speech_end": 670.52,
+     "energy_start": 662.742,
+     "energy_end": 670.527,
+     "speech_intervals": [
+      [
+       662.742,
+       665.407
+      ],
+      [
+       665.902,
+       667.687
+      ],
+      [
+       668.022,
+       670.527
+      ]
+     ]
+    },
+    {
+     "id": 2001,
+     "ref": "여행자들은 여행 계획에 차질이 생기지 않도록 현지 날씨에 대해 미리 찾아보고 가야 한다.",
+     "ref_norm_fleurs": "여행자들은 여행 계획에 차질이 생기지 않도록 현지 날씨에 대해 미리 찾아보고 가야 한다",
+     "ref_es": "Se recomienda enfáticamente a los viajeros que se informen sobre cualquier riesgo de clima extremo en el área que visitan, dado que ello puede afectar sus planes de viaje.",
+     "ref_en": "Travellers are strongly advised to be aware of any risk of severe weather affecting their area as they may affect any travel plans.",
+     "gender": 1,
+     "duration": 9.96,
+     "start": 674.172,
+     "end": 684.132,
+     "speech_start": 675.644,
+     "speech_end": 682.012,
+     "energy_start": 675.632,
+     "energy_end": 681.957,
+     "speech_intervals": [
+      [
+       675.632,
+       681.957
+      ]
+     ]
+    },
+    {
+     "id": 2002,
+     "ref": "이렇게 되면 플레이어들이 장치를 허공에서 움직여 동작과 움직임을 제어할 수 있게 된다.",
+     "ref_norm_fleurs": "이렇게 되면 플레이어들이 장치를 허공에서 움직여 동작과 움직임을 제어할 수 있게 된다",
+     "ref_es": "Esto permitirá a los jugadores controlar las acciones y los movimientos en los videojuegos, a través del movimiento del dispositivo por el aire.",
+     "ref_en": "This will allow players to control actions and movements in video games by moving the device through the air.",
+     "gender": 0,
+     "duration": 12.24,
+     "start": 686.262,
+     "end": 698.502,
+     "speech_start": 688.534,
+     "speech_end": 695.638,
+     "energy_start": 688.462,
+     "energy_end": 695.567,
+     "speech_intervals": [
+      [
+       688.462,
+       689.437
+      ],
+      [
+       689.742,
+       692.487
+      ],
+      [
+       692.872,
+       695.567
+      ]
+     ]
+    },
+    {
+     "id": 2005,
+     "ref": "하지만 여전히 새에는 공룡처럼 보이게 하는 것들이 많습니다.",
+     "ref_norm_fleurs": "하지만 여전히 새에는 공룡처럼 보이게 하는 것들이 많습니다",
+     "ref_es": "Sin embargo, hay muchas características en las aves que todavía las asemejan a los dinosaurios.",
+     "ref_en": "But there are a lot of things about birds that still look like a dinosaur.",
+     "gender": 0,
+     "duration": 4.68,
+     "start": 700.394,
+     "end": 705.074,
+     "speech_start": 701.098,
+     "speech_end": 704.394,
+     "energy_start": 701.034,
+     "energy_end": 704.349,
+     "speech_intervals": [
+      [
+       701.034,
+       704.349
+      ]
+     ]
+    }
+   ]
+  }
+ },
+ "lid": {
+  "ja": {
+   "fleurs": "ja_jp",
+   "items": [
+    {
+     "id": 1666,
+     "crop_start": 4.8,
+     "crop_len": 3.09
+    },
+    {
+     "id": 1667,
+     "crop_start": 3.89,
+     "crop_len": 3.86
+    },
+    {
+     "id": 1674,
+     "crop_start": 5.62,
+     "crop_len": 1.69
+    },
+    {
+     "id": 1675,
+     "crop_start": 8.06,
+     "crop_len": 1.5
+    },
+    {
+     "id": 1687,
+     "crop_start": 3.41,
+     "crop_len": 1.29
+    },
+    {
+     "id": 1691,
+     "crop_start": 2.07,
+     "crop_len": 5.39
+    },
+    {
+     "id": 1696,
+     "crop_start": 1.28,
+     "crop_len": 1.0
+    },
+    {
+     "id": 1702,
+     "crop_start": 2.3,
+     "crop_len": 4.66
+    },
+    {
+     "id": 1704,
+     "crop_start": 7.45,
+     "crop_len": 1.66
+    },
+    {
+     "id": 1716,
+     "crop_start": 13.63,
+     "crop_len": 2.24
+    },
+    {
+     "id": 1718,
+     "crop_start": 8.2,
+     "crop_len": 3.07
+    },
+    {
+     "id": 1719,
+     "crop_start": 4.43,
+     "crop_len": 1.75
+    },
+    {
+     "id": 1734,
+     "crop_start": 2.54,
+     "crop_len": 3.34
+    },
+    {
+     "id": 1737,
+     "crop_start": 8.95,
+     "crop_len": 1.51
+    },
+    {
+     "id": 1738,
+     "crop_start": 5.28,
+     "crop_len": 3.54
+    },
+    {
+     "id": 1745,
+     "crop_start": 4.55,
+     "crop_len": 1.93
+    },
+    {
+     "id": 1750,
+     "crop_start": 3.0,
+     "crop_len": 1.0
+    },
+    {
+     "id": 1772,
+     "crop_start": 2.51,
+     "crop_len": 2.28
+    },
+    {
+     "id": 1780,
+     "crop_start": 2.2,
+     "crop_len": 2.65
+    },
+    {
+     "id": 1781,
+     "crop_start": 9.71,
+     "crop_len": 1.04
+    },
+    {
+     "id": 1806,
+     "crop_start": 4.56,
+     "crop_len": 5.95
+    },
+    {
+     "id": 1821,
+     "crop_start": 6.33,
+     "crop_len": 2.39
+    },
+    {
+     "id": 1827,
+     "crop_start": 2.83,
+     "crop_len": 3.26
+    },
+    {
+     "id": 1833,
+     "crop_start": 9.04,
+     "crop_len": 2.18
+    },
+    {
+     "id": 1834,
+     "crop_start": 4.31,
+     "crop_len": 3.36
+    },
+    {
+     "id": 1844,
+     "crop_start": 1.68,
+     "crop_len": 5.28
+    },
+    {
+     "id": 1862,
+     "crop_start": 2.31,
+     "crop_len": 3.19
+    },
+    {
+     "id": 1864,
+     "crop_start": 4.82,
+     "crop_len": 1.0
+    },
+    {
+     "id": 1879,
+     "crop_start": 2.95,
+     "crop_len": 1.92
+    },
+    {
+     "id": 1883,
+     "crop_start": 3.2,
+     "crop_len": 2.55
+    },
+    {
+     "id": 1886,
+     "crop_start": 2.19,
+     "crop_len": 1.47
+    },
+    {
+     "id": 1887,
+     "crop_start": 3.05,
+     "crop_len": 2.83
+    },
+    {
+     "id": 1929,
+     "crop_start": 5.22,
+     "crop_len": 3.98
+    },
+    {
+     "id": 1935,
+     "crop_start": 2.25,
+     "crop_len": 2.1
+    },
+    {
+     "id": 1938,
+     "crop_start": 9.63,
+     "crop_len": 1.38
+    },
+    {
+     "id": 1939,
+     "crop_start": 2.41,
+     "crop_len": 1.0
+    },
+    {
+     "id": 1943,
+     "crop_start": 12.52,
+     "crop_len": 3.31
+    },
+    {
+     "id": 1944,
+     "crop_start": 4.19,
+     "crop_len": 4.96
+    },
+    {
+     "id": 1954,
+     "crop_start": 2.12,
+     "crop_len": 1.0
+    },
+    {
+     "id": 1959,
+     "crop_start": 5.02,
+     "crop_len": 2.74
+    },
+    {
+     "id": 1961,
+     "crop_start": 5.99,
+     "crop_len": 5.34
+    },
+    {
+     "id": 1962,
+     "crop_start": 1.62,
+     "crop_len": 1.0
+    },
+    {
+     "id": 1963,
+     "crop_start": 5.85,
+     "crop_len": 2.44
+    },
+    {
+     "id": 1969,
+     "crop_start": 14.15,
+     "crop_len": 4.9
+    },
+    {
+     "id": 1983,
+     "crop_start": 16.91,
+     "crop_len": 3.5
+    },
+    {
+     "id": 1991,
+     "crop_start": 3.18,
+     "crop_len": 4.6
+    },
+    {
+     "id": 1999,
+     "crop_start": 7.61,
+     "crop_len": 1.23
+    },
+    {
+     "id": 2001,
+     "crop_start": 2.45,
+     "crop_len": 1.0
+    },
+    {
+     "id": 2002,
+     "crop_start": 1.48,
+     "crop_len": 5.07
+    },
+    {
+     "id": 2005,
+     "crop_start": 3.35,
+     "crop_len": 2.67
+    }
+   ]
+  },
+  "zh": {
+   "fleurs": "cmn_hans_cn",
+   "items": [
+    {
+     "id": 1666,
+     "crop_start": 2.6,
+     "crop_len": 1.01
+    },
+    {
+     "id": 1667,
+     "crop_start": 1.44,
+     "crop_len": 5.8
+    },
+    {
+     "id": 1674,
+     "crop_start": 1.9,
+     "crop_len": 4.63
+    },
+    {
+     "id": 1675,
+     "crop_start": 5.35,
+     "crop_len": 3.23
+    },
+    {
+     "id": 1687,
+     "crop_start": 1.31,
+     "crop_len": 3.93
+    },
+    {
+     "id": 1691,
+     "crop_start": 0.86,
+     "crop_len": 4.63
+    },
+    {
+     "id": 1696,
+     "crop_start": 1.17,
+     "crop_len": 5.8
+    },
+    {
+     "id": 1702,
+     "crop_start": 4.43,
+     "crop_len": 3.09
+    },
+    {
+     "id": 1704,
+     "crop_start": 1.65,
+     "crop_len": 3.44
+    },
+    {
+     "id": 1716,
+     "crop_start": 5.95,
+     "crop_len": 3.26
+    },
+    {
+     "id": 1718,
+     "crop_start": 5.38,
+     "crop_len": 2.33
+    },
+    {
+     "id": 1719,
+     "crop_start": 3.17,
+     "crop_len": 5.78
+    },
+    {
+     "id": 1734,
+     "crop_start": 3.86,
+     "crop_len": 5.02
+    },
+    {
+     "id": 1737,
+     "crop_start": 2.49,
+     "crop_len": 2.29
+    },
+    {
+     "id": 1738,
+     "crop_start": 7.11,
+     "crop_len": 2.04
+    },
+    {
+     "id": 1745,
+     "crop_start": 3.05,
+     "crop_len": 3.92
+    },
+    {
+     "id": 1750,
+     "crop_start": 2.92,
+     "crop_len": 2.33
+    },
+    {
+     "id": 1772,
+     "crop_start": 2.5,
+     "crop_len": 3.62
+    },
+    {
+     "id": 1780,
+     "crop_start": 7.11,
+     "crop_len": 1.05
+    },
+    {
+     "id": 1781,
+     "crop_start": 1.2,
+     "crop_len": 4.97
+    },
+    {
+     "id": 1806,
+     "crop_start": 6.89,
+     "crop_len": 1.06
+    },
+    {
+     "id": 1821,
+     "crop_start": 2.02,
+     "crop_len": 3.22
+    },
+    {
+     "id": 1827,
+     "crop_start": 2.2,
+     "crop_len": 3.67
+    },
+    {
+     "id": 1833,
+     "crop_start": 7.25,
+     "crop_len": 3.91
+    },
+    {
+     "id": 1834,
+     "crop_start": 9.84,
+     "crop_len": 1.46
+    },
+    {
+     "id": 1844,
+     "crop_start": 3.5,
+     "crop_len": 3.08
+    },
+    {
+     "id": 1862,
+     "crop_start": 7.91,
+     "crop_len": 5.14
+    },
+    {
+     "id": 1864,
+     "crop_start": 5.89,
+     "crop_len": 4.6
+    },
+    {
+     "id": 1879,
+     "crop_start": 3.19,
+     "crop_len": 5.94
+    },
+    {
+     "id": 1883,
+     "crop_start": 3.39,
+     "crop_len": 4.26
+    },
+    {
+     "id": 1886,
+     "crop_start": 1.4,
+     "crop_len": 5.74
+    },
+    {
+     "id": 1887,
+     "crop_start": 5.36,
+     "crop_len": 4.57
+    },
+    {
+     "id": 1929,
+     "crop_start": 8.89,
+     "crop_len": 4.99
+    },
+    {
+     "id": 1935,
+     "crop_start": 1.88,
+     "crop_len": 2.09
+    },
+    {
+     "id": 1938,
+     "crop_start": 3.41,
+     "crop_len": 1.71
+    },
+    {
+     "id": 1939,
+     "crop_start": 4.33,
+     "crop_len": 1.62
+    },
+    {
+     "id": 1943,
+     "crop_start": 0.5,
+     "crop_len": 5.5
+    },
+    {
+     "id": 1944,
+     "crop_start": 6.19,
+     "crop_len": 5.34
+    },
+    {
+     "id": 1954,
+     "crop_start": 2.32,
+     "crop_len": 4.92
+    },
+    {
+     "id": 1959,
+     "crop_start": 1.51,
+     "crop_len": 5.28
+    },
+    {
+     "id": 1961,
+     "crop_start": 6.7,
+     "crop_len": 2.59
+    },
+    {
+     "id": 1962,
+     "crop_start": 3.04,
+     "crop_len": 4.25
+    },
+    {
+     "id": 1963,
+     "crop_start": 3.99,
+     "crop_len": 2.25
+    },
+    {
+     "id": 1969,
+     "crop_start": 3.02,
+     "crop_len": 4.92
+    },
+    {
+     "id": 1983,
+     "crop_start": 2.98,
+     "crop_len": 2.73
+    },
+    {
+     "id": 1991,
+     "crop_start": 2.34,
+     "crop_len": 2.52
+    },
+    {
+     "id": 1999,
+     "crop_start": 3.03,
+     "crop_len": 2.99
+    },
+    {
+     "id": 2001,
+     "crop_start": 3.66,
+     "crop_len": 3.07
+    },
+    {
+     "id": 2002,
+     "crop_start": 1.84,
+     "crop_len": 2.33
+    },
+    {
+     "id": 2005,
+     "crop_start": 0.7,
+     "crop_len": 2.32
+    }
+   ]
+  },
+  "ko": {
+   "fleurs": "ko_kr",
+   "items": [
+    {
+     "id": 1666,
+     "crop_start": 2.63,
+     "crop_len": 4.1
+    },
+    {
+     "id": 1667,
+     "crop_start": 8.27,
+     "crop_len": 5.76
+    },
+    {
+     "id": 1674,
+     "crop_start": 3.89,
+     "crop_len": 2.7
+    },
+    {
+     "id": 1675,
+     "crop_start": 9.44,
+     "crop_len": 1.28
+    },
+    {
+     "id": 1687,
+     "crop_start": 6.26,
+     "crop_len": 1.06
+    },
+    {
+     "id": 1691,
+     "crop_start": 2.43,
+     "crop_len": 5.01
+    },
+    {
+     "id": 1696,
+     "crop_start": 5.72,
+     "crop_len": 2.03
+    },
+    {
+     "id": 1702,
+     "crop_start": 2.93,
+     "crop_len": 3.36
+    },
+    {
+     "id": 1704,
+     "crop_start": 3.36,
+     "crop_len": 3.11
+    },
+    {
+     "id": 1716,
+     "crop_start": 5.71,
+     "crop_len": 4.51
+    },
+    {
+     "id": 1718,
+     "crop_start": 2.1,
+     "crop_len": 5.49
+    },
+    {
+     "id": 1719,
+     "crop_start": 1.54,
+     "crop_len": 5.86
+    },
+    {
+     "id": 1734,
+     "crop_start": 3.48,
+     "crop_len": 1.7
+    },
+    {
+     "id": 1737,
+     "crop_start": 2.2,
+     "crop_len": 4.28
+    },
+    {
+     "id": 1738,
+     "crop_start": 3.9,
+     "crop_len": 1.4
+    },
+    {
+     "id": 1745,
+     "crop_start": 1.53,
+     "crop_len": 5.1
+    },
+    {
+     "id": 1750,
+     "crop_start": 1.08,
+     "crop_len": 4.8
+    },
+    {
+     "id": 1772,
+     "crop_start": 1.17,
+     "crop_len": 1.5
+    },
+    {
+     "id": 1780,
+     "crop_start": 1.22,
+     "crop_len": 3.79
+    },
+    {
+     "id": 1781,
+     "crop_start": 5.9,
+     "crop_len": 1.97
+    },
+    {
+     "id": 1806,
+     "crop_start": 5.32,
+     "crop_len": 2.32
+    },
+    {
+     "id": 1821,
+     "crop_start": 4.3,
+     "crop_len": 1.73
+    },
+    {
+     "id": 1827,
+     "crop_start": 0.93,
+     "crop_len": 2.54
+    },
+    {
+     "id": 1833,
+     "crop_start": 2.56,
+     "crop_len": 1.89
+    },
+    {
+     "id": 1834,
+     "crop_start": 2.93,
+     "crop_len": 1.53
+    },
+    {
+     "id": 1844,
+     "crop_start": 1.48,
+     "crop_len": 4.55
+    },
+    {
+     "id": 1862,
+     "crop_start": 5.95,
+     "crop_len": 4.91
+    },
+    {
+     "id": 1864,
+     "crop_start": 2.91,
+     "crop_len": 4.62
+    },
+    {
+     "id": 1879,
+     "crop_start": 2.3,
+     "crop_len": 4.41
+    },
+    {
+     "id": 1883,
+     "crop_start": 1.79,
+     "crop_len": 3.92
+    },
+    {
+     "id": 1886,
+     "crop_start": 4.28,
+     "crop_len": 3.91
+    },
+    {
+     "id": 1887,
+     "crop_start": 3.89,
+     "crop_len": 4.33
+    },
+    {
+     "id": 1929,
+     "crop_start": 5.45,
+     "crop_len": 2.85
+    },
+    {
+     "id": 1935,
+     "crop_start": 3.59,
+     "crop_len": 2.33
+    },
+    {
+     "id": 1938,
+     "crop_start": 6.99,
+     "crop_len": 2.21
+    },
+    {
+     "id": 1939,
+     "crop_start": 11.94,
+     "crop_len": 3.05
+    },
+    {
+     "id": 1943,
+     "crop_start": 9.18,
+     "crop_len": 2.93
+    },
+    {
+     "id": 1944,
+     "crop_start": 9.08,
+     "crop_len": 1.09
+    },
+    {
+     "id": 1954,
+     "crop_start": 3.46,
+     "crop_len": 4.16
+    },
+    {
+     "id": 1959,
+     "crop_start": 1.82,
+     "crop_len": 2.2
+    },
+    {
+     "id": 1961,
+     "crop_start": 15.69,
+     "crop_len": 1.08
+    },
+    {
+     "id": 1962,
+     "crop_start": 6.41,
+     "crop_len": 1.69
+    },
+    {
+     "id": 1963,
+     "crop_start": 9.83,
+     "crop_len": 3.93
+    },
+    {
+     "id": 1969,
+     "crop_start": 3.72,
+     "crop_len": 4.37
+    },
+    {
+     "id": 1983,
+     "crop_start": 4.74,
+     "crop_len": 3.77
+    },
+    {
+     "id": 1991,
+     "crop_start": 3.71,
+     "crop_len": 1.99
+    },
+    {
+     "id": 1999,
+     "crop_start": 4.22,
+     "crop_len": 5.13
+    },
+    {
+     "id": 2001,
+     "crop_start": 2.83,
+     "crop_len": 4.9
+    },
+    {
+     "id": 2002,
+     "crop_start": 3.81,
+     "crop_len": 2.83
+    },
+    {
+     "id": 2005,
+     "crop_start": 1.05,
+     "crop_len": 1.18
+    }
+   ]
+  },
+  "es": {
+   "fleurs": "es_419",
+   "items": [
+    {
+     "id": 1888,
+     "crop_start": 3.76,
+     "crop_len": 3.25
+    },
+    {
+     "id": 1846,
+     "crop_start": 5.43,
+     "crop_len": 4.03
+    },
+    {
+     "id": 1741,
+     "crop_start": 3.1,
+     "crop_len": 3.64
+    },
+    {
+     "id": 1917,
+     "crop_start": 3.27,
+     "crop_len": 1.09
+    },
+    {
+     "id": 1771,
+     "crop_start": 5.15,
+     "crop_len": 2.75
+    },
+    {
+     "id": 2004,
+     "crop_start": 4.74,
+     "crop_len": 3.47
+    },
+    {
+     "id": 1950,
+     "crop_start": 4.93,
+     "crop_len": 2.54
+    },
+    {
+     "id": 1886,
+     "crop_start": 3.17,
+     "crop_len": 2.96
+    },
+    {
+     "id": 1767,
+     "crop_start": 2.04,
+     "crop_len": 5.13
+    },
+    {
+     "id": 1708,
+     "crop_start": 6.9,
+     "crop_len": 5.44
+    },
+    {
+     "id": 1697,
+     "crop_start": 0.86,
+     "crop_len": 4.99
+    },
+    {
+     "id": 1869,
+     "crop_start": 7.47,
+     "crop_len": 3.98
+    },
+    {
+     "id": 1811,
+     "crop_start": 5.34,
+     "crop_len": 4.17
+    },
+    {
+     "id": 1894,
+     "crop_start": 2.52,
+     "crop_len": 1.14
+    },
+    {
+     "id": 1997,
+     "crop_start": 7.85,
+     "crop_len": 5.58
+    },
+    {
+     "id": 1985,
+     "crop_start": 8.27,
+     "crop_len": 2.0
+    },
+    {
+     "id": 1666,
+     "crop_start": 7.25,
+     "crop_len": 1.91
+    },
+    {
+     "id": 1963,
+     "crop_start": 5.33,
+     "crop_len": 1.75
+    },
+    {
+     "id": 1814,
+     "crop_start": 2.17,
+     "crop_len": 1.45
+    },
+    {
+     "id": 1903,
+     "crop_start": 4.73,
+     "crop_len": 5.47
+    },
+    {
+     "id": 1711,
+     "crop_start": 4.47,
+     "crop_len": 4.62
+    },
+    {
+     "id": 1993,
+     "crop_start": 6.59,
+     "crop_len": 3.71
+    },
+    {
+     "id": 1806,
+     "crop_start": 6.69,
+     "crop_len": 5.2
+    },
+    {
+     "id": 1743,
+     "crop_start": 4.82,
+     "crop_len": 3.58
+    },
+    {
+     "id": 1974,
+     "crop_start": 1.11,
+     "crop_len": 4.56
+    },
+    {
+     "id": 1683,
+     "crop_start": 7.33,
+     "crop_len": 5.11
+    },
+    {
+     "id": 1824,
+     "crop_start": 5.44,
+     "crop_len": 1.41
+    },
+    {
+     "id": 1690,
+     "crop_start": 10.11,
+     "crop_len": 2.61
+    },
+    {
+     "id": 1965,
+     "crop_start": 5.63,
+     "crop_len": 3.85
+    },
+    {
+     "id": 1898,
+     "crop_start": 9.78,
+     "crop_len": 5.25
+    }
+   ]
+  },
+  "en": {
+   "fleurs": "en_us",
+   "items": [
+    {
+     "id": 1951,
+     "crop_start": 4.98,
+     "crop_len": 3.83
+    },
+    {
+     "id": 1701,
+     "crop_start": 1.49,
+     "crop_len": 5.39
+    },
+    {
+     "id": 1777,
+     "crop_start": 1.19,
+     "crop_len": 1.42
+    },
+    {
+     "id": 1993,
+     "crop_start": 3.94,
+     "crop_len": 3.71
+    },
+    {
+     "id": 1789,
+     "crop_start": 0.8,
+     "crop_len": 1.4
+    },
+    {
+     "id": 1756,
+     "crop_start": 2.37,
+     "crop_len": 3.94
+    },
+    {
+     "id": 1833,
+     "crop_start": 4.13,
+     "crop_len": 1.8
+    },
+    {
+     "id": 1672,
+     "crop_start": 3.47,
+     "crop_len": 4.05
+    },
+    {
+     "id": 1784,
+     "crop_start": 7.15,
+     "crop_len": 4.83
+    },
+    {
+     "id": 1749,
+     "crop_start": 1.38,
+     "crop_len": 4.93
+    },
+    {
+     "id": 1890,
+     "crop_start": 2.22,
+     "crop_len": 3.05
+    },
+    {
+     "id": 1896,
+     "crop_start": 6.94,
+     "crop_len": 5.36
+    },
+    {
+     "id": 1898,
+     "crop_start": 6.33,
+     "crop_len": 3.0
+    },
+    {
+     "id": 1797,
+     "crop_start": 3.2,
+     "crop_len": 4.96
+    },
+    {
+     "id": 1901,
+     "crop_start": 2.78,
+     "crop_len": 1.87
+    },
+    {
+     "id": 1744,
+     "crop_start": 0.49,
+     "crop_len": 4.44
+    },
+    {
+     "id": 1766,
+     "crop_start": 1.14,
+     "crop_len": 2.12
+    },
+    {
+     "id": 1864,
+     "crop_start": 11.52,
+     "crop_len": 2.75
+    },
+    {
+     "id": 1979,
+     "crop_start": 4.77,
+     "crop_len": 3.04
+    },
+    {
+     "id": 1996,
+     "crop_start": 5.73,
+     "crop_len": 4.33
+    },
+    {
+     "id": 1834,
+     "crop_start": 3.25,
+     "crop_len": 2.55
+    },
+    {
+     "id": 1728,
+     "crop_start": 0.83,
+     "crop_len": 4.01
+    },
+    {
+     "id": 1737,
+     "crop_start": 2.22,
+     "crop_len": 2.69
+    },
+    {
+     "id": 1670,
+     "crop_start": 13.56,
+     "crop_len": 4.84
+    },
+    {
+     "id": 1741,
+     "crop_start": 1.39,
+     "crop_len": 4.41
+    },
+    {
+     "id": 1858,
+     "crop_start": 0.39,
+     "crop_len": 4.96
+    },
+    {
+     "id": 1790,
+     "crop_start": 6.28,
+     "crop_len": 3.71
+    },
+    {
+     "id": 1690,
+     "crop_start": 2.09,
+     "crop_len": 4.32
+    },
+    {
+     "id": 1928,
+     "crop_start": 4.1,
+     "crop_len": 1.41
+    },
+    {
+     "id": 1750,
+     "crop_start": 1.44,
+     "crop_len": 2.39
+    }
+   ]
+  }
+ }
+}
