@@ -40,7 +40,7 @@
   - Por cada unidad con texto, toma del anillo de audio la ventana `[max(t_start, t_end − 6 s), t_end]`; si dura menos de 1 s, se completa por la izquierda.
   - Calcula las probabilidades de idioma restringidas a {en, es, ja, zh, ko}.
   - **Acepta si gana el idioma elegido.**
-  - En ja y ko, si SenseVoice da su etiqueta de idioma, se exige también que coincida (comprobación AND).
+  - La etiqueta de idioma de SenseVoice no se usa: habría que propagarla por el segmentador y el verificador solo ya deja pasar menos del 1 % del español.
   - Va en el hilo de traducción, antes de traducir. Una unidad rechazada se registra como `Outcome.REJECTED` con el motivo «idioma».
 - **Datos S5** (300 recortes por idioma):
   - acepta el 97,3 % (ja), el 99,0 % (zh) y el 97,7 % (ko) del idioma correcto;

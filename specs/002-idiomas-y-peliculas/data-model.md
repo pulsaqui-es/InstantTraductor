@@ -50,7 +50,7 @@ silencio ──(llega audio)──▶ sonando
   - `detected: SourceLanguage | Literal["es"]`, el ganador entre {en, es, ja, zh, ko};
   - `probability: float`;
   - `elapsed_s: float`.
-- **Regla:** se acepta si `detected` es el idioma elegido y, además, si `AsrEvent.language` del FINAL coincide con el idioma elegido. SenseVoice pone ahí el idioma detectado; los demás motores, el elegido.
+- **Regla:** se acepta si `detected` es el idioma elegido.
 
 ## UtteranceRecord (cambia)
 - `outcome = REJECTED` con `reason = "idioma"` cuando el verificador rechaza la unidad.

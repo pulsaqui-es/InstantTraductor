@@ -17,21 +17,15 @@ class LanguageVerdict:
 class LanguageVerifier(Protocol):
     name: str
     def verify(self, samples: npt.NDArray[np.float32], sample_rate: int,
-               language: SourceLanguage, *, hint: str | None = None) -> LanguageVerdict:
-        """¿Es el audio habla en `language`? `hint`: etiqueta de idioma del ASR, si la da (SenseVoice).
-        Lanza `EngineError` si falla. 1 s ≤ duración ≤ 6 s (si es más corto, el que llama lo completa)."""
+               language: SourceLanguage) -> LanguageVerdict:
+        """¿Es el audio habla en `language`? Lanza `EngineError` si falla.
+        1 s ≤ duración ≤ 6 s (si es más corto, el que llama lo completa)."""
         ...
     def close(self) -> None: ...
 ```
 
 ## Cambia: `translation.py`
 - `TranslationRequest.source_language: SourceLanguage = SourceLanguage.EN`, el último campo.
-
-## Sin cambio de forma: `speech.py` (AsrEvent)
-- `AsrEvent.language` ya existe. **Regla nueva:**
-  - un motor que detecta el idioma (SenseVoice) pone en el FINAL el idioma **detectado**;
-  - los demás ponen el idioma elegido.
-- El pipeline pasa `hint=event.language` al verificador.
 
 ## Cambia: `metrics.py` (StageTimings)
 - `lid_done_at: float | None = None`, el último campo.
@@ -44,7 +38,7 @@ class LanguageVerifier(Protocol):
 ## Reglas del pipeline (comportamiento, no código)
 1. **Antes de traducir una unidad:**
    - el hilo de traducción pide al verificador la ventana de audio de la unidad (R3), sacada del anillo de audio, del audio captado tras el AGC;
-   - si `accepted` es False, o si `hint` no coincide con el idioma elegido: `scheduler.on_rejected(unit_id, "idioma")`.
+   - si `accepted` es False: `scheduler.on_rejected(unit_id, "idioma")`.
      - Es un método nuevo del planificador, que no es contrato.
      - La unidad se cierra como `REJECTED` con ese motivo, y no se traduce ni suena.
 2. **El verificador falla con `EngineError`:** la unidad se traduce igual (se prefiere no perder habla), con un aviso y un contador en el informe.
