@@ -39,7 +39,7 @@ Fechas en hora de Madrid.
   - la mayoría son correctas y naturales;
   - fallo recurrente: el plural de cortesía latinoamericano («¿A ustedes…?», «tomen», «síganme», «¿Están listos?») aunque el prompt pide «vosotros»;
   - fallos sueltos: «Take five» → «Tómenselo con calma», «ship» → «barco», «Helm» sin traducir y un tiempo verbal roto al partir una frase («Y pon el cartón…»).
-- *Pendiente:* la revisión del humano.
+- **Revisión del humano (2026-10-02): «correcto para esta versión». SC-004 se da por cumplido.** La mejora del «vosotros» queda para una spec posterior.
 
 ## §5 Modo directo (SC-001, SC-006, SC-010)
 **Prueba de humo (2026-10-01 22:20).** El diálogo en inglés de 2 min sonaba con `ffplay` en otro proceso, mientras en el PC sonaba también música a unos -20 dBFS.

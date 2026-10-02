@@ -24,6 +24,8 @@ uv run instanttraductor preparar
 `preparar` comprueba el equipo, descarga y verifica (sha256) los modelos en `%LOCALAPPDATA%\InstantTraductor`, prepara el entorno del servicio de voz y genera las muestras de las voces. Si lo repites, no descarga nada de nuevo. Con `--comprobar` solo verifica.
 
 ## Uso
+Los comandos `uv run …` se lanzan **desde la carpeta del proyecto** (`cd InstantTraductor`). Desde otra carpeta, uv no encuentra el programa («Failed to spawn: instanttraductor»).
+
 ### En directo
 ```powershell
 uv run instanttraductor directo --mostrar-texto
