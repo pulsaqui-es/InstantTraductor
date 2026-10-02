@@ -2,6 +2,30 @@
 
 Registro cronológico del proyecto, con lo más reciente arriba. El formato y las reglas están en la skill `registrar-hito`.
 
+## 2026-10-02 — Spec 001 cerrada: versión 0.1.0
+- **Hecho:**
+  - olas 2 y 3 integradas (reproducción, autotest y eco; modo archivo; instalador y voces);
+  - sesiones directo y archivo, y subcomandos `preparar`, `voces` y `diagnostico`;
+  - revisión de cierre (Opus) con todos los hallazgos GRAVE y MEDIO corregidos; `/speckit-converge`: «Converged»;
+  - merge a main sin PR (`gh` sin sesión) y tag `v0.1.0`.
+- **Validado en el PC** ([validacion.md](../specs/001-espina-dorsal/validacion.md)):
+  - película real durante 12,5 min: retardo p50 de 1,16 s y p95 de 3,57 s, 0 ecos y memoria estable;
+  - 20 de 20 paradas en ≤ 1,7 s;
+  - vídeo de 10 min en modo archivo;
+  - SC-004 (calidad) aprobado por el humano.
+- **Incidencias:**
+  - el límite de sesión de Sonnet cortó a los obreros el 2026-10-01 a las 21:00;
+  - los worktrees sin cambios se borran al cortarse: G y H se relanzaron desde cero.
+- **Decidido (humano):**
+  - las voces de Discord de fondo lían la traducción: se capturará **solo la app elegida** (captura por proceso, modo INCLUDE);
+  - la 001 se cierra ya y la 002 empieza por:
+    - la captura de la app elegida;
+    - el habla baja o alargada que no se traduce;
+    - el «vosotros» (el modelo a veces usa «ustedes»);
+    - completar SC-002 (30 min) y SC-005 (60 min);
+    - validar el cambio de dispositivo y el uso sin red.
+- **Siguiente:** `/speckit-specify` de la `002-peliculas-y-juegos` con esos puntos al principio.
+
 ## 2026-10-01 — Implementación de la 001: olas 1 y 2 y voz por defecto
 - **Hecho:**
   - **Fase base:** contratos sellados con `contratos-001-v1`.
