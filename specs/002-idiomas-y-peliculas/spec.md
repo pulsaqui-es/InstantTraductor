@@ -26,6 +26,9 @@ Fuera de alcance: detección automática del idioma (004), clonación (003), int
 
 - Q: ¿Cómo se elige la aplicación que se escucha? → A: Con una lista al arrancar. Si no hay ninguna guardada, o se pide expresamente, la terminal muestra numeradas las aplicaciones que están sonando y se elige con un número. La elección se recuerda. También se puede indicar por nombre al arrancar.
 - Q: Si la aplicación elegida no está abierta o no suena al arrancar, ¿qué hace la app? → A: Espera a que suene, avisándolo en la terminal, y empieza a traducir en cuanto suena. Nunca escucha otra cosa mientras tanto.
+- Q: ¿Qué tratamiento se usa por defecto al hablar a varias personas sin pista de formalidad? → A: Informal: «vosotros». «Ustedes» solo si el contexto es claramente formal.
+- Q: ¿Se ven películas compartidas por Discord (emisión en directo) mientras se habla en la llamada? → A: Sí, es habitual. La película y las voces de la llamada llegan por el mismo programa, así que elegir la aplicación no basta.
+- Q: ¿Cómo se construye el corpus de habla baja? → A: Con material sintético (voces bajadas de volumen y susurradas sobre música libre). La persona usuaria no grabará escenas.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -44,7 +47,8 @@ La persona usuaria ve una película en el navegador mientras sus amigos hablan e
 3. **Given** una aplicación elegida en una sesión anterior, **When** se arranca el modo directo sin indicar ninguna, **Then** se usa la misma aplicación, si está abierta.
 4. **Given** el modo directo escuchando una aplicación, **When** esa aplicación se cierra o se reinicia, **Then** la app lo avisa en la terminal y vuelve a escucharla en cuanto reaparece, sin reiniciarse.
 5. **Given** una aplicación elegida, **When** suena la voz en español de la propia app, **Then** nunca se capta ni se traduce.
-6. **Given** que la persona usuaria prefiere el comportamiento anterior, **When** elige escuchar todo el PC, **Then** la app capta todo menos su propia voz, como en la versión 0.1.
+6. **Given** una película compartida por Discord mientras los amigos hablan en español en la llamada, **When** se escucha Discord con el inglés (u otro idioma de origen) elegido, **Then** se traduce la película y ninguna frase de la conversación en español.
+7. **Given** que la persona usuaria prefiere el comportamiento anterior, **When** elige escuchar todo el PC, **Then** la app capta todo menos su propia voz, como en la versión 0.1.
 
 ---
 
@@ -119,7 +123,7 @@ La persona usuaria ve una película entera. La app aguanta la sesión completa s
 
 - **FR-001**: La persona usuaria MUST poder elegir el idioma de origen entre inglés, japonés, chino (mandarín) y coreano.
 - **FR-002**: El idioma elegido MUST recordarse entre sesiones, y MUST poder cambiarse solo para una sesión sin tocar el ajuste guardado.
-- **FR-003**: Con un idioma elegido, la app MUST reconocer y traducir solo el habla en ese idioma, y MUST NOT pronunciar traducciones obtenidas de habla en otros idiomas.
+- **FR-003**: Con un idioma elegido, la app MUST reconocer y traducir solo el habla en ese idioma, y MUST NOT pronunciar traducciones obtenidas de habla en otros idiomas. Esto vale también cuando ambas hablas llegan por la misma aplicación, como una película compartida por Discord con la llamada en español.
 - **FR-004**: Los modos directo y archivo MUST admitir los cuatro idiomas con las mismas funciones que la versión 0.1: orden, control del retraso, métricas y salidas.
 - **FR-005**: La app MUST NOT detectar el idioma automáticamente en esta versión: siempre usa el elegido.
 
@@ -128,7 +132,7 @@ La persona usuaria ve una película entera. La app aguanta la sesión completa s
 - **FR-006**: La persona usuaria MUST poder elegir escuchar una sola aplicación o todo el PC. En el segundo caso se mantiene el comportamiento de la versión 0.1.
 - **FR-007**: La app MUST mostrar las aplicaciones que están sonando, numeradas y con un nombre reconocible, para elegir una con un número al arrancar. Esto ocurre cuando no hay ninguna guardada o cuando la persona usuaria lo pide. También MUST poder indicarse la aplicación por su nombre al arrancar.
 - **FR-008**: La aplicación elegida MUST recordarse entre sesiones (por su nombre, no por un identificador temporal), y MUST poder cambiarse solo para una sesión.
-- **FR-009**: Escuchando una aplicación, el sonido de cualquier otra MUST NOT llegar a la traducción.
+- **FR-009**: Escuchando una aplicación, el sonido de cualquier otra MUST NOT llegar a la traducción. Si la aplicación separa la emisión de la llamada (por ejemplo, Discord), la app SHOULD escuchar solo la emisión.
 - **FR-010**: Si la aplicación elegida se cierra, se reinicia o aún no está sonando (también al arrancar), la app MUST avisarlo en la terminal, MUST esperar sin escuchar ninguna otra fuente y MUST volver a escucharla en cuanto suene, sin reiniciarse ni detener la sesión.
 - **FR-011**: La app MUST seguir sin captar nunca su propia voz, en cualquiera de los dos modos de escucha, y MUST comprobarlo al arrancar como en la versión 0.1.
 - **FR-012**: La terminal MUST mostrar qué se está escuchando (la aplicación o todo el PC) y el idioma de origen activo.
@@ -162,6 +166,7 @@ La persona usuaria ve una película entera. La app aguanta la sesión completa s
 - **SC-001**: En 10 minutos de diálogo de cada idioma (inglés, japonés, chino y coreano), el retardo de frase tiene p50 ≤ 3 s y p95 ≤ 5 s.
 - **SC-002**: En un corpus de 50 frases por idioma (japonés, chino y coreano), cada una con su traducción de referencia al español, la persona usuaria da por buenas (mismo sentido que la referencia y español de España natural) al menos el 85 %. No hace falta que entienda el idioma original.
 - **SC-003**: Escuchando una aplicación, durante 10 minutos con voz en español sonando a la vez en otra aplicación, ninguna frase de esa otra aplicación se traduce.
+- **SC-003b**: Con una película compartida por Discord y una conversación en español en la llamada a la vez, durante 10 minutos, ninguna frase de la conversación se traduce, y las de la película se traducen como en SC-001.
 - **SC-004**: Si la aplicación elegida se reinicia, la traducción se reanuda en ≤ 5 s desde que vuelve a sonar.
 - **SC-005**: En un corpus de diálogo bajo, susurrado o con palabras alargadas, al menos el 80 % de las frases se traducen y se oyen.
 - **SC-006**: En un corpus de frases con plural informal, al menos el 95 % de las traducciones usan «vosotros» y sus formas verbales.
@@ -177,7 +182,8 @@ La persona usuaria ve una película entera. La app aguanta la sesión completa s
 - **Idioma de destino:** siempre el español de España. El traductor de la versión 0.1 admite el japonés, el chino y el coreano; se confirmará en la investigación.
 - **Recursos:** los reconocedores de los nuevos idiomas deben caber en el equipo sin desplazar a la traducción ni a la voz: la tarjeta gráfica está casi llena. Se prefiere el procesador.
 - **Chino:** se entiende el mandarín. El cantonés queda fuera.
-- **Escucha de una aplicación:** se hace por programa, no por pestaña ni por ventana. Si la persona usuaria tiene la película y Discord en el mismo programa (por ejemplo, Discord en el navegador), no se pueden separar; queda documentado.
+- **Escucha de una aplicación:** se hace por programa, no por pestaña ni por ventana.
+- **Película y llamada en el mismo programa** (Discord, o Discord en el navegador): la defensa garantizada es ignorar el habla que no es del idioma elegido. Se asume que la conversación de la llamada es en español y la película en otro idioma. Si en la llamada se habla el mismo idioma que en la película, no se puede separar; queda documentado.
 - **Preparación:** descarga los cuatro idiomas. Se estima un tamaño total moderado (unos cientos de MB por idioma), sin contar el inglés, que ya está.
 - **Corpus de prueba:** se crean con material libre o sintético (como el conjunto de calidad de la versión 0.1) y con clips grabados por la persona usuaria con la opción de guardar el audio, que solo se usan en su PC.
 - **Habla baja:** se mide con música de fondo a un nivel moderado. El diálogo totalmente tapado por la música no entra en el objetivo.
