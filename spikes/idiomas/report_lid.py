@@ -69,6 +69,8 @@ def main() -> None:
     has_sherpa = "tiny_sherpa_top1" in items[0]
     has_sv = "sv_auto" in items[0]
     for size in ("tiny", "base"):
+        if f"{size}_wall_ms" not in items[0]:
+            continue
         wall = [r[f"{size}_wall_ms"] for r in items]
         cpu = [r[f"{size}_cpu_ms"] for r in items]
         line = (f"- Whisper {size}: decisión propia p50/p95 {np.percentile(wall, 50):.0f}/{np.percentile(wall, 95):.0f} ms "

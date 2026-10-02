@@ -21,11 +21,17 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--lang")
     args = ap.parse_args()
-    runs = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(RESULTS_DIR.glob("asr_*.json"))]
-    for lang in ("ja", "zh", "ko"):
+    runs = []
+    for p in sorted(RESULTS_DIR.glob("asr_*.json")):
+        r = json.loads(p.read_text(encoding="utf-8"))
+        r["tag"] = p.stem.split(f"_t{r['threads']}", 1)[1]  # "", "_carga", "_paced"...
+        runs.append(r)
+    for lang, tag in [(lg, t) for t in sorted({r["tag"] for r in runs}) for lg in ("ja", "zh", "ko")]:
         if args.lang and args.lang != lang:
             continue
-        rs = sorted((r for r in runs if r["lang"] == lang), key=lambda r: r["conds"]["clean"]["cer"]["cer"])
+        rs = sorted((r for r in runs if r["lang"] == lang and r["tag"] == tag), key=lambda r: r["conds"]["clean"]["cer"]["cer"])
+        if tag:
+            print(f"\n(variante `{tag}`)")
         if not rs:
             continue
         print(f"\n### {lang}\n")

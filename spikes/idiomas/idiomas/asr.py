@@ -153,8 +153,7 @@ CANDIDATES: dict[str, Candidate] = {
         Candidate("kangkyu32", ("ko",), "stream", "zipformer coreano kangkyu 174M, chunk 32 (640 ms)", _kangkyu(32), 640),
         Candidate("kangkyu64", ("ko",), "stream", "zipformer coreano kangkyu 174M, chunk 64 (1280 ms)", _kangkyu(64), 1280),
         Candidate("parakeet_ja", ("ja",), "offline", "Parakeet-tdt_ctc-0.6b-ja (cabeza CTC, int8)", _parakeet_ja),
-        Candidate("reazon_ja", ("ja",), "offline", "ReazonSpeech zipformer k2 v2 (int8)", _reazon_ja),
-    ]
+        Candidate("reazon_ja", ("ja",), "offline", "ReazonSpeech zipformer k2 v2 (int8)", _reazon_ja),    ]
 }
 
 
