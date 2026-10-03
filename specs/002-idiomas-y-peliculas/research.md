@@ -26,6 +26,7 @@
   - `capabilities.partials=False`.
 - **Corte forzado:** para cumplir el máximo de habla sin traducir (FR-005 de la 001), el motor cierra el segmento a los `max_habla_sin_traducir_s` de habla continua, en la trama de menos energía de los últimos 1,5 s, y emite su FINAL.
 - **Alternativa del japonés:** Parakeet-tdt_ctc-0.6b-ja (CER 5,31 %; p95 de 2,0 s, y 3,35 s con la CPU cargada). Se cambia a ella si SC-002 no llega en japonés.
+- **Cambio en la validación (2026-10-03):** el japonés pasa a Parakeet-ja (`asr/parakeet_ja.py`, componente `parakeet-ja`, CC-BY-4.0). Con anime real, SenseVoice confundía homófonos y perdía negaciones (validacion.md, «Anime real»). SenseVoice sigue para el coreano.
 - **Rationale:** el mejor CER con latencia ≤ 1,4 s, sin VRAM y con poca CPU (0,07-0,13 núcleos). Un mismo modelo para ja y ko ahorra descarga y memoria.
 - **Alternatives considered:**
   - Nemotron 3.5 multilingüe: CER del 12,6 % en ja y del 19,5 % en zh;

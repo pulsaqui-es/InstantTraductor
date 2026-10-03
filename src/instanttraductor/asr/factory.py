@@ -4,7 +4,8 @@
 |---|---|---|
 | en | `NemotronStreamingAsr` (`asr/sherpa_streaming.py`, sin cambios) | `nemotron-en` |
 | zh | `XAsrZhStreaming` (`asr/xasr_zh.py`) | `x-asr-zh` |
-| ja, ko | `SenseVoiceSegmentAsr` (`asr/sensevoice.py`), con el idioma fijado | `sensevoice-small` |
+| ja | `ParakeetJaSegmentAsr` (`asr/parakeet_ja.py`) | `parakeet-ja` |
+| ko | `SenseVoiceSegmentAsr` (`asr/sensevoice.py`), con el idioma fijado | `sensevoice-small` |
 
 `models_dir` es la carpeta que contiene una subcarpeta por componente (con los ids del manifiesto). Con
 `None` se usa la de la app: `AppPaths().models`, que es donde `instanttraductor preparar` instala cada
@@ -20,7 +21,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Final
 
-from instanttraductor.asr import sensevoice, xasr_zh
+from instanttraductor.asr import parakeet_ja, sensevoice, xasr_zh
 from instanttraductor.asr.sherpa_streaming import NemotronStreamingAsr
 from instanttraductor.asr.sherpa_streaming import create_recognizer as create_nemotron_recognizer
 from instanttraductor.config import AppPaths
@@ -30,7 +31,7 @@ from instanttraductor.contracts import AsrEngine, Clock, SourceLanguage
 MODEL_FOLDERS: Final[dict[SourceLanguage, str]] = {
     SourceLanguage.EN: "nemotron-en",
     SourceLanguage.ZH: xasr_zh.COMPONENT_ID,
-    SourceLanguage.JA: sensevoice.COMPONENT_ID,
+    SourceLanguage.JA: parakeet_ja.COMPONENT_ID,
     SourceLanguage.KO: sensevoice.COMPONENT_ID,
 }
 
@@ -53,6 +54,8 @@ def load_recognizer(language: SourceLanguage | str, models_dir: str | Path | Non
             return create_nemotron_recognizer(directory)
         case SourceLanguage.ZH:
             return xasr_zh.create_recognizer(directory)
+        case SourceLanguage.JA:
+            return parakeet_ja.create_recognizer(directory)
         case _:
             return sensevoice.create_recognizer(lang.value, directory)
 
@@ -78,6 +81,8 @@ def create_asr(
             return NemotronStreamingAsr(clock, recognizer=reco)
         case SourceLanguage.ZH:
             return xasr_zh.XAsrZhStreaming(clock, recognizer=reco)
+        case SourceLanguage.JA:
+            return parakeet_ja.ParakeetJaSegmentAsr(clock, recognizer=reco, max_segment_s=max_segment_s)
         case _:
             return sensevoice.SenseVoiceSegmentAsr(
                 lang.value, clock, recognizer=reco, max_segment_s=max_segment_s

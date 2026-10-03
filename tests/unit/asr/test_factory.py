@@ -7,8 +7,9 @@ from typing import Any
 
 import pytest
 
-from instanttraductor.asr import sensevoice, xasr_zh
+from instanttraductor.asr import parakeet_ja, sensevoice, xasr_zh
 from instanttraductor.asr.factory import MODEL_FOLDERS, create_asr, load_recognizer
+from instanttraductor.asr.parakeet_ja import ParakeetJaSegmentAsr
 from instanttraductor.asr.sensevoice import SenseVoiceSegmentAsr
 from instanttraductor.asr.sherpa_streaming import MODEL_FILES as NEMOTRON_FILES
 from instanttraductor.asr.sherpa_streaming import NemotronStreamingAsr
@@ -21,12 +22,13 @@ FILES_BY_FOLDER = {
     "nemotron-en": NEMOTRON_FILES,
     "x-asr-zh": xasr_zh.MODEL_FILES,
     "sensevoice-small": sensevoice.MODEL_FILES,
+    "parakeet-ja": parakeet_ja.MODEL_FILES,
 }
 
 
 @pytest.fixture
 def models_dir(tmp_path: Path) -> Path:
-    """Una carpeta de modelos con los ficheros (vacíos) de los tres componentes."""
+    """Una carpeta de modelos con los ficheros (vacíos) de los cuatro componentes."""
     for folder, names in FILES_BY_FOLDER.items():
         (tmp_path / folder).mkdir()
         for name in names:
@@ -36,10 +38,10 @@ def models_dir(tmp_path: Path) -> Path:
 
 @pytest.fixture
 def sherpa(monkeypatch: pytest.MonkeyPatch) -> dict[str, list[dict[str, Any]]]:
-    """Sustituye las dos fábricas de sherpa-onnx; anota los argumentos de cada llamada."""
+    """Sustituye las fábricas de sherpa-onnx; anota los argumentos de cada llamada (CTC aparte)."""
     import sherpa_onnx
 
-    calls: dict[str, list[dict[str, Any]]] = {"online": [], "offline": []}
+    calls: dict[str, list[dict[str, Any]]] = {"online": [], "offline": [], "ctc": []}
 
     class FakeOnline:
         def __init__(self, kwargs: dict[str, Any]) -> None:
@@ -58,7 +60,12 @@ def sherpa(monkeypatch: pytest.MonkeyPatch) -> dict[str, list[dict[str, Any]]]:
         calls["offline"].append(kwargs)
         return FakeOffline(kwargs)
 
+    def from_nemo_ctc(**kwargs: Any) -> FakeOffline:
+        calls["ctc"].append(kwargs)
+        return FakeOffline(kwargs)
+
     monkeypatch.setattr(sherpa_onnx.OnlineRecognizer, "from_transducer", from_transducer)
+    monkeypatch.setattr(sherpa_onnx.OfflineRecognizer, "from_nemo_ctc", from_nemo_ctc)
     monkeypatch.setattr(sherpa_onnx.OfflineRecognizer, "from_sense_voice", from_sense_voice)
     return calls
 
@@ -69,7 +76,7 @@ class TestCreateAsr:
         [
             ("en", NemotronStreamingAsr, "nemotron-streaming-en"),
             ("zh", XAsrZhStreaming, "x-asr-zh-streaming"),
-            ("ja", SenseVoiceSegmentAsr, "sensevoice-small-ja"),
+            ("ja", ParakeetJaSegmentAsr, "parakeet-ja"),
             ("ko", SenseVoiceSegmentAsr, "sensevoice-small-ko"),
         ],
     )
@@ -92,7 +99,7 @@ class TestCreateAsr:
     ) -> None:
         by_enum = create_asr(SourceLanguage.JA, ManualClock(), models_dir=models_dir)
         by_code = create_asr("ja", ManualClock(), models_dir=models_dir)
-        assert by_enum.name == by_code.name == "sensevoice-small-ja"
+        assert by_enum.name == by_code.name == "parakeet-ja"
 
     def test_the_engines_report_the_expected_streaming_capabilities(
         self, models_dir: Path, sherpa: dict[str, list[dict[str, Any]]]
@@ -108,7 +115,7 @@ class TestCreateAsr:
     ) -> None:
         default = create_asr("ja", ManualClock(), models_dir=models_dir)
         custom = create_asr("ko", ManualClock(), models_dir=models_dir, max_segment_s=9.5)
-        assert isinstance(default, SenseVoiceSegmentAsr) and default.max_segment_s == 6.0
+        assert isinstance(default, ParakeetJaSegmentAsr) and default.max_segment_s == 6.0
         assert isinstance(custom, SenseVoiceSegmentAsr) and custom.max_segment_s == 9.5
 
     def test_an_unknown_language_is_refused(self, models_dir: Path) -> None:
@@ -123,14 +130,14 @@ class TestCreateAsr:
         assert isinstance(asr, XAsrZhStreaming)
         assert asr._recognizer is sentinel
         asr_ja = create_asr("ja", ManualClock(), models_dir=tmp_path, recognizer=sentinel)
-        assert isinstance(asr_ja, SenseVoiceSegmentAsr)
+        assert isinstance(asr_ja, ParakeetJaSegmentAsr)
         assert asr_ja._recognizer is sentinel
 
     def test_without_a_preloaded_recognizer_the_model_is_loaded_once_per_engine(
         self, models_dir: Path, sherpa: dict[str, list[dict[str, Any]]]
     ) -> None:
         create_asr("ja", ManualClock(), models_dir=models_dir)
-        assert len(sherpa["offline"]) == 1 and sherpa["online"] == []
+        assert len(sherpa["ctc"]) == 1 and sherpa["online"] == sherpa["offline"] == []
 
     @pytest.mark.parametrize("language", ["en", "zh", "ja", "ko"])
     def test_missing_models_are_a_non_recoverable_error_that_points_to_preparar(
@@ -145,7 +152,12 @@ class TestCreateAsr:
         self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
     ) -> None:
         monkeypatch.setenv("INSTANTTRADUCTOR_HOME", str(tmp_path))
-        for language, folder in (("en", "nemotron-en"), ("zh", "x-asr-zh"), ("ko", "sensevoice-small")):
+        for language, folder in (
+            ("en", "nemotron-en"),
+            ("zh", "x-asr-zh"),
+            ("ja", "parakeet-ja"),
+            ("ko", "sensevoice-small"),
+        ):
             with pytest.raises(EngineError) as info:
                 create_asr(language, ManualClock())
             assert str(tmp_path / "models" / folder) in str(info.value)
@@ -156,7 +168,7 @@ class TestLoadRecognizer:
         assert MODEL_FOLDERS == {
             SourceLanguage.EN: "nemotron-en",
             SourceLanguage.ZH: "x-asr-zh",
-            SourceLanguage.JA: "sensevoice-small",
+            SourceLanguage.JA: "parakeet-ja",
             SourceLanguage.KO: "sensevoice-small",
         }
 
@@ -179,15 +191,23 @@ class TestLoadRecognizer:
         assert call["modeling_unit"] == "cjkchar+bpe"
         assert sherpa["offline"] == []
 
-    @pytest.mark.parametrize("language", ["ja", "ko"])
-    def test_japanese_and_korean_load_sensevoice_with_their_language_fixed(
-        self, models_dir: Path, sherpa: dict[str, list[dict[str, Any]]], language: str
+    def test_korean_loads_sensevoice_with_its_language_fixed(
+        self, models_dir: Path, sherpa: dict[str, list[dict[str, Any]]]
     ) -> None:
-        load_recognizer(language, models_dir)
+        load_recognizer("ko", models_dir)
         (call,) = sherpa["offline"]
         assert call["model"] == str(models_dir / "sensevoice-small" / "model.int8.onnx")
-        assert (call["language"], call["use_itn"]) == (language, True)
-        assert sherpa["online"] == []
+        assert (call["language"], call["use_itn"]) == ("ko", True)
+        assert sherpa["online"] == sherpa["ctc"] == []
+
+    def test_japanese_loads_the_parakeet_ctc_model(
+        self, models_dir: Path, sherpa: dict[str, list[dict[str, Any]]]
+    ) -> None:
+        load_recognizer("ja", models_dir)
+        (call,) = sherpa["ctc"]
+        assert call["model"] == str(models_dir / "parakeet-ja" / "model.int8.onnx")
+        assert call["tokens"] == str(models_dir / "parakeet-ja" / "tokens.txt")
+        assert sherpa["online"] == sherpa["offline"] == []
 
     def test_an_unknown_language_is_refused(self, models_dir: Path) -> None:
         with pytest.raises(ValueError):

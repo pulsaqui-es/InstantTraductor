@@ -57,6 +57,46 @@ Corpus FLEURS de S5 (lectura continua, de 11 a 12 min por idioma, con música a 
 - Primera lectura del orquestador: en ja hay varias frases con el sentido cambiado (errores del reconocedor y cortes forzados a 6 s). Si no llega al 85 %, la alternativa prevista es Parakeet-ja (R2).
 - *Pendiente: juicio del humano.*
 
+### Anime real (2026-10-03, Chrome, `--idioma ja`)
+Dos sesiones del humano con el mismo episodio (8 y 7,5 min); la segunda con el audio captado guardado
+(`guardar_audio`). Retardo de frase p50/p95: 1,3/3,5 s (SC-001 cumplido con diálogo real). El humano: «dice frases
+que no tienen sentido» y «lo último que se dicen no lo traduce». Tres causas, medidas sobre la grabación:
+
+1. **El reconocedor (SenseVoice) confunde homófonos y pierde negaciones con el habla del anime:**
+   - 勝算 («posibilidades de ganar») → 称賛 («elogio»), 醜態 → 醜体 («cuerpo feo»), 栄光ある我が → エ光アルワ;
+   - 手を出すな («no lo toques») → 手を出す («atacaré»).
+   Con los mismos 68 tramos, **Parakeet-ja** acierta casi todos (勝算, 栄光ある我が, 手を出すな, 握り潰したい,
+   読もうか, 本戦…) con el doble de CPU que SenseVoice (22 s frente a 11 s para 7 min de audio). ReazonSpeech
+   reconoce parecido, pero se come trozos de frase («勝算はあります» sin el resto, «あっ» por una frase entera).
+   **Cambio:** el japonés pasa a Parakeet-ja, la alternativa prevista en R2 (componente `parakeet-ja` en
+   `preparar`). Corpus S5 (test `model`): CER 7,9 % sin corte y 10,2 % con el corte de 6 s (SenseVoice: 8,7 % y
+   12,7 %).
+2. **Silero deja de ver la voz con un fondo constante.** Su estado recurrente se adapta al fondo: en la escena
+   final (358-441 s, diálogo seguido sobre ambiente) la probabilidad de habla se queda en ≈ 0, y se pierden
+   80 s de diálogo. Con el estado reiniciado cada pocos segundos, la escena se detecta (0,9-1,0). El corpus C2
+   de S7 no lo podía ver: sus clips duran segundos.
+   **Cambio:** reinicio del estado del modelo tras 3 s seguidos fuera del habla (`state_reset_s`). Medido
+   (VAD + Parakeet + filtro de idioma):
+
+   | Reinicio | Anime: habla detectada | Escena final | 10 min de música y efectos: tramos / frases que pasan |
+   |---|---|---|---|
+   | sin reinicio | 214 s | 1 s | 1 / 0 |
+   | cada 5 s | 238 s | 30 s | 42 / — |
+   | **cada 3 s** | **255 s** | **46 s** | **57 / 0** |
+   | cada 1 s | 267 s | 46 s | 114 / — |
+
+   Los tramos falsos en la música son cortos (≈ 0,4 s) y ninguno llega a frase: el ASR no da texto o el
+   filtro de idioma lo rechaza. El corpus FLEURS ja con música no cambia (475 → 476 s de habla).
+   Un Silero doble (continuo + reiniciado, que solo cuenta por encima de un umbral alto) salió peor.
+3. **La traducción frase a frase, sin contexto:** しろ («¡hazlo!») → «ponlo en blanco» (白), パーティー (el grupo)
+   → «fiesta», 話がわかるな → «entiendes de lo que se habla». *Pendiente:* medir la traducción con las frases
+   anteriores como contexto, con la grabación (necesita la GPU libre).
+
+Otros hallazgos: el filtro de idioma descartó algunas frases japonesas cortas reales (奴を倒そ, やめたんだが,
+疑がある); el aviso «No llega audio del origen» se escribía en el log cada 250 ms con el vídeo en pausa
+(corregido: va al log solo cuando aparece); `archivo --help` decía «en inglés» (corregido).
+*Pendiente:* repetir la sesión de anime con Parakeet y el reinicio de Silero, y el juicio del humano.
+
 ## §5 y §6 Escuchar una app y Discord (SC-003, SC-003b, SC-004)
 *Pendiente: con el humano.*
 

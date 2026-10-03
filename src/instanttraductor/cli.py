@@ -58,7 +58,7 @@ def build_parser() -> argparse.ArgumentParser:
     directo.set_defaults(func=cmd_directo)
 
     archivo = sub.add_parser("archivo", help="traduce un fichero de audio o vídeo")
-    archivo.add_argument("entrada", metavar="ENTRADA", type=Path, help="fichero de audio o vídeo en inglés")
+    archivo.add_argument("entrada", metavar="ENTRADA", type=Path, help="fichero de audio o vídeo")
     archivo.add_argument(
         "--salida", metavar="DIR", type=Path, help="carpeta de salida (por defecto <nombre>_es)"
     )

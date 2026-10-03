@@ -29,7 +29,7 @@ import numpy as np
 import numpy.typing as npt
 import pytest
 
-from instanttraductor.asr import sensevoice, xasr_zh
+from instanttraductor.asr import parakeet_ja, sensevoice, xasr_zh
 from instanttraductor.config import AppPaths
 from instanttraductor.contracts import (
     CAPTURE_RATE,
@@ -53,6 +53,8 @@ CORPUS = SPIKE_HOME / "corpus"
 PHRASES = 10  # frases (y recortes) por idioma
 #: CER de S5 sin música (README del spike S5, tabla de ASR por idioma).
 S5_CER = {"zh": 0.0487, "ja": 0.0832, "ko": 0.0714}
+#: CER de Parakeet-ja en S5 (alternativa del japonés de R2; motor del japonés desde la validación de la 002).
+S5_CER_PARAKEET_JA = 0.0531
 CER_FACTOR = 1.5
 #: Margen del corte forzado de 6 s con habla leída sin pausas (ver el docstring del módulo).
 FORCED_CUT_CER_FACTOR = 2.0
@@ -63,6 +65,7 @@ MIN_REJECTED = 9  # de 10, de español
 SPIKE_MODEL_FOLDERS = {
     "x-asr-zh": "sherpa-onnx-x-asr-960ms-streaming-zipformer-transducer-zh-en-punct-int8-2026-06-05",
     "sensevoice-small": "sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17",
+    "parakeet-ja": "sherpa-onnx-nemo-parakeet-tdt_ctc-0.6b-ja-35000-int8",
     "whisper-base-lid": "sherpa-onnx-whisper-base",
 }
 
@@ -226,6 +229,37 @@ class TestChinese:
         assert any(e.kind is AsrEventKind.PARTIAL for e in events)
         assert {e.language for e in events} == {"zh"}
         assert events[-1].kind is AsrEventKind.FINAL
+
+
+@pytest.fixture(scope="module")
+def parakeet_recognizer() -> parakeet_ja.Recognizer:
+    return parakeet_ja.create_recognizer(model_dir("parakeet-ja", parakeet_ja.MODEL_FILES))
+
+
+class TestParakeetJapanese:
+    def test_cer_without_forced_cut_is_within_1_5_times_the_one_of_s5(
+        self, manifest: dict[str, Any], parakeet_recognizer: parakeet_ja.Recognizer
+    ) -> None:
+        cer = cer_of(
+            lambda: parakeet_ja.ParakeetJaSegmentAsr(
+                ManualClock(), recognizer=parakeet_recognizer, max_segment_s=60.0
+            ),
+            manifest,
+            "ja",
+        )
+        assert cer <= CER_FACTOR * S5_CER_PARAKEET_JA
+
+    def test_cer_with_the_production_forced_cut_stays_close(
+        self, manifest: dict[str, Any], parakeet_recognizer: parakeet_ja.Recognizer
+    ) -> None:
+        cer = cer_of(
+            lambda: parakeet_ja.ParakeetJaSegmentAsr(
+                ManualClock(), recognizer=parakeet_recognizer, max_segment_s=6.0
+            ),
+            manifest,
+            "ja",
+        )
+        assert cer <= FORCED_CUT_CER_FACTOR * S5_CER_PARAKEET_JA
 
 
 class TestJapaneseAndKorean:

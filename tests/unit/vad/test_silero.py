@@ -305,6 +305,68 @@ class TestReset:
         )
 
 
+class TestStateReset:
+    """Fuera del habla, el estado del modelo se reinicia cada `state_reset_s` (validación de la 002)."""
+
+    RESET_FRAMES = round(3.0 / FRAME_S)  # 94 tramas de 32 ms
+
+    def test_the_model_is_reset_after_three_seconds_out_of_speech(self) -> None:
+        model = ScriptedModel([])
+        vad = SileroVad(model)
+        base = model.resets  # el reinicio del constructor
+        run_frames(vad, self.RESET_FRAMES)
+        assert model.resets == base, "aún no han pasado 3 s enteros"
+        run_frames(vad, 1)
+        assert model.resets == base + 1
+        run_frames(vad, self.RESET_FRAMES * 2)
+        assert model.resets == base + 3
+
+    def test_the_model_is_never_reset_inside_speech(self) -> None:
+        model = ScriptedModel([0.9] * 400)  # 12,8 s de habla seguida
+        vad = SileroVad(model)
+        base = model.resets
+        run_frames(vad, 400)
+        assert vad.in_speech is True
+        assert model.resets == base
+
+    def test_the_count_starts_again_when_the_speech_ends(self) -> None:
+        # 2 s fuera del habla, 1 s de habla y su cierre, y otra vez fuera del habla.
+        model = ScriptedModel([0.0] * 62 + [0.9] * 31)
+        vad = SileroVad(model)
+        base = model.resets
+        run_frames(vad, 62 + 31)
+        run_frames(vad, 16)  # 500 ms de silencio: cierra el habla
+        assert vad.in_speech is False
+        run_frames(vad, self.RESET_FRAMES - 1)
+        assert model.resets == base, "los 2 s de antes del habla no cuentan"
+        run_frames(vad, 2)
+        assert model.resets == base + 1
+
+    def test_the_reset_can_be_disabled_or_configured(self) -> None:
+        model = ScriptedModel([])
+        vad = SileroVad(model, state_reset_s=None)
+        base = model.resets
+        run_frames(vad, 1000)
+        assert model.resets == base
+        quick = ScriptedModel([])
+        vad = SileroVad(quick, state_reset_s=1.0)
+        base = quick.resets
+        run_frames(vad, 32)
+        assert quick.resets == base + 1
+
+    @pytest.mark.parametrize("value", [0.0, -1.0])
+    def test_state_reset_must_be_positive(self, value: float) -> None:
+        with pytest.raises(ValueError, match="state_reset_s"):
+            SileroVad(ScriptedModel([]), state_reset_s=value)
+
+    def test_the_reset_does_not_change_the_trigger_state(self) -> None:
+        # Con el habla abierta en el guion tras el reinicio, el VAD sigue su lógica normal.
+        model = ScriptedModel([0.0] * 100 + burst(5, 20))
+        vad = SileroVad(model)
+        kinds = [event.kind for _, event in run_frames(vad, 125)]
+        assert kinds == [START, END]
+
+
 # --------------------------------------------------------------------------------------------------
 # Parámetros
 # --------------------------------------------------------------------------------------------------
@@ -317,6 +379,7 @@ class TestParameters:
         assert vad.neg_threshold == 0.15
         assert vad.min_silence_ms == 500.0
         assert vad.speech_pad_ms == 150.0
+        assert vad.state_reset_s == 3.0
 
     @pytest.mark.parametrize(
         "kwargs",

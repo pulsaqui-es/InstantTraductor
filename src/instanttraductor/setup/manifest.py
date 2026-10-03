@@ -367,6 +367,30 @@ COMPONENTS: Final[tuple[Component, ...]] = (
         ),
     ),
     Component(
+        component_id="parakeet-ja",
+        name="Parakeet-ja (reconocimiento de voz en japonés)",
+        version="tdt_ctc 0.6b, cabeza CTC int8 (35000)",
+        kind="modelo",
+        # Tarjeta de nvidia/parakeet-tdt_ctc-0.6b-ja: CC-BY-4.0 (leída el 2026-10-03). Sustituye a
+        # SenseVoice en el japonés tras la validación de la 002 con anime (research.md R2). sha256
+        # verificados el 2026-10-03 contra Hugging Face (LFS) y contra el modelo del spike S5.
+        license="CC-BY-4.0",
+        install_dir="models/parakeet-ja",
+        hf_repo_id="csukuangfj/sherpa-onnx-nemo-parakeet-tdt_ctc-0.6b-ja-35000-int8",
+        hf_revision="bef18eb066808c90bd0f5df5be685767b0732de8",
+        allow_patterns=("model.int8.onnx", "tokens.txt"),
+        files=(
+            ComponentFile(
+                "model.int8.onnx",
+                "3addd00ef5bd1742078389e540b77394e4a508bdf2f4c9ad1b4a76d93e76598e",
+                655_542_604,
+            ),
+            ComponentFile(
+                "tokens.txt", "732f64c53909f2620c713f4106b487d92e6f54a6915b3cd3d1dbd32f9f4f392a", 28_557
+            ),
+        ),
+    ),
+    Component(
         component_id="whisper-base-lid",
         name="Whisper base (detección de idioma)",
         version="base int8 (2024-10-02)",

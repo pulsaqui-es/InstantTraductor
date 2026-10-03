@@ -136,9 +136,16 @@ class Warnings:
         self._items: deque[tuple[float, str]] = deque(maxlen=20)
 
     def add(self, text: str) -> None:
-        logger.warning(text)
+        """Muestra `text` unos segundos más. Al log va solo cuando aparece, no en cada repetición: un aviso
+        que dura (la app en pausa) llegaba al log cuatro veces por segundo (validación de la 002)."""
+        now = self._clock.now()
         with self._lock:
-            self._items.append((self._clock.now(), text))
+            active = any(t == text and now - at <= WARNING_TTL_S for at, t in self._items)
+            # Una sola entrada por texto: un aviso repetido no echa de la cola a los demás.
+            others = [(at, t) for at, t in self._items if t != text]
+            self._items = deque([*others, (now, text)], maxlen=self._items.maxlen)
+        if not active:
+            logger.warning(text)
 
     def current(self) -> tuple[str, ...]:
         now = self._clock.now()

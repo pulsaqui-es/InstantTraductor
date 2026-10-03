@@ -13,6 +13,12 @@ delante y un estado recurrente `[2, 1, 128]`; es la misma interfaz que `OnnxWrap
   0,5/0,35 en la spec 002 para no perder habla baja (research.md de la 002, R7: +1,7 puntos y +0,04 s);
 - `speech_pad_ms` (150 ms) es el relleno previo: `SPEECH_START` se adelanta ese tiempo, sin pasar del primer
   audio recibido, para que quien alimente al ASR incluya el arranque de la primera palabra.
+- **Reinicio del estado fuera del habla** (`state_reset_s`, 3 s): el estado recurrente de Silero se adapta al
+  fondo, y con música o ambiente constantes deja de ver la voz al cabo de unos segundos (anime real en la
+  validación de la 002: una escena de 80 s de diálogo con probabilidad ≈ 0). Tras 3 s seguidos fuera del habla
+  se reinicia el modelo (estado y contexto); dentro del habla nunca. Medido en esa grabación: la escena pasa
+  de 1 s a 46 s de habla detectada; en 10 min de música y efectos salen tramos cortos (≈ 0,4 s), pero ninguno
+  llega a frase traducida tras el ASR y el filtro de idioma.
 
 La probabilidad de habla es inyectable (`SileroVad(model=...)`): vale cualquier objeto con `prob(frame)` y
 `reset()`. Así los tests unitarios no necesitan el modelo.
@@ -119,15 +125,17 @@ class SileroOnnx:
 #: Umbrales por defecto (spec 002, research.md R7: habla baja sin subir las falsas alarmas medidas).
 DEFAULT_THRESHOLD = 0.30
 DEFAULT_NEG_THRESHOLD = 0.15
+#: Segundos seguidos fuera del habla tras los que se reinicia el estado del modelo (validación de la 002).
+DEFAULT_STATE_RESET_S = 3.0
 
 
 class SileroVad:
     """VAD en streaming sobre tramas de 32 ms: `SPEECH_START` al entrar en habla y `SPEECH_END` al salir.
 
     Parámetros: `threshold` 0,30 y `neg_threshold` 0,15 (spec 002, R7; en la 001, 0,5 y 0,35),
-    `min_silence_ms` 500 y `speech_pad_ms` 150. `model` es la probabilidad inyectable; sin él se carga el
-    modelo ONNX de `default_model_path()` (`EngineError` no recuperable si falta: lo instala
-    `instanttraductor preparar`).
+    `min_silence_ms` 500, `speech_pad_ms` 150 y `state_reset_s` 3 (None: sin reinicios). `model` es la
+    probabilidad inyectable; sin él se carga el modelo ONNX de `default_model_path()` (`EngineError` no
+    recuperable si falta: lo instala `instanttraductor preparar`).
 
     Los eventos alternan START y END, y `in_speech` es True si y solo si el último fue START. Un tramo de
     habla muy corto (un chasquido) también produce su pareja START/END: descartarlo es cosa del ASR, que no
@@ -142,6 +150,7 @@ class SileroVad:
         neg_threshold: float = DEFAULT_NEG_THRESHOLD,
         min_silence_ms: float = 500.0,
         speech_pad_ms: float = 150.0,
+        state_reset_s: float | None = DEFAULT_STATE_RESET_S,
     ) -> None:
         if not 0.0 < threshold <= 1.0:
             raise ValueError(f"threshold debe estar en (0, 1]; recibido: {threshold}.")
@@ -149,6 +158,8 @@ class SileroVad:
             raise ValueError(f"neg_threshold debe estar en (0, threshold]; recibido: {neg_threshold}.")
         if min_silence_ms < 0.0 or speech_pad_ms < 0.0:
             raise ValueError("min_silence_ms y speech_pad_ms no pueden ser negativos.")
+        if state_reset_s is not None and state_reset_s <= 0.0:
+            raise ValueError(f"state_reset_s debe ser positivo o None; recibido: {state_reset_s}.")
         self.threshold = threshold
         self.neg_threshold = neg_threshold
         self.min_silence_ms = min_silence_ms
@@ -156,6 +167,8 @@ class SileroVad:
         # Con muestras enteras no hay errores de redondeo al comparar tiempos.
         self._min_silence_samples = round(min_silence_ms * CAPTURE_RATE / 1000)
         self._pad_s = speech_pad_ms / 1000
+        self.state_reset_s = state_reset_s
+        self._reset_frames = None if state_reset_s is None else max(1, round(state_reset_s / FRAME_S))
         self._model: SpeechProbabilityModel = model if model is not None else SileroOnnx(default_model_path())
         self._pending: Samples
         self._origin: float | None
@@ -163,6 +176,7 @@ class SileroVad:
         self._triggered: bool
         self._silence_from: int | None
         self._last_speech_end: int
+        self._quiet_frames: int
         self.reset()
 
     @property
@@ -178,6 +192,7 @@ class SileroVad:
         self._triggered = False
         self._silence_from = None  # muestra (desde el origen) en que empezó el silencio en curso
         self._last_speech_end = 0  # muestra en que terminó la última trama con voz
+        self._quiet_frames = 0  # tramas seguidas fuera del habla desde el último reinicio del modelo
 
     def accept(self, chunk: AudioChunk) -> list[VadEvent]:
         if chunk.sample_rate != CAPTURE_RATE:
@@ -195,11 +210,22 @@ class SileroVad:
         events: list[VadEvent] = []
         for index in range(whole):
             frame = samples[index * FRAME_SAMPLES : (index + 1) * FRAME_SAMPLES]
+            self._maybe_reset_model()
             event = self._step(self._model.prob(frame))
             if event is not None:
                 events.append(event)
         self._pending = samples[whole * FRAME_SAMPLES :].copy()
         return events
+
+    def _maybe_reset_model(self) -> None:
+        """Reinicia el modelo tras `state_reset_s` seguidos fuera del habla (ver el docstring del módulo)."""
+        if self._triggered or self._reset_frames is None:
+            self._quiet_frames = 0
+            return
+        if self._quiet_frames >= self._reset_frames:
+            self._model.reset()
+            self._quiet_frames = 0
+        self._quiet_frames += 1
 
     def _at(self, sample: int) -> float:
         """Reloj de audio de una muestra contada desde el origen."""
